@@ -1,0 +1,84 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view>
+        <h:head>
+            <title><ui:insert name="title">Default title</ui:insert></title>
+        </h:head>
+        <h:body>
+            <h:outputStylesheet name="css/siacra.css" />
+            <h:outputStylesheet name="grid/grid.css" library="primefaces" />
+            <h:outputStylesheet name="webjars/font-awesome/4.2.0/css/font-awesome-jsf.css" />
+            
+            <header>
+                <div class="ui-grid ui-grid-responsive" style="text-align: center">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><h:graphicImage library="img" name="ues.jpg" width="80px" height="90px"/></div>
+                        <div class="ui-grid-col-4">
+                            <br />
+                            Universidad de El Salvador <br />
+                            Facultad de Ingenier-a y Arquitectura <br/><br />
+                            <ui:insert name="school"> {{Nombre de la Escuela}} </ui:insert>
+                        </div>
+                        <div class="ui-grid-col-4">
+                            <br />
+                            <ui:insert name="user"> {{Nombre del Usuario}} </ui:insert> <br />
+                            <ui:insert name="role"> {{Rol del Usuario}} </ui:insert> <br /><br />
+                            <h:form>
+                                <p:splitButton value="Acciones" icon="fa fa-gears">
+                                    <p:menuitem value="Cerrar Sesion" id="logout" icon="fa fa-lock"/>
+                                    <p:separator />
+                                    <p:menuitem value="Regresar" icon="fa fa-arrow-circle-left"/>
+                                    <p:menuitem value="Inicio" url="/resources/views/index.xhtml" icon="fa fa-home" />
+                                </p:splitButton>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <nav>
+                <h:form class="pad-top-20">
+                    <ui:insert name="menu" >
+                    <p:menubar>
+                        <p:submenu label="Mantenimientos" icon="fa fa-gears">
+                            <p:submenu label="NIveles de Acceso" icon="fa fa-key">
+                                <p:menuitem value="Nuevo" url="/resources/views/NivelAcceso/NuevoNivelAcceso.xhtml" icon="fa fa-plus-circle"/>
+                                <p:menuitem value="Consultar" url="/resources/views/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-info-circle"/>
+                            </p:submenu>
+                            <p:submenu label="Asignaturas" icon="fa fa-book">
+                                <p:menuitem value="Nueva" url="#" icon="fa fa-plus-circle"/>
+                                <p:menuitem value="Consultar" url="#" icon="fa fa-info-circle"/>
+                            </p:submenu>
+                            <p:separator />
+                            <p:menuitem value="Docentes" url="#" icon="fa fa-user"/>
+                        </p:submenu>
+
+                        <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
+
+                        <f:facet name="options">
+                            <p:inputText id="search" style="margin-right:10px" placeholder="Buscar..."/>
+                            <p:tooltip id="toolTipFade" for="search" value="Buscar en la ventana" />
+                            <p:commandButton type="button" value="Buscar" icon="fa fa-search" />
+                        </f:facet>
+                    </p:menubar>
+                    </ui:insert>
+                </h:form>
+            </nav>
+            
+            <section class="pad-top-20">  
+                <ui:insert name="titulo-pantalla">{{Titulo de pantalla por defecto}}</ui:insert>
+                <br /><br />
+                <ui:insert name="content">{{Contenido por defecto}}</ui:insert>       
+            </section>       
+            
+            <footer class="pad-top-20">
+                <ui:insert name="footer"> {{Footer por defecto}} </ui:insert>
+            </footer>
+            
+        </h:body>
+    </f:view>
+</html>

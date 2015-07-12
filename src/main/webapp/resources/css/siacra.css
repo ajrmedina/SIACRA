@@ -1,0 +1,41 @@
+/*Pagina WEB*/
+body {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 90%;
+    font-family: Arial;
+}
+
+.pad-top-20 {
+    padding-top: 20px;
+}
+
+.center-element {
+    margin: auto;
+}
+
+/*Override PrimeFaces CSS*/
+.ui-layout-pane {
+    border: 0;
+}
+
+/*Change Font Size*/
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 90%;
+    font-family: Arial;
+}
+
+/*Overflow Menu Bar*/
+.ui-layout-north {
+    z-index:20 !important;
+    overflow:visible !important;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+    overflow:visible !important;
+}
+
+.ui-icon.fa {
+     text-indent:0px;
+     background-image:none;
+}

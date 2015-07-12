@@ -1,0 +1,43 @@
+<ui:composition template="/WEB-INF/views/templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Niveles de Acceso
+    </ui:define>
+    
+    <ui:define name="titulo-pantalla">
+        <h1 class="title"> Niveles de Acceso al SIACRA </h1>
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" />
+            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 50%" class="center-element">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="ID Nivel Aceso" />
+                    </f:facet>
+                    <h:outputText value="#{nivel.id}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Nombre del Acceso" />
+                    </f:facet>
+                    <h:outputText value="#{nivel.acceso}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>
+                    
+                    <p:commandButton value="Eliminar" action="#{nivelAccesoBean.deleteAcceso(nivel.id)}" update="messages" ajax="false"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>
