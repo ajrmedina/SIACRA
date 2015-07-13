@@ -14,7 +14,11 @@ import javax.faces.bean.RequestScoped;
 
 import com.siacra.models.NivelAcceso;
 import com.siacra.services.NivelAccesoService;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.springframework.dao.DataAccessException;
@@ -55,13 +59,54 @@ public class NivelAccesoBean implements Serializable {
             NivelAcceso nivel = new NivelAcceso();
             nivel.setAcceso(getAcceso());
             getNivelAccesoService().addNivelAcceso(nivel);
-            reset();
-            addMessage("El Nivel de Acceso "+getAcceso()+" fue añadido correctamente");
+            addMessage("El Nivel de Acceso " + getAcceso() + " fue añadido correctamente");
             return SUCCESS;
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
         return ERROR;
+    }
+    
+     /**
+     * Load NivelAcceso
+     *
+     * Get and Load the data for NivelAcceso to update
+     */
+    public void loadNivelAcceso() {
+        
+        try {
+            NivelAcceso nivel = new NivelAcceso();
+            nivel = getNivelAccesoService().getNivelAccesoById(getId());
+            setAcceso(nivel.getAcceso());
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    /**
+     * Update NivelAcceso
+     *
+     * @param int id - idNivelAcceso
+     * @return String - Update Page
+     */
+    public String updateAcceso(int id) {
+        
+        try {
+            NivelAcceso nivel = new NivelAcceso();
+            nivel = getNivelAccesoService().getNivelAccesoById(id);
+            nivel.setAcceso(getAcceso());
+            getNivelAccesoService().updateNivelAcceso(nivel);
+            addMessage("El Nivel de Acceso " + getId() + " fue actualizado correctamente "+ getAcceso());
+            return SUCCESS;
+            //return "ListarNivelesAcceso?faces-redirect=true";
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+        return ERROR;
+
     }
     
     /**

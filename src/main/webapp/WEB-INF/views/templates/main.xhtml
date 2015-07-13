@@ -31,7 +31,6 @@
                                 <p:splitButton value="Acciones" icon="fa fa-gears">
                                     <p:menuitem value="Cerrar Sesion" id="logout" icon="fa fa-lock"/>
                                     <p:separator />
-                                    <p:menuitem value="Regresar" icon="fa fa-arrow-circle-left"/>
                                     <p:menuitem value="Inicio" url="/resources/views/index.xhtml" icon="fa fa-home" />
                                 </p:splitButton>
                             </h:form>
@@ -45,10 +44,7 @@
                     <ui:insert name="menu" >
                     <p:menubar>
                         <p:submenu label="Mantenimientos" icon="fa fa-gears">
-                            <p:submenu label="NIveles de Acceso" icon="fa fa-key">
-                                <p:menuitem value="Nuevo" url="/resources/views/NivelAcceso/NuevoNivelAcceso.xhtml" icon="fa fa-plus-circle"/>
-                                <p:menuitem value="Consultar" url="/resources/views/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-info-circle"/>
-                            </p:submenu>
+                            <p:menuitem value="Niveles de Acceso" url="/resources/views/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-key" />
                             <p:submenu label="Asignaturas" icon="fa fa-book">
                                 <p:menuitem value="Nueva" url="#" icon="fa fa-plus-circle"/>
                                 <p:menuitem value="Consultar" url="#" icon="fa fa-info-circle"/>
@@ -60,17 +56,16 @@
                         <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
 
                         <f:facet name="options">
-                            <p:inputText id="search" style="margin-right:10px" placeholder="Buscar..."/>
-                            <p:tooltip id="toolTipFade" for="search" value="Buscar en la ventana" />
-                            <p:commandButton type="button" value="Buscar" icon="fa fa-search" />
+                            <ui:insert name="add"> </ui:insert>
                         </f:facet>
+                        
                     </p:menubar>
                     </ui:insert>
                 </h:form>
             </nav>
             
             <section class="pad-top-20">  
-                <ui:insert name="titulo-pantalla">{{Titulo de pantalla por defecto}}</ui:insert>
+                <center><h1 class="title"> <ui:insert name="titulo-pantalla">{{Titulo de pantalla por defecto}}</ui:insert> </h1></center>
                 <br /><br />
                 <ui:insert name="content">{{Contenido por defecto}}</ui:insert>       
             </section>       

@@ -9,14 +9,18 @@
        Consultar - Niveles de Acceso
     </ui:define>
     
+    <ui:define name="add">
+        <p:commandButton id="nuevo" value="Nuevo Nivel de Acceso" action="NuevoNivelAcceso?faces-redirect=true" ajax="false" icon="fa fa-plus"/>
+    </ui:define>
+    
     <ui:define name="titulo-pantalla">
-        <h1 class="title"> Niveles de Acceso al SIACRA </h1>
+        Niveles de Acceso al SIACRA
     </ui:define>
                     
     <ui:define name="content">
         <h:form>
             <p:growl id="messages" />
-            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 50%" class="center-element">
+            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 60%" class="center-element">
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="ID Nivel Aceso" />
@@ -33,11 +37,14 @@
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>
-                    
-                    <p:commandButton value="Eliminar" action="#{nivelAccesoBean.deleteAcceso(nivel.id)}" update="messages" ajax="false"/>
+                    <p:commandButton value="Eliminar" action="#{nivelAccesoBean.deleteAcceso(nivel.id)}" update="messages" ajax="false" icon="fa fa-times"/>
+                    <p:button value="Actualizar" outcome="/resources/views/NivelAcceso/ActualizarNivelAcceso.xhtml" icon="fa fa-edit">
+                        <f:param name="nivelID" value="#{nivel.id}" />
+                    </p:button>
                 </p:column>
             </p:dataTable>
         </h:form>
+        
     </ui:define>
     
 </ui:composition>
