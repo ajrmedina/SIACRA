@@ -26,9 +26,7 @@ import org.springframework.dao.DataAccessException;
 @ManagedBean(name="nivelAccesoBean")
 @RequestScoped
 public class NivelAccesoBean implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+    
     //Spring NivelAcceso Service is injected...
     @ManagedProperty(value="#{NivelAccesoService}")
     private NivelAccesoService nivelAccesoService;
