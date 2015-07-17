@@ -1,4 +1,4 @@
-<ui:composition template="/WEB-INF/views/templates/main.xhtml"
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
@@ -10,7 +10,7 @@
     </ui:define>
     
     <ui:define name="add">
-        <p:commandButton id="nuevo" value="Nuevo Nivel de Acceso" action="NuevoNivelAcceso?faces-redirect=true" ajax="false" icon="fa fa-plus"/>
+        <p:menuitem value="Nuevo Nivel de Acceso" url="/resources/views/admin/NivelAcceso/NuevoNivelAcceso.xhtml" icon="fa fa-plus"/>
     </ui:define>
     
     <ui:define name="titulo-pantalla">
@@ -20,6 +20,7 @@
     <ui:define name="content">
         <h:form>
             <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 60%" class="center-element">
                 <p:column>
                     <f:facet name="header">
@@ -38,7 +39,7 @@
                         <h:outputText value="Acciones" />
                     </f:facet>
                     <p:commandButton value="Eliminar" action="#{nivelAccesoBean.deleteAcceso(nivel.id)}" update="messages" ajax="false" icon="fa fa-times"/>
-                    <p:button value="Actualizar" outcome="/resources/views/NivelAcceso/ActualizarNivelAcceso.xhtml" icon="fa fa-edit">
+                    <p:button value="Actualizar" outcome="/resources/views/admin/NivelAcceso/ActualizarNivelAcceso.xhtml" icon="fa fa-edit">
                         <f:param name="nivelID" value="#{nivel.id}" />
                     </p:button>
                 </p:column>

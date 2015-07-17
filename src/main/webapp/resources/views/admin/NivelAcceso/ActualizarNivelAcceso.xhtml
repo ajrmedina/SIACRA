@@ -1,4 +1,4 @@
-<ui:composition template="/WEB-INF/views/templates/main.xhtml"
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
@@ -20,10 +20,11 @@
         </f:metadata>
         <h:form>
             <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                <p:outputLabel for="idAcceso" value="Id del Nivel de Acceso : " />
+                <p:outputLabel for="idAcceso" value="Id del Nivel de Acceso: " />
                 <p:inputText id="idAcceso" value="#{nivelAccesoBean.id}" readonly="true" />
-                <p:outputLabel for="nombreAcceso" value="Nombre del Acceso : " />
+                <p:outputLabel for="nombreAcceso" value="Nombre del Acceso: " />
                 <p:inputText id="nombreAcceso" value="#{nivelAccesoBean.acceso}">
                     <f:validateLength minimum="4" />
                 </p:inputText>

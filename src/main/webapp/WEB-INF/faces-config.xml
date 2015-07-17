@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee" version="2.0">
+    
+    <!-- Enable Spring -->
     <application>
         <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
         <locale-config>
@@ -7,6 +9,33 @@
             <supported-locale>es_SV</supported-locale>
         </locale-config>
     </application>
+  
+    <!-- navigation-rule for login.xhtml -->
+    <navigation-rule>
+        <from-view-id>/resources/views/public/login.xhtml</from-view-id>
+        <!-- navigation-case for method login() -->
+        <navigation-case>
+            <from-action>#{loginMBean.login}</from-action>
+            <from-outcome>correct</from-outcome>
+            <to-view-id>/resources/views/index/index.xhtml</to-view-id>
+        </navigation-case>
+        <!-- navigation-case for method login() -->
+        <navigation-case>
+            <from-action>#{loginMBean.login}</from-action>
+            <from-outcome>incorrect</from-outcome>
+            <to-view-id>/resources/views/public/login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-action>#{loginMBean.logout}</from-action>
+            <from-outcome>loggedout</from-outcome>
+            <to-view-id>/resources/views/public/login.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
 
     <!-- <managed-bean>
         <managed-bean-name>usuariosBean</managed-bean-name>

@@ -1,4 +1,4 @@
-/*Pagina WEB*/
+/*WEB Page*/
 body {
     padding-left: 10px;
     padding-right: 10px;
@@ -19,13 +19,13 @@ body {
     border: 0;
 }
 
-/*Change Font Size*/
+/*Change PrimeFaces Font Size*/
 .ui-widget, .ui-widget .ui-widget {
     font-size: 90%;
     font-family: Arial;
 }
 
-/*Overflow Menu Bar*/
+/*Overflow PrimeFaces Menu Bar*/
 .ui-layout-north {
     z-index:20 !important;
     overflow:visible !important;

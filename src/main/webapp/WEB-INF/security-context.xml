@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+    xmlns:sec="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <!-- Enable method level Spring Security by annotations  -->
+    <sec:global-method-security pre-post-annotations="enabled" />  
+    <sec:http auto-config="true" use-expressions="true">
+
+        <!-- Page level Spring Security : Intercept access to resources in /resources/views/admin/** -->
+        <sec:intercept-url pattern="/resources/views/admin/**" access="hasRole('ROLE_ADMIN')" />
+        
+        <!-- Page level Spring Security : Intercept access to resources in /resources/views/index/** -->
+        <sec:intercept-url pattern="/resources/views/index/**" access="hasRole('ROLE_ADMIN')" />
+        
+        <!-- Page level Spring Security : Permit access to resources in /resources/views/public/** -->
+        <sec:intercept-url pattern="/resources/views/public/**" access="permitAll"/>
+
+        
+
+        <!-- Page level Spring Security : Enable Primefaces -->
+        <sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
+  
+        <!-- Define login page for Spring Security -->      
+        <sec:form-login login-page="/resources/views/public/login.xhtml"/>
+
+        <!-- Define logout properties for Spring Security -->
+        <sec:logout invalidate-session="true" delete-cookies="true" logout-success-url="/"></sec:logout>
+    </sec:http>
+   
+    <!-- Set customUserDetailsService class as the authentication Manager for Spring Security-->
+    <sec:authentication-manager alias="authenticationManager">
+        <sec:authentication-provider user-service-ref="customUserDetailsService">
+            <sec:password-encoder hash="plaintext"></sec:password-encoder>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+     <!-- Inject authentication Manager to our LoginBean -->
+    <beans:bean id="loginBean" name="loginBean" class="com.siacra.beans.LoginBean" scope="prototype">
+        <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+    </beans:bean>
+</beans:beans>

@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.siacra.models;
 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -21,20 +17,27 @@ import javax.persistence.Table;
  * @version 1.0.0
  *
  */
+
 @Entity
 @Table(name="nivelacceso")
 public class NivelAcceso {
-
+    
+    @Id
+    @GeneratedValue
+    @Column(name="idnivelacceso")
     private int idnivelacceso;
+    
+    @Column(name="nombreacceso", nullable = false)
     private String nombreacceso;
+    
+    @OneToMany(mappedBy="nivel")
+    private Set<User> usuario;
+    
     /**
      * Get Id Nivel Acceso
      *
      * @return int - IdNivelAcceso
      */
-    @Id
-    @GeneratedValue
-    @Column(name="idnivelacceso")
     public int getId() {
         return idnivelacceso;
     }
@@ -53,7 +56,6 @@ public class NivelAcceso {
      *
      * @return String - NombreAcceso
      */
-    @Column(name="nombreacceso")
     public String getAcceso() {
         return nombreacceso;
     }
@@ -67,10 +69,17 @@ public class NivelAcceso {
         this.nombreacceso = nombreacceso;
     }
 
+    public Set<User> getUser() {
+        return usuario;
+    }
 
+    public void setUser(Set<User> usuario) {
+        this.usuario = usuario;
+    }
+    
     @Override
     public String toString() {
-        StringBuffer strBuff = new StringBuffer();
+        StringBuilder strBuff = new StringBuilder();
         strBuff.append("idnivelacceso : ").append(getId());
         strBuff.append(", nombreacceso : ").append(getAcceso());
         return strBuff.toString();

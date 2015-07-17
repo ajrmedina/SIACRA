@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.siacra.services;
 
 import java.util.List;
@@ -27,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class NivelAccesoService {
 
-    // NIvelAccesoDAO is injected...
+    // NivelAccesoDao is injected...
     @Autowired
     private NivelAccesoDao nivelaccesoDAO;
 
@@ -64,7 +59,7 @@ public class NivelAccesoService {
     /**
      * Get NivelAcceso
      *
-     * @param  id int NivelAcceso ID
+     * @param  id int - NivelAcceso ID
      */
 
     public NivelAcceso getNivelAccesoById(int id) {

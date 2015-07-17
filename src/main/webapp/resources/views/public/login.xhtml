@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view>
+        <h:head>
+            <title>SIACRA Login</title>
+        </h:head>
+        <h:body>
+            <h:outputStylesheet name="css/siacra.css" />
+            <h:outputStylesheet name="grid/grid.css" library="primefaces" />
+            <h:outputStylesheet name="webjars/font-awesome/4.2.0/css/font-awesome-jsf.css" />
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="120">
+                    <div class="ui-grid ui-grid-responsive" style="text-align: center">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-2"><h:graphicImage library="img" name="ues.jpg" width="80px" height="90px" /></div>
+                            <div class="ui-grid-col-8">
+                                <h2 class="title">
+                                    <br />
+                                    Universidad de El Salvador <br />
+                                    Facultad de Ingenier-a y Arquitectura <br/>
+                                </h2>
+                            </div>
+                            <div class="ui-grid-col-2"> </div>
+                        </div>
+                    </div>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <br/> <br/>
+                    <center><h1 class="title"> Acceso al SIACRA <br /> </h1></center>
+                    <center><h1 class="title"> Ingrese sus credenciales <br /> </h1></center>
+                    <br/> <br/>
+                    <h:form>
+                        <p:growl id="messages" />
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                            <p:outputLabel for="username" value="Nombre de Usuario: " />
+                            <p:inputText id="username" value="#{loginMBean.userName}" requiredMessage="Por favor digite su nombre de usuario" />
+
+                            <p:outputLabel for="password" value="Contraseña: " />
+                            <p:password id="password" value="#{loginMBean.password}" requiredMessage="Por favor digite su contraseña" />
+                            
+                            <p:commandButton value="Ingresar" action="#{loginMBean.login}" update="messages" ajax="false"/>
+                            <p:commandButton value="Cancelar" action="#{loginMBean.cancel}" update="messages" ajax="false"/>
+                        </h:panelGrid>
+                    </h:form>
+                </p:layoutUnit>
+                
+                <p:layoutUnit position="south" size="100">
+                    {{Footer por defecto}}
+                </p:layoutUnit>
+                
+            </p:layout>
+            
+        </h:body>
+    </f:view>
+</html>

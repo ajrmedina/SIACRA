@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.siacra.beans;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +10,8 @@ import javax.faces.bean.RequestScoped;
 
 import com.siacra.models.NivelAcceso;
 import com.siacra.services.NivelAccesoService;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -37,8 +28,6 @@ import org.springframework.dao.DataAccessException;
 public class NivelAccesoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final String SUCCESS = "success";
-    private static final String ERROR   = "error";
 
     //Spring NivelAcceso Service is injected...
     @ManagedProperty(value="#{NivelAccesoService}")
@@ -54,17 +43,15 @@ public class NivelAccesoBean implements Serializable {
      *
      * @return String - Response Message
      */
-    public String addAcceso() {
+    public void addAcceso() {
         try {
             NivelAcceso nivel = new NivelAcceso();
             nivel.setAcceso(getAcceso());
             getNivelAccesoService().addNivelAcceso(nivel);
             addMessage("El Nivel de Acceso " + getAcceso() + " fue añadido correctamente");
-            return SUCCESS;
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return ERROR;
     }
     
      /**
@@ -91,22 +78,19 @@ public class NivelAccesoBean implements Serializable {
      * @param int id - idNivelAcceso
      * @return String - Update Page
      */
-    public String updateAcceso(int id) {
+    public void updateAcceso(int id) {
         
         try {
             NivelAcceso nivel = new NivelAcceso();
             nivel = getNivelAccesoService().getNivelAccesoById(id);
             nivel.setAcceso(getAcceso());
             getNivelAccesoService().updateNivelAcceso(nivel);
-            addMessage("El Nivel de Acceso " + getId() + " fue actualizado correctamente "+ getAcceso());
-            return SUCCESS;
+            addMessage("El Nivel de Acceso " + getId() + " fue actualizado correctamente a: "+ getAcceso());
             //return "ListarNivelesAcceso?faces-redirect=true";
             
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return ERROR;
-
     }
     
     /**
@@ -115,7 +99,7 @@ public class NivelAccesoBean implements Serializable {
      * @param int id - idNivelAcceso
      * @return String - Response Message
      */
-    public String deleteAcceso(int id) {
+    public void deleteAcceso(int id) {
         
         try {
             NivelAcceso nivel = new NivelAcceso();
@@ -123,12 +107,9 @@ public class NivelAccesoBean implements Serializable {
             String accesoEliminado = nivel.getAcceso();
             getNivelAccesoService().deleteNivelAcceso(nivel);
             addMessage("El Nivel de Acceso " + accesoEliminado +" fue eliminado correctamente");
-            return SUCCESS;
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        return ERROR;
-
     }
     
     /**

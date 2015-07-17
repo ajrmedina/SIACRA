@@ -4,9 +4,13 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:fn="http://java.sun.com/jsp/jstl/functions"
       xmlns:p="http://primefaces.org/ui">
+    
     <f:view>
         <h:head>
             <title><ui:insert name="title">Default title</ui:insert></title>
+            <meta name="_csrf" content="${_csrf.token}" />
+            <!-- default header name is X-CSRF-TOKEN -->
+            <meta name="_csrf_header" content="${_csrf.headerName}" />
         </h:head>
         <h:body>
             <h:outputStylesheet name="css/siacra.css" />
@@ -18,20 +22,23 @@
                     <div class="ui-grid-row">
                         <div class="ui-grid-col-4"><h:graphicImage library="img" name="ues.jpg" width="80px" height="90px"/></div>
                         <div class="ui-grid-col-4">
-                            <br />
-                            Universidad de El Salvador <br />
-                            Facultad de Ingenier-a y Arquitectura <br/><br />
-                            <ui:insert name="school"> {{Nombre de la Escuela}} </ui:insert>
+                            <h3 class="title">
+                                <br />
+                                Universidad de El Salvador <br />
+                                Facultad de Ingenier-a y Arquitectura <br/>
+                                <ui:insert name="school"> {{Nombre de la Escuela}} </ui:insert>
+                            </h3>
                         </div>
                         <div class="ui-grid-col-4">
                             <br />
                             <ui:insert name="user"> {{Nombre del Usuario}} </ui:insert> <br />
                             <ui:insert name="role"> {{Rol del Usuario}} </ui:insert> <br /><br />
                             <h:form>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <p:splitButton value="Acciones" icon="fa fa-gears">
-                                    <p:menuitem value="Cerrar Sesion" id="logout" icon="fa fa-lock"/>
+                                    <p:menuitem value="Cerrar Sesion" action="#{loginMBean.logout}" icon="fa fa-lock" ajax="false"/>                
                                     <p:separator />
-                                    <p:menuitem value="Inicio" url="/resources/views/index.xhtml" icon="fa fa-home" />
+                                    <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home" />
                                 </p:splitButton>
                             </h:form>
                         </div>
@@ -43,8 +50,9 @@
                 <h:form class="pad-top-20">
                     <ui:insert name="menu" >
                     <p:menubar>
+                        
                         <p:submenu label="Mantenimientos" icon="fa fa-gears">
-                            <p:menuitem value="Niveles de Acceso" url="/resources/views/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-key" />
+                            <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-key" />
                             <p:submenu label="Asignaturas" icon="fa fa-book">
                                 <p:menuitem value="Nueva" url="#" icon="fa fa-plus-circle"/>
                                 <p:menuitem value="Consultar" url="#" icon="fa fa-info-circle"/>
@@ -54,10 +62,8 @@
                         </p:submenu>
 
                         <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
-
-                        <f:facet name="options">
-                            <ui:insert name="add"> </ui:insert>
-                        </f:facet>
+                        
+                        <ui:insert name="add"> </ui:insert>
                         
                     </p:menubar>
                     </ui:insert>
