@@ -40,11 +40,7 @@
                             </h4>
                             <h:form>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <p:splitButton value="Acciones" icon="fa fa-gears">
-                                    <p:menuitem value="Cerrar Sesion" action="#{loginMBean.logout}" icon="fa fa-lock" ajax="false"/>                
-                                    <p:separator />
-                                    <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home" />
-                                </p:splitButton>
+                                <p:commandButton value="Cerrar Sesion" action="#{loginMBean.logout}" icon="fa fa-lock" ajax="false" />
                             </h:form>
                         </div>
                     </div>
@@ -53,8 +49,9 @@
             
             <nav>
                 <h:form class="pad-top-20">
-                    <ui:insert name="menu" >
-                    <p:menubar>
+                    <p:menubar styleClass="menu">
+                        
+                        <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>
                         
                         <p:submenu label="Mantenimientos" icon="fa fa-gears">
                             <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-key" />
@@ -66,12 +63,11 @@
                             <p:menuitem value="Docentes" url="#" icon="fa fa-user"/>
                         </p:submenu>
 
+                        <ui:insert name="add-menu-items"> </ui:insert>
+                        
                         <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
-                        
-                        <ui:insert name="add"> </ui:insert>
-                        
+ 
                     </p:menubar>
-                    </ui:insert>
                 </h:form>
             </nav>
             

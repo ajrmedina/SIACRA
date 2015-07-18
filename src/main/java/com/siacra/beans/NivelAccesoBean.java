@@ -52,6 +52,7 @@ public class NivelAccesoBean implements Serializable {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+        //return null;
     }
     
      /**
@@ -86,7 +87,6 @@ public class NivelAccesoBean implements Serializable {
             nivel.setAcceso(getAcceso());
             getNivelAccesoService().updateNivelAcceso(nivel);
             addMessage("El Nivel de Acceso " + getId() + " fue actualizado correctamente a: "+ getAcceso());
-            //return "ListarNivelesAcceso?faces-redirect=true";
             
         } catch (DataAccessException e) {
             e.printStackTrace();
