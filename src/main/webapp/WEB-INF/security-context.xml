@@ -12,8 +12,8 @@
     <!-- Enable method level Spring Security by annotations  -->
     <sec:global-method-security pre-post-annotations="enabled" />  
     <sec:http auto-config="true" use-expressions="true">
-
-        <!-- Page level Spring Security : Intercept access to resources in /resources/views/admin/** -->
+        
+        <!-- Page level Spring Security : Intercept access to resources in /resources/views/admin/** hasRole('ROLE_ADMIN') -->
         <sec:intercept-url pattern="/resources/views/admin/**" access="permitAll" />
         
         <!-- Page level Spring Security : Intercept access to resources in /resources/views/index/** -->

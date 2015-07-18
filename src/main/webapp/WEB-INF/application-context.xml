@@ -31,10 +31,10 @@
     <!-- Session Factory Declaration -->
     <bean id="SessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> 
         <property name="dataSource" ref="dataSource"/>
-        <property name="annotatedClasses">
+        <property name="packagesToScan">
             <list>
-                <value>com.siacra.models.NivelAcceso</value>
-                <value>com.siacra.models.User</value>
+                <value>com.siacra.models</value>
+                <value>com.siacra.services</value>
             </list>
         </property>
         <property name="hibernateProperties">

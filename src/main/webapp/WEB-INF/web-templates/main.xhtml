@@ -1,9 +1,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
     
     <f:view>
         <h:head>
@@ -30,16 +32,15 @@
                             </h3>
                         </div>
                         <div class="ui-grid-col-4">
-                            <br />
-                            <ui:insert name="user"> {{Nombre del Usuario}} </ui:insert> <br />
-                            <ui:insert name="role"> {{Rol del Usuario}} </ui:insert> <br /><br />
+                            <h4 class="title">
+                                <br />
+                                #{request.userPrincipal.name} <br />
+                                <sec:authorize access="hasAnyRole('ROLE_ADMIN')"> ADMINISTRADOR </sec:authorize>
+                                <br />
+                            </h4>
                             <h:form>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <p:splitButton value="Acciones" icon="fa fa-gears">
-                                    <p:menuitem value="Cerrar Sesion" action="#{loginMBean.logout}" icon="fa fa-lock" ajax="false"/>                
-                                    <p:separator />
-                                    <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home" />
-                                </p:splitButton>
+                                <p:commandButton value="Cerrar Sesion" action="#{loginMBean.logout}" icon="fa fa-lock" ajax="false" />
                             </h:form>
                         </div>
                     </div>
@@ -48,8 +49,9 @@
             
             <nav>
                 <h:form class="pad-top-20">
-                    <ui:insert name="menu" >
-                    <p:menubar>
+                    <p:menubar styleClass="menu">
+                        
+                        <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>
                         
                         <p:submenu label="Mantenimientos" icon="fa fa-gears">
                             <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-key" />
@@ -61,23 +63,26 @@
                             <p:menuitem value="Docentes" url="#" icon="fa fa-user"/>
                         </p:submenu>
 
+                        <ui:insert name="add-menu-items"> </ui:insert>
+                        
                         <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
-                        
-                        <ui:insert name="add"> </ui:insert>
-                        
+ 
                     </p:menubar>
-                    </ui:insert>
                 </h:form>
             </nav>
             
             <section class="pad-top-20">  
-                <center><h1 class="title"> <ui:insert name="titulo-pantalla">{{Titulo de pantalla por defecto}}</ui:insert> </h1></center>
+                <center><h1 class="title"> <ui:insert name="title-view">{{Titulo de pantalla por defecto}}</ui:insert> </h1></center>
                 <br /><br />
                 <ui:insert name="content">{{Contenido por defecto}}</ui:insert>       
             </section>       
             
             <footer class="pad-top-20">
-                <ui:insert name="footer"> {{Footer por defecto}} </ui:insert>
+                <h6 class="title">
+                    © FIA-UES SIACRA Development Team:
+                    Fatima Perez, Isaias Palacios, Daniel Martinez y Alejandro Medina <br />
+                    Trabajo de Graduacion 2015
+                </h6>
             </footer>
             
         </h:body>

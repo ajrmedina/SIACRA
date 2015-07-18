@@ -5,9 +5,11 @@
  */
 package com.siacra.beans;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,17 +37,16 @@ public class LoginBean {
             SecurityContextHolder.getContext().setAuthentication(result);
         } catch (AuthenticationException e) {
             e.printStackTrace();
+            addMessage("Inicio de sesion incorrecto. Verifique sus credenciales.");
             return "incorrect";
         }
+        addMessage("Inicio de sesion correcto. Bienvenido al SIACRA " + this.getUserName());
         return "correct";
-    }
-
-    public String cancel() {
-        return null;
     }
 
     public String logout(){
         SecurityContextHolder.clearContext();
+        addMessage("Ha cerrado sesion en el SIACRA correctamente.");
         return "loggedout";
     }
  
@@ -71,6 +72,11 @@ public class LoginBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public void addMessage(String mensaje) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
  
 }
