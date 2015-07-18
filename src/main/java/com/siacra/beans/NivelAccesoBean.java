@@ -47,6 +47,8 @@ public class NivelAccesoBean implements Serializable {
             nivel.setAcceso(getAcceso());
             getNivelAccesoService().addNivelAcceso(nivel);
             addMessage("El Nivel de Acceso " + getAcceso() + " fue añadido correctamente");
+            //return "ListarNivelesAcceso?faces-redirect=true";
+            
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -74,7 +76,7 @@ public class NivelAccesoBean implements Serializable {
      * Update NivelAcceso
      *
      * @param int id - idNivelAcceso
-     * @return String - Update Page
+     * @return String - Response Message
      */
     public void updateAcceso(int id) {
         

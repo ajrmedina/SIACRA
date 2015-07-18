@@ -36,16 +36,7 @@
             <redirect></redirect>
         </navigation-case>
     </navigation-rule>
-
-    <!-- <managed-bean>
-        <managed-bean-name>usuariosBean</managed-bean-name>
-        <managed-bean-class>com.bean.UsuariosBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-         <managed-property>
-            <property-name>usuariosDao</property-name>
-            <property-class>com.dao.UsuariosDao</property-class>
-            <value>#{usuariosDao}</value>
-        </managed-property>
-    </managed-bean>
-    -->
+    
+    <phase-listener>com.siacra.main.GlobalMessages</phase-listener>
+    
 </faces-config>
