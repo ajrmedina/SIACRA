@@ -23,7 +23,7 @@
             <f:event type="preRenderView" listener="#{nivelAccesoBean.loadNivelAcceso()}"/>
         </f:metadata>
         <h:form>
-            <p:growl id="messages" />
+            <p:growl id="messages" showDetail="true" sticky="true" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="idAcceso" value="Id del Nivel de Acceso: " />

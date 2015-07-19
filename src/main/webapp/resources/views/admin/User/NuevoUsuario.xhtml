@@ -1,0 +1,57 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Nuevo - Usuario del Sistema
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <p:menuitem value="Regresar" url="/resources/views/admin/User/ListarUsuarios.xhtml" icon="fa fa-mail-reply"/>
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Agregar Usuario del Sistema
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                
+                <p:outputLabel for="Username" value="Nombre de Acceso: " />
+                <p:inputText id="Username" value="#{userBean.nombreUsuario}" required="true">
+                    <f:validateLength minimum="8" />
+                </p:inputText>
+               
+                <p:outputLabel for="Password" value="Clave de acceso: " />
+                <p:password id="Password" value="#{userBean.contrasenia}" match="Check" feedback="true" required="true" />
+                
+                <p:outputLabel for="Check" value="Confirmar clave de acceso: " />
+                <p:password id="Check" value="#{userBean.contrasenia}" required="true" />
+                
+                <p:outputLabel for="Nombres" value="Nombres del usuario: " />
+                <p:inputText id="Nombres" value="#{userBean.nombres}" required="true" />
+                
+                <p:outputLabel for="Apellidos" value="Apellidos del usuario: " />
+                <p:inputText id="Apellidos" value="#{userBean.apellidos}" required="true" />
+               
+                <p:outputLabel id="Estado" value="Activar usuario? " />
+                <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" />
+                
+                <p:outputLabel for="Acceso" value="Nivel de Acceso: " />
+                <p:selectOneMenu id="Acceso" value="#{userBean.nivel}" >
+                    <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
+                </p:selectOneMenu>
+                
+                <p:commandButton value="Agregar" action="#{userBean.addUser()}" update="messages" ajax="false"/>
+                <p:commandButton type="reset" value="Limpiar"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>

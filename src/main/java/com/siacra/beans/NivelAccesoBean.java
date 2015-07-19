@@ -39,7 +39,6 @@ public class NivelAccesoBean implements Serializable {
     /**
      * Add NivelAcceso
      *
-     * @return String - Response Message
      */
     public void addAcceso() {
         try {
@@ -48,7 +47,7 @@ public class NivelAccesoBean implements Serializable {
             getNivelAccesoService().addNivelAcceso(nivel);
             addMessage("El Nivel de Acceso " + getAcceso() + " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
-            
+            reset();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -63,7 +62,7 @@ public class NivelAccesoBean implements Serializable {
     public void loadNivelAcceso() {
         
         try {
-            NivelAcceso nivel = new NivelAcceso();
+            NivelAcceso nivel;
             nivel = getNivelAccesoService().getNivelAccesoById(getId());
             setAcceso(nivel.getAcceso());
             
@@ -77,7 +76,6 @@ public class NivelAccesoBean implements Serializable {
      * Update NivelAcceso
      *
      * @param int id - idNivelAcceso
-     * @return String - Response Message
      */
     public void updateAcceso(int id) {
         
@@ -97,7 +95,6 @@ public class NivelAccesoBean implements Serializable {
      * Delete NivelAcceso
      *
      * @param int id - idNivelAcceso
-     * @return String - Response Message
      */
     public void deleteAcceso(int id) {
         
@@ -126,7 +123,7 @@ public class NivelAccesoBean implements Serializable {
      * @return List - NivelAcceso List
      */
     public List<NivelAcceso> getNivelAccesoList() {
-        nivelAccesoList = new ArrayList<NivelAcceso>();
+        nivelAccesoList = new ArrayList<>();
         nivelAccesoList.addAll(getNivelAccesoService().getNivelesAcceso());
         return nivelAccesoList;
     }
@@ -194,6 +191,11 @@ public class NivelAccesoBean implements Serializable {
         this.nombreacceso = acceso;
     }
     
+    /**
+     * Add Messages
+     *
+     * Add messages for the UI
+     */
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);

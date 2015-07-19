@@ -19,7 +19,7 @@
     
     <ui:define name="content">
         <h:form>
-            <p:growl id="messages" />
+            <p:growl id="messages" showDetail="true" sticky="true" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="nombreAcceso" value="Nombre del Acceso: " />
@@ -28,7 +28,7 @@
                 </p:inputText>
 
                 <p:commandButton value="Agregar" action="#{nivelAccesoBean.addAcceso()}" update="messages" ajax="false"/>
-                <p:commandButton type="reset" value="Limpiar"/>
+                <p:commandButton value="Limpiar" type="reset" />
             </h:panelGrid>
         </h:form>
     </ui:define>

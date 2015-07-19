@@ -55,12 +55,8 @@
                         
                         <p:submenu label="Mantenimientos" icon="fa fa-gears">
                             <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-key" />
-                            <p:submenu label="Asignaturas" icon="fa fa-book">
-                                <p:menuitem value="Nueva" url="#" icon="fa fa-plus-circle"/>
-                                <p:menuitem value="Consultar" url="#" icon="fa fa-info-circle"/>
-                            </p:submenu>
+                            <p:menuitem value="Usuarios" url="/resources/views/admin/User/ListarUsuarios.xhtml" icon="fa fa-users" />
                             <p:separator />
-                            <p:menuitem value="Docentes" url="#" icon="fa fa-user"/>
                         </p:submenu>
 
                         <ui:insert name="add-menu-items"> </ui:insert>
