@@ -82,7 +82,7 @@ public class UserService {
      *
      */
 
-    public List<User> getNivelesAcceso() {
+    public List<User> getUsers() {
         return getUserDao().getUsers();
     }
 

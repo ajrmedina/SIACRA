@@ -36,7 +36,7 @@
                     <h1 class="title"> Ingrese sus credenciales <br /> </h1></center>
                     <br/> <br/>
                     <h:form>
-                        <p:growl id="messages" />
+                        <p:growl id="messages" showDetail="true" sticky="true" />
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <h:panelGrid columns="2" cellpadding="5" class="center-element">
                             <p:outputLabel for="username" value="Nombre de Usuario: " />

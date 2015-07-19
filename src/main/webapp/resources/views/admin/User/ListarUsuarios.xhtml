@@ -1,0 +1,69 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Usuarios del Sistema
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <p:menuitem value="Nuevo Usuario" url="/resources/views/admin/User/NuevoUsuario.xhtml" icon="fa fa-plus"/>
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Usuarios del SIACRA
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 100%" class="center-element">
+                <p:column style="width: 20%">
+                    <f:facet name="header">
+                        <h:outputText value="Username" />
+                    </f:facet>
+                    <h:outputText value="#{user.nombreUsuario}" />
+                </p:column>
+                <p:column style="width: 15%">
+                    <f:facet name="header">
+                        <h:outputText value="Nombres" />
+                    </f:facet>
+                    <h:outputText value="#{user.nombres}" />
+                </p:column>
+                <p:column style="width: 15%">
+                    <f:facet name="header">
+                        <h:outputText value="Apellidos" />
+                    </f:facet>
+                    <h:outputText value="#{user.apellidos}" />
+                </p:column>
+                <p:column style="width: 15%">
+                    <f:facet name="header">
+                        <h:outputText value="Nivel" />
+                    </f:facet>
+                    <h:outputText value="#{user.nivel.acceso}" />
+                </p:column>
+                <p:column style="width: 5%">
+                    <f:facet name="header">
+                        <h:outputText value="Activo" />
+                    </f:facet>
+                    <h:outputText value="#{user.estadoUsuario}" />
+                </p:column>
+                <p:column style="width: 20%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>
+                    <p:commandButton value="Eliminar" action="#{userBean.deleteUser(user.idUsuario)}" update="messages" ajax="false" icon="fa fa-times"/>
+                    <p:button value="Actualizar" outcome="/resources/views/admin/User/ActualizarUsuario.xhtml" icon="fa fa-edit">
+                        <f:param name="userID" value="#{user.idUsuario}" />
+                    </p:button>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        
+    </ui:define>
+    
+</ui:composition>
