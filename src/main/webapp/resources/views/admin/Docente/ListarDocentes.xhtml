@@ -6,59 +6,55 @@
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="title">
-       Consultar - Usuarios del Sistema
+       Consultar - Docentes de la Escuela de {{ ---- }}
     </ui:define>
     
     <ui:define name="add-menu-items">
-        <p:menuitem value="Nuevo Usuario" url="/resources/views/admin/User/NuevoUsuario.xhtml" icon="fa fa-plus"/>
+        <p:menuitem value="Nuevo Docente" url="/resources/views/admin/Docente/NuevoDocente.xhtml" icon="fa fa-plus"/>
     </ui:define>
     
     <ui:define name="title-view">
-        Usuarios del SIACRA
+        Docentes de la Escuela de {{ ---- }}
     </ui:define>
                     
     <ui:define name="content">
         <h:form>
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 100%" class="center-element">
-                <p:column style="width: 20%">
-                    <f:facet name="header">
-                        <h:outputText value="Username" />
-                    </f:facet>
-                    <h:outputText value="#{user.nombreUsuario}" />
-                </p:column>
+            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 62%" class="center-element">
                 <p:column style="width: 15%">
                     <f:facet name="header">
                         <h:outputText value="Nombres" />
                     </f:facet>
-                    <h:outputText value="#{user.nombres}" />
+                    <h:outputText value="#{docente.user.nombres}" />
                 </p:column>
                 <p:column style="width: 15%">
                     <f:facet name="header">
                         <h:outputText value="Apellidos" />
                     </f:facet>
-                    <h:outputText value="#{user.apellidos}" />
-                </p:column>
-                <p:column style="width: 15%">
-                    <f:facet name="header">
-                        <h:outputText value="Nivel" />
-                    </f:facet>
-                    <h:outputText value="#{user.nivel.acceso}" />
+                    <h:outputText value="#{docente.user.apellidos}" />
                 </p:column>
                 <p:column style="width: 5%">
                     <f:facet name="header">
                         <h:outputText value="Activo" />
                     </f:facet>
-                    <h:outputText value="#{user.estadoUsuario}" />
+                    <h:outputText value="#{docente.user.estadoUsuario}" />
+                </p:column>
+                <p:column style="width: 7%">
+                    <f:facet name="header">
+                        <h:outputText value="Aprobado" />
+                    </f:facet>
+                    <h:outputText value="#{docente.aprobarDocente}" />
                 </p:column>
                 <p:column style="width: 20%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>
-                    <p:commandButton value="Eliminar" action="#{userBean.deleteUser(user.idUsuario)}" update="messages" ajax="false" icon="fa fa-times"/>
-                    <p:button value="Actualizar" outcome="/resources/views/admin/User/ActualizarUsuario.xhtml" icon="fa fa-edit">
-                        <f:param name="userID" value="#{user.idUsuario}" />
+                    
+                    <p:commandButton value="Deshabilitar" action="#{docenteBean.lockedDocente(docente.idDocente)}" update="messages" ajax="false" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == 1}"/>
+                    <p:commandButton value="Habilitar" action="#{docenteBean.unlockedDocente(docente.idDocente)}" update="messages" ajax="false" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == 0}"/>
+                    <p:button value="Actualizar" outcome="/resources/views/admin/Docente/ActualizarDocente.xhtml" icon="fa fa-edit">
+                        <f:param name="docenteID" value="#{docente.idDocente}" />
                     </p:button>
                 </p:column>
             </p:dataTable>

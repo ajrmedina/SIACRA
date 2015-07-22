@@ -19,7 +19,7 @@
                     
     <ui:define name="content">
         <h:form>
-            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 50%" class="center-element">
                 <p:column style="width: 10%">

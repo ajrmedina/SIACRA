@@ -42,12 +42,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
        
         User domainUser = userDAO.getUserLogin(login);
-       
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-
+        boolean enabled = false;
+        boolean accountNonLocked = false;
+        boolean accountNonExpired = false;
+        boolean credentialsNonExpired = false;
+        if(domainUser.getEstadoUsuario() == 1){
+            enabled = true;
+            accountNonLocked = true;
+            accountNonExpired = true;
+            credentialsNonExpired = true;
+        }    
+        
         return new org.springframework.security.core.userdetails.User(
             domainUser.getNombreUsuario(),
             domainUser.getContrasenia(),
@@ -83,9 +88,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<String> roles = new ArrayList<String>();
 
         if (role.intValue() == 1) {
-            roles.add("ROLE_ADMIN");
+            roles.add("ADMINISTRADOR");
         } else if (role.intValue() == 2) {
-            roles.add("ROLE_RESPONSABLE");
+            roles.add("RESPONSABLE");
+        } else if (role.intValue() == 3) {
+            roles.add("DIRECTOR");
+        } else if (role.intValue() == 4) {
+            roles.add("MIEMBRO_JD");
+        } else if (role.intValue() == 5) {
+            roles.add("DOCENTE");
         }
         return roles;
     }

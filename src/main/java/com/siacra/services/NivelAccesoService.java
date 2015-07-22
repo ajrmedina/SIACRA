@@ -60,6 +60,7 @@ public class NivelAccesoService {
      * Get NivelAcceso
      *
      * @param  id int - NivelAcceso ID
+     * @return NivelAcceso By ID - NivelAcceso
      */
 
     public NivelAcceso getNivelAccesoById(int id) {
@@ -69,6 +70,7 @@ public class NivelAccesoService {
     /**
      * Get NivelAcceso List
      *
+     * @return List NivelesAcceso - NivelAcceso
      */
 
     public List<NivelAcceso> getNivelesAcceso() {

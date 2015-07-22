@@ -103,7 +103,7 @@ public class NivelAccesoBean implements Serializable {
             nivel = getNivelAccesoService().getNivelAccesoById(id);
             String accesoEliminado = nivel.getAcceso();
             getNivelAccesoService().deleteNivelAcceso(nivel);
-            addMessage("El Nivel de Acceso " + accesoEliminado +" fue eliminado correctamente");
+            addMessage("El Nivel de Acceso " + accesoEliminado + " fue eliminado correctamente");
         } catch (DataAccessException e) {
             e.printStackTrace();
         }

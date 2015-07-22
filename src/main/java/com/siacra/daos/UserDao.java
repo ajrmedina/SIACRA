@@ -86,7 +86,7 @@ public class UserDao  {
     /**
      * Get User for Login
      *
-     * @param  id int
+     * @param  String login
      * @return User
      */
 

@@ -19,7 +19,7 @@
     
     <ui:define name="content">
         <h:form>
-            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="nombreAcceso" value="Nombre del Acceso: " />

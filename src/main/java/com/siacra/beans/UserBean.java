@@ -46,6 +46,7 @@ public class UserBean implements Serializable {
     private String nombres;
     private String apellidos;
     private boolean estadoUsuario;
+    private boolean esDocente;
     private int nivel;
 
     /**
@@ -63,6 +64,10 @@ public class UserBean implements Serializable {
                 user.setEstadoUsuario(1);
             else
                 user.setEstadoUsuario(0);
+            if(getEsDocente())
+                user.setEsDocente(1);
+            else
+                user.setEsDocente(0);
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
             getUserService().addUser(user);
             addMessage("El Usuario " + getNombreUsuario() + " fue añadido correctamente");
@@ -91,6 +96,10 @@ public class UserBean implements Serializable {
                 setEstadoUsuario(true);
             else
                 setEstadoUsuario(false);
+             if(user.getEsDocente() == 1)
+                setEsDocente(true);
+            else
+                setEsDocente(false);
             setNivel(user.getNivel().getId());
             
         } catch (DataAccessException e) {
@@ -102,7 +111,7 @@ public class UserBean implements Serializable {
     /**
      * Update User
      *
-     * @param int id - idUsuario
+     * @param id int - idUsuario
      */
     public void updateUser(int id) {
         
@@ -116,6 +125,10 @@ public class UserBean implements Serializable {
                 user.setEstadoUsuario(1);
             else
                 user.setEstadoUsuario(0);
+            if(getEsDocente())
+                user.setEsDocente(1);
+            else
+                user.setEsDocente(0);
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
             getUserService().updateUser(user);
             addMessage("El usuario " + getNombreUsuario() + " fue actualizado correctamente");
@@ -128,7 +141,7 @@ public class UserBean implements Serializable {
     /**
      * Delete User
      *
-     * @param int id - idUsuario
+     * @param id int - idUsuario
      */
     public void deleteUser(int id) {
         
@@ -137,7 +150,7 @@ public class UserBean implements Serializable {
             user = getUserService().getUserById(id);
             String userEliminado = user.getNombreUsuario();
             getUserService().deleteUser(user);
-            addMessage("El Usuario " + userEliminado +" fue eliminado correctamente");
+            addMessage("El Usuario " + userEliminado + " fue eliminado correctamente");
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -153,7 +166,7 @@ public class UserBean implements Serializable {
        this.setApellidos("");
        this.setNivel(0);
        this.setEstadoUsuario(false);
-       
+       this.setEsDocente(false);
     }
 
     /**
@@ -177,15 +190,6 @@ public class UserBean implements Serializable {
         nivelesList.addAll(getNivelAccesoService().getNivelesAcceso());
         return nivelesList;
     }
-    
-    /*public List<SelectItem> getNiveles() {
-        List<NivelAcceso> accesos = getNivelAccesoList();
-        List<SelectItem> niveles = new ArrayList<SelectItem>(accesos.size());
-        for(String value : listout){
-            items.add(new SelectItem(value));
-        }
-        return items;
-    }*/
     
     /**
      * Set User List
@@ -245,7 +249,7 @@ public class UserBean implements Serializable {
     /**
      * Set User ID
      *
-     * @param id int - User ID
+     * @param int idUsuario - User ID
      */
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
@@ -263,7 +267,7 @@ public class UserBean implements Serializable {
     /**
      * Set User NombreUsuario
      *
-     * @param String nombreUsuario - User NombreUsuario
+     * @param nombreUsuario String - User NombreUsuario
      */
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
@@ -281,7 +285,7 @@ public class UserBean implements Serializable {
     /**
      * Set User Contrasenia
      *
-     * @param String contrasenia - User Contasenia
+     * @param contrasenia String - User Contasenia
      */
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
@@ -299,7 +303,7 @@ public class UserBean implements Serializable {
     /**
      * Set User Nombres
      *
-     * @param String nombres - User Nombres
+     * @param nombres String - User Nombres
      */
     public void setNombres(String nombres) {
         this.nombres = nombres;
@@ -317,7 +321,7 @@ public class UserBean implements Serializable {
     /**
      * Set User Apellidos
      *
-     * @param String apellidos - User Apellidos
+     * @param apellidos String - User Apellidos
      */
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
@@ -335,10 +339,28 @@ public class UserBean implements Serializable {
     /**
      * Set User Estado
      *
-     * @param int - User Estado
+     * @param estadoUsuario int - User Estado
      */
     public void setEstadoUsuario(boolean estadoUsuario) {
         this.estadoUsuario = estadoUsuario;
+    }
+    
+    /**
+     * Get Es Docente
+     *
+     * @return boolean - Es Docente
+     */
+    public boolean getEsDocente() {
+        return this.esDocente;
+    }
+    
+    /**
+     * Set Es Docente
+     *
+     * @param esDocente boolean - Es Docente
+     */
+    public void setEsDocente(boolean esDocente) {
+        this.esDocente = esDocente;
     }
     
     /**
@@ -353,7 +375,7 @@ public class UserBean implements Serializable {
     /**
      * Set User NivelAcceso ID
      *
-     * @param int nivel - User NivelAcceso ID
+     * @param nivel int - User NivelAcceso ID
      */
     public void setNivel(int nivel) {
         this.nivel = nivel;
