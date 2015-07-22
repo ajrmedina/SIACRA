@@ -1,0 +1,41 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Nuevo - Docente de la Escuela de {{ ---- }}
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <p:menuitem value="Regresar" url="/resources/views/admin/Docente/ListarDocentes.xhtml" icon="fa fa-mail-reply"/>
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Nuevo Docente de la Escuela de {{ ---- }}
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                
+                
+                <p:outputLabel id="aprobado" value="Aprobado" />
+                <p:selectBooleanCheckbox value="#{docenteBean.aprobado}" required="true" />
+                
+                <p:outputLabel for="usuario" value="Usuario Asociado: " />
+                <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                    <f:selectItem itemLabel="Seleccione un usuario asociado" itemValue="0" />
+                    <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}"/>
+                </p:selectOneMenu>
+                
+                <p:commandButton value="Ingresar" action="#{docenteBean.addDocente()}" update="messages" ajax="false"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>

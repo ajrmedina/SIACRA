@@ -23,28 +23,31 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 
-                <p:outputLabel for="Username" value="Nombre de Acceso: " />
-                <p:inputText id="Username" value="#{userBean.nombreUsuario}" required="true">
+                <p:outputLabel for="username" value="Nombre de Acceso: " />
+                <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true">
                     <f:validateLength minimum="8" />
                 </p:inputText>
                
-                <p:outputLabel for="Password" value="Clave de acceso: " />
-                <p:password id="Password" value="#{userBean.contrasenia}" match="Check" feedback="true" required="true" />
+                <p:outputLabel for="password" value="Clave de acceso: " />
+                <p:password id="password" value="#{userBean.contrasenia}" match="check" feedback="true" required="true" />
                 
-                <p:outputLabel for="Check" value="Confirmar clave de acceso: " />
-                <p:password id="Check" value="#{userBean.contrasenia}" required="true" />
+                <p:outputLabel for="check" value="Confirmar clave de acceso: " />
+                <p:password id="check" value="#{userBean.contrasenia}" required="true" />
                 
-                <p:outputLabel for="Nombres" value="Nombres del usuario: " />
-                <p:inputText id="Nombres" value="#{userBean.nombres}" required="true" />
+                <p:outputLabel for="nombres" value="Nombres del usuario: " />
+                <p:inputText id="nombres" value="#{userBean.nombres}" required="true" />
                 
-                <p:outputLabel for="Apellidos" value="Apellidos del usuario: " />
-                <p:inputText id="Apellidos" value="#{userBean.apellidos}" required="true" />
+                <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
+                <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" />
                
-                <p:outputLabel id="Estado" value="Activar usuario? " />
+                <p:outputLabel id="estado" value="Activar usuario? " />
                 <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" />
                 
-                <p:outputLabel for="Acceso" value="Nivel de Acceso: " />
-                <p:selectOneMenu id="Acceso" value="#{userBean.nivel}" >
+                <p:outputLabel id="esDocente" value="Este usuario es docente? " />
+                <p:selectBooleanCheckbox value="#{userBean.esDocente}" />
+                
+                <p:outputLabel for="acceso" value="Nivel de Acceso: " />
+                <p:selectOneMenu id="acceso" value="#{userBean.nivel}" >
                     <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
                 </p:selectOneMenu>
                 

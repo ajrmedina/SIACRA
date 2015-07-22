@@ -1,11 +1,16 @@
 package com.siacra.models;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -42,10 +47,17 @@ public class User {
         @Column(name = "estadousuario", nullable = false)
 	private int estadoUsuario;
         
+        @Column(name = "esdocente", nullable = false)
+	private int esDocente;
+        
         @ManyToOne
         @JoinColumn(name="idnivelacceso")
 	private NivelAcceso nivel;
-
+        
+        
+        @OneToOne(mappedBy = "user")
+        private Docente docente;
+        
 	public int getIdUsuario() {
 		return this.idUsuario;
 	}
@@ -94,6 +106,14 @@ public class User {
 		this.estadoUsuario = estadoUsuario;
 	}
         
+        public int getEsDocente() {
+		return this.esDocente;
+	}
+ 
+	public void setEsDocente(int esDocente) {
+		this.esDocente = esDocente;
+	}
+        
 	public NivelAcceso getNivel() {
 		return this.nivel;
 	}
@@ -102,5 +122,12 @@ public class User {
 		this.nivel = nivel;
 	}
         
+        public Docente getDocente() {
+            return this.docente;
+        }
+
+        public void setDocente(Docente docente) {
+            this.docente = docente;
+        }
  
 }

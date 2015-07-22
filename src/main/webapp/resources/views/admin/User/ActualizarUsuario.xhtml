@@ -23,7 +23,7 @@
             <f:event type="preRenderView" listener="#{userBean.loadUser()}"/>
         </f:metadata>
         <h:form>
-            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 
@@ -38,8 +38,11 @@
                 <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
                 <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" />
                 
-                <p:outputLabel value="Activar usuario? " />
+                <p:outputLabel id="estado" value="Activo" />
                 <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" required="true" />
+                
+                <p:outputLabel id="esDocente" value="Docente" />
+                <p:selectBooleanCheckbox value="#{userBean.esDocente}" />
                 
                 <p:outputLabel for="acceso" value="Nivel de Acceso: " />
                 <p:selectOneMenu id="acceso" value="#{userBean.nivel}" required="true">

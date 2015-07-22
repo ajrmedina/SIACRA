@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.siacra.beans;
 
 import javax.faces.application.FacesMessage;
@@ -18,7 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
- * @author ajr.medina
+ * Login Managed Bean
+ *
+ * @author SIACRA Development Team
+ * @since 15-07-15
+ * @version 1.0.0
+ *
  */
 @ManagedBean(name="loginMBean")
 @RequestScoped

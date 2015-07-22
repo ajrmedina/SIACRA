@@ -14,7 +14,6 @@ package com.siacra.services;
 import java.util.List;
 
 import com.siacra.daos.UserDao;
-import com.siacra.models.NivelAcceso;
 import com.siacra.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +60,7 @@ public class UserService {
      * Get User
      *
      * @param  id int - User ID
+     * @return User by ID - User
      */
 
     public User getUserById(int id) {
@@ -71,6 +71,7 @@ public class UserService {
      * Get User for Login
      *
      * @param  login String - User username
+     * @return User by Username - User
      */
 
     public User getUserLogin(String login) {
@@ -80,6 +81,7 @@ public class UserService {
     /**
      * Get Users List
      *
+     * @return Users List - User
      */
 
     public List<User> getUsers() {
