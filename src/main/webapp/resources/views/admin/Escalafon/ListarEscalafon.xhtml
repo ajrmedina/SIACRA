@@ -1,0 +1,51 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Escalafon
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <p:menuitem value="Nuevo Escalafon" url="/resources/views/admin/Escalafon/NuevoEscalafon.xhtml" icon="fa fa-plus"/>
+    </ui:define>
+    
+    <ui:define name="title-view">
+       Escalafon
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 50%" class="center-element">
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="ID Escalafon" />
+                    </f:facet>
+                    <h:outputText value="#{escalafon.idescalafon}" />
+                </p:column>
+                <p:column style="width: 20%">
+                    <f:facet name="header">
+                        <h:outputText value="Tipo Escalafon" />
+                    </f:facet>
+                    <h:outputText value="#{escalafon.tipoescalafon}" />
+                </p:column>
+                <p:column style="width: 20%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>
+                    <p:commandButton value="Eliminar" action="#{escalafonBean.deleteEscalafon(escalafon.idescalafon)}" update="messages" ajax="false" icon="fa fa-times"/>
+                    <p:button value="Actualizar" outcome="/resources/views/admin/Escalafon/ActualizarEscalafon.xhtml" icon="fa fa-edit">
+                        <f:param name="nivelID" value="#{escalafon.idescalafon}" />
+                    </p:button>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        
+    </ui:define>
+    
+</ui:composition>
