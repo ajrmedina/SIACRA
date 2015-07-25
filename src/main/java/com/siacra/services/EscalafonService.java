@@ -7,6 +7,7 @@ package com.siacra.services;
 
 import com.siacra.daos.EscalafonDao;
 import com.siacra.models.Escalafon;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +71,9 @@ public class EscalafonService {
         return getEscalafonDAO().getEscalafonById(id);
     }
 
+     public List<Escalafon> getEscalafones() {
+        return getEscalafonDAO().getEscalafones();
+    }
     /**
      * @return the escalafonDAO
      */

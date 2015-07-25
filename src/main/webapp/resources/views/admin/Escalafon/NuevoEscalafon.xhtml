@@ -23,8 +23,8 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="nombreTipoEscalafon" value="Nombre del Escalafon: " />
-                <p:inputText id="nombreTipoEscalafon" value="#{escalafonBean.tipoescalafon}">
-                    <f:validateLength minimum="1" />
+                <p:inputText id="nombreTipoEscalafon" value="#{escalafonBean.tipoescalafon}" maxlength="30">
+                    
                 </p:inputText>
 
                 <p:commandButton value="Agregar" action="#{escalafonBean.addEscalafon()}" update="messages" ajax="false"/>

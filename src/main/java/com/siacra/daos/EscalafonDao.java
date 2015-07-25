@@ -95,7 +95,7 @@ public class EscalafonDao {
      * @return List - Lista Escalafon
      */
 
-    public List<Escalafon> getNivelesAcceso() {
+    public List<Escalafon> getEscalafones() {
         List list = getSessionFactory().getCurrentSession().createQuery("from  Escalafon").list();
         return list;
     }

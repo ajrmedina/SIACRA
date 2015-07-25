@@ -8,6 +8,7 @@ package com.siacra.beans;
 import com.siacra.models.Escalafon;
 import com.siacra.services.EscalafonService;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -29,8 +30,7 @@ import org.springframework.dao.DataAccessException;
 @RequestScoped
 public class EscalafonBean implements Serializable{
     //EscalfonService is injected...
-    @ManagedProperty(value="#{EscalfonService}")
-    
+    @ManagedProperty(value="#{EscalafonService}")
     private EscalafonService escalafonService;
     
     private List<Escalafon> escalafonList;
@@ -79,7 +79,7 @@ public class EscalafonBean implements Serializable{
      *
      * @param int id - idEscalafon
      */
-    public void updateAcceso(int id) {
+    public void updateEscalafon(int id) {
         
         try {
             Escalafon escalafon = new Escalafon();
@@ -129,6 +129,8 @@ public class EscalafonBean implements Serializable{
      * @return the escalafonList
      */
     public List<Escalafon> getEscalafonList() {
+        escalafonList = new ArrayList<>();
+        escalafonList.addAll(getEscalafonService().getEscalafones());
         return escalafonList;
     }
 
