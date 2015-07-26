@@ -70,27 +70,36 @@
                     
                     <p:outputLabel for="username" value="Nombre de Acceso: " />
                     <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true">
-                        <f:validateLength minimum="8" />
+                        <f:validateLength minimum="8" maximum="30" />
                     </p:inputText>
 
                     <p:outputLabel for="nombres" value="Nombres del usuario: " />
-                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" />
+                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" >
+                        <f:validateLength maximum="50" />
+                    </p:inputText>
 
                     <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
-                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" />
+                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" >
+                        <f:validateLength maximum="50" />
+                    </p:inputText>
 
-                    <p:outputLabel id="estado" value="Activo" />
-                    <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" required="true" />
+                    <p:outputLabel id="estado" value="Activar usuario? " />
+                    <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" />
 
-                    <p:outputLabel id="esDocente" value="Docente" />
+                    <p:outputLabel id="esDocente" value="Este usuario es docente? " />
                     <p:selectBooleanCheckbox value="#{userBean.esDocente}" />
 
                     <p:outputLabel for="acceso" value="Nivel de Acceso: " />
-                    <p:selectOneMenu id="acceso" value="#{userBean.nivel}" required="true">
+                    <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
                         <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
                     </p:selectOneMenu>
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{userBean.updateUser()}" update=":list:usuarios" oncomplete="PF('update_user').hide()"/>
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{userBean.updateUser()}" update=":list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_user').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_user').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton>
+                        
+                    
                 </h:panelGrid>
             </h:form>
         </p:dialog>
