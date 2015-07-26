@@ -6,13 +6,14 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 
 import com.siacra.models.NivelAcceso;
 import com.siacra.services.NivelAccesoService;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -24,7 +25,7 @@ import org.springframework.dao.DataAccessException;
  *
  */
 @ManagedBean(name="nivelAccesoBean")
-@RequestScoped
+@ViewScoped
 public class NivelAccesoBean implements Serializable {
     
     //Spring NivelAcceso Service is injected...
@@ -35,7 +36,7 @@ public class NivelAccesoBean implements Serializable {
 
     private int idnivelacceso;
     private String nombreacceso;
-
+    
     /**
      * Add NivelAcceso
      *
@@ -56,32 +57,26 @@ public class NivelAccesoBean implements Serializable {
     
      /**
      * Load NivelAcceso
-     *
      * Get and Load the data for NivelAcceso to update
+     * 
+     * @param acceso Nivel Acceso
      */
-    public void loadNivelAcceso() {
+    public void loadNivelAcceso(NivelAcceso acceso) {
         
-        try {
-            NivelAcceso nivel;
-            nivel = getNivelAccesoService().getNivelAccesoById(getId());
-            setAcceso(nivel.getAcceso());
+        setId(acceso.getId());
+        setAcceso(acceso.getAcceso());
             
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
 
     }
     
     /**
      * Update NivelAcceso
      *
-     * @param int id - idNivelAcceso
      */
-    public void updateAcceso(int id) {
+    public void updateAcceso() {
         
         try {
-            NivelAcceso nivel = new NivelAcceso();
-            nivel = getNivelAccesoService().getNivelAccesoById(id);
+            NivelAcceso nivel = getNivelAccesoService().getNivelAccesoById(getId());
             nivel.setAcceso(getAcceso());
             getNivelAccesoService().updateNivelAcceso(nivel);
             addMessage("El Nivel de Acceso " + getId() + " fue actualizado correctamente a: "+ getAcceso());
@@ -94,18 +89,17 @@ public class NivelAccesoBean implements Serializable {
     /**
      * Delete NivelAcceso
      *
-     * @param int id - idNivelAcceso
+     * @param acceso NivelAcceso
      */
-    public void deleteAcceso(int id) {
+    public void deleteAcceso(NivelAcceso acceso) {
         
         try {
-            NivelAcceso nivel = new NivelAcceso();
-            nivel = getNivelAccesoService().getNivelAccesoById(id);
-            String accesoEliminado = nivel.getAcceso();
-            getNivelAccesoService().deleteNivelAcceso(nivel);
+            String accesoEliminado = acceso.getAcceso();
+            getNivelAccesoService().deleteNivelAcceso(acceso);
             addMessage("El Nivel de Acceso " + accesoEliminado + " fue eliminado correctamente");
-        } catch (DataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
+            addMessage("El Nivel de Acceso no puede ser eliminado debido a que tiene usuarios relacionados");
         }
     }
     
@@ -193,8 +187,9 @@ public class NivelAccesoBean implements Serializable {
     
     /**
      * Add Messages
-     *
      * Add messages for the UI
+     * 
+     * @param mensaje Strin
      */
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
