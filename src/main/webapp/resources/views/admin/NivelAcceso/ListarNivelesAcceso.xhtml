@@ -9,19 +9,19 @@
        Consultar - Niveles de Acceso
     </ui:define>
     
-    <ui:define name="add-menu-items">
-        <p:menuitem value="Nuevo Nivel de Acceso" url="/resources/views/admin/NivelAcceso/NuevoNivelAcceso.xhtml" icon="fa fa-plus"/>
-    </ui:define>
-    
     <ui:define name="title-view">
         Niveles de Acceso al SIACRA
     </ui:define>
                     
     <ui:define name="content">
-        <h:form>
+        <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 50%" class="center-element">
+            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 48%" class="center-element" rows="5" paginator="true">
+                <f:facet name="header">                  
+                    <p:button style="float: right" value="Nuevo Nivel de Acceso" outcome="/resources/views/admin/NivelAcceso/NuevoNivelAcceso.xhtml" icon="fa fa-plus"/>                       
+                    <div style="clear:both" />
+                </f:facet>
                 <p:column style="width: 10%">
                     <f:facet name="header">
                         <h:outputText value="ID Nivel Aceso" />
@@ -34,18 +34,34 @@
                     </f:facet>
                     <h:outputText value="#{nivel.acceso}" />
                 </p:column>
-                <p:column style="width: 20%">
+                <p:column style="width: 8%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>
-                    <p:commandButton value="Eliminar" action="#{nivelAccesoBean.deleteAcceso(nivel.id)}" update="messages" ajax="false" icon="fa fa-times"/>
-                    <p:button value="Actualizar" outcome="/resources/views/admin/NivelAcceso/ActualizarNivelAcceso.xhtml" icon="fa fa-edit">
-                        <f:param name="nivelID" value="#{nivel.id}" />
-                    </p:button>
+                    <p:growl id="delete" />
+                    <p:commandButton id="update_button" update=":dialogUpdateNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('update_nivel').show()" icon="fa fa-edit" />
+                    <p:commandButton id="delete_button" actionListener="#{nivelAccesoBean.deleteAcceso(nivel)}" update="nivel" icon="fa fa-times"/>
+                    
                 </p:column>
             </p:dataTable>
         </h:form>
         
+        <p:dialog header="Actualizar Nivel de Acceso" id="dialogUpdateNivel" widgetVar="update_nivel" modal="true" resizable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:outputLabel for="idAcceso" value="Id del Nivel de Acceso: " />
+                    <p:inputText id="idAcceso" value="#{nivelAccesoBean.id}" readonly="true" />
+                    <p:outputLabel for="nombreAcceso" value="Nombre del Acceso: " />
+                    <p:inputText id="nombreAcceso" value="#{nivelAccesoBean.acceso}">
+                        <f:validateLength minimum="2" maximum="25" />
+                    </p:inputText>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{nivelAccesoBean.updateAcceso()}" update=":list:nivel" oncomplete="PF('update_nivel').hide()" />
+
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
     </ui:define>
     
 </ui:composition>
