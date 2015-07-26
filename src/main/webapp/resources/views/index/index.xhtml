@@ -16,7 +16,8 @@
     <ui:define name="content">
         <h:form> 
             <p:growl id="messages" showDetail="true" />
-           
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            
         </h:form>
     </ui:define>
     

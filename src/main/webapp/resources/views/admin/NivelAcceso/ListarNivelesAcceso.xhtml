@@ -57,8 +57,10 @@
                         <f:validateLength minimum="2" maximum="25" />
                     </p:inputText>
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{nivelAccesoBean.updateAcceso()}" update=":list:nivel" oncomplete="PF('update_nivel').hide()" />
-
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{nivelAccesoBean.updateAcceso()}" update=":list:nivel" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_nivel').hide()" icon="fa fa-ban">
+                      <p:resetInput target="update" />
+                    </p:commandButton>
                 </h:panelGrid>
             </h:form>
         </p:dialog>
