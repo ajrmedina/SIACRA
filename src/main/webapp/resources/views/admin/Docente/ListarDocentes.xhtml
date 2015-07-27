@@ -16,36 +16,28 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 70%" class="center-element" rows="5" paginator="true">
+            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 70%" class="center-element" paginator="true" rows="10" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Docente" outcome="/resources/views/admin/Docente/NuevoDocente.xhtml" icon="fa fa-plus"/>                       
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Busqueda de docentes:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('docentesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 20%">
-                    <f:facet name="header">
-                        <h:outputText value="Nombres" />
-                    </f:facet>
+                <p:column style="width: 20%" headerText="Nombres" filterBy="#{docente.user.nombres}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.nombres}" />
                 </p:column>
-                <p:column style="width: 20%">
-                    <f:facet name="header">
-                        <h:outputText value="Apellidos" />
-                    </f:facet>
+                <p:column style="width: 20%" headerText="Apellidos" filterBy="#{docente.user.apellidos}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.apellidos}" />
                 </p:column>
-                <p:column style="width: 5%">
-                    <f:facet name="header">
-                        <h:outputText value="Activo" />
-                    </f:facet>
+                <p:column style="width: 5%" headerText="Activo" filterBy="#{docente.user.estadoUsuario}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.estadoUsuario}" />
                 </p:column>
-                <p:column style="width: 7%">
-                    <f:facet name="header">
-                        <h:outputText value="Aprobado" />
-                    </f:facet>
+                <p:column style="width: 7%" headerText="Aprobado" filterBy="#{docente.aprobarDocente}" filterStyleClass="hide">
                     <h:outputText value="#{docente.aprobarDocente}" />
                 </p:column>
-                <p:column style="width: 8%">
+                <p:column style="width: 8%" headerText="Accciones">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>

@@ -14,31 +14,26 @@
     </ui:define>
                     
     <ui:define name="content">
+        
         <h:form id="list">
-            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 48%" class="center-element" rows="5" paginator="true">
+            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 48%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="nivelesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Nivel de Acceso" outcome="/resources/views/admin/NivelAcceso/NuevoNivelAcceso.xhtml" icon="fa fa-plus"/>                       
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Busqueda de niveles de acceso:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('nivelesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 10%">
-                    <f:facet name="header">
-                        <h:outputText value="ID Nivel Aceso" />
-                    </f:facet>
+                <p:column style="width: 10%" headerText="ID Nivel Aceso" filterBy="#{nivel.id}" filterStyleClass="hide">
                     <h:outputText value="#{nivel.id}" />
                 </p:column>
-                <p:column style="width: 20%">
-                    <f:facet name="header">
-                        <h:outputText value="Nombre del Acceso" />
-                    </f:facet>
+                <p:column style="width: 20%" headerText="Nombre del Aceso" filterBy="#{nivel.acceso}" filterStyleClass="hide">
                     <h:outputText value="#{nivel.acceso}" />
                 </p:column>
-                <p:column style="width: 8%">
-                    <f:facet name="header">
-                        <h:outputText value="Acciones" />
-                    </f:facet>
-                    <p:growl id="delete" />
+                <p:column style="width: 8%" headerText="Acciones">
+                    <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('update_nivel').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" actionListener="#{nivelAccesoBean.deleteAcceso(nivel)}" update="nivel" icon="fa fa-times"/>
                     
