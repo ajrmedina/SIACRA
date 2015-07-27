@@ -61,17 +61,10 @@ public class EscalafonBean implements Serializable{
      *
      * Get and Load the data for Escalafon to update
      */
-    public void loadEscalafon() {
+    public void loadEscalafon(Escalafon escalafon) {
         
-        try {
-            Escalafon escalafon;
-            escalafon = getEscalafonService().getEscalafonById(getIdescalafon());
-            setTipoescalafon(escalafon.getTipoescalafon());
-            
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
-
+        setIdescalafon(escalafon.getIdescalafon());
+        setTipoescalafon(escalafon.getTipoescalafon());
     }
     
     /**
@@ -79,11 +72,11 @@ public class EscalafonBean implements Serializable{
      *
      * @param int id - idEscalafon
      */
-    public void updateEscalafon(int id) {
+    public void updateEscalafon() {
         
         try {
             Escalafon escalafon = new Escalafon();
-            escalafon = getEscalafonService().getEscalafonById(id);
+            escalafon = getEscalafonService().getEscalafonById(getIdescalafon());
             escalafon.setTipoescalafon(getTipoescalafon());
             getEscalafonService().updateEscalafon(escalafon);
             addMessage("El escalafon " + getIdescalafon()+ " fue actualizado correctamente a: "+ getTipoescalafon());

@@ -6,59 +6,71 @@
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="title">
-       Consultar - Escuelas
+       Consultar - Escalafon
     </ui:define>
     
-       
     <ui:define name="title-view">
-        Escuelas de la Facultad de Ingenieria y Arquitectura
+       Escalafon  SIACRA
     </ui:define>
                     
     <ui:define name="content">
-        <h:form id="formMostrar">
+        <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 50%" class="center-element" rows="5" paginator="true">
+            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 48%" class="center-element" rows="5" paginator="true">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Escalafon" outcome="/resources/views/admin/Escalafon/NuevoEscalafon.xhtml" icon="fa fa-plus"/>                       
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 20%">
+                <p:column style="width: 10%">
                     <f:facet name="header">
-                        <h:outputText value="Codigo" />
+                        <h:outputText value="ID Escalafon" />
                     </f:facet>
-                    <h:outputText value="#{escalafon.idescalafon}" class="center-element"/>
+                    <h:outputText value="#{escalafon.idescalafon}" />
                 </p:column>
-                <p:column style="width: 50%">
+                <p:column style="width: 20%">
                     <f:facet name="header">
                         <h:outputText value="Tipo Escalafon" />
                     </f:facet>
                     <h:outputText value="#{escalafon.tipoescalafon}" />
                 </p:column>
-                <p:column style="width: 20%">
+                <p:column style="width: 8%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
-                    </f:facet>                    
-                    <!--<p:button outcome="/resources/views/admin/Escalafon/ActualizarEscalafon.xhtml" icon="fa fa-edit" id="edit">
-                        <f:param name="escalafonID" value="#{escalafon.idescalafon}" />
-                    </p:button>-->
-                    <p:commandButton  oncomplete="dlgmodificar.show();" update=":formModificar" icon="fa fa-edit" id="edit">
-                        <!--<f:setPropertyActionListener   target="#{escalafonBean.idescalafon}" value="#{escalafon.idescalafon}"/>--> 
-                    </p:commandButton>
-                    <p:tooltip id="toolTipFade2" for="edit" value="Actualizar" />
-                    <p:commandButton action="#{escalafonBean.deleteEscalafon(escalafon.idescalafon)}" update="messages" ajax="false" icon="fa fa-times" id="delete"/>
-                    <p:tooltip id="toolTipFade" for="delete" value="Eliminar" />
-                </p:column>               
+                    </f:facet>
+                    <p:growl id="delete" />
+                    <p:commandButton id="update_button" update=":dialogUpdateEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('update_escalafon').show()" icon="fa fa-edit" />
+                  <!--  <p:commandButton id="delete_button" actionListener="#{nivelAccesoBean.deleteAcceso(escalafon)}" update="escalafon" icon="fa fa-times"/>-->
+                    <p:commandButton id="delete_button" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" update=":dialogoDeleteEscalafon" oncomplete="PF('delete_escalafon').show()" icon="fa fa-times"/>
+                </p:column>
             </p:dataTable>
-            
         </h:form>
-        <p:dialog   id="dlgmodificar" header="Modificar Escalafon" showEffect="explode" hideEffect="explode"
-                    widgetVar="dlgmodificar" modal="true" resizable="false" minWidth="200">
-            <h:form id="formModificar">
-                
-                <p:commandButton value="Modificar" update=":formMostrar"
-                                 actionListener="#{escalafonBean.updateEscalafon(escalafonBean.idescalafon)}"
-                                 oncomplete="dlgmodificar.hide();"/>
+        <p:dialog id="dialogoDeleteEscalafon" header="Eliminar Escalafon" widgetVar="delete_escalafon" modal="true" resizable="false">
+            <h:form id="deleteEscalafon">
+                <h:outputText value="¿Desea eliminar?" />
+                <p:commandButton value="Si" actionListener="#{escalafonBean.deleteEscalafon(escalafon.idescalafon)}"
+                                 update=":list:escalafon" oncomplete="PF('delete_escalafon').hide()" />
+                <p:commandButton id="cancel" value="Cancelar" update="deleteEscalafon" process="@this" oncomplete="PF('delete_escalafon').hide()" icon="fa fa-ban">
+                      <p:resetInput target="deleteEscalafon" />
+                </p:commandButton>
+            </h:form>
+        </p:dialog>
+        <p:dialog header="Actualizar Escalafon" id="dialogUpdateEscalafon" widgetVar="update_escalafon" modal="true" resizable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:outputLabel for="idEscalafon" value="Id escalafon: " />
+                    <p:inputText id="idEscalafon" value="#{escalafonBean.idescalafon}" readonly="true" />
+                    <p:outputLabel for="tipoEscalafon" value="Tipo escalafon: " />
+                    <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}">
+                        <f:validateLength minimum="2" maximum="30" />
+                    </p:inputText>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{escalafonBean.updateEscalafon()}" update=":list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_escalafon').hide()" icon="fa fa-ban">
+                      <p:resetInput target="update" />
+                    </p:commandButton>
+                </h:panelGrid>
             </h:form>
         </p:dialog>
     </ui:define>
