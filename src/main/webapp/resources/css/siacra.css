@@ -39,3 +39,9 @@ body {
      text-indent:0px;
      background-image:none;
 }
+
+/*Hide Filters*/
+.hide {
+    display:none;
+    visibility:hidden;
+}
