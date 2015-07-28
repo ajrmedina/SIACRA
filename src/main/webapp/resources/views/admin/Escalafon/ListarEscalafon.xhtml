@@ -40,19 +40,31 @@
                     </f:facet>
                     <p:growl id="delete" />
                     <p:commandButton id="update_button" update=":dialogUpdateEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('update_escalafon').show()" icon="fa fa-edit" />
-                  <!--  <p:commandButton id="delete_button" actionListener="#{nivelAccesoBean.deleteAcceso(escalafon)}" update="escalafon" icon="fa fa-times"/>-->
-                    <p:commandButton id="delete_button" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" update=":dialogoDeleteEscalafon" oncomplete="PF('delete_escalafon').show()" icon="fa fa-times"/>
+                    <!--<p:commandButton id="delete_button" actionListener="#{escalafonBean.deleteEscalafon()}" update="escalafon" icon="fa fa-times"/>-->
+                    <p:commandButton id="delete_button"  update=":dialogoDeleteEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('delete_escalafon').show()" icon="fa fa-times">
+                        
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
         </h:form>
+        
         <p:dialog id="dialogoDeleteEscalafon" header="Eliminar Escalafon" widgetVar="delete_escalafon" modal="true" resizable="false">
             <h:form id="deleteEscalafon">
-                <h:outputText value="¿Desea eliminar?" />
-                <p:commandButton value="Si" actionListener="#{escalafonBean.deleteEscalafon(escalafon.idescalafon)}"
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
+                    <p:inputText id="idEscalafon" value="#{escalafonBean.idescalafon}" type="hidden" />
+                   
+
+                    
+                    <h:outputText value="¿Desea eliminar?" />
+                    <p:commandButton value="Si" actionListener="#{escalafonBean.deleteEscalafon()}"
                                  update=":list:escalafon" oncomplete="PF('delete_escalafon').hide()" />
-                <p:commandButton id="cancel" value="Cancelar" update="deleteEscalafon" process="@this" oncomplete="PF('delete_escalafon').hide()" icon="fa fa-ban">
+                    <p:commandButton id="cancel" value="Cancelar" update="deleteEscalafon" process="@this" oncomplete="PF('delete_escalafon').hide()" icon="fa fa-ban">
                       <p:resetInput target="deleteEscalafon" />
-                </p:commandButton>
+                    </p:commandButton>
+                </h:panelGrid>
+                
             </h:form>
         </p:dialog>
         <p:dialog header="Actualizar Escalafon" id="dialogUpdateEscalafon" widgetVar="update_escalafon" modal="true" resizable="false">
@@ -60,7 +72,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:outputLabel for="idEscalafon" value="Id escalafon: " />
-                    <p:inputText id="idEscalafon" value="#{escalafonBean.idescalafon}" readonly="true" />
+                    <p:inputText id="idEscalafon" value="#{escalafonBean.idescalafon}"  />
                     <p:outputLabel for="tipoEscalafon" value="Tipo escalafon: " />
                     <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}">
                         <f:validateLength minimum="2" maximum="30" />

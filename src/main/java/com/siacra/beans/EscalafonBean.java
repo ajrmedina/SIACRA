@@ -89,16 +89,20 @@ public class EscalafonBean implements Serializable{
     /**
      * Delete Escalafon
      *
-     * @param int id - idEscalafon
+     * 
+     * 
      */
-    public void deleteEscalafon(int id) {
+    public void deleteEscalafon() {
         
         try {
-            Escalafon escalafon = new Escalafon();
-            escalafon = getEscalafonService().getEscalafonById(id);
-            String accesoEliminado = escalafon.getTipoescalafon();
+             
+             Escalafon escalafon = new Escalafon();
+            escalafon = getEscalafonService().getEscalafonById(getIdescalafon());
+            String eliminado = escalafon.getTipoescalafon();
             getEscalafonService().deleteEscalafon(escalafon);
-            addMessage("El escalafon " + accesoEliminado + " fue eliminado correctamente");
+           
+           
+            addMessage("El escalafon " + eliminado + " fue eliminado correctamente");
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
