@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 
 import com.siacra.models.User;
 import com.siacra.services.UserService;
@@ -14,8 +13,10 @@ import com.siacra.models.NivelAcceso;
 import com.siacra.services.NivelAccesoService;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -27,7 +28,7 @@ import org.springframework.dao.DataAccessException;
  *
  */
 @ManagedBean(name="userBean")
-@RequestScoped
+@ViewScoped
 public class UserBean implements Serializable {
     
     //Spring User Service is injected...
@@ -82,42 +83,37 @@ public class UserBean implements Serializable {
     
      /**
      * Load User
-     *
      * Get and Load the data for User to update
+     * 
+     * @param user User
      */
-    public void loadUser() {
+    public void loadUser(User user) {
         
-        try {
-            User user = getUserService().getUserById(getIdUsuario());
-            setNombreUsuario(user.getNombreUsuario());
-            setNombres(user.getNombres());
-            setApellidos(user.getApellidos());
-            if(user.getEstadoUsuario() == 1)
-                setEstadoUsuario(true);
-            else
-                setEstadoUsuario(false);
-             if(user.getEsDocente() == 1)
-                setEsDocente(true);
-            else
-                setEsDocente(false);
-            setNivel(user.getNivel().getId());
+        setIdUsuario(user.getIdUsuario());
+        setNombreUsuario(user.getNombreUsuario());
+        setNombres(user.getNombres());
+        setApellidos(user.getApellidos());
+        if(user.getEstadoUsuario() == 1)
+            setEstadoUsuario(true);
+        else
+            setEstadoUsuario(false);
+         if(user.getEsDocente() == 1)
+            setEsDocente(true);
+        else
+            setEsDocente(false);
+        setNivel(user.getNivel().getId());
             
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
 
     }
     
     /**
      * Update User
      *
-     * @param id int - idUsuario
      */
-    public void updateUser(int id) {
+    public void updateUser() {
         
         try {
-            User user;
-            user = getUserService().getUserById(id);
+            User user = getUserService().getUserById(getIdUsuario());
             user.setNombreUsuario(getNombreUsuario());
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
@@ -141,18 +137,17 @@ public class UserBean implements Serializable {
     /**
      * Delete User
      *
-     * @param id int - idUsuario
+     * @param user User
      */
-    public void deleteUser(int id) {
+    public void deleteUser(User user) {
         
         try {
-            User user = new User();
-            user = getUserService().getUserById(id);
             String userEliminado = user.getNombreUsuario();
             getUserService().deleteUser(user);
             addMessage("El Usuario " + userEliminado + " fue eliminado correctamente");
-        } catch (DataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
+            addMessage("El Usuario no puede ser eliminado debido a que tiene un docente asociado");
         }
     }
     
@@ -175,7 +170,7 @@ public class UserBean implements Serializable {
      * @return List - User List
      */
     public List<User> getUserList() {
-        usersList = new ArrayList<User>();
+        usersList = new ArrayList<>();
         usersList.addAll(getUserService().getUsers());
         return usersList;
     }
@@ -186,7 +181,7 @@ public class UserBean implements Serializable {
      * @return List - NivelAcceso List
      */
     public List<NivelAcceso> getNivelAccesoList() {
-        nivelesList = new ArrayList<NivelAcceso>();
+        nivelesList = new ArrayList<>();
         nivelesList.addAll(getNivelAccesoService().getNivelesAcceso());
         return nivelesList;
     }
@@ -249,7 +244,7 @@ public class UserBean implements Serializable {
     /**
      * Set User ID
      *
-     * @param int idUsuario - User ID
+     * @param idUsuario int - User ID
      */
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
@@ -383,8 +378,9 @@ public class UserBean implements Serializable {
     
     /**
      * Add Messages
-     *
      * Add messages for the UI
+     * 
+     * @param mensaje
      */
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);

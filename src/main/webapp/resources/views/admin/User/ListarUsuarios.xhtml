@@ -9,60 +9,86 @@
        Consultar - Usuarios del Sistema
     </ui:define>
     
-    <ui:define name="add-menu-items">
-        <p:menuitem value="Nuevo Usuario" url="/resources/views/admin/User/NuevoUsuario.xhtml" icon="fa fa-plus"/>
-    </ui:define>
-    
     <ui:define name="title-view">
         Usuarios del SIACRA
     </ui:define>
                     
     <ui:define name="content">
-        <h:form>
-            <p:growl id="messages" />
+        <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 100%" class="center-element">
-                <p:column style="width: 20%">
-                    <f:facet name="header">
-                        <h:outputText value="Username" />
-                    </f:facet>
+            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 90%" class="center-element" paginator="true" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                 <f:facet name="header">                  
+                    <p:button style="float: right" value="Nuevo Usuario" outcome="/resources/views/admin/User/NuevoUsuario.xhtml" icon="fa fa-plus"/>                       
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Busqueda de usuarios:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('usuariosTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    <div style="clear:both" />
+                </f:facet>
+                <p:column style="width: 15%" headerText="Username" filterBy="#{user.nombreUsuario}" filterStyleClass="hide">
                     <h:outputText value="#{user.nombreUsuario}" />
                 </p:column>
-                <p:column style="width: 15%">
-                    <f:facet name="header">
-                        <h:outputText value="Nombres" />
-                    </f:facet>
+                <p:column style="width: 20%" headerText="Nombres" filterBy="#{user.nombres}" filterStyleClass="hide">
                     <h:outputText value="#{user.nombres}" />
                 </p:column>
-                <p:column style="width: 15%">
-                    <f:facet name="header">
-                        <h:outputText value="Apellidos" />
-                    </f:facet>
+                <p:column style="width: 20%" headerText="Apellidos" filterBy="#{user.apellidos}" filterStyleClass="hide">
                     <h:outputText value="#{user.apellidos}" />
                 </p:column>
-                <p:column style="width: 15%">
-                    <f:facet name="header">
-                        <h:outputText value="Nivel" />
-                    </f:facet>
+                <p:column style="width: 15%" headerText="Nivel" filterBy="#{user.nivel.acceso}" filterStyleClass="hide">
                     <h:outputText value="#{user.nivel.acceso}" />
                 </p:column>
-                <p:column style="width: 5%">
-                    <f:facet name="header">
-                        <h:outputText value="Activo" />
-                    </f:facet>
+                <p:column style="width: 5%" headerText="Activo" filterBy="#{user.estadoUsuario}" filterStyleClass="hide">
                     <h:outputText value="#{user.estadoUsuario}" />
                 </p:column>
-                <p:column style="width: 20%">
-                    <f:facet name="header">
-                        <h:outputText value="Acciones" />
-                    </f:facet>
-                    <p:commandButton value="Eliminar" action="#{userBean.deleteUser(user.idUsuario)}" update="messages" ajax="false" icon="fa fa-times"/>
-                    <p:button value="Actualizar" outcome="/resources/views/admin/User/ActualizarUsuario.xhtml" icon="fa fa-edit">
-                        <f:param name="userID" value="#{user.idUsuario}" />
-                    </p:button>
+                <p:column style="width: 8%" headerText="Acciones" >
+                    <p:growl id="messages" />
+                    <p:commandButton id="update_button" update=":dialogUpdateUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('update_user').show()" icon="fa fa-edit" />
+                    <p:commandButton actionListener="#{userBean.deleteUser(user)}" update="usuarios" icon="fa fa-times"/>
+                    
                 </p:column>
             </p:dataTable>
         </h:form>
+        
+        <p:dialog header="Actualizar Usuario" id="dialogUpdateUser" widgetVar="update_user" modal="true" resizable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
+                    <p:outputLabel for="username" value="Nombre de Acceso: " />
+                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true">
+                        <f:validateLength minimum="8" maximum="30" />
+                    </p:inputText>
+
+                    <p:outputLabel for="nombres" value="Nombres del usuario: " />
+                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" >
+                        <f:validateLength maximum="50" />
+                    </p:inputText>
+
+                    <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
+                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" >
+                        <f:validateLength maximum="50" />
+                    </p:inputText>
+
+                    <p:outputLabel id="estado" value="Activar usuario? " />
+                    <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" />
+
+                    <p:outputLabel id="esDocente" value="Este usuario es docente? " />
+                    <p:selectBooleanCheckbox value="#{userBean.esDocente}" />
+
+                    <p:outputLabel for="acceso" value="Nivel de Acceso: " />
+                    <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
+                    </p:selectOneMenu>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{userBean.updateUser()}" update=":list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_user').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_user').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton>
+                        
+                    
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
         
     </ui:define>
     

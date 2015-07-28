@@ -7,13 +7,13 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 
 import com.siacra.models.User;
 import com.siacra.services.UserService;
 import com.siacra.services.DocenteService;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
 
@@ -27,7 +27,7 @@ import org.springframework.dao.DataAccessException;
  *
  */
 @ManagedBean(name="docenteBean")
-@RequestScoped
+@ViewScoped
 public class DocenteBean implements Serializable {
     
     //Spring User Service is injected...
@@ -72,37 +72,32 @@ public class DocenteBean implements Serializable {
     
      /**
      * Load Docente
-     *
      * Get and Load the data for Docente to update
+     * 
+     * @param docente Docente
      */
-    public void loadDocente() {
+    public void loadDocente(Docente docente) {
         
-        try {
-            Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            User user = getUserService().getUserById(docente.getUser().getIdUsuario());
-            if(docente.getAprobarDocente() == 1)
-                setAprobado(true);
-            else
-                setAprobado(false);
-            setNombres(user.getNombres());
-            setApellidos(user.getApellidos());
-            setIdUser(user.getIdUsuario());
-            
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        User user = getUserService().getUserById(docente.getUser().getIdUsuario());
+        setIdDocente(docente.getIdDocente());
+        if(docente.getAprobarDocente() == 1)
+            setAprobado(true);
+        else
+            setAprobado(false);
+        setNombres(user.getNombres());
+        setApellidos(user.getApellidos());
+        setIdUser(user.getIdUsuario());
 
     }
     
     /**
      * Update Docente
      *
-     * @param id int - idDocente to update
      */
-    public void updateDocente(int id) {
+    public void updateDocente() {
         
         try {
-            Docente docente = getDocenteService().getDocenteById(id);
+            Docente docente = getDocenteService().getDocenteById(getIdDocente());
             User user = getUserService().getUserById(getIdUser());
             if(getAprobado())
                 docente.setAprobarDocente(1);
@@ -120,12 +115,11 @@ public class DocenteBean implements Serializable {
     /**
      * Locked Docente
      *
-     * @param id int - idDocente to lock
+     * @param docente Docente - Docente to lock
      */
-    public void lockedDocente(int id) {
+    public void lockedDocente(Docente docente) {
         
         try {
-            Docente docente = getDocenteService().getDocenteById(id);
             User user = getUserService().getUserById(docente.getUser().getIdUsuario());
             String docenteBloqueado = user.getNombres() + " " + user.getApellidos();
             user.setEstadoUsuario(0);
@@ -139,12 +133,11 @@ public class DocenteBean implements Serializable {
     /**
      * Unlocked Docente
      *
-     * @param id int - idDocente to unlock
+     * @param docente Docente - Docente to unlock
      */
-    public void unlockedDocente(int id) {
+    public void unlockedDocente(Docente docente) {
         
         try {
-           Docente docente = getDocenteService().getDocenteById(id);
             User user = getUserService().getUserById(docente.getUser().getIdUsuario());
             String docenteBloqueado = user.getNombres() + " " + user.getApellidos();
             user.setEstadoUsuario(1);
@@ -169,7 +162,7 @@ public class DocenteBean implements Serializable {
      * @return List - User List
      */
     public List<User> getUserList() {
-        usersList = new ArrayList<User>();
+        usersList = new ArrayList<>();
         usersList.addAll(getUserService().getUsers());
         return usersList;
     }
@@ -180,7 +173,7 @@ public class DocenteBean implements Serializable {
      * @return List - Docente List
      */
     public List<Docente> getDocentesList() {
-        docentesList = new ArrayList<Docente>();
+        docentesList = new ArrayList<>();
         docentesList.addAll(getDocenteService().getDocentes());
         return docentesList;
     }
@@ -188,7 +181,7 @@ public class DocenteBean implements Serializable {
     /**
      * Set Docente List
      *
-     * @param docenteList List - Docente List
+     * @param docentesList List - Docente List
      */
     public void setDocentesList(List<Docente> docentesList) {
         this.docentesList = docentesList;
@@ -243,7 +236,7 @@ public class DocenteBean implements Serializable {
     /**
      * Set Docente ID
      *
-     * @param int idDocente - Docente ID
+     * @param idDocente int - Docente ID
      */
     public void setIdDocente(int idDocente) {
         this.idDocente = idDocente;
@@ -261,7 +254,7 @@ public class DocenteBean implements Serializable {
     /**
      * Set Es Docente
      *
-     * @param esDocente boolean - Es Docente
+     * @param aprobado boolean - Es Docente
      */
     public void setAprobado(boolean aprobado) {
         this.aprobarDocente = aprobado;
@@ -323,8 +316,9 @@ public class DocenteBean implements Serializable {
     
     /**
      * Add Messages
-     *
      * Add messages for the UI
+     * 
+     * @param mensaje String
      */
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);

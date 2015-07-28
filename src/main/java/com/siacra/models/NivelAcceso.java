@@ -24,10 +24,10 @@ public class NivelAcceso {
     
     @Id
     @GeneratedValue
-    @Column(name="idnivelacceso")
+    @Column(name="idnivelacceso", unique = true, nullable = false)
     private int idnivelacceso;
     
-    @Column(name="nombreacceso", nullable = false)
+    @Column(name="nombreacceso", nullable = false, length = 25)
     private String nombreacceso;
     
     @OneToMany(mappedBy="nivel")
