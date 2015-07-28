@@ -43,8 +43,7 @@
                 <p:column style="width: 8%" headerText="Acciones" >
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('update_user').show()" icon="fa fa-edit" />
-                    <p:commandButton actionListener="#{userBean.deleteUser(user)}" update="usuarios" icon="fa fa-times"/>
-                    
+                    <p:commandButton id="delete_button" update=":dialogDeleteUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('delete_user').show()" icon="fa fa-times" />
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -90,6 +89,16 @@
             </h:form>
         </p:dialog>
         
+        <p:dialog header="Eliminar Usuario del Sistema" id="dialogDeleteUser" widgetVar="delete_user" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar el usuario #{userBean.nombres} #{userBean.apellidos}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{userBean.deleteUser()}" update=":list:usuarios" oncomplete="PF('delete_user').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_user').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
     </ui:define>
     
 </ui:composition>

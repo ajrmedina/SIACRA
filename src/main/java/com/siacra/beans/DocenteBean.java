@@ -54,15 +54,25 @@ public class DocenteBean implements Serializable {
         try {
             Docente docente = new Docente();
             User user = getUserService().getUserById(getIdUser());
-            if(getAprobado())
-                docente.setAprobarDocente(1);
-            else
-                docente.setAprobarDocente(0);
-            docente.setUser(user);
-            getDocenteService().addDocente(docente);
-            addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
-            reset();
-            //return "ListarNivelesAcceso?faces-redirect=true";
+            if ( user.getEstadoUsuario() == 1) {
+                if ( user.getEsDocente() == 1  ){
+                    if(getAprobado())
+                        docente.setAprobarDocente(1);
+                    else
+                        docente.setAprobarDocente(0);
+                    docente.setUser(user);
+                    getDocenteService().addDocente(docente);
+                    addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
+                    reset();
+                //return "ListarNivelesAcceso?faces-redirect=true";
+                }
+                else {
+                    addMessage("Este usuario no se encuentra identificado como docente dentro del sistema");
+                }
+            }
+            else {
+                addMessage("Este usuario no esta activo dentro del sistema");
+            }
             
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -115,12 +125,11 @@ public class DocenteBean implements Serializable {
     /**
      * Locked Docente
      *
-     * @param docente Docente - Docente to lock
      */
-    public void lockedDocente(Docente docente) {
+    public void lockedDocente() {
         
         try {
-            User user = getUserService().getUserById(docente.getUser().getIdUsuario());
+            User user = getUserService().getUserById(getIdUser());
             String docenteBloqueado = user.getNombres() + " " + user.getApellidos();
             user.setEstadoUsuario(0);
             addMessage("El Docente " + docenteBloqueado + " fue inhabilitado correctamente");
@@ -133,12 +142,11 @@ public class DocenteBean implements Serializable {
     /**
      * Unlocked Docente
      *
-     * @param docente Docente - Docente to unlock
      */
-    public void unlockedDocente(Docente docente) {
+    public void unlockedDocente() {
         
         try {
-            User user = getUserService().getUserById(docente.getUser().getIdUsuario());
+            User user = getUserService().getUserById(getIdUser());
             String docenteBloqueado = user.getNombres() + " " + user.getApellidos();
             user.setEstadoUsuario(1);
             addMessage("El Docente " + docenteBloqueado + " fue habilitado correctamente");
