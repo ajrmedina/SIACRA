@@ -43,8 +43,8 @@
                     </f:facet>
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('update_docente').show()" icon="fa fa-edit" />
-                    <p:commandButton id="locked" actionListener="#{docenteBean.lockedDocente(docente)}" update="docentes" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == 1}"/>
-                    <p:commandButton id="unlocked" actionListener="#{docenteBean.unlockedDocente(docente)}" update="docentes" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == 0}"/>
+                    <p:commandButton id="locked" update=":dialogLockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('lock_docente').show()" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == 1}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('unlock_docente').show()" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == 0}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar docente" rendered="#{docente.user.estadoUsuario == 1}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar docente" rendered="#{docente.user.estadoUsuario == 0}" />
                     
@@ -74,6 +74,28 @@
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_docente').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                     </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Bloquear docente" id="dialogLockDocente" widgetVar="lock_docente" modal="true" resizable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{docenteBean.lockedDocente()}" update=":list:docentes" oncomplete="PF('lock_docente').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_docente').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Desbloquear docente" id="dialogUnlockDocente" widgetVar="unlock_docente" modal="true" resizable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{docenteBean.unlockedDocente()}" update=":list:docentes" oncomplete="PF('unlock_docente').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_docente').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>
