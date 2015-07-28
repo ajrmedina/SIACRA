@@ -35,8 +35,7 @@
                 <p:column style="width: 8%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('update_nivel').show()" icon="fa fa-edit" />
-                    <p:commandButton id="delete_button" actionListener="#{nivelAccesoBean.deleteAcceso(nivel)}" update="nivel" icon="fa fa-times"/>
-                    
+                    <p:commandButton id="delete_button" update=":dialogDeleteNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('delete_nivel').show()" icon="fa fa-times" />
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -56,6 +55,17 @@
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_nivel').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                     </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Eliminar Nivel de Acceso" id="dialogDeleteNivel" widgetVar="delete_nivel" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar el Nivel de Acceso #{nivelAccesoBean.acceso}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{nivelAccesoBean.deleteAcceso()}" update=":list:nivel" oncomplete="PF('delete_nivel').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_nivel').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

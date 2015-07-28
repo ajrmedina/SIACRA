@@ -137,11 +137,11 @@ public class UserBean implements Serializable {
     /**
      * Delete User
      *
-     * @param user User
      */
-    public void deleteUser(User user) {
+    public void deleteUser() {
         
         try {
+            User user = getUserService().getUserById(getIdUsuario());
             String userEliminado = user.getNombreUsuario();
             getUserService().deleteUser(user);
             addMessage("El Usuario " + userEliminado + " fue eliminado correctamente");
