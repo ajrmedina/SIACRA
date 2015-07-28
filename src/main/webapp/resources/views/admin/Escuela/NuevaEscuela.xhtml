@@ -1,0 +1,43 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Nueva - Escuela
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <p:menuitem value="Regresar" url="/resources/views/admin/Escuela/ListarEscuela.xhtml" icon="fa fa-mail-reply"/>
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Nueva Escuela o Unidad
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                <p:outputLabel for="codigoescuela" value="Código de la Escuela: " />
+                <p:inputText id="codigoescuela" value="#{escuelaBean.codigoescuela}">
+                    <f:validateLength maximum="10" />
+                    <f:validateRequired />
+                </p:inputText>
+                
+                <p:outputLabel for="nombreEscuela" value="Nombre de la Escuela: " />
+                <p:inputText id="nombreEscuela" value="#{escuelaBean.nombreescuela}" size="45">
+                    <f:validateLength maximum="50" />
+                    <f:validateRequired />
+                </p:inputText>
+
+                <p:commandButton value="Agregar" action="#{escuelaBean.addEscuela()}" update="messages" ajax="false" />
+                <p:commandButton value="Limpiar" type="reset" />
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>
