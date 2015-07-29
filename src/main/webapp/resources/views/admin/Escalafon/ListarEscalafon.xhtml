@@ -41,7 +41,7 @@
                     <p:growl id="delete" />
                     <p:commandButton id="update_button" update=":dialogUpdateEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('update_escalafon').show()" icon="fa fa-edit" />
                     <!--<p:commandButton id="delete_button" actionListener="#{escalafonBean.deleteEscalafon()}" update="escalafon" icon="fa fa-times"/>-->
-                    <p:commandButton id="delete_button"  update=":dialogoDeleteEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('delete_escalafon').show()" icon="fa fa-times">
+                    <p:commandButton id="delete_button"  update=":delete" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('delete_escalafon').show()" icon="fa fa-times">
                         
                     </p:commandButton>
                 </p:column>
