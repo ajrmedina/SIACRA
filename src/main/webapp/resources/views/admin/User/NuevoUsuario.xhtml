@@ -55,9 +55,12 @@
                 <p:selectBooleanCheckbox value="#{userBean.esDocente}" />
                 
                 <p:outputLabel for="acceso" value="Nivel de Acceso: " />
-                <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                    <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
-                </p:selectOneMenu>
+                <h:panelGroup layout="block">
+                    <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forNivel" for="acceso" value="Seleccione el nivel de acceso para el usuario" />
+                </h:panelGroup>
                 
                 <p:commandButton value="Agregar" action="#{userBean.addUser()}" update="messages" ajax="false"/>
                 <p:commandButton type="reset" value="Limpiar"/>

@@ -6,12 +6,12 @@
 package com.siacra.models;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -36,7 +36,10 @@ public class Escuela implements Serializable{
     
     @Column(name = "nombreescuela", nullable = false)
     private String nombreescuela; 
-
+    
+    @OneToMany(mappedBy="escuela")
+    private Set<Docente> docente;
+    
     public int getIdescuela() {
         return idescuela;
     }
@@ -60,7 +63,25 @@ public class Escuela implements Serializable{
     public void setNombreescuela(String nombreescuela) {
         this.nombreescuela = nombreescuela;
     }
-
+    
+     /**
+     * Get Docente
+     *
+     * @return docente Set<Docente>
+     */
+    public Set<Docente> getDocente() {
+        return docente;
+    }
+    
+    /**
+     * Set Docente
+     *
+     * @param docente Docente
+     */
+    public void setDocente(Set<Docente> docente) {
+        this.docente = docente;
+    }
+    
     @Override
     public String toString() {
         StringBuilder strBuff = new StringBuilder();
