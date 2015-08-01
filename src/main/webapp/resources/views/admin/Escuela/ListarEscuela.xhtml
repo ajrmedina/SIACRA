@@ -1,0 +1,93 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Escuelas
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+        Escuelas de la Facultad de Ingeniería y Arquitectura
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+                <f:facet name="header">                  
+                    <p:button style="float: right" value="Nueva Escuela" outcome="/resources/views/admin/Escuela/NuevaEscuela.xhtml" icon="fa fa-plus"/>                       
+                    
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Búsqueda de Escuelas:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('escuelasTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    
+                    <div style="clear:both" />
+                </f:facet>                                 
+                <p:column style="width: 20%" headerText="Código de Escuela" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
+                    <h:outputText value="#{escuela.codigoescuela}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 50%" headerText="Nombre de Escuela" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
+                    <h:outputText value="#{escuela.nombreescuela}" class="center-element"/>
+                </p:column>
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                    
+                    <p:growl id="messages" />                    
+                    <p:commandButton id="update_button" update=":dialogUpdateEscuela" actionListener="#{escuelaBean.loadEscuela(escuela)}" oncomplete="PF('update_escuela').show()" icon="fa fa-edit" />                                    
+                    <p:commandButton id="delete_button" update=":dialogDeleteEscuela" actionListener="#{escuelaBean.loadEscuela(escuela)}" oncomplete="PF('delete_escuela').show()" icon="fa fa-times"/>
+                </p:column>               
+            </p:dataTable>
+        </h:form>
+        
+         <p:dialog header=" Actualizar Escuela o Unidad" id="dialogUpdateEscuela" widgetVar="update_escuela" modal="true" resizable="false">
+            <h:form id="update">
+                <p:growl id="messages" />
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
+                                 
+                    <p:outputLabel for="codEscuela" value="Codigo de Escuela: " />
+                    <p:inputText id="codEscuela" value="#{escuelaBean.codigoescuela}" 
+                             requiredMessage="Por favor, ingrese el código."
+                             validatorMessage="Máximo 10 caracteres">
+                        <f:validateLength maximum="10" />
+                        <f:validateRequired />
+                    </p:inputText>
+                        
+                    <p:outputLabel for="nombreEscuela" value="Nombre de la Escuela: " />
+                    <p:inputText id="nombreEscuela" value="#{escuelaBean.nombreescuela}" 
+                             requiredMessage="Por favor, ingrese el nombre."
+                             validatorMessage="Máximo 50 caracteres" size="45">
+                        <f:validateLength maximum="50"/>
+                        <f:validateRequired />
+                    </p:inputText>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{escuelaBean.updateEscuela()}" update=":list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_escuela').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+         <p:dialog header="Eliminar Escuela o Unidad" id="dialogDeleteEscuela" widgetVar="delete_escuela" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar la Escuela o Unidad #{escuelaBean.codigoescuela}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{escuelaBean.deleteEscuela()}" update=":list:escuela" oncomplete="PF('delete_escuela').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_escuela').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+    
+</ui:composition>
