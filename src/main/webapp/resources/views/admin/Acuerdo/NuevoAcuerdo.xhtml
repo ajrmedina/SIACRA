@@ -23,18 +23,23 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="codigoAcuerdo" value="Código de Acuerdo: " />
-                <p:inputText id="codigoAcuerdo" value="#{acuerdoBean.codigoacuerdo}">
-                    <f:validateLength maximum="10" />
-                    <f:validateRequired />
+                
+                <p:inputText id="codigoAcuerdo" value="#{acuerdoBean.codigoacuerdo}" required="true"
+                             requiredMessage="Por favor, ingrese el código."
+                             validatorMessage="Máximo 20 caracteres" >
+                    <f:validateLength maximum="20" />                     
                 </p:inputText>
                 
                 <p:outputLabel for="fechaAcuerdo" value="Fecha de Acuerdo:" />
-                <p:calendar id="fechaAcuerdo" value="#{acuerdoBean.fechaacuerdo}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="yyyy-MM-dd"/>                
+                <p:calendar id="fechaAcuerdo" value="#{acuerdoBean.fechaacuerdo}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-mm-yyyy"
+                            requiredMessage="Por favor, ingrese la fecha."/>                
                             
                 <p:outputLabel for="nombreAcuerdo" value="Nombre del Acuerdo: " />
-                <p:inputText id="nombreAcuerdo" value="#{acuerdoBean.nombreacuerdo}" size="30">
-                    <f:validateLength maximum="50" />
-                    <f:validateRequired />
+                <p:inputText id="nombreAcuerdo" value="#{acuerdoBean.nombreacuerdo}" size="30" required="true"
+                             requiredMessage="Por favor, ingrese el nombre."
+                             validatorMessage="Máximo 200 caracteres">
+                    <f:validateLength maximum="200" />      
+                    
                 </p:inputText>
 
                 <p:commandButton value="Agregar" action="#{acuerdoBean.addAcuerdo()}" update="messages" ajax="false" />

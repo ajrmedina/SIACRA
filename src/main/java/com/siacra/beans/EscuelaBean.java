@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -96,19 +97,19 @@ public class EscuelaBean implements Serializable{
      *
      * @param char id - idescuela
      */
-    public void deleteEscuela(Escuela escuela) {
+    public void deleteEscuela() {
         
         try {
-           // Escuela escuela = new Escuela(); 
-           // escuela = getEscuelaService().getEscuelaById();
+            Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
             String escuelaEliminada = escuela.getCodigoescuela();
             getEscuelaService().deleteEscuela(escuela);
             addMessage("La Escuela " + escuelaEliminada + " fue eliminada correctamente");                
-        } catch (DataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
+            addMessage("La Escuela no puede ser eliminada debido a que tiene registros relacionados");
         }
     }
-    
+        
     /**
      * Reset Fields
      *

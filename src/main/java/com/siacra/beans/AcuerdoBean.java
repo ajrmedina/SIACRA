@@ -12,11 +12,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import com.siacra.models.Acuerdo;
 import com.siacra.services.AcuerdoService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -88,17 +93,17 @@ public class AcuerdoBean implements Serializable{
     }
     
  
-    public void deleteAcuerdo(Acuerdo acuerdo) {
+    public void deleteAcuerdo() {
         
         try {
-           // Escuela escuela = new Escuela(); 
-           // escuela = getEscuelaService().getEscuelaById();
-            String acuerdoEliminado = acuerdo.getCodigoacuerdo(); //escuela.getCodigoescuela();
-            getAcuerdoService().deleteAcuerdo(acuerdo);
-            //getEscuelaService().deleteEscuela(escuela);
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdacuerdo());
+            String acuerdoEliminado = acuerdo.getCodigoacuerdo(); 
+            getAcuerdoService().deleteAcuerdo(acuerdo);  
+            
             addMessage("El acuerdo " + acuerdoEliminado + " fue eliminado correctamente");                
-        } catch (DataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
+            addMessage("El acuerdo no puede ser eliminado debido a que tiene registros relacionados");
         }
     }
     
@@ -106,10 +111,18 @@ public class AcuerdoBean implements Serializable{
      * Reset Fields
      *
      */
-    public void reset() {       
-      // this.setIdescuela("");
+    public void reset() {    
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+        Date fechaDate = null;
+         try {
+             fechaDate = formato.parse(" ");
+         } catch (ParseException ex) {
+             Logger.getLogger(AcuerdoBean.class.getName()).log(Level.SEVERE, null, ex);
+         }
         this.setCodigoacuerdo("");
-        this.setNombreacuerdo("");          
+        this.setNombreacuerdo("");  
+        this.setFechaacuerdo(fechaDate);
+
     }
 
     /**

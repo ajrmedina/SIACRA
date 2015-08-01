@@ -6,6 +6,7 @@
 package com.siacra.models;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name="acuerdo")
-public class Acuerdo {
+public class Acuerdo implements Serializable{
     
     @Id
     @Column(name="idacuerdo")

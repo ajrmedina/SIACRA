@@ -23,18 +23,24 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="codigoescuela" value="Código de la Escuela: " />
-                <p:inputText id="codigoescuela" value="#{escuelaBean.codigoescuela}">
-                    <f:validateLength maximum="10" />
-                    <f:validateRequired />
+                <p:inputText id="codigoescuela" value="#{escuelaBean.codigoescuela}" required="true"
+                             requiredMessage="Por favor, ingrese el código."
+                             validatorMessage="Máximo 10 caracteres">
+                    <f:validateLength maximum="10" /> 
+                    
                 </p:inputText>
                 
+                
                 <p:outputLabel for="nombreEscuela" value="Nombre de la Escuela: " />
-                <p:inputText id="nombreEscuela" value="#{escuelaBean.nombreescuela}" size="45">
-                    <f:validateLength maximum="50" />
-                    <f:validateRequired />
+                <p:inputText id="nombreEscuela" value="#{escuelaBean.nombreescuela}" size="45" required="true"
+                             requiredMessage="Por favor, ingrese el nombre."
+                             validatorMessage="Máximo 50 caracteres"
+                             >
+                    <f:validateLength maximum="50" />      
+                    
                 </p:inputText>
 
-                <p:commandButton value="Agregar" action="#{escuelaBean.addEscuela()}" update="messages" ajax="false" />
+                <p:commandButton value="Agregar" actionListener="#{escuelaBean.addEscuela()}" update="messages" ajax="false"/>
                 <p:commandButton value="Limpiar" type="reset" />
             </h:panelGrid>
         </h:form>
