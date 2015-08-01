@@ -1,0 +1,105 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Acuerdos
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+        Acuerdos de Junta Directiva
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="acuerdo" var="acuerdo" value="#{acuerdoBean.acuerdoList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="acuerdosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">                  
+                    <p:button style="float: right" value="Nuevo Acuerdo" outcome="/resources/views/admin/Acuerdo/NuevoAcuerdo" icon="fa fa-plus"/>                       
+                    
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Búsqueda de Acuerdos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('acuerdosTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    
+                    <div style="clear:both" />
+                </f:facet>                                 
+                <p:column style="width: 25%" headerText="Código de Acuerdo" filterBy="#{acuerdo.codigoacuerdo}" filterStyleClass="hide">                    
+                    <h:outputText value="#{acuerdo.codigoacuerdo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 25%" headerText="Fecha de Acuerdo" filterBy="#{acuerdo.fechaacuerdo}" filterStyleClass="hide"  >                    
+                    <h:outputText value="#{acuerdo.fechaacuerdo}" class="center-element">
+                         <f:convertDateTime pattern="dd-MM-yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width: 50%" headerText="Nombre de Acuerdo" filterBy="#{acuerdo.nombreacuerdo}" filterStyleClass="hide">                    
+                    <h:outputText value="#{acuerdo.nombreacuerdo}" />
+                </p:column>
+                <p:column style="width: 15%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                    
+                    <p:growl id="messages" />                    
+                    <p:commandButton id="update_button" update=":dialogUpdateAcuerdo" actionListener="#{acuerdoBean.loadAcuerdo(acuerdo)}" oncomplete="PF('update_acuerdo').show()" icon="fa fa-edit" />
+                    <p:commandButton id="delete_button" update=":dialogDeleteAcuerdo" actionListener="#{acuerdoBean.deleteAcuerdo()}" oncomplete="PF('delete_acuerdo').show()" icon="fa fa-times"/>
+                
+                    
+                </p:column>               
+            </p:dataTable>
+        </h:form>
+        
+         <p:dialog header=" Actualizar Acuerdo" id="dialogUpdateAcuerdo" widgetVar="update_acuerdo" modal="true" resizable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">                   
+                               
+                    <p:outputLabel for="codigoAcuerdo" value="Código de Acuerdo:" />
+                    <p:inputText id="codigoAcuerdo" value="#{acuerdoBean.codigoacuerdo}" 
+                             requiredMessage="Por favor, ingrese el código."
+                             validatorMessage="Máximo 20 caracteres">
+                        <f:validateLength maximum="20" />
+                        <f:validateRequired />                        
+                    </p:inputText>
+
+                    <p:outputLabel for="fechaAcuerdo" value="Fecha de Acuerdo:" />
+                    <p:calendar id="fechaAcuerdo" value="#{acuerdoBean.fechaacuerdo}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha."/>                        
+                                     
+
+                    <p:outputLabel for="nombreAcuerdo" value="Nombre del Acuerdo: " />
+                    <p:inputText id="nombreAcuerdo" value="#{acuerdoBean.nombreacuerdo}" size="30" 
+                             requiredMessage="Por favor, ingrese el nombre."
+                             validatorMessage="Máximo 200 caracteres">
+                        <f:validateLength maximum="200" />
+                        <f:validateRequired />                                               
+                    </p:inputText>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{acuerdoBean.updateAcuerdo()}" update=":list:acuerdo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_acuerdo').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+         <p:dialog header="Eliminar Acuerdo" id="dialogDeleteAcuerdo" widgetVar="delete_acuerdo" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar el acuerdo #{acuerdoBean.codigoacuerdo}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{acuerdoBean.deleteAcuerdo()}" update=":list:acuerdo" oncomplete="PF('delete_acuerdo').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_acuerdo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+    
+</ui:composition>
