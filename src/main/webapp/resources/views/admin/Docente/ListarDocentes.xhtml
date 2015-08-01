@@ -16,43 +16,35 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 70%" class="center-element" rows="5" paginator="true">
+            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 70%" class="center-element" paginator="true" rows="10" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Docente" outcome="/resources/views/admin/Docente/NuevoDocente.xhtml" icon="fa fa-plus"/>                       
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Busqueda de docentes:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('docentesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 20%">
-                    <f:facet name="header">
-                        <h:outputText value="Nombres" />
-                    </f:facet>
+                <p:column style="width: 20%" headerText="Nombres" filterBy="#{docente.user.nombres}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.nombres}" />
                 </p:column>
-                <p:column style="width: 20%">
-                    <f:facet name="header">
-                        <h:outputText value="Apellidos" />
-                    </f:facet>
+                <p:column style="width: 20%" headerText="Apellidos" filterBy="#{docente.user.apellidos}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.apellidos}" />
                 </p:column>
-                <p:column style="width: 5%">
-                    <f:facet name="header">
-                        <h:outputText value="Activo" />
-                    </f:facet>
+                <p:column style="width: 5%" headerText="Activo" filterBy="#{docente.user.estadoUsuario}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.estadoUsuario}" />
                 </p:column>
-                <p:column style="width: 7%">
-                    <f:facet name="header">
-                        <h:outputText value="Aprobado" />
-                    </f:facet>
+                <p:column style="width: 7%" headerText="Aprobado" filterBy="#{docente.aprobarDocente}" filterStyleClass="hide">
                     <h:outputText value="#{docente.aprobarDocente}" />
                 </p:column>
-                <p:column style="width: 8%">
+                <p:column style="width: 8%" headerText="Accciones">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('update_docente').show()" icon="fa fa-edit" />
-                    <p:commandButton id="locked" actionListener="#{docenteBean.lockedDocente(docente)}" update="docentes" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == 1}"/>
-                    <p:commandButton id="unlocked" actionListener="#{docenteBean.unlockedDocente(docente)}" update="docentes" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == 0}"/>
+                    <p:commandButton id="locked" update=":dialogLockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('lock_docente').show()" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == 1}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('unlock_docente').show()" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == 0}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar docente" rendered="#{docente.user.estadoUsuario == 1}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar docente" rendered="#{docente.user.estadoUsuario == 0}" />
                     
@@ -82,6 +74,28 @@
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_docente').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                     </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Bloquear docente" id="dialogLockDocente" widgetVar="lock_docente" modal="true" resizable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{docenteBean.lockedDocente()}" update=":list:docentes" oncomplete="PF('lock_docente').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_docente').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Desbloquear docente" id="dialogUnlockDocente" widgetVar="unlock_docente" modal="true" resizable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{docenteBean.unlockedDocente()}" update=":list:docentes" oncomplete="PF('unlock_docente').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_docente').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

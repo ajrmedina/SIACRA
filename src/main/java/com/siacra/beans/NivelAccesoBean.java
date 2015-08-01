@@ -89,13 +89,13 @@ public class NivelAccesoBean implements Serializable {
     /**
      * Delete NivelAcceso
      *
-     * @param acceso NivelAcceso
      */
-    public void deleteAcceso(NivelAcceso acceso) {
+    public void deleteAcceso() {
         
         try {
-            String accesoEliminado = acceso.getAcceso();
-            getNivelAccesoService().deleteNivelAcceso(acceso);
+            NivelAcceso nivel = getNivelAccesoService().getNivelAccesoById(getId());
+            String accesoEliminado = nivel.getAcceso();
+            getNivelAccesoService().deleteNivelAcceso(nivel);
             addMessage("El Nivel de Acceso " + accesoEliminado + " fue eliminado correctamente");
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();

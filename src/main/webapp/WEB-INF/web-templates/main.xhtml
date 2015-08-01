@@ -69,7 +69,11 @@
                 </h:form>
             </nav>
             
-            <section class="pad-top-20">  
+            <section class="pad-top-20">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:dialog widgetVar="statusDialog" draggable="false" closable="false" resizable="false" showHeader="false" showEffect="fade" hideEffect="fade" position="right,bottom">
+                    <p:graphicImage library="img" name="ajax-loader.gif" />
+                </p:dialog>
                 <center><h1 class="title"> <ui:insert name="title-view">{{Titulo de pantalla por defecto}}</ui:insert> </h1></center>
                 <br /><br />
                 <ui:insert name="content">{{Contenido por defecto}}</ui:insert>       
