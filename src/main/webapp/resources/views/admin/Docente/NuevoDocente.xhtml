@@ -28,10 +28,20 @@
                 <p:selectBooleanCheckbox value="#{docenteBean.aprobado}" required="true" />
                 
                 <p:outputLabel for="usuario" value="Usuario Asociado: " />
-                <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
-                    <f:selectItem itemLabel="Seleccione un usuario asociado" itemValue="0" />
-                    <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}"/>
-                </p:selectOneMenu>
+                <h:panelGroup layout="block">
+                    <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                        <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado al docente" />
+                </h:panelGroup>
+                
+                <p:outputLabel for="escuela" value="Escuela del Docente: " />
+                <h:panelGroup layout="block">
+                    <p:selectOneMenu id="escuela" value="#{docenteBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                        <f:selectItems value="#{docenteBean.escuelaList}" var="escuela" itemValue="#{escuela.idescuela}" itemLabel="#{escuela.codigoescuela} - #{escuela.nombreescuela}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forEscuela" for="escuela" value="Seleccione la escuela a la que pertenece el docente" />
+                </h:panelGroup>
                 
                 <p:commandButton value="Ingresar" action="#{docenteBean.addDocente()}" update="messages" ajax="false"/>
             </h:panelGrid>

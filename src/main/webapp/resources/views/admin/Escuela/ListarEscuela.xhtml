@@ -16,7 +16,6 @@
                     
     <ui:define name="content">
         <h:form id="list">
-            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
@@ -50,7 +49,6 @@
         
          <p:dialog header=" Actualizar Escuela o Unidad" id="dialogUpdateEscuela" widgetVar="update_escuela" modal="true" resizable="false">
             <h:form id="update">
-                <p:growl id="messages" />
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
                                  

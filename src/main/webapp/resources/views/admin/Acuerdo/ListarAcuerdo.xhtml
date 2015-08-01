@@ -16,7 +16,6 @@
                     
     <ui:define name="content">
         <h:form id="list">
-            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="acuerdo" var="acuerdo" value="#{acuerdoBean.acuerdoList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="acuerdosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
@@ -49,7 +48,7 @@
                     
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateAcuerdo" actionListener="#{acuerdoBean.loadAcuerdo(acuerdo)}" oncomplete="PF('update_acuerdo').show()" icon="fa fa-edit" />
-                    <p:commandButton id="delete_button" update=":dialogDeleteAcuerdo" actionListener="#{acuerdoBean.deleteAcuerdo()}" oncomplete="PF('delete_acuerdo').show()" icon="fa fa-times"/>
+                    <p:commandButton id="delete_button" update=":dialogDeleteAcuerdo" actionListener="#{acuerdoBean.loadAcuerdo(acuerdo)}" oncomplete="PF('delete_acuerdo').show()" icon="fa fa-times"/>
                 
                     
                 </p:column>               

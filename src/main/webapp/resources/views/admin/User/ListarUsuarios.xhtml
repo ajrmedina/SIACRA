@@ -75,10 +75,12 @@
                     <p:selectBooleanCheckbox value="#{userBean.esDocente}" />
 
                     <p:outputLabel for="acceso" value="Nivel de Acceso: " />
-                    <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                        <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
-                    </p:selectOneMenu>
-
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forNivel" for="acceso" value="Seleccione el nivel de acceso para el usuario" />
+                    </h:panelGroup>
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{userBean.updateUser()}" update=":list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_user').hide()" icon="fa fa-refresh" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_user').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
