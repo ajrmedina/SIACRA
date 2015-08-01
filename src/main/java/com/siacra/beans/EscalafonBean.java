@@ -70,7 +70,7 @@ public class EscalafonBean implements Serializable{
     /**
      * Update Escalafon
      *
-     * @param int id - idEscalafon
+     * 
      */
     public void updateEscalafon() {
         
