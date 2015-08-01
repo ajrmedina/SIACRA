@@ -1,5 +1,6 @@
 package com.siacra.models;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="nivelacceso")
-public class NivelAcceso {
+public class NivelAcceso implements Serializable{
     
     @Id
     @GeneratedValue
