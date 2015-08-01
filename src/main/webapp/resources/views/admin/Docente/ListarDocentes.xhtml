@@ -16,7 +16,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 70%" class="center-element" paginator="true" rows="10" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 90%" class="center-element" paginator="true" rows="10" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Docente" outcome="/resources/views/admin/Docente/NuevoDocente.xhtml" icon="fa fa-plus"/>                       
                     <p:outputPanel style="float: left">
@@ -36,6 +36,9 @@
                 </p:column>
                 <p:column style="width: 7%" headerText="Aprobado" filterBy="#{docente.aprobarDocente}" filterStyleClass="hide">
                     <h:outputText value="#{docente.aprobarDocente}" />
+                </p:column>
+                <p:column style="width: 20%" headerText="Escuela" filterBy="#{docente.escuela.nombreescuela}" filterStyleClass="hide">
+                    <h:outputText value="#{docente.escuela.nombreescuela}" />
                 </p:column>
                 <p:column style="width: 8%" headerText="Accciones">
                     <f:facet name="header">
@@ -66,10 +69,21 @@
                     <p:selectBooleanCheckbox value="#{docenteBean.aprobado}" required="true" />
 
                     <p:outputLabel for="usuario" value="Usuario Asociado: " />
-                    <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
-                        <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}"/>
-                    </p:selectOneMenu>
-
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                            <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado al docente" />
+                    </h:panelGroup>
+                    
+                    <p:outputLabel for="escuela" value="Escuela del Docente: " />
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="escuela" value="#{docenteBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                            <f:selectItems value="#{docenteBean.escuelaList}" var="escuela" itemValue="#{escuela.idescuela}" itemLabel="#{escuela.codigoescuela} - #{escuela.nombreescuela}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forEscuela" for="escuela" value="Seleccione la escuela a la que pertenece el docente" />
+                    </h:panelGroup>
+                    
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{docenteBean.updateDocente()}" update=":list:docentes" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-refresh" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_docente').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />

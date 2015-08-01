@@ -69,11 +69,21 @@ public class NivelAcceso implements Serializable{
     public void setAcceso(String nombreacceso) {
         this.nombreacceso = nombreacceso;
     }
-
+    
+    /**
+     * Get User
+     *
+     * @return usuario Set<User>
+     */
     public Set<User> getUser() {
         return usuario;
     }
-
+    
+    /**
+     * Set User
+     *
+     * @param usuario Set<User>
+     */
     public void setUser(Set<User> usuario) {
         this.usuario = usuario;
     }

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -34,6 +35,10 @@ public class Docente implements Serializable {
     @OneToOne
     @JoinColumn(name="idusuario")
     private User user;
+    
+    @ManyToOne
+    @JoinColumn(name="idescuela")
+    private Escuela escuela;
     
     /**
      * Get Id Docente
@@ -70,14 +75,44 @@ public class Docente implements Serializable {
     public void setAprobarDocente(int aprobardocente) {
         this.aprobarDocente = aprobardocente;
     }
-
+    
+    /**
+     * Get User
+     *
+     * @return user User
+     */
     public User getUser() {
         return this.user;
     }
-
+    
+    /**
+     * Set User
+     *
+     * @param user User
+     */
     public void setUser(User user) {
         this.user = user;
     }
     
+    /**
+     * Get Escuela
+     *
+     * @return escuela Escuela
+     */
+    
+    public Escuela getEscuela() {
+        return this.escuela;
+    }
+    
+    /**
+     * Set Escuela
+     *
+     * @param escuela Escuela
+     */
+    
+    public void setEscuela(Escuela escuela) {
+        this.escuela = escuela;
+    }
+   
 }
 
