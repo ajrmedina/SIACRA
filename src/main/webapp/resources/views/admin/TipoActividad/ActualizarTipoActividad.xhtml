@@ -6,34 +6,34 @@
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="title">
-       Actualizar - Escalafon
+       Actualizar - TipoActividad
     </ui:define>
     
      <ui:define name="add-menu-items">
-        <p:menuitem value="Regresar" url="/resources/views/admin/Escalafon/ListarEscalafon.xhtml" icon="fa fa-mail-reply"/>
+        <p:menuitem value="Regresar" url="/resources/views/admin/TipoActividad/ListarTipoActividad.xhtml" icon="fa fa-mail-reply"/>
     </ui:define>
     
     <ui:define name="title-view">
-       Actualizar Escalafon
+       Actualizar TipoActividad
     </ui:define>
     
     <ui:define name="content">
         <f:metadata>
-            <f:viewParam name="escalafonID" value="#{escalafonBean.idescalafon}" />
-            <f:event type="preRenderView" listener="#{escalafonBean.loadEscalafon()}"/>
+            <f:viewParam name="tipoactividadID" value="#{tipoactividadBean.idtipoactividad}" />
+            <f:event type="preRenderView" listener="#{tipoactividadBean.loadTipoActividad(tipoactividad)}"/>
         </f:metadata>
         <h:form>
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                <p:outputLabel for="idEscalafon" value="Id del Escalafon " />
-                <p:inputText id="idEscalafon" value="#{escalafonBean.idescalafon}" readonly="true" />
-                <p:outputLabel for="tipoEscalafon" value="Nombre del Acceso: " />
-                <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}" maxlength="30">
+                <p:outputLabel for="idTipoActividad" value="Id del TipoActividad " />
+                <p:inputText id="idTipoActividad" value="#{tipoactividadBean.idtipoactividad}" readonly="true" />
+                <p:outputLabel for="tipoTipoActividad" value="Nombre del Acceso: " />
+                <p:inputText id="tipoTipoActividad" value="#{tipoactividadBean.tipotipoactividad}" maxlength="30">
                     <f:validateLength minimum="1" />
                 </p:inputText>
                 
-                <p:commandButton value="Actualizar" action="#{escalafonBean.updateEscalafon(escalafonBean.idescalafon)}" update="messages" ajax="false"/>
+                <p:commandButton value="Actualizar" action="#{tipoactividadBean.updateTipoActividad()}" update="messages" ajax="false"/>
                 
             </h:panelGrid>
         </h:form>

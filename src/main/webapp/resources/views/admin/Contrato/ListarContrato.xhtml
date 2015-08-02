@@ -1,0 +1,74 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Contrato
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Contrato al SIACRA
+    </ui:define>
+                    
+    <ui:define name="content">
+        
+        <h:form id="list">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="contrato" var="contrato" value="#{contratoBean.contratoList}" style="width: 48%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="contratosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">                  
+                    <p:button style="float: right" value="Nuevo Contrato  " outcome="/resources/views/admin/Contrato/NuevoContrato.xhtml" icon="fa fa-plus"/>                       
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Busqueda de contratos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('contratosTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    <div style="clear:both" />
+                </f:facet>
+                <p:column style="width: 10%" headerText="ID Contrato" filterBy="#{contrato.idcontrato}" filterStyleClass="hide">
+                    <h:outputText value="#{contrato.idcontrato}" />
+                </p:column>
+                <p:column style="width: 20%" headerText="Tipo contrato" filterBy="#{contrato.tipocontrato}" filterStyleClass="hide">
+                    <h:outputText value="#{contrato.tipocontrato}" />
+                </p:column>
+                <p:column style="width: 8%" headerText="Acciones">
+                    <p:growl id="messages" />
+                    <p:commandButton id="update_button" update=":dialogUpdateContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('update_contrato').show()" icon="fa fa-edit" />
+                    <p:commandButton id="delete_button" update=":dialogDeleteContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('delete_contrato').show()" icon="fa fa-times" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        
+        <p:dialog header="Actualizar Contrato  " id="dialogUpdateContrato" widgetVar="update_contrato" modal="true" resizable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:outputLabel for="id" value="Id del Contrato : " />
+                    <p:inputText id="id" value="#{contratoBean.idcontrato}" readonly="true" />
+                    <p:outputLabel for="nombre" value="Nombre del contrato : " />
+                    <p:inputText id="nombre" value="#{contratoBean.tipocontrato}">
+                        <f:validateLength minimum="2" maximum="25" />
+                    </p:inputText>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_contrato').hide()" icon="fa fa-ban">
+                      <p:resetInput target="update" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Eliminar Contrato  " id="dialogDeleteContrato" widgetVar="delete_contrato" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar el Contrato de  #{contratoBean.tipocontrato}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{contratoBean.deleteContrato()}" update=":list:contrato" oncomplete="PF('delete_contrato').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_contrato').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+    
+</ui:composition>
