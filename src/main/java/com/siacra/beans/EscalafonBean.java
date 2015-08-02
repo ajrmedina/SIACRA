@@ -60,6 +60,7 @@ public class EscalafonBean implements Serializable{
      * Load Escalafon
      *
      * Get and Load the data for Escalafon to update
+     * @param escalafon
      */
     public void loadEscalafon(Escalafon escalafon) {
         

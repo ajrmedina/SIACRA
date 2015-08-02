@@ -23,54 +23,54 @@ import javax.validation.constraints.Size;
  * @author ivpa
  */
 @Entity
-@Table(name = "contrato")
-public class Contrato implements Serializable {
+@Table(name = "tipoactividad")
+public class TipoActividad implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDCONTRATO", nullable = false)
-    private Integer idcontrato;
+    @Column(name = "IDTIPOACTIVIDAD", nullable = false)
+    private Integer idtipoactividad;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
-    @Column(name = "TIPOCONTRATO", nullable = false, length = 30)
-    private String tipocontrato;
+    @Column(name = "TIPOACTIVIDAD", nullable = false, length = 30)
+    private String tipoactividad;
 
-    public Contrato() {
+    public TipoActividad() {
     }
 
-    public Contrato(Integer idcontrato) {
-        this.idcontrato = idcontrato;
+    public TipoActividad(Integer idtipoactividad) {
+        this.idtipoactividad = idtipoactividad;
     }
 
-    public Contrato(Integer idcontrato, String tipocontrato) {
-        this.idcontrato = idcontrato;
-        this.tipocontrato = tipocontrato;
+    public TipoActividad(Integer idtipoactividad, String tipoactividad) {
+        this.idtipoactividad = idtipoactividad;
+        this.tipoactividad = tipoactividad;
     }
 
-    public Integer getIdcontrato() {
-        return idcontrato;
+    public Integer getIdtipoactividad() {
+        return idtipoactividad;
     }
 
-    public void setIdcontrato(Integer idcontrato) {
-        this.idcontrato = idcontrato;
+    public void setIdtipoactividad(Integer idtipoactividad) {
+        this.idtipoactividad = idtipoactividad;
     }
 
-    public String getTipocontrato() {
-        return tipocontrato;
+    public String getTipoactividad() {
+        return tipoactividad;
     }
 
-    public void setTipocontrato(String tipocontrato) {
-        this.tipocontrato = tipocontrato;
+    public void setTipoactividad(String tipoactividad) {
+        this.tipoactividad = tipoactividad;
     }
 
+ 
    
-
 
     @Override
     public String toString() {
-        return "com.siacra.models.Contrato[ idcontrato=" + idcontrato + " ]";
+        return "com.siacra.models.Tipoactividad[ idtipoactividad=" + idtipoactividad + " ]";
     }
     
 }
