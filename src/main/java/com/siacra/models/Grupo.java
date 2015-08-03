@@ -87,7 +87,6 @@ public class Grupo implements Serializable{
     public void setIdTipoGrupo(TipoGrupo idTipoGrupo) {
         this.idTipoGrupo = idTipoGrupo;
     }
-    
     /*
     public Set<Oferta> getOferta() {
         return oferta;
@@ -95,9 +94,6 @@ public class Grupo implements Serializable{
 
     public void setOferta(Set<Oferta> oferta) {
         this.oferta = oferta;
-    }
-    */
-    
-    
-    
+    }   
+     */
 }

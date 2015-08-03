@@ -34,7 +34,7 @@
                 </p:column>
                 
                 <p:column style="width: 25%" headerText="Cupos del grupo" filterBy="#{grupo.cupo}" filterStyleClass="hide">                  
-                    <h:outputText value="#{grupo.crupo}" class="center-element"/>
+                    <h:outputText value="#{grupo.cupo}" class="center-element"/>
                 </p:column>
                 
                 <p:column style="width: 25%" headerText="Numero del grupo" filterBy="#{grupo.numeroGrupo}" filterStyleClass="hide">                  
@@ -59,37 +59,39 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
                                  
-                    <p:outputLabel for="tipoGrupos" value="Codigo de tipo de grupo: " />
-                    <p:inputText id="tipoGrupos" value="#{tipogrupoBean.tipoGrupos}" 
-                             requiredMessage="Por favor, ingrese el código del tipo de grupo"
-                             validatorMessage="Máximo 6 caracteres">
-                        <f:validateLength maximum="6" />
-                        <f:validateRequired />
-                    </p:inputText>
+                    <p:outputLabel for="tipogrupos" value="Tipo de grupo : " />
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="tipogrupos" value="#{grupoBean.idTipoGrupo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItems value="#{grupoBean.tipoGrupoList}" var="tipo" itemValue="#{tipo.idTipoGrupo}" itemLabel="#{tipo.tipoGrupo}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forTipo" for="tipogrupos" value="Seleccione el tipo de grupo" />
+                    </h:panelGroup>
                         
-                    <p:outputLabel for="nombreGrupo" value="Nombre del tipo de grupo: " />
-                    <p:inputText id="nombreGrupo" value="#{tipogrupoBean.nombreGrupo}" 
-                             requiredMessage="Por favor, ingrese el nombre."
-                             validatorMessage="Máximo 25 caracteres" size="25">
-                        <f:validateLength maximum="25"/>
-                        <f:validateRequired />
+                    <p:outputLabel for="cupo" value="Cantidad de cupos : " />
+                    <p:inputText id="cupo" value="#{grupoBean.cupo}" required="true" >
+                        <f:validateLength maximum="3" minimum="1" />
                     </p:inputText>
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipogrupoBean.updateTipoGrupo()}" update=":list:tipogrupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-refresh" />
-                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tipogrupo').hide()" icon="fa fa-ban">
+                    <p:outputLabel for="numerogrupo" value="Numero de grupo : " />
+                    <p:inputText id="numerogrupo" value="#{grupoBean.numeroGrupo}" required="true" >
+                        <f:validateLength maximum="3" minimum="1" />
+                    </p:inputText>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:grupos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_grupo').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                     </p:commandButton> 
                 </h:panelGrid>
             </h:form>
         </p:dialog>
         
-         <p:dialog header="Eliminar Tipo de grupo" id="dialogDeleteTipoGrupo" widgetVar="delete_tipogrupo" modal="true" resizable="false">
+         <p:dialog header="Eliminar grupo" id="dialogDeleteGrupo" widgetVar="delete_grupo" modal="true" resizable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el Tipo de grupo : #{tipogrupoBean.nombreGrupo}?" />
+                <h:outputText value="Seguro que desea eliminar el grupo : #{grupoBean.numeroGrupo}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{tipogrupoBean.deleteTipoGrupo()}" update=":list:tipogrupo" oncomplete="PF('delete_tipogrupo').hide()" icon="fa fa-trash-o" />
-                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_tipogrupo').hide()" icon="fa fa-ban" />
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{grupoBean.deleteGrupo()}" update=":list:grupos" oncomplete="PF('delete_grupo').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_grupo').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

@@ -25,9 +25,9 @@ public class Horario implements Serializable{
     @Id
     @GeneratedValue
     @Column(name="idhorario")
-    private int idnivelacceso;
+    private int idHorario;
     
-    @Column(name="",nullable=false,length = 13 )
+    @Column(name="periodo",nullable=false,length = 13 )
     String periodo;
     
     @Column(name="dia",nullable=false,length = 50)
@@ -36,12 +36,12 @@ public class Horario implements Serializable{
     //@OneToMany(mappedBy="idhorario")
     //private Set<Oferta> oferta;
 
-    public int getIdnivelacceso() {
-        return idnivelacceso;
+    public int getIdHorario() {
+        return idHorario;
     }
 
-    public void setIdnivelacceso(int idnivelacceso) {
-        this.idnivelacceso = idnivelacceso;
+    public void setIdHorario(int idHorario) {
+        this.idHorario = idHorario;
     }
 
     public String getPeriodo() {
@@ -59,5 +59,7 @@ public class Horario implements Serializable{
     public void setDia(String dia) {
         this.dia = dia;
     }
+
+    
     
 }

@@ -160,7 +160,7 @@ public class GrupoBean implements Serializable{
             grupo.setNumeroGrupo(getNumeroGrupo());
             grupo.setAprobarGrupo(getAprobarGrupo());
             getGrupoService().updateGrupo(grupo);
-            addMessage("El grupo : " + getNumeroGrupo() + "fue actualizado exitosamente");
+            addMessage("El grupo : " + getNumeroGrupo() + " fue actualizado exitosamente");
             
         }catch (DataAccessException e){
             e.printStackTrace();
