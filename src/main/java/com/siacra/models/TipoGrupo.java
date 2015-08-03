@@ -33,7 +33,7 @@ public class TipoGrupo implements Serializable{
     @Column(name="nombregrupo",nullable = false, length = 25)
     String nombreGrupo;
     
-    @OneToMany(mappedBy="idtipogrupo")
+    @OneToMany(mappedBy="idTipoGrupo")
     private Set<Grupo> grupo;
 
     public Integer getIdTipoGrupo() {

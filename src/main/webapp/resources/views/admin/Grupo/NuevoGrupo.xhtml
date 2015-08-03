@@ -1,0 +1,50 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Nuevo - Grupo del Sistema
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <!-- <p:menuitem value="Regresar" url="/resources/views/admin/User/ListarUsuarios.xhtml" icon="fa fa-mail-reply"/> -->
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Agregar Grupo al Sistema
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                
+                <p:outputLabel for="tipogrupos" value="Tipo de grupo : " />
+                <h:panelGroup layout="block">
+                    <p:selectOneMenu id="tipogrupos" value="#{grupoBean.idTipoGrupo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <f:selectItems value="#{grupoBean.tipoGrupoList}" var="tipo" itemValue="#{tipo.idTipoGrupo}" itemLabel="#{tipo.tipoGrupo}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forTipo" for="tipogrupos" value="Seleccione el tipo de grupo" />
+                </h:panelGroup>
+                
+                <p:outputLabel for="cupo" value="Cantidad de cupos : " />
+                <p:inputText id="cupo" value="#{grupoBean.cupo}" required="true" >
+                    <f:validateLength maximum="3" minimum="1" />
+                </p:inputText>
+                
+                <p:outputLabel for="numerogrupo" value="Numero de grupo : " />
+                <p:inputText id="numerogrupo" value="#{grupoBean.numeroGrupo}" required="true" >
+                    <f:validateLength maximum="3" minimum="1" />
+                </p:inputText>
+                
+                <p:commandButton value="Agregar" action="#{grupoBean.addGrupo()}" update="messages" ajax="false"/>
+                <p:commandButton type="reset" value="Limpiar"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>

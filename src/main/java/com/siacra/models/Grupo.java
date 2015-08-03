@@ -76,6 +76,9 @@ public class Grupo implements Serializable{
     public void setAprobarGrupo(boolean aprobarGrupo) {
         this.aprobarGrupo = aprobarGrupo;
     }
+    public boolean getAprobarGrupo(){
+        return aprobarGrupo;
+    }
 
     public TipoGrupo getIdTipoGrupo() {
         return idTipoGrupo;

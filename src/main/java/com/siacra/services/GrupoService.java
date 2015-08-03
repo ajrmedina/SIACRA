@@ -57,11 +57,9 @@ public class GrupoService {
     }
     
     //verificamos si el grupo ya esta registrado
-    /*
-    public boolean getExistTipoGrupo(String tipoGrupo,String nombreGrupo){
-        return getTipoGrupoDao().getExistTipoGrupo(tipoGrupo, nombreGrupo);
+    public boolean getExistGrupo(Integer cupo,Integer numeroGrupo){
+        return getGrupoDao().getExistGrupo(cupo, numeroGrupo);
     }
-    */
     
     //Seleccionamos todos los tipos de grupos existentes
     public List<Grupo> getGrupos() {

@@ -47,11 +47,11 @@ public class GrupoDao {
         return (Grupo)list.get(0);
     }
     
-    /*
-    public boolean getExistGrupo(String tipoGrupo,String nombreGrupo) {
+ 
+    public boolean getExistGrupo(Integer cupo,Integer numeroGrupo) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from TipoGrupo where tipoGrupo=? and nombreGrupo=?")
-                                            .setParameter(0, tipoGrupo).setParameter(1, nombreGrupo).list();
+                                            .createQuery("from Grupo where cupo=? and numeroGrupo=?")
+                                            .setParameter(0,cupo).setParameter(1, numeroGrupo).list();
         
         if(list.isEmpty()){
             return false;
@@ -59,7 +59,7 @@ public class GrupoDao {
             return true;
         }
     }
-    */
+    
     
     public List<Grupo> getGrupos() {
         List list = getSessionFactory().getCurrentSession().createQuery("from Grupo").list();
