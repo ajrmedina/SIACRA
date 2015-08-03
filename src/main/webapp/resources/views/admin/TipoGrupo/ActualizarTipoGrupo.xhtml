@@ -1,0 +1,42 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Actualizar - Tipo de Grupo
+    </ui:define>
+    
+     <ui:define name="add-menu-items">
+        <p:menuitem value="Regresar" url="/resources/views/admin/TipoGrupo/ListarTipoGrupo.xhtml" icon="fa fa-mail-reply"/>
+    </ui:define>
+    
+    <ui:define name="title-view">
+       Actualizar Tipo de Grupo
+    </ui:define>
+    
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="tipogrupoID" value="#{tipogrupoBean.idTipoGrupo}" />
+            <f:event type="preRenderView" listener="#{tipogrupoBean.loadTipoGrupo()}"/>
+        </f:metadata>
+        <h:form>
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                <p:outputLabel for="tipoGrupos" value="Codigo Tipo de grupo: " />
+                <p:inputText id="tipoGrupos" value="#{tipogrupoBean.tipoGrupos}" />
+                <p:outputLabel for="nombreGrupo" value="Nombre del tipo de grupo: " />
+                <p:inputText id="nombreGrupo" value="#{tipogrupoBean.nombreGrupo}">
+                    <f:validateLength minimum="2" />
+                </p:inputText>
+                
+                <p:commandButton value="Actualizar" action="#{tipogrupoBean.updateTipoGrupo(tipogrupoBean.idTipoGrupo)}" update="messages" ajax="false"/>
+                
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>
