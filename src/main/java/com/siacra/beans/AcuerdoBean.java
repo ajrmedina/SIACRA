@@ -180,11 +180,7 @@ public class AcuerdoBean implements Serializable{
         this.nombreacuerdo = nombreacuerdo;
     }
         
-    /**
-     * Add Messages
-     *
-     * Add messages for the UI
-     */
+   
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);        
