@@ -81,7 +81,7 @@
          <p:dialog header="Eliminar Tipo de grupo" id="dialogDeleteTipoGrupo" widgetVar="delete_tipogrupo" modal="true" resizable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el Tipo de grupo #{tipogrupoBean.tipoGrupo} - #{tipogrupoBean.nombreGrupo}?" />
+                <h:outputText value="Seguro que desea eliminar el Tipo de grupo : #{tipogrupoBean.nombreGrupo}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{tipogrupoBean.deleteTipoGrupo()}" update=":list:tipogrupo" oncomplete="PF('delete_tipogrupo').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_tipogrupo').hide()" icon="fa fa-ban" />

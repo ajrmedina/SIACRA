@@ -26,20 +26,21 @@ public class Grupo implements Serializable{
     
     @Id
     @GeneratedValue
-    int idGrupo;
+    @Column(name="idgrupo", nullable = false)
+    Integer idGrupo;
     
     @Column(name="cupo", nullable = true)
-    int cupo;
+    Integer cupo;
     
     @Column(name = "numerogrupo", nullable = true )
-    int numeroGrupo;
+    Integer numeroGrupo;
     
-    @Column(name = "", nullable = true)
+    @Column(name = "aprobargrupo", nullable = true)
     boolean aprobarGrupo;
     
-    //@ManyToOne
-    //@JoinColumn(name="idtipogrupo")
-    //private TipoGrupo idTipoGrupo;
+    @ManyToOne
+    @JoinColumn(name="idtipogrupo")
+    private TipoGrupo idTipoGrupo;
     
     //@OneToMany(mappedBy="idgrupo")
     //private Set<Oferta> oferta;
@@ -76,7 +77,6 @@ public class Grupo implements Serializable{
         this.aprobarGrupo = aprobarGrupo;
     }
 
-    /*
     public TipoGrupo getIdTipoGrupo() {
         return idTipoGrupo;
     }
@@ -84,7 +84,8 @@ public class Grupo implements Serializable{
     public void setIdTipoGrupo(TipoGrupo idTipoGrupo) {
         this.idTipoGrupo = idTipoGrupo;
     }
-
+    
+    /*
     public Set<Oferta> getOferta() {
         return oferta;
     }
