@@ -23,10 +23,11 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="nombreTipoContrato" value="Nombre del Contrato: " />
-                <p:inputText id="nombreTipoContrato" value="#{contratoBean.tipocontrato}" maxlength="30">
-                    
+                <p:inputText id="nombreTipoContrato" value="#{contratoBean.tipocontrato}" maxlength="30" validatorMessage="Solo debe contener letras">
+                    <f:validateRegex pattern="[a-zA-Z]+$" />   
                 </p:inputText>
-
+                
+                
                 <p:commandButton value="Agregar" action="#{contratoBean.addContrato()}" update="messages" ajax="false"/>
                 <p:commandButton value="Limpiar" type="reset" />
             </h:panelGrid>

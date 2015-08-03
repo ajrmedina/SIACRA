@@ -23,8 +23,8 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="nombreTipoActividad" value="Nombre del TipoActividad: " />
-                <p:inputText id="nombreTipoActividad" value="#{tipoActividadBean.tipoactividad}" maxlength="30">
-                    
+                <p:inputText id="nombreTipoActividad" value="#{tipoActividadBean.tipoactividad}" maxlength="30" validatorMessage="Solo debe contener letras">
+                    <f:validateRegex pattern="[a-zA-Z]+$" /> 
                 </p:inputText>
 
                 <p:commandButton value="Agregar" action="#{tipoActividadBean.addTipoActividad()}" update="messages" ajax="false"/>
