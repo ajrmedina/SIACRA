@@ -33,8 +33,8 @@ public class Horario implements Serializable{
     @Column(name="dia",nullable=false,length = 50)
     String dia;
     
-    //@OneToMany(mappedBy="idhorario")
-    //private Set<Oferta> oferta;
+    @OneToMany(mappedBy="idHorario")
+    private Set<Oferta> oferta;
 
     public int getIdHorario() {
         return idHorario;
@@ -58,6 +58,14 @@ public class Horario implements Serializable{
 
     public void setDia(String dia) {
         this.dia = dia;
+    }
+
+    public Set<Oferta> getOferta() {
+        return oferta;
+    }
+
+    public void setOferta(Set<Oferta> oferta) {
+        this.oferta = oferta;
     }
 
     

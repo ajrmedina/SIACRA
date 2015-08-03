@@ -42,8 +42,8 @@ public class Grupo implements Serializable{
     @JoinColumn(name="idtipogrupo")
     private TipoGrupo idTipoGrupo;
     
-    //@OneToMany(mappedBy="idgrupo")
-    //private Set<Oferta> oferta;
+    @OneToMany(mappedBy="idGrupo")
+    private Set<Oferta> oferta;
 
     public int getIdGrupo() {
         return idGrupo;
@@ -87,7 +87,7 @@ public class Grupo implements Serializable{
     public void setIdTipoGrupo(TipoGrupo idTipoGrupo) {
         this.idTipoGrupo = idTipoGrupo;
     }
-    /*
+    
     public Set<Oferta> getOferta() {
         return oferta;
     }
@@ -95,5 +95,4 @@ public class Grupo implements Serializable{
     public void setOferta(Set<Oferta> oferta) {
         this.oferta = oferta;
     }   
-     */
 }
