@@ -24,7 +24,7 @@
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="nombreTipoContrato" value="Nombre del Contrato: " />
                 <p:inputText id="nombreTipoContrato" value="#{contratoBean.tipocontrato}" maxlength="30" validatorMessage="Solo debe contener letras">
-                    <f:validateRegex pattern="[a-zA-Z]+$" />   
+                    <f:validateRegex pattern="[ a-zA-Z]+$" />   
                 </p:inputText>
                 
                 
