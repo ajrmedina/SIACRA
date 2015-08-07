@@ -5,16 +5,11 @@
  */
 package com.siacra.beans;
 
-import com.siacra.models.Grupo;
 import com.siacra.models.TipoGrupo;
 import com.siacra.services.TipoGrupoService;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -122,7 +117,7 @@ public class TipoGrupoBean implements Serializable {
             tgrupo.setTipoGrupo(getTipoGrupos());
             tgrupo.setNombreGrupo(getNombreGrupo());
             getTipoGrupoService().updateTipoGrupo(tgrupo);
-            addMessage("El tipo grupo : " + getTipoGrupos() + " nombre : " + getNombreGrupo());
+            addMessage("El tipo grupo : " + getTipoGrupos() + " nombre : " + getNombreGrupo() + " fue modificado exitosamente");
             
         }catch (DataAccessException e){
             e.printStackTrace();

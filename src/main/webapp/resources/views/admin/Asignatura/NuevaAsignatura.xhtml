@@ -1,0 +1,50 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Nueva - Asignatura del Sistema
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <!-- <p:menuitem value="Regresar" url="/resources/views/admin/User/ListarUsuarios.xhtml" icon="fa fa-mail-reply"/> -->
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Agregar nueva Asignatura al Sistema
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                
+                <p:outputLabel for="escuela" value="Escuela : " />
+                <h:panelGroup layout="block">
+                    <p:selectOneMenu id="escuela" value="#{asignaturaBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <f:selectItems value="#{asignaturaBean.escuelaList}" var="escuela" itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forNivel" for="acceso" value="Seleccione el nivel de acceso para el usuario" />
+                </h:panelGroup>
+                
+                <p:outputLabel for="codigoAsignatura" value="Codigo asignatura: " />
+                <p:inputText id="codigoAsignatura" value="#{asignaturaBean.codigoAsignatura}" required="true">
+                    <f:validateLength minimum="6" maximum="9" />
+                </p:inputText>
+                
+                <p:outputLabel for="nombregrupo" value="Nombres del tipo de grupo: " />
+                <p:inputText id="nombregrupo" value="#{tipogrupoBean.nombreGrupo}" required="true" >
+                    <f:validateLength maximum="25" minimum="5" />
+                </p:inputText>
+                
+                <p:commandButton value="Agregar" action="#{tipogrupoBean.addTipoGrupo()}" update="messages" ajax="false"/>
+                <p:commandButton type="reset" value="Limpiar"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>
