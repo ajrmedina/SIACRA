@@ -16,7 +16,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 90%" class="center-element" paginator="true" rows="10" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 95%" class="center-element" paginator="true" rows="10" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Docente" outcome="/resources/views/admin/Docente/NuevoDocente.xhtml" icon="fa fa-plus"/>                       
                     <p:outputPanel style="float: left">
@@ -25,10 +25,10 @@
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 20%" headerText="Nombres" filterBy="#{docente.user.nombres}" filterStyleClass="hide">
+                <p:column style="width: 15%" headerText="Nombres" filterBy="#{docente.user.nombres}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.nombres}" />
                 </p:column>
-                <p:column style="width: 20%" headerText="Apellidos" filterBy="#{docente.user.apellidos}" filterStyleClass="hide">
+                <p:column style="width: 15%" headerText="Apellidos" filterBy="#{docente.user.apellidos}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.apellidos}" />
                 </p:column>
                 <p:column style="width: 5%" headerText="Activo" filterBy="#{docente.user.estadoUsuario}" filterStyleClass="hide">
@@ -36,6 +36,12 @@
                 </p:column>
                 <p:column style="width: 7%" headerText="Aprobado" filterBy="#{docente.aprobarDocente}" filterStyleClass="hide">
                     <h:outputText value="#{docente.aprobarDocente}" />
+                </p:column>
+                <p:column style="width: 10%" headerText="Escalafon" filterBy="#{docente.categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
+                    <h:outputText value="#{docente.categoria.escalafon.tipoescalafon}" />
+                </p:column>
+                <p:column style="width: 15%" headerText="Contrato" filterBy="#{docente.categoria.contrato.tipocontrato}" filterStyleClass="hide">
+                    <h:outputText value="#{docente.categoria.contrato.tipocontrato}" />
                 </p:column>
                 <p:column style="width: 20%" headerText="Escuela" filterBy="#{docente.escuela.nombreescuela}" filterStyleClass="hide">
                     <h:outputText value="#{docente.escuela.nombreescuela}" />
@@ -74,6 +80,14 @@
                             <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado al docente" />
+                    </h:panelGroup>
+                    
+                    <p:outputLabel for="categoria" value="Categoria del Docente: " />
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="categoria" value="#{docenteBean.idCategoria}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                            <f:selectItems value="#{docenteBean.categoriasList}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.escalafon.tipoescalafon} - #{categoria.contrato.tipocontrato}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoria del docente" />
                     </h:panelGroup>
                     
                     <p:outputLabel for="escuela" value="Escuela del Docente: " />

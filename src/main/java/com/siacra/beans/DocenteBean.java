@@ -1,5 +1,6 @@
 package com.siacra.beans;
 
+import com.siacra.models.Categoria;
 import com.siacra.models.Docente;
 import com.siacra.models.Escuela;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
 import com.siacra.models.User;
+import com.siacra.services.CategoriaService;
 import com.siacra.services.UserService;
 import com.siacra.services.DocenteService;
 import com.siacra.services.EscuelaService;
@@ -41,18 +43,23 @@ public class DocenteBean implements Serializable {
     
     @ManagedProperty(value="#{EscuelaService}")
     private EscuelaService escuelaService;
+    
+    @ManagedProperty(value="#{CategoriaService}")
+    private CategoriaService categoriaService;
      
     private List<User> usersList;
     private List<Docente> docentesList;
     private List<Escuela> escuelaList;
+    private List<Categoria> categoriasList;
     
     private int idDocente;
     private boolean aprobarDocente;
     private int idUser;
     private int idEscuela;
+    private int idCategoria;
     private String nombres;
     private String apellidos;
-
+    
     /**
      * Add Docente
      *
@@ -62,6 +69,7 @@ public class DocenteBean implements Serializable {
             Docente docente = new Docente();
             User user = getUserService().getUserById(getIdUser());
             Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
+            Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
             if ( user.getEstadoUsuario() == 1) {
                 if ( user.getEsDocente() == 1  ){
                     if(getAprobado())
@@ -70,6 +78,7 @@ public class DocenteBean implements Serializable {
                         docente.setAprobarDocente(0);
                     docente.setUser(user);
                     docente.setEscuela(escuela);
+                    docente.setCategoria(categoria);
                     getDocenteService().addDocente(docente);
                     addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
                     reset();
@@ -99,6 +108,7 @@ public class DocenteBean implements Serializable {
         
         User user = getUserService().getUserById(docente.getUser().getIdUsuario());
         Escuela escuela = getEscuelaService().getEscuelaById(docente.getEscuela().getIdescuela());
+        //Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
         setIdDocente(docente.getIdDocente());
         if(docente.getAprobarDocente() == 1)
             setAprobado(true);
@@ -108,6 +118,7 @@ public class DocenteBean implements Serializable {
         setApellidos(user.getApellidos());
         setIdUser(user.getIdUsuario());
         setIdEscuela(escuela.getIdescuela());
+        //setIdCategoria(categoria.getIdCategoria());
 
     }
     
@@ -121,12 +132,14 @@ public class DocenteBean implements Serializable {
             Docente docente = getDocenteService().getDocenteById(getIdDocente());
             User user = getUserService().getUserById(getIdUser());
             Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
+            Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
             if(getAprobado())
                 docente.setAprobarDocente(1);
             else
                 docente.setAprobarDocente(0);
             docente.setUser(user);
             docente.setEscuela(escuela);
+            docente.setCategoria(categoria);
             getDocenteService().updateDocente(docente);
             addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue actualizado correctamente");
             
@@ -220,6 +233,26 @@ public class DocenteBean implements Serializable {
     }
     
     /**
+     * Get Categoria List
+     *
+     * @return List - Categoria List
+     */
+    public List<Categoria> getCategoriasList() {
+        categoriasList = new ArrayList<>();
+        categoriasList.addAll(getCategoriaService().getCategorias());
+        return categoriasList;
+    }
+    
+    /**
+     * Set Categoria List
+     *
+     * @param categoriasList List - Categoria List
+     */
+    public void setCategoriasList(List<Categoria> categoriasList) {
+        this.categoriasList = categoriasList;
+    }
+    
+    /**
      * Get User Service
      *
      * @return IUserService - User Service
@@ -263,7 +296,7 @@ public class DocenteBean implements Serializable {
     public DocenteService getDocenteService() {
         return docenteService;
     }
-
+    
     /**
      * Set Docente Service
      *
@@ -271,6 +304,24 @@ public class DocenteBean implements Serializable {
      */
     public void setDocenteService(DocenteService docenteService) {
         this.docenteService = docenteService;
+    }
+    
+    /**
+     * Get Categoria Service
+     *
+     * @return ICategoriaService - Categoria Service
+     */
+    public CategoriaService getCategoriaService() {
+        return categoriaService;
+    }
+
+    /**
+     * Set Categoria Service
+     *
+     * @param categoriaService ICategoriaService - Categoria Service
+     */
+    public void setCategoriaService(CategoriaService categoriaService) {
+        this.categoriaService = categoriaService;
     }
     
     /**
@@ -313,7 +364,7 @@ public class DocenteBean implements Serializable {
     /**
      * Get User ID
      *
-     * @return int idUser - Docente user ID
+     * @return int idUser - Docente User ID
      */
     public int getIdUser() {
         return this.idUser;
@@ -331,7 +382,7 @@ public class DocenteBean implements Serializable {
     /**
      * Get Escuela ID
      *
-     * @return int idEscuela - Docente escuela ID
+     * @return int idEscuela - Docente Escuela ID
      */
     public int getIdEscuela() {
         return this.idEscuela;
@@ -344,6 +395,24 @@ public class DocenteBean implements Serializable {
      */
     public void setIdEscuela(int idescuela) {
         this.idEscuela = idescuela;
+    }
+    
+    /**
+     * Get Categoria ID
+     *
+     * @return int idCategoria - Docente Categoria ID
+     */
+    public int getIdCategoria() {
+        return this.idCategoria;
+    }
+    
+    /**
+     * Set Categoria ID
+     *
+     * @param idcategoria int - Docente Categoria ID
+     */
+    public void setIdCategoria(int idcategoria) {
+        this.idCategoria = idcategoria;
     }
     
     /**

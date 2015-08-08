@@ -1,0 +1,98 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Categorias
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+       Categorias para los docentes
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="categoria" var="categoria" value="#{categoriaBean.categoriasList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="categoriasTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">                  
+                    <p:button style="float: right" value="Nueva Categoria" outcome="/resources/views/admin/Categoria/NuevaCategoria.xhtml" icon="fa fa-plus"/>                       
+                    
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Búsqueda de Categorias:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('categoriasTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    
+                    <div style="clear:both" />
+                </f:facet>                                 
+                <p:column style="width: 20%" headerText="Escalafon" filterBy="#{categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
+                    <h:outputText value="#{categoria.escalafon.tipoescalafon}" />
+                </p:column>
+                <p:column style="width: 20%" headerText="Contrato" filterBy="#{categoria.contrato.tipocontrato}" filterStyleClass="hide">
+                    <h:outputText value="#{categoria.contrato.tipocontrato}" />
+                </p:column>
+                <p:column style="width: 20%" headerText="Horas Obligatorias" filterBy="#{categoria.horasObligatorias}" filterStyleClass="hide">
+                    <h:outputText value="#{categoria.horasObligatorias}" />
+                </p:column>
+                <p:column style="width: 8%" headerText="Accciones">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet> 
+                    
+                    <p:growl id="messages" />                    
+                    <p:commandButton id="update_button" update=":dialogUpdateCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('update_categoria').show()" icon="fa fa-edit" />                                    
+                    <p:commandButton id="delete_button" update=":dialogDeleteCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('delete_categoria').show()" icon="fa fa-times"/>
+                
+                </p:column>               
+            </p:dataTable>
+        </h:form>
+        
+        <p:dialog header="Actualizar Categoria" id="dialogUpdateCategoria" widgetVar="update_categoria" modal="true" resizable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
+                                 
+                    <p:outputLabel for="escalafon" value="Escalafon: " />
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="escalafon" value="#{categoriaBean.idEscalafon}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItems value="#{categoriaBean.escalafonesList}" var="escalafon" itemValue="#{escalafon.idescalafon}" itemLabel="#{escalafon.tipoescalafon}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forEscalafon" for="escalafon" value="Seleccione el escalafon para la nueva categoria" />
+                    </h:panelGroup>
+
+                    <p:outputLabel for="contrato" value="Contrato: " />
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="contrato" value="#{categoriaBean.idContrato}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItems value="#{categoriaBean.contratosList}" var="contrato" itemValue="#{contrato.idcontrato}" itemLabel="#{contrato.tipocontrato}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forContrato" for="contrato" value="Seleccione el contrato para la nueva categoria" />
+                    </h:panelGroup>
+
+                    <p:outputLabel for="horas" value="Horas obligatorias para la categoria: " />
+                    <p:inputMask id="horas" value="#{categoriaBean.horasObligatorias}" mask="9?99" required="true" />
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{categoriaBean.updateCategoria()}" update=":list:categoria" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_categoria').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+         <p:dialog header="Eliminar Categoria" id="dialogDeleteCategoria" widgetVar="delete_categoria" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar la Categoria #{categoriaBean.idCategoria}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{categoriaBean.deleteCategoria()}" update=":list:categoria" oncomplete="PF('delete_categoria').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_categoria').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+    
+</ui:composition>
