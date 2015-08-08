@@ -35,6 +35,14 @@
                     <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado al docente" />
                 </h:panelGroup>
                 
+                <p:outputLabel for="categoria" value="Categoria del Docente: " />
+                <h:panelGroup layout="block">
+                    <p:selectOneMenu id="categoria" value="#{docenteBean.idCategoria}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                        <f:selectItems value="#{docenteBean.categoriasList}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.escalafon.tipoescalafon} - #{categoria.contrato.tipocontrato}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoria del docente" />
+                </h:panelGroup>
+                 
                 <p:outputLabel for="escuela" value="Escuela del Docente: " />
                 <h:panelGroup layout="block">
                     <p:selectOneMenu id="escuela" value="#{docenteBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">

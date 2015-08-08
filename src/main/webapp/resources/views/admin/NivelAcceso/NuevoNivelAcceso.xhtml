@@ -23,8 +23,9 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <p:outputLabel for="nombreAcceso" value="Nombre del Acceso: " />
-                <p:inputText id="nombreAcceso" value="#{nivelAccesoBean.acceso}">
+                <p:inputText id="nombreAcceso" value="#{nivelAccesoBean.acceso}" validatorMessage="Solo letras, espacios y guiones son permitidos para este campo, con una longitud minima de 2 y maxima de 25 caracteres">
                     <f:validateLength minimum="2" maximum="25" />
+                    <f:validateRegex pattern="^[a-zA-Z -_]+$" />
                 </p:inputText>
 
                 <p:commandButton value="Agregar" action="#{nivelAccesoBean.addAcceso()}" update="messages" ajax="false"/>

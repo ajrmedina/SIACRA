@@ -40,6 +40,10 @@ public class Docente implements Serializable {
     @JoinColumn(name="idescuela")
     private Escuela escuela;
     
+    @ManyToOne
+    @JoinColumn(name="idcategoria")
+    private Categoria categoria;
+    
     /**
      * Get Id Docente
      *
@@ -112,6 +116,26 @@ public class Docente implements Serializable {
     
     public void setEscuela(Escuela escuela) {
         this.escuela = escuela;
+    }
+    
+    /**
+     * Get Categoria
+     *
+     * @return categoria Categoria
+     */
+    
+    public Categoria getCategoria() {
+        return this.categoria;
+    }
+    
+    /**
+     * Set Categoria
+     *
+     * @param categoria Categoria
+     */
+    
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
    
 }

@@ -54,18 +54,21 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     
                     <p:outputLabel for="username" value="Nombre de Acceso: " />
-                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true">
+                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo, con una longitud minima de 8 y maxima de 30 caracteres">
                         <f:validateLength minimum="8" maximum="30" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
                     </p:inputText>
 
                     <p:outputLabel for="nombres" value="Nombres del usuario: " />
-                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" >
+                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" validatorMessage="Solo letras y espacios son permitidos para este campo, con una longitud maxima de 50 caracteres" >
                         <f:validateLength maximum="50" />
+                        <f:validateRegex pattern="^[a-zA-Z ]+$" />
                     </p:inputText>
 
                     <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
-                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" >
+                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" validatorMessage="Solo letras y espacios son permitidos para este campo, con una longitud maxima de 50 caracteres" >
                         <f:validateLength maximum="50" />
+                        <f:validateRegex pattern="^[a-zA-Z ]+$" />
                     </p:inputText>
 
                     <p:outputLabel id="estado" value="Activar usuario? " />
