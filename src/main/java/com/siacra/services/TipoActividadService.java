@@ -43,31 +43,31 @@ public class TipoActividadService {
      /**
      * Add TipoActividad
      *
-     * @param  contrato TipoActividad
+     * @param  tipoactividad TipoActividad
      */
     @Transactional(readOnly = false)
-    public void addTipoActividad(TipoActividad contrato) {
-        getTipoActividadDAO().addTipoActividad(contrato);
+    public void addTipoActividad(TipoActividad tipoactividad) {
+        getTipoActividadDAO().addTipoActividad(tipoactividad);
     }
 
     /**
      * Delete TipoActividad
      *
-     * @param   contrato TipoActividad
+     * @param   tipoactividad TipoActividad
      */
     @Transactional(readOnly = false)
-    public void deleteTipoActividad(TipoActividad contrato) {
-        getTipoActividadDAO().deleteTipoActividad(contrato);
+    public void deleteTipoActividad(TipoActividad tipoactividad) {
+        getTipoActividadDAO().deleteTipoActividad(tipoactividad);
     }
 
     /**
      * Update TipoActividad
      *
-     * @param contrato TipoActividad
+     * @param tipoactividad TipoActividad
      */
     @Transactional(readOnly = false)
-    public void updateTipoActividad(TipoActividad contrato) {
-        getTipoActividadDAO().updateTipoActividad(contrato);
+    public void updateTipoActividad(TipoActividad tipoactividad) {
+        getTipoActividadDAO().updateTipoActividad(tipoactividad);
     }
 
      /**
