@@ -47,8 +47,9 @@
                     <p:outputLabel for="id" value="Id del TipoActividad : " />
                     <p:inputText id="id" value="#{tipoActividadBean.idtipoactividad}" readonly="true" />
                     <p:outputLabel for="nombre" value="Nombre del tipoactividad : " />
-                    <p:inputText id="nombre" value="#{tipoActividadBean.tipoactividad}">
+                    <p:inputText id="nombre" value="#{tipoActividadBean.tipoactividad}" validatorMessage="Solo debe contener letras">
                         <f:validateLength minimum="2" maximum="25" />
+                        <f:validateRegex pattern="[ a-zA-Z]+$" />
                     </p:inputText>
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipoActividadBean.updateTipoActividad()}" update=":list:tipoactividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-refresh" />
