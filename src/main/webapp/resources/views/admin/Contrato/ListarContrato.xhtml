@@ -47,8 +47,9 @@
                     <p:outputLabel for="id" value="Id del Contrato : " />
                     <p:inputText id="id" value="#{contratoBean.idcontrato}" readonly="true" />
                     <p:outputLabel for="nombre" value="Nombre del contrato : " />
-                    <p:inputText id="nombre" value="#{contratoBean.tipocontrato}">
+                    <p:inputText id="nombre" value="#{contratoBean.tipocontrato}" validatorMessage="Solo debe contener letras">
                         <f:validateLength minimum="2" maximum="25" />
+                        <f:validateRegex pattern="[ a-zA-Z]+$" /> 
                     </p:inputText>
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" />

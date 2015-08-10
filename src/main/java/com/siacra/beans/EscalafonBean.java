@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -104,8 +105,9 @@ public class EscalafonBean implements Serializable{
            
            
             addMessage("El escalafon " + eliminado + " fue eliminado correctamente");
-        } catch (DataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
+            addMessage("El escalafon no puede ser eliminado debido a que tiene categorias asociadas");
         }
     }
 

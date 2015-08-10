@@ -6,11 +6,13 @@
 package com.siacra.models;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,7 +34,10 @@ public class Escalafon implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "TIPOESCALAFON", nullable = false, length = 30)
     private String tipoescalafon;
-
+    
+    @OneToMany(mappedBy="escalafon")
+    private Set<Categoria> categoria;
+    
     public Escalafon() {
     }
 
@@ -61,7 +66,23 @@ public class Escalafon implements Serializable {
         this.tipoescalafon = tipoescalafon;
     }
 
-   
+    /**
+     * Get Categoria
+     *
+     * @return categoria Set<Categoria>
+     */
+    public Set<Categoria> getCategoria() {
+        return categoria;
+    }
+    
+    /**
+     * Set Categoria
+     *
+     * @param categoria Set<Categoria>
+     */
+    public void setCategoria(Set<Categoria> categoria) {
+        this.categoria = categoria;
+    }
 
     @Override
     public String toString() {

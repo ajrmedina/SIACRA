@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  * Contrato Bean
@@ -100,8 +101,9 @@ public class ContratoBean implements Serializable {
            
            
             addMessage("El contrato " + eliminado + " fue eliminado correctamente");
-        } catch (DataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
+            addMessage("El contrato no puede ser eliminado debido a que tiene categorias asociadas");
         }
     }
 

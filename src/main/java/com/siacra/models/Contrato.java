@@ -6,14 +6,14 @@
 package com.siacra.models;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -36,7 +36,10 @@ public class Contrato implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "TIPOCONTRATO", nullable = false, length = 30)
     private String tipocontrato;
-
+    
+    @OneToMany(mappedBy="contrato")
+    private Set<Categoria> categoria;
+     
     public Contrato() {
     }
 
@@ -65,7 +68,23 @@ public class Contrato implements Serializable {
         this.tipocontrato = tipocontrato;
     }
 
-   
+    /**
+     * Get Categoria
+     *
+     * @return categoria Set<Categoria>
+     */
+    public Set<Categoria> getCategoria() {
+        return categoria;
+    }
+    
+    /**
+     * Set Categoria
+     *
+     * @param categoria Set<Categoria>
+     */
+    public void setCategoria(Set<Categoria> categoria) {
+        this.categoria = categoria;
+    }
 
 
     @Override

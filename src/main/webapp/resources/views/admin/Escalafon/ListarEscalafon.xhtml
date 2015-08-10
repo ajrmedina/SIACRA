@@ -17,7 +17,7 @@
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 48%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="nivelesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 48%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="escalafonTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Escalafon" outcome="/resources/views/admin/Escalafon/NuevoEscalafon.xhtml" icon="fa fa-plus"/>                       
                     <p:outputPanel style="float: left">
@@ -47,8 +47,9 @@
                     <p:outputLabel for="idEscalafon" value="Id Escalafon: " />
                     <p:inputText id="idEscalafon" value="#{escalafonBean.idescalafon}" readonly="true" />
                     <p:outputLabel for="tipoEscalafon" value="Tipo escalafon: " />
-                    <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}">
+                    <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}" validatorMessage="Solo debe contener letras">
                         <f:validateLength minimum="2" maximum="30" />
+                        <f:validateRegex pattern="[ a-zA-Z]+$" />
                     </p:inputText>
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{escalafonBean.updateEscalafon()}" update=":list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-refresh" />
