@@ -1,0 +1,94 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Tipos de grupos del sistema
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+        Tipos de grupos de la Facultad de Ingeniería y Arquitectura
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="tipogrupo" var="tipogrupo" value="#{tipogrupoBean.gruposList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tiposgruposTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+                <f:facet name="header">                  
+                    <p:button style="float: right" value="Nuevo Tipo de grupo" outcome="/resources/views/admin/TipoGrupo/NuevoTipoGrupo.xhtml" icon="fa fa-plus"/>                       
+                    
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Búsqueda de Tipo de grupo:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('tiposgruposTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    
+                    <div style="clear:both" />
+                </f:facet>                                 
+                <p:column style="width: 20%" headerText="Código tipo de grupo" filterBy="#{tipogrupo.tipoGrupo}" filterStyleClass="hide">                         
+                    <h:outputText value="#{tipogrupo.tipoGrupo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 50%" headerText="Nombre del tipo de grupo" filterBy="#{tipogrupo.nombreGrupo}" filterStyleClass="hide">                  
+                    <h:outputText value="#{tipogrupo.nombreGrupo}" class="center-element"/>
+                </p:column>
+                <p:column style="width: 15%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                    
+                    <p:growl id="messages" />                    
+                    <p:commandButton id="update_button" update=":dialogUpdateTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('update_tipogrupo').show()" icon="fa fa-edit" />                                    
+                    <p:commandButton id="delete_button" update=":dialogDeleteTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('delete_tipogrupo').show()" icon="fa fa-times"/> 
+                </p:column>               
+            </p:dataTable>
+        </h:form>
+        
+         <p:dialog header=" Actualizar Tipo de grupo" id="dialogUpdateTipoGrupo" widgetVar="update_tipogrupo" modal="true" resizable="false">
+            <h:form id="update">
+                <p:growl id="messages" />
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
+                                 
+                    <p:outputLabel for="tipoGrupos" value="Codigo de tipo de grupo: " />
+                    <p:inputText id="tipoGrupos" value="#{tipogrupoBean.tipoGrupos}" 
+                             requiredMessage="Por favor, ingrese el código del tipo de grupo"
+                             validatorMessage="Máximo 6 caracteres">
+                        <f:validateLength maximum="6" />
+                        <f:validateRequired />
+                    </p:inputText>
+                        
+                    <p:outputLabel for="nombreGrupo" value="Nombre del tipo de grupo: " />
+                    <p:inputText id="nombreGrupo" value="#{tipogrupoBean.nombreGrupo}" 
+                             requiredMessage="Por favor, ingrese el nombre."
+                             validatorMessage="Máximo 25 caracteres" size="25">
+                        <f:validateLength maximum="25"/>
+                        <f:validateRequired />
+                    </p:inputText>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipogrupoBean.updateTipoGrupo()}" update=":list:tipogrupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tipogrupo').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+         <p:dialog header="Eliminar Tipo de grupo" id="dialogDeleteTipoGrupo" widgetVar="delete_tipogrupo" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar el Tipo de grupo : #{tipogrupoBean.nombreGrupo}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{tipogrupoBean.deleteTipoGrupo()}" update=":list:tipogrupo" oncomplete="PF('delete_tipogrupo').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_tipogrupo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+    
+</ui:composition>

@@ -1,0 +1,69 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Nueva - Asignatura del Sistema
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <!-- <p:menuitem value="Regresar" url="/resources/views/admin/User/ListarUsuarios.xhtml" icon="fa fa-mail-reply"/> -->
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Agregar nueva Asignatura al Sistema
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                
+                <p:outputLabel for="escuela" value="Escuela : " />
+                <h:panelGroup layout="block">
+                    <p:selectOneMenu id="escuela" value="#{asignaturaBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <f:selectItems value="#{asignaturaBean.escuelaList}" var="escuela" itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forNivel" for="escuela" value="Selecciona la escuela de la asignatura" />
+                </h:panelGroup>
+                
+                <p:outputLabel for="codigoAsignatura" value="Codigo asignatura: " />
+                <p:inputText id="codigoAsignatura" value="#{asignaturaBean.codigoAsignatura}" required="true">
+                    <f:validateLength minimum="5" maximum="6" />
+                </p:inputText>
+                
+                <p:outputLabel for="nombreAsignatura" value="Nombre de la asignatura: " />
+                <p:inputText id="nombreAsignatura" value="#{asignaturaBean.nombreAsignatura}" required="true" >
+                    <f:validateLength maximum="50" minimum="5" />
+                </p:inputText>
+                
+                <p:outputLabel for="ciclo" value="Ciclo :" />
+                <p:selectOneMenu id="ciclo" value="#{asignaturaBean.cicloImpartir}" required="true">
+                    <f:selectItem itemLabel="" itemValue="Seleccionar ciclo" />
+                    <f:selectItem itemLabel="1" itemValue="1" />
+                    <f:selectItem itemLabel="2" itemValue="2" />
+                </p:selectOneMenu>
+                
+                <p:outputLabel for="valorativas" value="Unidades valorativas : " />
+                <p:inputText id="valorativas" value="#{asignaturaBean.unidadesValorativas}" required="true" >
+                    <f:validateLength maximum="2" minimum="1" />
+                </p:inputText>
+                
+                <p:outputLabel for="tipoAsignatura" value="Tipo de la asignatura :" />
+                <p:selectOneMenu id="tipoAsignatura" value="#{asignaturaBean.tipoAsignatura}" required="true">
+                    <f:selectItem itemLabel="" itemValue="Seleccionar tipo de asignatura" />
+                    <f:selectItem itemLabel="Obligatoria" itemValue="Obligatoria" />
+                    <f:selectItem itemLabel="Electiva" itemValue="Electiva" />
+                </p:selectOneMenu>
+                
+                <p:commandButton value="Agregar" action="#{asignaturaBean.addAsignatura()}" update="messages" ajax="false"/>
+                <p:commandButton type="reset" value="Limpiar"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>

@@ -1,0 +1,101 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Grupos del sistema
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+        Grupos existentes en la Facultad de Ingeniería y Arquitectura
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="grupos" var="grupo" value="#{grupoBean.gruposList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="gruposTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+                <f:facet name="header">                  
+                    <p:button style="float: right" value="Nuevo grupo" outcome="/resources/views/admin/Grupo/NuevoGrupo.xhtml" icon="fa fa-plus"/>                       
+                    
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Búsqueda de grupo:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('gruposTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    
+                    <div style="clear:both" />
+                </f:facet>                                 
+                <p:column style="width: 20%" headerText="Tipo de grupo" filterBy="#{grupo.idTipoGrupo.nombreGrupo}" filterStyleClass="hide">                         
+                    <h:outputText value="#{grupo.idTipoGrupo.nombreGrupo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 25%" headerText="Cupos del grupo" filterBy="#{grupo.cupo}" filterStyleClass="hide">                  
+                    <h:outputText value="#{grupo.cupo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 25%" headerText="Numero del grupo" filterBy="#{grupo.numeroGrupo}" filterStyleClass="hide">                  
+                    <h:outputText value="#{grupo.numeroGrupo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 15%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                    
+                    <p:growl id="messages" />                    
+                    <p:commandButton id="update_button" update=":dialogUpdateGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('update_grupo').show()" icon="fa fa-edit" />                                    
+                    <p:commandButton id="delete_button" update=":dialogDeleteGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('delete_grupo').show()" icon="fa fa-times"/> 
+                </p:column>               
+            </p:dataTable>
+        </h:form>
+        
+         <p:dialog header=" Actualizar grupo" id="dialogUpdateGrupo" widgetVar="update_grupo" modal="true" resizable="false">
+            <h:form id="update">
+                <p:growl id="messages" />
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
+                                 
+                    <p:outputLabel for="tipogrupos" value="Tipo de grupo : " />
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="tipogrupos" value="#{grupoBean.idTipoGrupo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItems value="#{grupoBean.tipoGrupoList}" var="tipo" itemValue="#{tipo.idTipoGrupo}" itemLabel="#{tipo.tipoGrupo}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forTipo" for="tipogrupos" value="Seleccione el tipo de grupo" />
+                    </h:panelGroup>
+                        
+                    <p:outputLabel for="cupo" value="Cantidad de cupos : " />
+                    <p:inputText id="cupo" value="#{grupoBean.cupo}" required="true" >
+                        <f:validateLength maximum="3" minimum="1" />
+                    </p:inputText>
+
+                    <p:outputLabel for="numerogrupo" value="Numero de grupo : " />
+                    <p:inputText id="numerogrupo" value="#{grupoBean.numeroGrupo}" required="true" >
+                        <f:validateLength maximum="3" minimum="1" />
+                    </p:inputText>
+
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:grupos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_grupo').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+         <p:dialog header="Eliminar grupo" id="dialogDeleteGrupo" widgetVar="delete_grupo" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar el grupo : #{grupoBean.numeroGrupo}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{grupoBean.deleteGrupo()}" update=":list:grupos" oncomplete="PF('delete_grupo').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_grupo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+    
+</ui:composition>

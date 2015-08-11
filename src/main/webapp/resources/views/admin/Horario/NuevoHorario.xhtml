@@ -1,0 +1,49 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Nuevo - Horario del Sistema
+    </ui:define>
+    
+    <ui:define name="add-menu-items">
+        <!-- <p:menuitem value="Regresar" url="/resources/views/admin/User/ListarUsuarios.xhtml" icon="fa fa-mail-reply"/> -->
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Agregar Horario al Sistema
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                
+                <p:outputLabel for="periodo" value="Periodo : " />
+                <p:inputText id="periodo" value="#{horarioBean.periodo}" required="true">
+                    <f:validateLength minimum="5" maximum="30" />
+                </p:inputText>
+                
+                <p:outputLabel for="dia" value="Dia :" />
+                <p:selectOneMenu id="dia" value="#{horarioBean.dia}" required="true">
+                    <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
+                    <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
+                    <f:selectItem itemLabel="Martes" itemValue="Martes" />
+                    <f:selectItem itemLabel="Miercoles" itemValue="Miercoles" />
+                    <f:selectItem itemLabel="Jueves" itemValue="Jueves" />
+                    <f:selectItem itemLabel="Viernes" itemValue="Viernes" />
+                    <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
+                    <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
+                </p:selectOneMenu>
+                
+                <p:commandButton value="Agregar" action="#{horarioBean.addHorario()}" update="messages" ajax="false"/>
+                <p:commandButton type="reset" value="Limpiar"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>
