@@ -11,7 +11,7 @@ import com.siacra.models.TipoActividad;
 import com.siacra.services.ActividadService;
 import com.siacra.services.EscuelaService;
 import com.siacra.services.TipoActividadService;
-import static com.sun.javafx.logging.PulseLogger.addMessage;
+//import static com.sun.javafx.logging.PulseLogger.addMessage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
