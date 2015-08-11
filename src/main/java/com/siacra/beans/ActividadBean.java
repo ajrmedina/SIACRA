@@ -11,7 +11,6 @@ import com.siacra.models.TipoActividad;
 import com.siacra.services.ActividadService;
 import com.siacra.services.EscuelaService;
 import com.siacra.services.TipoActividadService;
-import static com.sun.javafx.logging.PulseLogger.addMessage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -51,6 +51,9 @@ public class ActividadBean implements Serializable{
     private String descripcionactividad;
     private int idtipoactividad;
     private int idescuela;
+    
+    private String aprobar;
+    private String estado;
     /**
      * Add Actividad
      * 
@@ -58,7 +61,7 @@ public class ActividadBean implements Serializable{
     public void addActividad(){
         try {
             Actividad actividad = new Actividad();
-            TipoActividad tipoActividad = getTipoActividadService().getTipoActividadById(getIdactividad());
+            TipoActividad tipoActividad = getTipoActividadService().getTipoActividadById(getIdtipoactividad());
             Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
             actividad.setIdescuela(escuela);
             actividad.setIdtipoactividad(tipoActividad);
@@ -66,12 +69,20 @@ public class ActividadBean implements Serializable{
                 actividad.setEstadoactividad(true);
             else
                 actividad.setEstadoactividad(false);
+            if(isAprovaractividad())
+                actividad.setAprobaractividad(true);
+            else
+                actividad.setAprobaractividad(false);
+            actividad.setNombreactividad(nombreactividad);
+            actividad.setDescripcionactividad(descripcionactividad);
             getActividadService().addActividad(actividad);
-            addMessage("La actividad "+actividad.getNombreactividad() + "fue añadida correctamente");
+            addMessage("La actividad "+actividad.getNombreactividad() + " fue añadida correctamente");
             reset();
             
         } catch (Exception e) {
+             reset();
             e.printStackTrace();
+           
         }
         
         
@@ -133,14 +144,30 @@ public class ActividadBean implements Serializable{
                 e.printStackTrace();
             }
         }
-        
        
+        /**
+         * Delete Actividad
+         */
+       public void deleteActividad(){
+           try {
+               Actividad actividad = getActividadService().getActividadById(getIdactividad());
+               String eliminado = actividad.getNombreactividad();
+               getActividadService().deleteActividad(actividad);
+               
+               addMessage("La actividad "+eliminado+ " fue eliminada correctamente");
+           } catch (DataIntegrityViolationException e) {
+               e.printStackTrace();
+               addMessage("La actividad no puede ser eliminada, debido a que otros registros ocupan esta actividad");
+           }
+       }
         /**
          * Reset Fields
          */
         public void reset(){
         this.setEstadoactividad(false);
         this.setAprovaractividad(false);
+        this.nombreactividad="";
+        this.descripcionactividad="";
                 }
     /**
      * @return the actividadService
@@ -188,8 +215,9 @@ public class ActividadBean implements Serializable{
      * @return the actividadList
      */
     public List<Actividad> getActividadList() {
-      
-        return actividadList;
+      actividadList=new ArrayList<>();
+      actividadList.addAll(getActividadService().getActividades());
+      return actividadList;
     }
 
     /**
@@ -339,5 +367,42 @@ public class ActividadBean implements Serializable{
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    /**
+     * @return the aprobar
+     */
+    public String getAprobar() {
+        if(isAprovaractividad())
+            aprobar="Aprobada";
+        else
+            aprobar="No aprobada";
+        return aprobar;
+    }
+
+    /**
+     * @param aprobar the aprobar to set
+     */
+    public void setAprobar(String aprobar) {
+        this.aprobar = aprobar;
+    }
+
+    /**
+     * @return the estado
+     */
+    public String getEstado() {
+        if(isEstadoactividad())
+            estado="Activa";
+        else
+            estado="Baja";
+        
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

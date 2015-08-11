@@ -36,27 +36,27 @@ public class ActividadDao {
         this.sessionFactory = sessionFactory;
     }
     
-    public void addActividad(Actividad contrato) {
-        getSessionFactory().getCurrentSession().save(contrato);
+    public void addActividad(Actividad actividad) {
+        getSessionFactory().getCurrentSession().save(actividad);
     }
          
-    public void deleteActividad(Actividad contrato) {
-        getSessionFactory().getCurrentSession().delete(contrato);
+    public void deleteActividad(Actividad actividad) {
+        getSessionFactory().getCurrentSession().delete(actividad);
     }
 
     /**
      * Update Actividad
      *
-     * @param  contrato Actividad
+     * @param  actividad Actividad
      */
-    public void updateActividad(Actividad contrato){
-        getSessionFactory().getCurrentSession().update(contrato);
+    public void updateActividad(Actividad actividad){
+        getSessionFactory().getCurrentSession().update(actividad);
     }
     
     /**
      * Get Escuela
      *
-     * @param  id contrato
+     * @param  id actividad
      * 
      * @return Actividad
      */
