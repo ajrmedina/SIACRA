@@ -17,22 +17,37 @@
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="actividad" var="actividad" value="#{actividadBean.actividadList}" style="width: 48%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="actividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="actividad" var="actividad" value="#{actividadBean.actividadList}" style="width: 80%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="actividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Actividad  " outcome="/resources/views/admin/Actividad/NuevaActividad.xhtml" icon="fa fa-plus"/>                       
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de actividades:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('actividadseTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <p:inputText id="globalFilter" onkeyup="PF('actividadesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 10%" headerText="ID Actividad" filterBy="#{actividad.idactividad}" filterStyleClass="hide">
+                <p:column style="width: 25%" headerText="ID Actividad" filterBy="#{actividad.idactividad}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.idactividad}" />
                 </p:column>
-                <p:column style="width: 20%" headerText="Escuela" filterBy="#{actividad.idescuela.nombreescuela}" filterStyleClass="hide">
+                <p:column style="width: 25%" headerText="Escuela" filterBy="#{actividad.idescuela.nombreescuela}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.idescuela.nombreescuela}"/>
                 </p:column>
-                <p:column style="width: 8%" headerText="Acciones">
+                 <p:column style="width: 25%" headerText="Tipo Actividad" filterBy="#{actividad.idtipoactividad.tipoactividad}" filterStyleClass="hide">
+                     <h:outputText value="#{actividad.idtipoactividad.tipoactividad}"/>
+                </p:column>
+                <p:column style="width: 20%" headerText="Estado" filterBy="#{actividadBean.estado}" filterStyleClass="hide">
+                    <h:outputText value="#{actividadBean.estado}"/>
+                </p:column>
+                <p:column style="width: 30%" headerText="Aprobada" filterBy="#{actividadBean.aprobar}" filterStyleClass="hide">
+                    <h:outputText value="#{actividadBean.aprobar}"/>
+                </p:column>
+                <p:column style="width: 30%" headerText="Nombre" filterBy="#{actividad.nombreactividad}" filterStyleClass="hide">
+                    <h:outputText value="#{actividad.nombreactividad}"/>
+                </p:column>
+                <p:column style="width: 35%" headerText="Descripcion" filterBy="#{actividad.descripcionactividad}" filterStyleClass="hide">
+                    <h:outputText value="#{actividad.descripcionactividad}"/>
+                </p:column>
+                <p:column style="width: 30%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('update_actividad').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('delete_actividad').show()" icon="fa fa-times" />
@@ -46,11 +61,42 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:outputLabel for="id" value="Id del Actividad : " />
                     <p:inputText id="id" value="#{actividadBean.idactividad}" readonly="true" />
-                    <p:outputLabel for="nombre" value="Nombre del actividad : " />
-                    <p:inputText id="nombre" value="#{actividadBean.tipoactividad}" validatorMessage="Solo debe contener letras">
-                        <f:validateLength minimum="2" maximum="25" />
-                        <f:validateRegex pattern="[ a-zA-Z]+$" /> 
-                    </p:inputText>
+                    
+                    <p:outputLabel for="escuela" value="Escuela: " />
+                <h:panelGroup layout="block1">
+                    <p:selectOneMenu id="escuela" value="#{actividadBean.idescuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <f:selectItems value="#{actividadBean.escuelaList}" var="escuela" itemValue="#{escuela.idescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forEscuela" for="escuela" value="Seleccione la escuela que correspondera dicha actividad" />
+                </h:panelGroup>
+                
+                <p:outputLabel for="tipoactividad" value="Tipo Actividad: " />
+                <h:panelGroup layout="block2">
+                    <p:selectOneMenu id="tipoactividad" value="#{actividadBean.idtipoactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <f:selectItems value="#{actividadBean.tipoActividadList}" var="tipoactividad" itemValue="#{tipoactividad.idtipoactividad}" itemLabel="#{tipoactividad.tipoactividad}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forTipoActividad" for="tipoactividad" value="Seleccione el tipo de actividad" />
+                </h:panelGroup>
+                
+                <p:outputLabel for="nombreactividad" value="Nombre de actividad: " />
+                <p:inputText id="nombreactividad" value="#{actividadBean.nombreactividad}" required="true" validatorMessage="Solo letras son permitidas.">
+                    <f:validateLength minimum="1" maximum="50" />
+                    <f:validateRegex pattern="[ a-zA-Z]+$" />
+                </p:inputText>
+               
+                <p:outputLabel for="descripcionactividad" value="Descripción de la actividad: " />
+                <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="true" validatorMessage="Solo letras son permitidas.">
+                    <f:validateLength minimum="1" maximum="50" />
+                    <f:validateRegex pattern="[ a-zA-Z]+$" />
+                </p:inputTextarea>
+                
+                
+                <p:outputLabel id="estado" value="Activar actividad? " />
+                <p:selectBooleanCheckbox value="#{actividadBean.estadoactividad}" />
+                
+                <p:outputLabel id="aprobada" value="Aprobar actividad? " />
+                <p:selectBooleanCheckbox value="#{actividadBean.aprovaractividad}" />
+                
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{actividadBean.updateActividad()}" update=":list:actividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-refresh" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_actividad').hide()" icon="fa fa-ban">
@@ -63,7 +109,7 @@
         <p:dialog header="Eliminar Actividad  " id="dialogDeleteActividad" widgetVar="delete_actividad" modal="true" resizable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el Actividad de  #{actividadBean.tipoactividad}?" />
+                <h:outputText value="Seguro que desea eliminar el Actividad de  #{actividadBean.nombreactividad}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{actividadBean.deleteActividad()}" update=":list:actividad" oncomplete="PF('delete_actividad').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_actividad').hide()" icon="fa fa-ban" />
