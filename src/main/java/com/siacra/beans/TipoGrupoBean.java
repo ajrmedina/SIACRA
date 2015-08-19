@@ -33,6 +33,7 @@ public class TipoGrupoBean implements Serializable {
     Integer idTipoGrupo;
     String tipoGrupos;
     String nombreGrupo;
+    boolean tgEstado;
 
     public List<TipoGrupo> getGruposList() {
         gruposList = new ArrayList<>();
@@ -68,6 +69,14 @@ public class TipoGrupoBean implements Serializable {
         this.nombreGrupo = nombreGrupo;
     }
 
+    public boolean getTgEstado() {
+        return tgEstado;
+    }
+
+    public void setTgEstado(boolean tgEstado) {
+        this.tgEstado = tgEstado;
+    }
+
     public TipoGrupoService getTipoGrupoService() {
         return tipoGrupoService;
     }
@@ -95,6 +104,7 @@ public class TipoGrupoBean implements Serializable {
             //tipoGrupo.setIdTipoGrupo(idTipoGrupo);
             tipoGrupo.setTipoGrupo(tipoGrupos);
             tipoGrupo.setNombreGrupo(nombreGrupo);
+            tipoGrupo.setTgEstado(true);
 
             //Consultamos si el tipo grupo existe o no
             if(getTipoGrupoService().getExistTipoGrupo(getTipoGrupos(), getNombreGrupo()) ){
@@ -117,7 +127,7 @@ public class TipoGrupoBean implements Serializable {
             tgrupo.setTipoGrupo(getTipoGrupos());
             tgrupo.setNombreGrupo(getNombreGrupo());
             getTipoGrupoService().updateTipoGrupo(tgrupo);
-            addMessage("El tipo grupo : " + getTipoGrupos() + " nombre : " + getNombreGrupo() + " fue modificado exitosamente");
+            addMessage("El tipo de grupo : " + getTipoGrupos() + " nombre : " + getNombreGrupo() + " fue modificado exitosamente");
             
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -129,8 +139,16 @@ public class TipoGrupoBean implements Serializable {
         try{
             TipoGrupo tgrupo = getTipoGrupoService().getTipoGrupoById(getIdTipoGrupo());
             String tipoGrupoEliminado = tgrupo.getTipoGrupo();
-            getTipoGrupoService().deleteTipoGrupo(tgrupo);
-            addMessage("La tipo grupo : " + tipoGrupoEliminado + " fue eliminado correctamente");
+            
+            if(tgrupo.getGrupo().isEmpty()){
+                getTipoGrupoService().deleteTipoGrupo(tgrupo);
+                addMessage("El tipo de grupo : " + tipoGrupoEliminado + " fue eliminado correctamente");
+            }else{
+                tgrupo.setTgEstado(false);
+                getTipoGrupoService().updateTipoGrupo(tgrupo);
+                addMessage("El tipo de grupo : " + tipoGrupoEliminado + " fue dado de baja correctamente");
+            }
+            
         }catch (DataAccessException e){
             e.printStackTrace();
             addMessage("El tipo grupo no puede ser eliminado debido a que tiene registros relacionados");
