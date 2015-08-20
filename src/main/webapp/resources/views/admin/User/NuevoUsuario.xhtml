@@ -51,7 +51,7 @@
                     <f:validateRegex pattern="^[a-zA-Z ]+$" />
                 </p:inputText>
                 
-                <p:outputLabel id="estado" value="Activar usuario? " />
+                <p:outputLabel id="estado" value="Habilitar usuario? " />
                 <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" />
                 
                 <p:outputLabel id="esDocente" value="Este usuario es docente? " />
@@ -60,7 +60,7 @@
                 <p:outputLabel for="acceso" value="Nivel de Acceso: " />
                 <h:panelGroup layout="block">
                     <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                        <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
+                        <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}" itemDisabled="#{nivel.estadoAcceso == false}"/>
                     </p:selectOneMenu>
                     <p:tooltip id="forNivel" for="acceso" value="Seleccione el nivel de acceso para el usuario" />
                 </h:panelGroup>

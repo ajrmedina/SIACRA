@@ -16,7 +16,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 90%" class="center-element" paginator="true" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 95%" class="center-element" paginator="true" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                  <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Usuario" outcome="/resources/views/admin/User/NuevoUsuario.xhtml" icon="fa fa-plus"/>                       
                     <p:outputPanel style="float: left">
@@ -37,13 +37,18 @@
                 <p:column style="width: 15%" headerText="Nivel" filterBy="#{user.nivel.acceso}" filterStyleClass="hide">
                     <h:outputText value="#{user.nivel.acceso}" />
                 </p:column>
-                <p:column style="width: 5%" headerText="Activo" filterBy="#{user.estadoUsuario}" filterStyleClass="hide">
-                    <h:outputText value="#{user.estadoUsuario}" />
+                <p:column style="width: 8%" headerText="Habilitado" filterBy="#{user.estadoUsuario}" filterStyleClass="hide">
+                    <h:outputText value="#{user.estadoUsuario?'Habilitado':'Deshabilitado'}" />
                 </p:column>
-                <p:column style="width: 8%" headerText="Acciones" >
+                <p:column style="width: 10%" headerText="Acciones" >
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('update_user').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('delete_user').show()" icon="fa fa-times" />
+                    <p:commandButton id="locked" update=":dialogLockUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('lock_user').show()" icon="fa fa-unlock-alt" rendered="#{user.estadoUsuario == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('unlock_user').show()" icon="fa fa-unlock" rendered="#{user.estadoUsuario == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Usuario" rendered="#{user.estadoUsuario == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Usuario" rendered="#{user.estadoUsuario == false}" />
+                    
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -71,7 +76,7 @@
                         <f:validateRegex pattern="^[a-zA-Z ]+$" />
                     </p:inputText>
 
-                    <p:outputLabel id="estado" value="Activar usuario? " />
+                    <p:outputLabel id="estado" value="Habilitar usuario? " />
                     <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" />
 
                     <p:outputLabel id="esDocente" value="Este usuario es docente? " />
@@ -80,7 +85,7 @@
                     <p:outputLabel for="acceso" value="Nivel de Acceso: " />
                     <h:panelGroup layout="block">
                         <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}"/>
+                            <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}" itemDisabled="#{nivel.estadoAcceso == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forNivel" for="acceso" value="Seleccione el nivel de acceso para el usuario" />
                     </h:panelGroup>
@@ -104,6 +109,29 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
+        
+        <p:dialog header="Bloquear Usuario" id="dialogLockUser" widgetVar="lock_user" modal="true" resizable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear al usuario #{userBean.nombreUsuario} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{userBean.lockedUser()}" update=":list:usuarios" oncomplete="PF('lock_user').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_user').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Desbloquear Usuario" id="dialogUnlockUser" widgetVar="unlock_user" modal="true" resizable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear al Usuario #{userBean.nombreUsuario} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{userBean.unlockedUser()}" update=":list:usuarios" oncomplete="PF('unlock_user').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_user').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
     </ui:define>
     
 </ui:composition>

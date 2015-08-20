@@ -30,7 +30,7 @@
                 <p:outputLabel for="usuario" value="Usuario Asociado: " />
                 <h:panelGroup layout="block">
                     <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
-                        <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}"/>
+                        <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false}"/>
                     </p:selectOneMenu>
                     <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado al docente" />
                 </h:panelGroup>
@@ -38,7 +38,7 @@
                 <p:outputLabel for="categoria" value="Categoria del Docente: " />
                 <h:panelGroup layout="block">
                     <p:selectOneMenu id="categoria" value="#{docenteBean.idCategoria}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
-                        <f:selectItems value="#{docenteBean.categoriasList}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.escalafon.tipoescalafon} - #{categoria.contrato.tipocontrato}"/>
+                        <f:selectItems value="#{docenteBean.categoriasList}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.escalafon.tipoescalafon} - #{categoria.contrato.tipocontrato}" itemDisabled="#{categoria.estadoCategoria == false}"/>
                     </p:selectOneMenu>
                     <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoria del docente" />
                 </h:panelGroup>

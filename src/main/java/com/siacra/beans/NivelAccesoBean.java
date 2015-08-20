@@ -45,6 +45,7 @@ public class NivelAccesoBean implements Serializable {
         try {
             NivelAcceso nivel = new NivelAcceso();
             nivel.setAcceso(getAcceso());
+            nivel.setEstadoAcceso(true);
             getNivelAccesoService().addNivelAcceso(nivel);
             addMessage("El Nivel de Acceso " + getAcceso() + " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
@@ -100,6 +101,40 @@ public class NivelAccesoBean implements Serializable {
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             addMessage("El Nivel de Acceso no puede ser eliminado debido a que tiene usuarios relacionados");
+        }
+    }
+    
+    /**
+     * Locked Nivel Acceso
+     *
+     */
+    public void lockedNivelAcceso() {
+        
+        try {
+            NivelAcceso nivel = getNivelAccesoService().getNivelAccesoById(getId());
+            String nivelBloqueado = nivel.getAcceso();
+            nivel.setEstadoAcceso(false);
+            addMessage("El Nivel de Acceso " + nivelBloqueado + " fue inhabilitado correctamente");
+            getNivelAccesoService().updateNivelAcceso(nivel);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked Nivel Acceso
+     *
+     */
+    public void unlockedNivelAcceso() {
+        
+        try {
+            NivelAcceso nivel = getNivelAccesoService().getNivelAccesoById(getId());
+            String nivelDesbloqueado = nivel.getAcceso();
+            nivel.setEstadoAcceso(true);
+            addMessage("El Nivel de Acceso " + nivelDesbloqueado + " fue habilitado correctamente");
+            getNivelAccesoService().updateNivelAcceso(nivel);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
         }
     }
     

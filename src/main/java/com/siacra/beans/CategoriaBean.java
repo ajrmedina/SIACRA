@@ -64,6 +64,7 @@ public class CategoriaBean implements Serializable {
             categoria.setHorasObligatorias(getHorasObligatorias());
             categoria.setEscalafon(escalafon);
             categoria.setContrato(contrato);
+            categoria.setEstadoCategoria(true);
             getCategoriaService().addCategoria(categoria);
             addMessage("La Categoria " + escalafon.getTipoescalafon() + " " + contrato.getTipocontrato() + " fue añadida correctamente");
             reset();
@@ -131,6 +132,40 @@ public class CategoriaBean implements Serializable {
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             addMessage("La categoria no puede ser eliminada debido a que tiene docentes asociados");
+        }
+    }
+    
+    /**
+     * Locked Categoria
+     *
+     */
+    public void lockedCategoria() {
+        
+        try {
+            Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
+            String categoriaBloqueada = categoria.getEscalafon().getTipoescalafon() + " " + categoria.getContrato().getTipocontrato();
+            categoria.setEstadoCategoria(false);
+            addMessage("La categoria " + categoriaBloqueada + " fue inhabilitada correctamente");
+            getCategoriaService().updateCategoria(categoria);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked Categoria
+     *
+     */
+    public void unlockedCategoria() {
+        
+        try {
+            Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
+            String categoriaDesbloqueada = categoria.getEscalafon().getTipoescalafon() + " " + categoria.getContrato().getTipocontrato();
+            categoria.setEstadoCategoria(true);
+            addMessage("La categoria " + categoriaDesbloqueada + " fue habilitada correctamente");
+            getCategoriaService().updateCategoria(categoria);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
         }
     }
     

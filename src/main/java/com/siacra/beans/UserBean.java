@@ -61,14 +61,8 @@ public class UserBean implements Serializable {
             user.setContrasenia(getContrasenia());
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
-            if(getEstadoUsuario())
-                user.setEstadoUsuario(1);
-            else
-                user.setEstadoUsuario(0);
-            if(getEsDocente())
-                user.setEsDocente(1);
-            else
-                user.setEsDocente(0);
+            user.setEstadoUsuario(getEstadoUsuario());
+            user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
             getUserService().addUser(user);
             addMessage("El Usuario " + getNombreUsuario() + " fue añadido correctamente");
@@ -93,14 +87,8 @@ public class UserBean implements Serializable {
         setNombreUsuario(user.getNombreUsuario());
         setNombres(user.getNombres());
         setApellidos(user.getApellidos());
-        if(user.getEstadoUsuario() == 1)
-            setEstadoUsuario(true);
-        else
-            setEstadoUsuario(false);
-         if(user.getEsDocente() == 1)
-            setEsDocente(true);
-        else
-            setEsDocente(false);
+        setEstadoUsuario(user.getEstadoUsuario());
+        setEsDocente(user.getEsDocente());
         setNivel(user.getNivel().getId());
             
 
@@ -117,14 +105,8 @@ public class UserBean implements Serializable {
             user.setNombreUsuario(getNombreUsuario());
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
-            if(getEstadoUsuario())
-                user.setEstadoUsuario(1);
-            else
-                user.setEstadoUsuario(0);
-            if(getEsDocente())
-                user.setEsDocente(1);
-            else
-                user.setEsDocente(0);
+            user.setEstadoUsuario(getEstadoUsuario());
+            user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
             getUserService().updateUser(user);
             addMessage("El usuario " + getNombreUsuario() + " fue actualizado correctamente");
@@ -148,6 +130,40 @@ public class UserBean implements Serializable {
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             addMessage("El Usuario no puede ser eliminado debido a que tiene un docente asociado");
+        }
+    }
+    
+    /**
+     * Locked Usuario
+     *
+     */
+    public void lockedUser() {
+        
+        try {
+            User user = getUserService().getUserById(getIdUsuario());
+            String usuarioBloqueado = user.getNombreUsuario();
+            user.setEstadoUsuario(false);
+            addMessage("El usuario " + usuarioBloqueado + " fue inhabilitado correctamente");
+            getUserService().updateUser(user);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked User
+     *
+     */
+    public void unlockedUser() {
+        
+        try {
+            User user = getUserService().getUserById(getIdUsuario());
+            String usuarioDesbloqueado = user.getNombreUsuario();
+            user.setEstadoUsuario(true);
+            addMessage("El usuario " + usuarioDesbloqueado + " fue habilitado correctamente");
+            getUserService().updateUser(user);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
         }
     }
     
