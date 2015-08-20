@@ -33,6 +33,9 @@ public class Categoria implements Serializable{
     @Column(name="horasobligatorias", nullable = false)
     private int horasObligatorias;
     
+    @Column(name="ca_estado", nullable = false)
+    private boolean estado;
+    
     @ManyToOne
     @JoinColumn(name="idescalafon")
     private Escalafon escalafon;
@@ -78,6 +81,24 @@ public class Categoria implements Serializable{
      */
     public void setHorasObligatorias(int horas) {
         this.horasObligatorias = horas;
+    }
+    
+    /**
+     * Get Estado Categoria
+     *
+     * @return boolean - EstadoCategoria
+     */
+    public boolean getEstadoCategoria() {
+        return estado;
+    }
+
+    /**
+     * Set Estado Categoria
+     *
+     * @param estado boolean - EstadoCategoria
+     */
+    public void setEstadoCategoria(boolean estado) {
+        this.estado = estado;
     }
     
     /**

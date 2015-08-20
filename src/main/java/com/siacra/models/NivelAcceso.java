@@ -31,6 +31,9 @@ public class NivelAcceso implements Serializable{
     @Column(name="nombreacceso", nullable = false, length = 25)
     private String nombreacceso;
     
+    @Column(name="na_estado", nullable = false)
+    private boolean estado;
+    
     @OneToMany(mappedBy="nivel")
     private Set<User> usuario;
     
@@ -68,6 +71,24 @@ public class NivelAcceso implements Serializable{
      */
     public void setAcceso(String nombreacceso) {
         this.nombreacceso = nombreacceso;
+    }
+    
+    /**
+     * Get Estado Acceso
+     *
+     * @return boolean - EstadoAcceso
+     */
+    public boolean getEstadoAcceso() {
+        return estado;
+    }
+
+    /**
+     * Set Estado Acceso
+     *
+     * @param estado boolean - EstadoAcceso
+     */
+    public void setEstadoAcceso(boolean estado) {
+        this.estado = estado;
     }
     
     /**

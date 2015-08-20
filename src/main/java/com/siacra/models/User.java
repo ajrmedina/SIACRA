@@ -43,10 +43,10 @@ public class User implements Serializable{
         private String apellidos;
         
         @Column(name = "estadousuario", nullable = false)
-	private int estadoUsuario;
+	private boolean estadoUsuario;
         
         @Column(name = "esdocente", nullable = false)
-	private int esDocente;
+	private boolean esDocente;
         
         @ManyToOne
         @JoinColumn(name="idnivelacceso")
@@ -96,19 +96,19 @@ public class User implements Serializable{
 		this.apellidos = apellidos;
 	}
         
-	public int getEstadoUsuario() {
+	public boolean getEstadoUsuario() {
 		return this.estadoUsuario;
 	}
  
-	public void setEstadoUsuario(int estadoUsuario) {
+	public void setEstadoUsuario(boolean estadoUsuario) {
 		this.estadoUsuario = estadoUsuario;
 	}
         
-        public int getEsDocente() {
+        public boolean getEsDocente() {
 		return this.esDocente;
 	}
  
-	public void setEsDocente(int esDocente) {
+	public void setEsDocente(boolean esDocente) {
 		this.esDocente = esDocente;
 	}
         
