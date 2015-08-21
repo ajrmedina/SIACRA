@@ -58,7 +58,7 @@
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
-                                 
+                    
                     <p:outputLabel for="escalafon" value="Escalafon: " />
                     <h:panelGroup layout="block">
                         <p:selectOneMenu id="escalafon" value="#{categoriaBean.idEscalafon}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
@@ -89,7 +89,7 @@
          <p:dialog header="Eliminar Categoria" id="dialogDeleteCategoria" widgetVar="delete_categoria" modal="true" resizable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar la Categoria #{categoriaBean.idCategoria}?" />
+                <h:outputText value="Seguro que desea eliminar la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{categoriaBean.deleteCategoria()}" update=":list:categoria" oncomplete="PF('delete_categoria').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_categoria').hide()" icon="fa fa-ban" />
@@ -100,7 +100,7 @@
         <p:dialog header="Bloquear Categoria" id="dialogLockCategoria" widgetVar="lock_categoria" modal="true" resizable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear la Categoria #{categoriaBean.idCategoria} ?" />
+                <h:outputText value="Seguro que desea bloquear la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{categoriaBean.lockedCategoria()}" update=":list:categoria" oncomplete="PF('lock_categoria').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_categoria').hide()" icon="fa fa-ban" />
@@ -111,7 +111,7 @@
         <p:dialog header="Desbloquear Categoria" id="dialogUnlockCategoria" widgetVar="unlock_categoria" modal="true" resizable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear la Categoria #{categoriaBean.idCategoria} ?" />
+                <h:outputText value="Seguro que desea desbloquear la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{categoriaBean.unlockedCategoria()}" update=":list:categoria" oncomplete="PF('unlock_categoria').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_categoria').hide()" icon="fa fa-ban" />

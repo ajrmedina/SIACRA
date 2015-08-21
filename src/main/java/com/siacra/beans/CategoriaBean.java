@@ -115,7 +115,7 @@ public class CategoriaBean implements Serializable {
     }
     
     /**
-     * Delete Contrato
+     * Delete Categoria
      *
      * 
      * 
@@ -128,7 +128,7 @@ public class CategoriaBean implements Serializable {
             categoria = getCategoriaService().getCategoriaById(getIdCategoria());
             int eliminado = categoria.getIdCategoria();
             getCategoriaService().deleteCategoria(categoria);
-            addMessage("la categoria " + eliminado + " fue eliminada correctamente");
+            addMessage("La categoria " + eliminado + " fue eliminada correctamente");
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             addMessage("La categoria no puede ser eliminada debido a que tiene docentes asociados");
