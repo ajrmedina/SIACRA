@@ -72,15 +72,11 @@
                         <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
                     </p:selectOneMenu>
                                  
-                    <p:outputLabel for="hinicio" value="Hora de inicio : " />
-                    <p:inputText id="hinicio" value="#{horarioBean.hinicio}" requiredMessage="Por favor, ingrese la hora de inicio">
-                        <f:validateRequired />
-                    </p:inputText>
+                    <p:outputLabel for="hinicio" value="Hora de inicio :" />
+                    <p:calendar id="hinicio" value="#{horarioBean.hinicio}" pattern="HH:mm" timeOnly="true"  required="true" requiredMessage="Ingrese hora de inicio"/>
                     
-                    <p:outputLabel for="hfin" value="Hora de fin : " />
-                    <p:inputText id="hfin" value="#{horarioBean.hfin}" requiredMessage="Por favor, ingrese la hora de fin">
-                        <f:validateRequired />
-                    </p:inputText>
+                    <p:outputLabel for="hfin" value="Hora de inicio :" />
+                    <p:calendar id="hfin" value="#{horarioBean.hfin}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Ingrese hora de fin" />
                         
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_horario').hide()" icon="fa fa-ban">
