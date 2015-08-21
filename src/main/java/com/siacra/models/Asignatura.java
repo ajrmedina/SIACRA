@@ -29,10 +29,6 @@ public class Asignatura implements Serializable{
     @Column(name="idasignatura", nullable=false)
     Integer idAsignatura;
     
-    @ManyToOne
-    @JoinColumn(name="idescuela")
-    private Escuela escuela;
-    
     @Column(name="codigoasignatura", nullable=false)
     String codigoAsignatura;
     
@@ -54,8 +50,12 @@ public class Asignatura implements Serializable{
     @Column(name="nombreasignatura", nullable=false)
     String nombreAsignatura;
     
-    @OneToMany(mappedBy="idAsignatura")
-    private Set<Oferta> oferta;
+    @ManyToOne
+    @JoinColumn(name="idescuela")
+    private Escuela escuela;
+    
+    @OneToMany(mappedBy="asignatura")
+    private Set<Grupo> grupo;
 
     public Integer getIdAsignatura() {
         return idAsignatura;
@@ -129,12 +129,12 @@ public class Asignatura implements Serializable{
         this.nombreAsignatura = nombreAsignatura;
     }
 
-    public Set<Oferta> getOferta() {
-        return oferta;
+    public Set<Grupo> getGrupo() {
+        return grupo;
     }
 
-    public void setOferta(Set<Oferta> oferta) {
-        this.oferta = oferta;
+    public void setGrupo(Set<Grupo> grupo) {
+        this.grupo = grupo;
     }
     
     

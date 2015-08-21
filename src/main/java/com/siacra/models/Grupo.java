@@ -43,21 +43,21 @@ public class Grupo implements Serializable{
     
     @ManyToOne
     @JoinColumn(name="idtipogrupo")
-    private TipoGrupo idTipoGrupo;
+    private TipoGrupo tipoGrupo;
     
-    @OneToMany(mappedBy="idGrupo")
+    @OneToMany(mappedBy="grupo")
     private Set<Oferta> oferta;
     
-    @OneToMany(mappedBy="idAcademicaGrupo")
-    private Set<AcademicaGrupo> idAcademicaGrupo;
+    //@OneToMany(mappedBy="grupo")
+    //private Set<AcademicaGrupo> academicaGrupo;
     
     @ManyToOne
     @JoinColumn(name="idhorario")
-    private Horario idHorario;
+    private Horario horario;
     
     @ManyToOne
     @JoinColumn(name="idasignatura")
-    private Asignatura idAsignatura;
+    private Asignatura asignatura;
 
     public int getIdGrupo() {
         return idGrupo;
@@ -90,12 +90,12 @@ public class Grupo implements Serializable{
         return aprobarGrupo;
     }
 
-    public TipoGrupo getIdTipoGrupo() {
-        return idTipoGrupo;
+    public TipoGrupo getTipoGrupo() {
+        return tipoGrupo;
     }
 
-    public void setIdTipoGrupo(TipoGrupo idTipoGrupo) {
-        this.idTipoGrupo = idTipoGrupo;
+    public void setTipoGrupo(TipoGrupo tipoGrupo) {
+        this.tipoGrupo = tipoGrupo;
     }
     
     public Set<Oferta> getOferta() {
@@ -114,29 +114,30 @@ public class Grupo implements Serializable{
         this.grEstado = grEstado;
     }
 
-    public Horario getIdHorario() {
-        return idHorario;
+    public Horario getHorario() {
+        return horario;
     }
 
-    public void setIdHorario(Horario idHorario) {
-        this.idHorario = idHorario;
+    public void setHorario(Horario horario) {
+        this.horario = horario;
     }
 
-    public Asignatura getIdAsignatura() {
-        return idAsignatura;
+    public Asignatura getAsignatura() {
+        return asignatura;
     }
 
-    public void setIdAsignatura(Asignatura idAsignatura) {
-        this.idAsignatura = idAsignatura;
+    public void setAsignatura(Asignatura asignatura) {
+        this.asignatura = asignatura;
     }
 
-    public Set<AcademicaGrupo> getIdAcademicaGrupo() {
-        return idAcademicaGrupo;
+    /*
+    public Set<AcademicaGrupo> getAcademicaGrupo() {
+        return academicaGrupo;
     }
 
-    public void setIdAcademicaGrupo(Set<AcademicaGrupo> idAcademicaGrupo) {
-        this.idAcademicaGrupo = idAcademicaGrupo;
+    public void setAcademicaGrupo(Set<AcademicaGrupo> academicaGrupo) {
+        this.academicaGrupo = academicaGrupo;
     }
-    
+    */
     
 }

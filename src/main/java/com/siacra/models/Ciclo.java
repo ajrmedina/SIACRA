@@ -35,7 +35,7 @@ public class Ciclo {
     @Column(name="ci_estado", nullable = false)
     boolean ciEstado;
     
-    @OneToMany(mappedBy="idCiclo")
+    @OneToMany(mappedBy="ciclo")
     private Set<Oferta> oferta;
     
 //    @OneToMany(mappedBy="idCiclo")

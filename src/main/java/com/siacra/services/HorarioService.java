@@ -57,8 +57,8 @@ public class HorarioService {
     }
     
     //verificamos si el grupo ya esta registrado
-    public boolean getExistHorario(String periodo,String dia){
-        return getHorarioDao().getExistHorario(periodo, dia);
+    public boolean getExistHorario(String hinicio,String hfin,String dia){
+        return getHorarioDao().getExistHorario(hinicio,hfin ,dia);
     }
     
     //Seleccionamos todos los tipos de grupos existentes

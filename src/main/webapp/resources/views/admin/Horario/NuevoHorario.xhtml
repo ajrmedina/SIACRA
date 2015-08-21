@@ -21,12 +21,7 @@
         <h:form>
             <p:growl id="messages" showDetail="true" sticky="true" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                
-                <p:outputLabel for="periodo" value="Periodo : " />
-                <p:inputText id="periodo" value="#{horarioBean.periodo}" required="true">
-                    <f:validateLength minimum="5" maximum="30" />
-                </p:inputText>
+            <h:panelGrid id="timePickerGrid" columns="2" cellpadding="5" class="center-element" columnClasses="timePickerColumn1,timePickerColumn">
                 
                 <p:outputLabel for="dia" value="Dia :" />
                 <p:selectOneMenu id="dia" value="#{horarioBean.dia}" required="true">
@@ -39,10 +34,23 @@
                     <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
                     <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
                 </p:selectOneMenu>
+
+                <p:outputLabel for="hinicio" value="Hora de inicio :" />
+                <p:calendar id="hinicio" value="#{horarioBean.hinicio}" pattern="HH:mm" timeOnly="true"  required="true" requiredMessage="Ingrese hora de inicio"/>
+                
+                <p:outputLabel for="hfin" value="Hora de inicio :" />
+                <p:calendar id="hfin" value="#{horarioBean.hfin}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Ingrese hora de fin" />
                 
                 <p:commandButton value="Agregar" action="#{horarioBean.addHorario()}" update="messages" ajax="false"/>
                 <p:commandButton type="reset" value="Limpiar"/>
             </h:panelGrid>
+            
+            <p:dialog id="timeDialog" header="Selected Values" visible="#{timePickerController.showTimeDialog}">
+                <h:panelGrid columns="1" style="margin: 10px;">
+                    <h:outputText value="Spinner: #{timePickerController.formattedTime3}"/>
+                </h:panelGrid>
+            </p:dialog>
+            
         </h:form>
     </ui:define>
     

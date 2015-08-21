@@ -140,7 +140,7 @@ public class TipoGrupoBean implements Serializable {
             TipoGrupo tgrupo = getTipoGrupoService().getTipoGrupoById(getIdTipoGrupo());
             String tipoGrupoEliminado = tgrupo.getTipoGrupo();
             
-            if(tgrupo.getGrupo().isEmpty()){
+            if(tgrupo.getGrupo()!= null){
                 getTipoGrupoService().deleteTipoGrupo(tgrupo);
                 addMessage("El tipo de grupo : " + tipoGrupoEliminado + " fue eliminado correctamente");
             }else{

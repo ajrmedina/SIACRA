@@ -8,7 +8,11 @@ package com.siacra.beans;
 import com.siacra.models.Horario;
 import com.siacra.services.HorarioService;
 import java.io.Serializable;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -29,10 +33,14 @@ public class HorarioBean implements Serializable{
     private HorarioService horarioService;
     
     private List<Horario> horarioList;
+    Format formato = new SimpleDateFormat("HH:mm");
+    SimpleDateFormat formato2 = new SimpleDateFormat("HH:mm");
     
     Integer idHorario;
-    String periodo;
+    Date hinicio;
+    Date hfin;
     String dia;
+    boolean hoEstado;
 
     public List<Horario> getHorarioList() {
         horarioList = new ArrayList<>();
@@ -56,12 +64,20 @@ public class HorarioBean implements Serializable{
         this.idHorario = idHorario;
     }
 
-    public String getPeriodo() {
-        return periodo;
+    public Date getHinicio() {
+        return hinicio;
     }
 
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
+    public void setHinicio(Date hinicio) {
+        this.hinicio = hinicio;
+    }
+
+    public Date getHfin() {
+        return hfin;
+    }
+
+    public void setHfin(Date hfin) {
+        this.hfin = hfin;
     }
 
     public String getDia() {
@@ -72,7 +88,14 @@ public class HorarioBean implements Serializable{
         this.dia = dia;
     }
 
-    
+    public boolean isHoEstado() {
+        return hoEstado;
+    }
+
+    public void setHoEstado(boolean hoEstado) {
+        this.hoEstado = hoEstado;
+    }
+
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -89,16 +112,17 @@ public class HorarioBean implements Serializable{
         
         try{
             Horario horario = new Horario();
-            horario.setPeriodo(periodo);
+            horario.setHinicio( formato.format(hinicio) );
+            horario.setHfin( formato.format(hfin));
             horario.setDia(dia);
+            horario.setHoEstado(true);
 
-            //Consultamos si el tipo grupo existe o no
-            if(getHorarioService().getExistHorario(getPeriodo(), getDia()) ){
-                addMessage("El horario con periodo :" + getPeriodo()+ " para el dia  : " + getDia()+ " ya existe");
+            if( getHorarioService().getExistHorario(formato.format(getHinicio()), formato.format(getHfin()),getDia()) ){
+                addMessage("El horario con periodo :" + formato.format(getHinicio()) +" - "+formato.format(getHfin())+ " para el dia  : " + getDia()+ " ya existe");
             }
             else{
                 getHorarioService().addHorario(horario);
-                addMessage("El horario con periodo :" + getPeriodo() + " para el dia : " + getDia()+ " fue creado exitosamente");
+                addMessage("El horario con periodo :" + formato.format(getHinicio())+ " - "+formato.format(getHfin()) + " para el dia : " + getDia()+ " fue creado exitosamente");
             }
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -110,10 +134,11 @@ public class HorarioBean implements Serializable{
         try{
             
             Horario horario = getHorarioService().getHorarioById(getIdHorario());
-            horario.setPeriodo(getPeriodo());
+            horario.setHinicio(formato.format(getHinicio()));
+            horario.setHfin(formato.format(getHfin()));
             horario.setDia(getDia());
             getHorarioService().updateHorario(horario);
-            addMessage("El Horario con periodo : " + getPeriodo()+ " para el dia : " + getDia() + " fue actualizado correctamente");
+            addMessage("El Horario con periodo : " + formato.format(getHinicio())+" - "+ formato.format(getHfin()) + " para el dia : " + getDia() + " fue actualizado correctamente");
             
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -124,9 +149,17 @@ public class HorarioBean implements Serializable{
     public void deleteHorario(){
         try{
             Horario horario = getHorarioService().getHorarioById(getIdHorario());
-            //String horarioEliminado = horario.getPeriodo() + " - " + horario.getDia();
-            getHorarioService().deleteHorario(horario);
-            addMessage("La Horario con periodo : " + getPeriodo() + " para el dia :"+ getDia() +" fue eliminado correctamente");
+            
+            if( horario.getGrupo() != null ){
+                getHorarioService().deleteHorario(horario);
+                addMessage("La Horario con periodo : " + formato.format(getHinicio())+" - "+ formato.format(getHfin()) + " para el dia :"+ getDia() +" fue eliminado correctamente");
+            }
+            else{
+                horario.setHoEstado(false);
+                getHorarioService().updateHorario(horario);
+                addMessage("La Horario con periodo : " + formato.format(getHinicio())+" - "+ formato.format(getHfin()) + " para el dia :"+ getDia() +" fue dado de baja correctamente");
+            }
+            
         }catch (DataAccessException e){
             e.printStackTrace();
             addMessage("El Horario no puede ser eliminado debido a que tiene registros relacionados");
@@ -134,11 +167,13 @@ public class HorarioBean implements Serializable{
     }
     
     
-    public void loadHorario(Horario horario) {
+    public void loadHorario(Horario horario) throws ParseException {
         
         try {
             setIdHorario(horario.getIdHorario());
-            setPeriodo(horario.getPeriodo());
+            setHinicio(formato2.parse(horario.getHinicio()));
+            setHfin(formato2.parse(horario.getHfin()));
+            setHoEstado(horario.getHoEstado());
             setDia(horario.getDia());
                                   
         } catch (DataAccessException e) {

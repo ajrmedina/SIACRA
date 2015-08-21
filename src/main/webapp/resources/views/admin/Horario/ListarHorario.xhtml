@@ -28,14 +28,20 @@
                     </p:outputPanel>
                     
                     <div style="clear:both" />
-                </f:facet>                                 
-                <p:column style="width: 20%" headerText="Periodo del horario" filterBy="#{horario.periodo}" filterStyleClass="hide">                         
-                    <h:outputText value="#{horario.periodo}" class="center-element"/>
-                </p:column>
+                </f:facet>
                 
-                <p:column style="width: 50%" headerText="Dia del horario" filterBy="#{horario.dia}" filterStyleClass="hide">                  
+                <p:column style="width: 25%" headerText="Dia del horario" filterBy="#{horario.dia}" filterStyleClass="hide">                  
                     <h:outputText value="#{horario.dia}" class="center-element"/>
                 </p:column>
+                
+                <p:column style="width: 20%" headerText="Hora de inicio" filterBy="#{horario.hinicio}" filterStyleClass="hide">                         
+                    <h:outputText value="#{horario.hinicio}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 20%" headerText="Hora de fin" filterBy="#{horario.hfin}" filterStyleClass="hide">                         
+                    <h:outputText value="#{horario.hfin}" class="center-element"/>
+                </p:column>
+                
                 <p:column style="width: 15%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
@@ -52,15 +58,8 @@
             <h:form id="update">
                 <p:growl id="messages" />
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
-                                 
-                    <p:outputLabel for="periodo" value="Periodo : " />
-                    <p:inputText id="periodo" value="#{horarioBean.periodo}" requiredMessage="Por favor, ingrese el periodo del horario"
-                             validatorMessage="Máximo 30 caracteres">
-                        <f:validateLength maximum="25" />
-                        <f:validateRequired />
-                    </p:inputText>
-                        
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
                     <p:outputLabel for="dia" value="Dia :" />
                     <p:selectOneMenu id="dia" value="#{horarioBean.dia}" required="true">
                         <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
@@ -72,7 +71,17 @@
                         <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
                         <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
                     </p:selectOneMenu>
-
+                                 
+                    <p:outputLabel for="hinicio" value="Hora de inicio : " />
+                    <p:inputText id="hinicio" value="#{horarioBean.hinicio}" requiredMessage="Por favor, ingrese la hora de inicio">
+                        <f:validateRequired />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="hfin" value="Hora de fin : " />
+                    <p:inputText id="hfin" value="#{horarioBean.hfin}" requiredMessage="Por favor, ingrese la hora de fin">
+                        <f:validateRequired />
+                    </p:inputText>
+                        
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_horario').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
@@ -84,7 +93,7 @@
          <p:dialog header="Eliminar Horario" id="dialogDeleteHorario" widgetVar="delete_horario" modal="true" resizable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el horario : #{horarioBean.periodo}?" />
+                <h:outputText value="Seguro que desea eliminar el horario : #{horarioBean.dia}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{horarioBean.deleteHorario()}" update=":list:horario" oncomplete="PF('delete_horario').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_horario').hide()" icon="fa fa-ban" />

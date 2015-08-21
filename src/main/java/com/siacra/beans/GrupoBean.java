@@ -132,7 +132,7 @@ public class GrupoBean implements Serializable{
         
         try{
             Grupo grupo = new Grupo();
-            grupo.setIdTipoGrupo(tipoGrupoService.getTipoGrupoById(idTipoGrupo));
+            grupo.setTipoGrupo(tipoGrupoService.getTipoGrupoById(idTipoGrupo));
             grupo.setCupo(cupo);
             grupo.setNumeroGrupo(numeroGrupo);
             grupo.setAprobarGrupo(false);
@@ -155,7 +155,7 @@ public class GrupoBean implements Serializable{
         try{
             
             Grupo grupo = getGrupoService().getGrupoById(getIdGrupo());
-            grupo.setIdTipoGrupo(tipoGrupoService.getTipoGrupoById(getIdTipoGrupo()));
+            grupo.setTipoGrupo(tipoGrupoService.getTipoGrupoById(getIdTipoGrupo()));
             grupo.setCupo(getCupo());
             grupo.setNumeroGrupo(getNumeroGrupo());
             grupo.setAprobarGrupo(getAprobarGrupo());
@@ -185,7 +185,7 @@ public class GrupoBean implements Serializable{
         
         try {
             setIdGrupo(grupo.getIdGrupo());
-            setIdTipoGrupo(grupo.getIdTipoGrupo().getIdTipoGrupo());
+            setIdTipoGrupo(grupo.getTipoGrupo().getIdTipoGrupo());
             setCupo(grupo.getCupo());
             setNumeroGrupo(grupo.getNumeroGrupo());
             setAprobarGrupo(grupo.getAprobarGrupo());

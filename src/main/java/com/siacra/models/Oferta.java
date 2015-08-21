@@ -27,9 +27,11 @@ public class Oferta implements Serializable{
     @Column(name="idoferta")
     private Integer idOferta;
     
-    @ManyToOne
-    @Column(name="idacuerdo")
-    private Acuerdo idAcuerdo;
+//    @ManyToOne
+//    @Column(name="idacuerdo")
+    private Acuerdo acuerdo;
+
+    
     
 //    @ManyToOne
 //    @JoinColumn(name="idhorario")
@@ -37,15 +39,15 @@ public class Oferta implements Serializable{
     
     @ManyToOne
     @JoinColumn(name="idgrupo")
-    private Grupo idGrupo;
+    private Grupo grupo;
     
 //    @ManyToOne
 //    @JoinColumn(name="idasignatura")
 //    private Asignatura idAsignatura;
     
     @ManyToOne
-    @Column(name="idciclo")
-    private Ciclo idCiclo;
+    @JoinColumn(name="idciclo")
+    private Ciclo ciclo;
     
     
     @Column(name="aprobaroferta")
@@ -59,28 +61,29 @@ public class Oferta implements Serializable{
         this.idOferta = idOferta;
     }
 
-    public Acuerdo getIdAcuerdo() {
-        return idAcuerdo;
+    public Acuerdo getAcuerdo() {
+        return acuerdo;
     }
 
-    public void setIdAcuerdo(Acuerdo idAcuerdo) {
-        this.idAcuerdo = idAcuerdo;
+    public void setAcuerdo(Acuerdo acuerdo) {
+        this.acuerdo = acuerdo;
     }
 
-    public Grupo getIdGrupo() {
-        return idGrupo;
+
+    public Grupo getGrupo() {
+        return grupo;
     }
 
-    public void setIdGrupo(Grupo idGrupo) {
-        this.idGrupo = idGrupo;
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
-    public Ciclo getIdCiclo() {
-        return idCiclo;
+    public Ciclo getCiclo() {
+        return ciclo;
     }
 
-    public void setIdCiclo(Ciclo idCiclo) {
-        this.idCiclo = idCiclo;
+    public void setCiclo(Ciclo ciclo) {
+        this.ciclo = ciclo;
     }
 
     public boolean isAprobarOferta() {

@@ -16,9 +16,12 @@ import com.siacra.services.OfertaService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import org.springframework.dao.DataAccessException;
 
 /**
  *
@@ -42,6 +45,9 @@ public class OfertaBean implements Serializable{
     
     Integer idOferta;
     boolean aprobarOferta;
+    Integer idCiclo;
+    Integer idGrupo;
+    Integer idAcuerdo;
     private List<Oferta> ofertaList;
     private List<Ciclo> cicloList;
     private List<Grupo> grupoList;
@@ -95,6 +101,30 @@ public class OfertaBean implements Serializable{
         this.aprobarOferta = aprobarOferta;
     }
 
+    public Integer getIdCiclo() {
+        return idCiclo;
+    }
+
+    public void setIdCiclo(Integer idCiclo) {
+        this.idCiclo = idCiclo;
+    }
+
+    public Integer getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(Integer idGrupo) {
+        this.idGrupo = idGrupo;
+    }
+
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
+
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
+    }
+
     public List<Oferta> getOfertaList() {
         ofertaList = new ArrayList<>();
         ofertaList.addAll(getOfertaService().getOfertas());
@@ -135,6 +165,77 @@ public class OfertaBean implements Serializable{
         this.acuerdoList = acuerdoList;
     }
     
+    public void addMessage(String mensaje) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     
+    public void addOferta(){
+        
+        try{
+            Ciclo c = cicloService.getCicloById(idCiclo);
+            Grupo g = grupoService.getGrupoById(idGrupo);
+            Acuerdo a = acuerdoService.getAcuerdoById(idAcuerdo);
+            
+            Oferta oferta = new Oferta();
+            oferta.setCiclo(c);
+            oferta.setGrupo(g);
+            oferta.setAcuerdo(a);
+            oferta.setAprobarOferta(false);
+
+            if(getOfertaService().getExistOferta(getIdCiclo(), getIdGrupo(), getIdAcuerdo()) ){
+                addMessage("La oferta para el ciclo :" + c.getCiclo() + " asignatura : " + g.getAsignatura().getCodigoAsignatura() + " Acuerdo :" + a.getCodigoacuerdo() +" ya existe");
+            }
+            else{
+                getOfertaService().addOferta(oferta);
+                addMessage("La oferta para el ciclo :" + c.getCiclo() + " asignatura : " + g.getAsignatura().getCodigoAsignatura() + " Acuerdo :" + a.getCodigoacuerdo() +" fue creada exitosamente");
+            }
+        }catch (DataAccessException e){
+            e.printStackTrace();
+        }
+    }
+    
+    //Actualizar el tipo de grupo
+    public void updateOferta(){
+        try{
+            Oferta oferta = getOfertaService().getOfertaById(getIdOferta());
+            oferta.setAcuerdo(acuerdoService.getAcuerdoById(getIdAcuerdo()));
+            oferta.setCiclo(cicloService.getCicloById(getIdCiclo()));
+            oferta.setGrupo(grupoService.getGrupoById(getIdGrupo()));
+            
+            getOfertaService().updateOferta(oferta);
+            addMessage("La oferta fue actualizada exitosamente");
+            
+        }catch (DataAccessException e){
+            e.printStackTrace();
+        }
+    }
+    
+    //Eliminamos el grupo
+    public void deleteOferta(){
+        try{
+            Oferta oferta = getOfertaService().getOfertaById(getIdOferta());
+            getOfertaService().deleteOferta(oferta);
+            addMessage("La oferta fue eliminada correctamente");
+        }catch (DataAccessException e){
+            e.printStackTrace();
+            addMessage("La oferta no puede ser eliminado debido a que tiene registros relacionados");
+        }
+    }
+    
+    
+    public void loadOferta(Oferta oferta) {
+        
+        try {
+            setIdOferta(oferta.getIdOferta());
+            setIdAcuerdo(oferta.getAcuerdo().getIdacuerdo());
+            setIdCiclo(oferta.getCiclo().getIdCiclo());
+            setIdGrupo(oferta.getGrupo().getIdGrupo());
+                                  
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+
+    }
     
 }

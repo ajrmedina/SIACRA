@@ -48,10 +48,10 @@ public class HorarioDao {
         return (Horario)list.get(0);
     }
     
-    public boolean getExistHorario(String periodo,String dia) {
+    public boolean getExistHorario(String hinicio, String hfin, String dia) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from Horario where periodo=? and dia=?")
-                                            .setParameter(0, periodo).setParameter(1, dia).list();
+                                            .createQuery("from Horario where hinicio=? and hfin=? and dia=?")
+                                            .setParameter(0, hinicio).setParameter(1, hfin).setParameter(2, dia).list();
         
         if(list.isEmpty()){
             return false;
