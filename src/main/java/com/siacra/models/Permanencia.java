@@ -35,9 +35,9 @@ public class Permanencia implements Serializable{
     @JoinColumn(name="iddocente")
     private Docente docente;
     
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name="idciclo")
-    private Ciclo ciclo;*/
+    private Ciclo ciclo;
     
     @ManyToOne
     @JoinColumn(name="idhorario")
@@ -102,18 +102,18 @@ public class Permanencia implements Serializable{
      *
      * @return ciclo Ciclo
      */
-    /*public Ciclo getCiclo() {
+    public Ciclo getCiclo() {
         return this.ciclo;
-    }*/
+    }
     
     /**
      * Set Ciclo
      *
      * @param ciclo Ciclo
      */
-    /*public void setCiclo(Ciclo ciclo) {
+    public void setCiclo(Ciclo ciclo) {
         this.ciclo = ciclo;
-    }*/
+    }
     
     /**
      * Get Horario

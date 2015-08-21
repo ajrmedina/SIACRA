@@ -48,8 +48,8 @@ public class Grupo implements Serializable{
     @OneToMany(mappedBy="grupo")
     private Set<Oferta> oferta;
     
-    //@OneToMany(mappedBy="grupo")
-    //private Set<AcademicaGrupo> academicaGrupo;
+    @OneToMany(mappedBy="grupo")
+    private Set<AcademicaGrupo> academicaGrupo;
     
     @ManyToOne
     @JoinColumn(name="idhorario")
@@ -130,7 +130,6 @@ public class Grupo implements Serializable{
         this.asignatura = asignatura;
     }
 
-    /*
     public Set<AcademicaGrupo> getAcademicaGrupo() {
         return academicaGrupo;
     }
@@ -138,6 +137,6 @@ public class Grupo implements Serializable{
     public void setAcademicaGrupo(Set<AcademicaGrupo> academicaGrupo) {
         this.academicaGrupo = academicaGrupo;
     }
-    */
+    
     
 }

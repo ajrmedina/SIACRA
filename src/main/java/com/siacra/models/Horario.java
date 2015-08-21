@@ -41,6 +41,9 @@ public class Horario implements Serializable{
     
     @OneToMany(mappedBy="horario")
     private Set<Grupo> grupo;
+    
+    @OneToMany(mappedBy="horario")
+    private Set<Permanencia> permanencia;
 
     public int getIdHorario() {
         return idHorario;
@@ -88,6 +91,14 @@ public class Horario implements Serializable{
 
     public void setHoEstado(boolean hoEstado) {
         this.hoEstado = hoEstado;
+    }
+
+    public Set<Permanencia> getPermanencia() {
+        return permanencia;
+    }
+
+    public void setPermanencia(Set<Permanencia> permanencia) {
+        this.permanencia = permanencia;
     }
 
     

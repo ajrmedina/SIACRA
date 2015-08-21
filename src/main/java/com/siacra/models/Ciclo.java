@@ -38,8 +38,8 @@ public class Ciclo {
     @OneToMany(mappedBy="ciclo")
     private Set<Oferta> oferta;
     
-//    @OneToMany(mappedBy="idCiclo")
-//    private Set<Permanencia> permanencia;
+    @OneToMany(mappedBy="ciclo")
+    private Set<Permanencia> permanencia;
 
     public Integer getIdCiclo() {
         return idCiclo;
@@ -81,13 +81,13 @@ public class Ciclo {
         this.oferta = oferta;
     }
 
-//    public Set<Permanencia> getPermanencia() {
-//        return permanencia;
-//    }
-//
-//    public void setPermanencia(Set<Permanencia> permanencia) {
-//        this.permanencia = permanencia;
-//    }
+    public Set<Permanencia> getPermanencia() {
+        return permanencia;
+    }
+
+    public void setPermanencia(Set<Permanencia> permanencia) {
+        this.permanencia = permanencia;
+    }
     
     
     
