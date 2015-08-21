@@ -36,6 +36,8 @@ public class Contrato implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "TIPOCONTRATO", nullable = false, length = 30)
     private String tipocontrato;
+    @Column(name = "CO_ESTADO")
+    private boolean co_estado;
     
     @OneToMany(mappedBy="contrato")
     private Set<Categoria> categoria;
@@ -90,6 +92,20 @@ public class Contrato implements Serializable {
     @Override
     public String toString() {
         return "com.siacra.models.Contrato[ idcontrato=" + idcontrato + " ]";
+    }
+
+    /**
+     * @return the co_estado
+     */
+    public boolean isCo_estado() {
+        return co_estado;
+    }
+
+    /**
+     * @param co_estado the co_estado to set
+     */
+    public void setCo_estado(boolean co_estado) {
+        this.co_estado = co_estado;
     }
     
 }

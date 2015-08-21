@@ -33,7 +33,8 @@ public class TipoActividadBean implements Serializable {
     private List<TipoActividad> tipoactividadList;
     private int idtipoactividad;
     private String tipoactividad;
-    
+    private boolean ta_estado;
+   
      /**
      * Add TipoActividad
      *
@@ -42,6 +43,7 @@ public class TipoActividadBean implements Serializable {
         try {
             TipoActividad tipoactividad = new TipoActividad();
             tipoactividad.setTipoactividad(getTipoactividad());
+            tipoactividad.setTa_estado(true);
             getTipoActividadService().addTipoActividad(tipoactividad);
             addMessage("El tipoactividad " + getTipoactividad()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
@@ -56,11 +58,13 @@ public class TipoActividadBean implements Serializable {
      * Load TipoActividad
      *
      * Get and Load the data for TipoActividad to update
+     * @param tipoactividad tipoactividad
      */
     public void loadTipoActividad(TipoActividad tipoactividad) {
         
         setIdtipoactividad(tipoactividad.getIdtipoactividad());
         setTipoactividad(tipoactividad.getTipoactividad());
+        setTa_estado(tipoactividad.isTa_estado());
     }
     
     /**
@@ -74,6 +78,7 @@ public class TipoActividadBean implements Serializable {
             TipoActividad tipoactividad = new TipoActividad();
             tipoactividad = getTipoActividadService().getTipoActividadById(getIdtipoactividad());
             tipoactividad.setTipoactividad(getTipoactividad());
+            tipoactividad.setTa_estado(isTa_estado());
             getTipoActividadService().updateTipoActividad(tipoactividad);
             addMessage("El tipoactividad " + getIdtipoactividad()+ " fue actualizado correctamente a: "+ getTipoactividad());
             
@@ -169,5 +174,56 @@ public class TipoActividadBean implements Serializable {
 
     private void reset() {
         this.setTipoactividad(""); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the ta_estado
+     */
+    public boolean isTa_estado() {
+        
+        return ta_estado;
+    }
+
+    /**
+     * @param ta_estado the ta_estado to set
+     */
+    public void setTa_estado(boolean ta_estado) {
+        this.ta_estado = ta_estado;
+    }
+
+   /**
+     * Locked TipoActividad
+     *
+     */
+    public void lockedTipoActividad() {
+        
+        try {
+            TipoActividad tipoact = getTipoActividadService().getTipoActividadById(getIdtipoactividad());
+            String tipoactividadBloqueado = tipoact.getTipoactividad();
+            tipoact.setTa_estado(false);
+            getTipoActividadService().updateTipoActividad(tipoact);
+            addMessage("El tipoactividad " + tipoactividadBloqueado + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked TipoActividad
+     *
+     */
+    public void unlockedTipoActividad() {
+        
+        try {
+            TipoActividad tipoact = getTipoActividadService().getTipoActividadById(getIdtipoactividad());
+            String tipoactividadBloqueada = tipoact.getTipoactividad();
+            tipoact.setTa_estado(true);
+            getTipoActividadService().updateTipoActividad(tipoact);
+            addMessage("El tipoactividad " + tipoactividadBloqueada + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

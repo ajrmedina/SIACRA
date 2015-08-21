@@ -34,6 +34,8 @@ public class Escalafon implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "TIPOESCALAFON", nullable = false, length = 30)
     private String tipoescalafon;
+    @Column(name = "ES_ESTADO",nullable = true)
+    private boolean es_estado;
     
     @OneToMany(mappedBy="escalafon")
     private Set<Categoria> categoria;
@@ -87,6 +89,20 @@ public class Escalafon implements Serializable {
     @Override
     public String toString() {
         return "com.siacra.models.Escalafon[ idescalafon=" + idescalafon + " ]";
+    }
+
+    /**
+     * @return the es_estado
+     */
+    public boolean isEs_estado() {
+        return es_estado;
+    }
+
+    /**
+     * @param es_estado the es_estado to set
+     */
+    public void setEs_estado(boolean es_estado) {
+        this.es_estado = es_estado;
     }
     
 }

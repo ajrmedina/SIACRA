@@ -26,20 +26,18 @@
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 25%" headerText="ID Actividad" filterBy="#{actividad.idactividad}" filterStyleClass="hide">
-                    <h:outputText value="#{actividad.idactividad}" />
-                </p:column>
+               
                 <p:column style="width: 25%" headerText="Escuela" filterBy="#{actividad.idescuela.nombreescuela}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.idescuela.nombreescuela}"/>
                 </p:column>
                  <p:column style="width: 25%" headerText="Tipo Actividad" filterBy="#{actividad.idtipoactividad.tipoactividad}" filterStyleClass="hide">
                      <h:outputText value="#{actividad.idtipoactividad.tipoactividad}"/>
                 </p:column>
-                <p:column style="width: 20%" headerText="Estado" filterBy="#{actividadBean.estado}" filterStyleClass="hide">
-                    <h:outputText value="#{actividadBean.estado}"/>
+                <p:column style="width: 20%" headerText="Habilitado" filterBy="#{actividad.estadoactividad}" filterStyleClass="hide">
+                    <h:outputText value="#{actividad.estadoactividad?'Habilitada':'Deshabilitada'}"/>
                 </p:column>
-                <p:column style="width: 30%" headerText="Aprobada" filterBy="#{actividadBean.aprobar}" filterStyleClass="hide">
-                    <h:outputText value="#{actividadBean.aprobar}"/>
+                <p:column style="width: 30%" headerText="Aprobada" filterBy="#{actividad.aprobaractividad}" filterStyleClass="hide">
+                    <h:outputText value="#{actividad.aprobaractividad?'Aprobada':'No aprobada'}"/>
                 </p:column>
                 <p:column style="width: 30%" headerText="Nombre" filterBy="#{actividad.nombreactividad}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.nombreactividad}"/>
@@ -51,6 +49,11 @@
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('update_actividad').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('delete_actividad').show()" icon="fa fa-times" />
+                    <p:commandButton id="locked" update=":dialogLockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('lock_actividad').show()" icon="fa fa-unlock-alt" rendered="#{actividad.estadoactividad == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('unlock_actividad').show()" icon="fa fa-unlock" rendered="#{actividad.estadoactividad == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Actividad" rendered="#{actividad.estadoactividad == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Actividad" rendered="#{actividad.estadoactividad == false}" />
+                    
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -59,9 +62,7 @@
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:outputLabel for="id" value="Id del Actividad : " />
-                    <p:inputText id="id" value="#{actividadBean.idactividad}" readonly="true" />
-                    
+                                      
                     <p:outputLabel for="escuela" value="Escuela: " />
                 <h:panelGroup layout="block1">
                     <p:selectOneMenu id="escuela" value="#{actividadBean.idescuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
@@ -89,11 +90,8 @@
                     <f:validateLength minimum="1" maximum="50" />
                     <f:validateRegex pattern="[ a-zA-Z]+$" />
                 </p:inputTextarea>
-                
-                
-                <p:outputLabel id="estado" value="Activar actividad? " />
-                <p:selectBooleanCheckbox value="#{actividadBean.estadoactividad}" />
-                
+                              
+                               
                 <p:outputLabel id="aprobada" value="Aprobar actividad? " />
                 <p:selectBooleanCheckbox value="#{actividadBean.aprovaractividad}" />
                 
@@ -116,6 +114,30 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
+        
+        
+        <p:dialog header="Bloquear actividad" id="dialogLockActividad" widgetVar="lock_actividad" modal="true" resizable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear la actividad #{actividad.nombreactividad} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{actividadBean.lockedActividad()}" update=":list:actividad" oncomplete="PF('lock_actividad').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_actividad').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Desbloquear Actividad" id="dialogUnlockActividad" widgetVar="unlock_actividad" modal="true" resizable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear la actividad #{actividadBean.nombreactividad} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{actividadBean.unlockedActividad()}" update=":list:actividad" oncomplete="PF('unlock_actividad').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_actividad').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
     </ui:define>
     
 </ui:composition>

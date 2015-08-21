@@ -17,7 +17,7 @@
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="tipoactividad" var="tipoactividad" value="#{tipoActividadBean.tipoActividadList}" style="width: 48%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipoactividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="tipoactividad" var="tipoactividad" value="#{tipoActividadBean.tipoActividadList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipoactividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo TipoActividad  " outcome="/resources/views/admin/TipoActividad/NuevoTipoActividad.xhtml" icon="fa fa-plus"/>                       
                     <p:outputPanel style="float: left">
@@ -26,16 +26,22 @@
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 10%" headerText="ID TipoActividad" filterBy="#{tipoactividad.idtipoactividad}" filterStyleClass="hide">
-                    <h:outputText value="#{tipoactividad.idtipoactividad}" />
-                </p:column>
+               
                 <p:column style="width: 20%" headerText="Tipo tipoactividad" filterBy="#{tipoactividad.tipoactividad}" filterStyleClass="hide">
                     <h:outputText value="#{tipoactividad.tipoactividad}" />
+                </p:column>
+                <p:column style="width: 12%" headerText="Habilitado" filterBy="#{tipoactividad.ta_estado}" filterStyleClass="hide">
+                    <h:outputText value="#{tipoactividad.ta_estado ? 'Habilitado':'Deshabilitado'}"/>
                 </p:column>
                 <p:column style="width: 8%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('update_tipoactividad').show()" icon="fa fa-edit" />
-                    <p:commandButton id="delete_button" update=":dialogDeleteTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('delete_tipoactividad').show()" icon="fa fa-times" />
+                  <p:commandButton id="delete_button" update=":dialogDeleteTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('delete_tipoactividad').show()" icon="fa fa-times" />
+                    <p:commandButton id="locked" update=":dialogLockTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('lock_tipoactividad').show()" icon="fa fa-unlock-alt" rendered="#{tipoactividad.ta_estado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('unlock_tipoactividad').show()" icon="fa fa-unlock" rendered="#{tipoactividad.ta_estado == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar TipoActividad" rendered="#{tipoActividadBean.ta_estado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar TipoActividad" rendered="#{tipoActividadBean.ta_estado== false}" />
+                    
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -44,14 +50,14 @@
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:outputLabel for="id" value="Id del TipoActividad : " />
-                    <p:inputText id="id" value="#{tipoActividadBean.idtipoactividad}" readonly="true" />
+                   
                     <p:outputLabel for="nombre" value="Nombre del tipoactividad : " />
                     <p:inputText id="nombre" value="#{tipoActividadBean.tipoactividad}" validatorMessage="Solo debe contener letras">
                         <f:validateLength minimum="2" maximum="25" />
                         <f:validateRegex pattern="[ a-zA-Z]+$" />
                     </p:inputText>
-
+                  
+                    
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipoActividadBean.updateTipoActividad()}" update=":list:tipoactividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-refresh" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tipoactividad').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
@@ -60,13 +66,36 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Eliminar TipoActividad  " id="dialogDeleteTipoActividad" widgetVar="delete_tipoactividad" modal="true" resizable="false">
+       <p:dialog header="Eliminar TipoActividad  " id="dialogDeleteTipoActividad" widgetVar="delete_tipoactividad" modal="true" resizable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el TipoActividad de  #{tipoActividadBean.tipoactividad}?" />
+                <h:outputText value="Seguro que desea eliminar el TipoActividad  #{tipoActividadBean.tipoactividad}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{tipoActividadBean.deleteTipoActividad()}" update=":list:tipoactividad" oncomplete="PF('delete_tipoactividad').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_tipoactividad').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        
+        <p:dialog header="Bloquear tipoactividad" id="dialogLockTipoActividad" widgetVar="lock_tipoactividad" modal="true" resizable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear el tipoactividad #{tipoActividadBean.tipoactividad} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{tipoActividadBean.lockedTipoActividad()}" update=":list:tipoactividad" oncomplete="PF('lock_tipoactividad').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_tipoactividad').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Desbloquear TipoActividad" id="dialogUnlockTipoActividad" widgetVar="unlock_tipoactividad" modal="true" resizable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear el tipoactividad #{tipoActividadBean.tipoactividad} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{tipoActividadBean.unlockedTipoActividad()}" update=":list:tipoactividad" oncomplete="PF('unlock_tipoactividad').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_tipoactividad').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>
