@@ -17,7 +17,7 @@
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="contrato" var="contrato" value="#{contratoBean.contratoList}" style="width: 48%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="contratosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="contrato" var="contrato" value="#{contratoBean.contratoList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="contratosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Contrato  " outcome="/resources/views/admin/Contrato/NuevoContrato.xhtml" icon="fa fa-plus"/>                       
                     <p:outputPanel style="float: left">
@@ -26,16 +26,22 @@
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 10%" headerText="ID Contrato" filterBy="#{contrato.idcontrato}" filterStyleClass="hide">
-                    <h:outputText value="#{contrato.idcontrato}" />
-                </p:column>
+               
                 <p:column style="width: 20%" headerText="Tipo contrato" filterBy="#{contrato.tipocontrato}" filterStyleClass="hide">
                     <h:outputText value="#{contrato.tipocontrato}" />
+                </p:column>
+                <p:column style="width: 12%" headerText="Estado" filterBy="#{contrato.co_estado}" filterStyleClass="hide">
+                    <h:outputText value="#{contrato.co_estado ? 'Activo':'Inactivo'}"/>
                 </p:column>
                 <p:column style="width: 8%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('update_contrato').show()" icon="fa fa-edit" />
-                    <p:commandButton id="delete_button" update=":dialogDeleteContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('delete_contrato').show()" icon="fa fa-times" />
+                  <p:commandButton id="delete_button" update=":dialogDeleteContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('delete_contrato').show()" icon="fa fa-times" />
+                  <p:commandButton id="locked" update=":dialogLockContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('lock_contrato').show()" icon="fa fa-unlock-alt" rendered="#{contrato.co_estado== true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('unlock_contrato').show()" icon="fa fa-unlock" rendered="#{contrato.co_estado == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Contrato" rendered="#{contrato.co_estado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Contrato" rendered="#{contrato.co_estado == false}" />
+                    
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -44,14 +50,14 @@
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:outputLabel for="id" value="Id del Contrato : " />
-                    <p:inputText id="id" value="#{contratoBean.idcontrato}" readonly="true" />
+                   
                     <p:outputLabel for="nombre" value="Nombre del contrato : " />
                     <p:inputText id="nombre" value="#{contratoBean.tipocontrato}" validatorMessage="Solo debe contener letras">
                         <f:validateLength minimum="2" maximum="25" />
                         <f:validateRegex pattern="[ a-zA-Z]+$" /> 
                     </p:inputText>
-
+                    <p:outputLabel id="estado" value="Estado"/>
+                    <p:selectBooleanCheckbox value="#{contratoBean.co_estado}"/>
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_contrato').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
@@ -70,6 +76,30 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
+        
+        
+        <p:dialog header="Bloquear contrato" id="dialogLockContrato" widgetVar="lock_contrato" modal="true" resizable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear el contrato #{contrato.tipocontrato} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{contratoBean.lockedContrato()}" update=":list:contrato" oncomplete="PF('lock_contrato').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_contrato').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Desbloquear Contrato" id="dialogUnlockContrato" widgetVar="unlock_contrato" modal="true" resizable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear el contrato #{contratoBean.tipocontrato} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{contratoBean.unlockedContrato()}" update=":list:contrato" oncomplete="PF('unlock_contrato').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_contrato').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
     </ui:define>
     
 </ui:composition>

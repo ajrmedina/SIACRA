@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -36,7 +34,10 @@ public class TipoActividad implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "TIPOACTIVIDAD", nullable = false, length = 30)
     private String tipoactividad;
-
+    @Column(name = "TA_ESTADO",nullable = true)
+    private boolean ta_estado;
+    
+    
     public TipoActividad() {
     }
 
@@ -71,6 +72,20 @@ public class TipoActividad implements Serializable {
     @Override
     public String toString() {
         return "com.siacra.models.Tipoactividad[ idtipoactividad=" + idtipoactividad + " ]";
+    }
+
+    /**
+     * @return the ta_estado
+     */
+    public boolean isTa_estado() {
+        return ta_estado;
+    }
+
+    /**
+     * @param ta_estado the ta_estado to set
+     */
+    public void setTa_estado(boolean ta_estado) {
+        this.ta_estado = ta_estado;
     }
     
 }
