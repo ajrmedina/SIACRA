@@ -66,32 +66,35 @@ public class DocenteBean implements Serializable {
      */
     public void addDocente() {
         try {
-            Docente docente = new Docente();
+            
             User user = getUserService().getUserById(getIdUser());
-            Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
-            Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
-            if ( user.getEstadoUsuario() == 1) {
-                if ( user.getEsDocente() == 1  ){
-                    if(getAprobado())
-                        docente.setAprobarDocente(1);
-                    else
-                        docente.setAprobarDocente(0);
-                    docente.setUser(user);
-                    docente.setEscuela(escuela);
-                    docente.setCategoria(categoria);
-                    getDocenteService().addDocente(docente);
-                    addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
-                    reset();
-                //return "ListarNivelesAcceso?faces-redirect=true";
+            if(getDocenteService().existDocente(user.getIdUsuario())) {
+                Docente docente = new Docente();
+                Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
+                Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
+                if ( user.getEstadoUsuario()) {
+                    if ( user.getEsDocente()){
+
+                        docente.setAprobarDocente(getAprobado());
+                        docente.setUser(user);
+                        docente.setEscuela(escuela);
+                        docente.setCategoria(categoria);
+                        getDocenteService().addDocente(docente);
+                        addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
+                        reset();
+                    //return "ListarNivelesAcceso?faces-redirect=true";
+                    }
+                    else {
+                        addMessage("Este usuario no se encuentra identificado como docente dentro del sistema");
+                    }
                 }
                 else {
-                    addMessage("Este usuario no se encuentra identificado como docente dentro del sistema");
+                    addMessage("Este usuario no esta activo dentro del sistema");
                 }
             }
             else {
-                addMessage("Este usuario no esta activo dentro del sistema");
+                addMessage("El usuario seleccionado ya tiene un docente asociado dentro del sistema");
             }
-            
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -110,10 +113,7 @@ public class DocenteBean implements Serializable {
         Escuela escuela = getEscuelaService().getEscuelaById(docente.getEscuela().getIdescuela());
         //Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
         setIdDocente(docente.getIdDocente());
-        if(docente.getAprobarDocente() == 1)
-            setAprobado(true);
-        else
-            setAprobado(false);
+        setAprobado(docente.getAprobarDocente());
         setNombres(user.getNombres());
         setApellidos(user.getApellidos());
         setIdUser(user.getIdUsuario());
@@ -133,10 +133,7 @@ public class DocenteBean implements Serializable {
             User user = getUserService().getUserById(getIdUser());
             Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
             Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
-            if(getAprobado())
-                docente.setAprobarDocente(1);
-            else
-                docente.setAprobarDocente(0);
+            docente.setAprobarDocente(getAprobado());
             docente.setUser(user);
             docente.setEscuela(escuela);
             docente.setCategoria(categoria);
@@ -157,7 +154,7 @@ public class DocenteBean implements Serializable {
         try {
             User user = getUserService().getUserById(getIdUser());
             String docenteBloqueado = user.getNombres() + " " + user.getApellidos();
-            user.setEstadoUsuario(0);
+            user.setEstadoUsuario(false);
             addMessage("El Docente " + docenteBloqueado + " fue inhabilitado correctamente");
             getUserService().updateUser(user);
         } catch (DataAccessException e) {
@@ -173,9 +170,9 @@ public class DocenteBean implements Serializable {
         
         try {
             User user = getUserService().getUserById(getIdUser());
-            String docenteBloqueado = user.getNombres() + " " + user.getApellidos();
-            user.setEstadoUsuario(1);
-            addMessage("El Docente " + docenteBloqueado + " fue habilitado correctamente");
+            String docenteDesbloqueado = user.getNombres() + " " + user.getApellidos();
+            user.setEstadoUsuario(true);
+            addMessage("El Docente " + docenteDesbloqueado + " fue habilitado correctamente");
             getUserService().updateUser(user);
         } catch (DataAccessException e) {
             e.printStackTrace();

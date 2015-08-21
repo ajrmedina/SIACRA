@@ -38,7 +38,7 @@ public class EscalafonBean implements Serializable{
     
     private int idescalafon;
     private String tipoescalafon;
-    
+    private boolean es_escalafon;
     /**
      * Add Escalafon
      *
@@ -47,6 +47,7 @@ public class EscalafonBean implements Serializable{
         try {
             Escalafon escalafon = new Escalafon();
             escalafon.setTipoescalafon(getTipoescalafon());
+            escalafon.setEs_estado(true);
             getEscalafonService().addEscalafon(escalafon);
             addMessage("El escalafon " + getTipoescalafon()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
@@ -67,6 +68,7 @@ public class EscalafonBean implements Serializable{
         
         setIdescalafon(escalafon.getIdescalafon());
         setTipoescalafon(escalafon.getTipoescalafon());
+        setEs_escalafon(escalafon.isEs_estado());
     }
     
     /**
@@ -80,6 +82,7 @@ public class EscalafonBean implements Serializable{
             Escalafon escalafon = new Escalafon();
             escalafon = getEscalafonService().getEscalafonById(getIdescalafon());
             escalafon.setTipoescalafon(getTipoescalafon());
+            escalafon.setEs_estado(isEs_escalafon());
             getEscalafonService().updateEscalafon(escalafon);
             addMessage("El escalafon " + getIdescalafon()+ " fue actualizado correctamente a: "+ getTipoescalafon());
             
@@ -176,5 +179,55 @@ public class EscalafonBean implements Serializable{
 
     private void reset() {
         this.setTipoescalafon(""); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the es_escalafon
+     */
+    public boolean isEs_escalafon() {
+        return es_escalafon;
+    }
+
+    /**
+     * @param es_escalafon the es_escalafon to set
+     */
+    public void setEs_escalafon(boolean es_escalafon) {
+        this.es_escalafon = es_escalafon;
+    }
+    
+    /**
+     * Locked Escalafon
+     *
+     */
+    public void lockedEscalafon() {
+        
+        try {
+            Escalafon escalafon = getEscalafonService().getEscalafonById(getIdescalafon());
+            String escalafonBloqueada = escalafon.getTipoescalafon();
+            escalafon.setEs_estado(false);
+            getEscalafonService().updateEscalafon(escalafon);
+            addMessage("El escalafon " + escalafonBloqueada + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked Escalafon
+     *
+     */
+    public void unlockedEscalafon() {
+        
+        try {
+            Escalafon escalafon = getEscalafonService().getEscalafonById(getIdescalafon());
+            String escalafonBloqueada = escalafon.getTipoescalafon();
+            escalafon.setEs_estado(true);
+            getEscalafonService().updateEscalafon(escalafon);
+            addMessage("El escalafon " + escalafonBloqueada + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -68,6 +68,16 @@ public class DocenteService {
         return getDocenteDao().getDocenteById(id);
     }
     
+    /**
+     * Exist Docente
+     *
+     * @param  id int - User ID
+     * @return boolean
+     */
+
+    public boolean existDocente(int id) {
+        return getDocenteDao().existDocente(id);
+    }
     
     /**
      * Get Docentes List

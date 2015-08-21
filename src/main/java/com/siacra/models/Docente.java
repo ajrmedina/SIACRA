@@ -30,7 +30,7 @@ public class Docente implements Serializable {
     private int idDocente;
     
     @Column(name="aprobardocente", nullable = false)
-    private int aprobarDocente;
+    private boolean aprobarDocente;
     
     @OneToOne
     @JoinColumn(name="idusuario")
@@ -65,18 +65,18 @@ public class Docente implements Serializable {
     /**
      * Get Aprobar Docente
      *
-     * @return int aprobarDocente - AprobarDocente
+     * @return boolean aprobarDocente - AprobarDocente
      */
-    public int getAprobarDocente() {
+    public boolean getAprobarDocente() {
         return aprobarDocente;
     }
 
     /**
      * Set Aprobar Docente
      *
-     * @param aprobardocente int - AprobarDocente
+     * @param aprobardocente boolean - AprobarDocente
      */
-    public void setAprobarDocente(int aprobardocente) {
+    public void setAprobarDocente(boolean aprobardocente) {
         this.aprobarDocente = aprobardocente;
     }
     

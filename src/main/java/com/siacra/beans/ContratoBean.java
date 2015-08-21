@@ -35,6 +35,7 @@ public class ContratoBean implements Serializable {
     
     private int idcontrato;
     private String tipocontrato;
+    private boolean co_estado;
     
     /**
      * Add Contrato
@@ -44,7 +45,9 @@ public class ContratoBean implements Serializable {
         try {
             Contrato contrato = new Contrato();
             contrato.setTipocontrato(getTipocontrato());
+            contrato.setCo_estado(true);
             getContratoService().addContrato(contrato);
+            
             addMessage("El contrato " + getTipocontrato()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
             reset();
@@ -58,11 +61,13 @@ public class ContratoBean implements Serializable {
      * Load Contrato
      *
      * Get and Load the data for Contrato to update
+     * @param contrato contrato
      */
     public void loadContrato(Contrato contrato) {
         
         setIdcontrato(contrato.getIdcontrato());
         setTipocontrato(contrato.getTipocontrato());
+        setCo_estado(contrato.isCo_estado());
     }
     
     /**
@@ -76,6 +81,7 @@ public class ContratoBean implements Serializable {
             Contrato contrato = new Contrato();
             contrato = getContratoService().getContratoById(getIdcontrato());
             contrato.setTipocontrato(getTipocontrato());
+            contrato.setCo_estado(isCo_estado());
             getContratoService().updateContrato(contrato);
             addMessage("El contrato " + getIdcontrato()+ " fue actualizado correctamente a: "+ getTipocontrato());
             
@@ -172,5 +178,55 @@ public class ContratoBean implements Serializable {
 
     private void reset() {
         this.setTipocontrato(""); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the co_estado
+     */
+    public boolean isCo_estado() {
+        return co_estado;
+    }
+
+    /**
+     * @param co_estado the co_estado to set
+     */
+    public void setCo_estado(boolean co_estado) {
+        this.co_estado = co_estado;
+    }
+    
+    /**
+     * Locked Contrato
+     *
+     */
+    public void lockedContrato() {
+        
+        try {
+            Contrato contrato = getContratoService().getContratoById(getIdcontrato());
+            String contratoBloqueado = contrato.getTipocontrato();
+            contrato.setCo_estado(false);
+            getContratoService().updateContrato(contrato);
+            addMessage("El contrato " + contratoBloqueado + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked Contrato
+     *
+     */
+    public void unlockedContrato() {
+        
+        try {
+            Contrato contrato = getContratoService().getContratoById(getIdcontrato());
+            String contratoBloqueada = contrato.getTipocontrato();
+            contrato.setCo_estado(true);
+            getContratoService().updateContrato(contrato);
+            addMessage("El contrato " + contratoBloqueada + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

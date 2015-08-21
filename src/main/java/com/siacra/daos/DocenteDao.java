@@ -84,6 +84,20 @@ public class DocenteDao  {
     }
     
     /**
+     * Exist Docente
+     *
+     * @param  id int
+     * @return boolean
+     */
+
+    public boolean existDocente(int id) {
+        List list = getSessionFactory().getCurrentSession()
+                                            .createQuery("from Docente where idUsuario=?")
+                                            .setParameter(0, id).list();
+        return list.isEmpty();
+    }
+    
+    /**
      * Get Docente List
      *
      * @return List - Lista Docente

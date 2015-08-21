@@ -19,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
@@ -52,8 +53,9 @@ public class ActividadBean implements Serializable{
     private int idtipoactividad;
     private int idescuela;
     
-    private String aprobar;
-    private String estado;
+   
+    
+    
     /**
      * Add Actividad
      * 
@@ -369,40 +371,45 @@ public class ActividadBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    /**
-     * @return the aprobar
+ /**
+     * Locked Actividad
+     *
      */
-    public String getAprobar() {
-        if(isAprovaractividad())
-            aprobar="Aprobada";
-        else
-            aprobar="No aprobada";
-        return aprobar;
-    }
-
-    /**
-     * @param aprobar the aprobar to set
-     */
-    public void setAprobar(String aprobar) {
-        this.aprobar = aprobar;
-    }
-
-    /**
-     * @return the estado
-     */
-    public String getEstado() {
-        if(isEstadoactividad())
-            estado="Activa";
-        else
-            estado="Baja";
+    public void lockedActividad() {
         
-        return estado;
+        try {
+            Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            String actividadBloqueada = actividad.getNombreactividad();
+            actividad.setEstadoactividad(false);
+            getActividadService().updateActividad(actividad);
+            addMessage("La actividad " + actividadBloqueada + " fue inhabilitada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked Actividad
+     *
+     */
+    public void unlockedActividad() {
+        
+        try {
+            Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            String actividadBloqueada = actividad.getNombreactividad();
+            actividad.setEstadoactividad(true);
+            getActividadService().updateActividad(actividad);
+            addMessage("La actividad " + actividadBloqueada + " fue inhabilitada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+   
+  
+
+  
+
 }
