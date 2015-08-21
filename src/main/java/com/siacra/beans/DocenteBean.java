@@ -66,30 +66,35 @@ public class DocenteBean implements Serializable {
      */
     public void addDocente() {
         try {
-            Docente docente = new Docente();
+            
             User user = getUserService().getUserById(getIdUser());
-            Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
-            Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
-            if ( user.getEstadoUsuario()) {
-                if ( user.getEsDocente()){
-                    
-                    docente.setAprobarDocente(getAprobado());
-                    docente.setUser(user);
-                    docente.setEscuela(escuela);
-                    docente.setCategoria(categoria);
-                    getDocenteService().addDocente(docente);
-                    addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
-                    reset();
-                //return "ListarNivelesAcceso?faces-redirect=true";
+            if(getDocenteService().existDocente(user.getIdUsuario())) {
+                Docente docente = new Docente();
+                Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
+                Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
+                if ( user.getEstadoUsuario()) {
+                    if ( user.getEsDocente()){
+
+                        docente.setAprobarDocente(getAprobado());
+                        docente.setUser(user);
+                        docente.setEscuela(escuela);
+                        docente.setCategoria(categoria);
+                        getDocenteService().addDocente(docente);
+                        addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
+                        reset();
+                    //return "ListarNivelesAcceso?faces-redirect=true";
+                    }
+                    else {
+                        addMessage("Este usuario no se encuentra identificado como docente dentro del sistema");
+                    }
                 }
                 else {
-                    addMessage("Este usuario no se encuentra identificado como docente dentro del sistema");
+                    addMessage("Este usuario no esta activo dentro del sistema");
                 }
             }
             else {
-                addMessage("Este usuario no esta activo dentro del sistema");
+                addMessage("El usuario seleccionado ya tiene un docente asociado dentro del sistema");
             }
-            
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
