@@ -30,10 +30,13 @@ public class TipoGrupo implements Serializable{
     @Column(name="tipogrupo", nullable=false)
     String tipoGrupo;
     
-    @Column(name="nombregrupo",nullable = false, length = 25)
+    @Column(name="nombretipo",nullable = false, length = 25)
     String nombreGrupo;
     
-    @OneToMany(mappedBy="idTipoGrupo")
+    @Column(name="tg_estado")
+    boolean tgEstado;
+    
+    @OneToMany(mappedBy="tipoGrupo")
     private Set<Grupo> grupo;
 
     public Integer getIdTipoGrupo() {
@@ -67,5 +70,15 @@ public class TipoGrupo implements Serializable{
     public void setGrupo(Set<Grupo> grupo) {
         this.grupo = grupo;
     }
+
+    public boolean getTgEstado() {
+        return tgEstado;
+    }
+
+    public void setTgEstado(boolean tgEstado) {
+        this.tgEstado = tgEstado;
+    }
+    
+    
       
 }

@@ -9,13 +9,14 @@ import com.siacra.models.Academica;
 import com.siacra.models.TrabajoGraduacion;
 import com.siacra.services.AcademicaService;
 import com.siacra.services.TrabajoGraduacionService;
-import static com.sun.javafx.logging.PulseLogger.addMessage;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -319,4 +320,8 @@ public class TrabajoGraduacionBean implements Serializable {
         this.observaciontg = observaciontg;
     }
     
+    public void addMessage(String mensaje) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 }

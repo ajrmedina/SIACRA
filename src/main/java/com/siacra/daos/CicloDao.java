@@ -5,7 +5,7 @@
  */
 package com.siacra.daos;
 
-import com.siacra.models.Horario;
+import com.siacra.models.Ciclo;
 import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * @author Daniel
  */
 @Repository
-public class HorarioDao {
+public class CicloDao {
     
     @Autowired
     private SessionFactory sessionFactory;
@@ -29,29 +29,29 @@ public class HorarioDao {
         this.sessionFactory = sessionFactory;
     }
 
-    public void addHorario(Horario horario) {
-        getSessionFactory().getCurrentSession().save(horario);
+    public void addCiclo(Ciclo ciclo) {
+        getSessionFactory().getCurrentSession().save(ciclo);
     }
 
-    public void deleteHorario(Horario horario) {
-        getSessionFactory().getCurrentSession().delete(horario);
+    public void deleteCiclo(Ciclo ciclo) {
+        getSessionFactory().getCurrentSession().delete(ciclo);
     }
 
-    public void updateHorario(Horario horario) {
-        getSessionFactory().getCurrentSession().update(horario);
+    public void updateCiclo(Ciclo ciclo) {
+        getSessionFactory().getCurrentSession().update(ciclo);
     }
 
-    public Horario getHorarioById(Integer id) {
+    public Ciclo getCicloById(Integer id) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from Horario where idHorario=?")
+                                            .createQuery("from Ciclo where idCiclo=?")
                                             .setParameter(0, id).list();
-        return (Horario)list.get(0);
+        return (Ciclo)list.get(0);
     }
     
-    public boolean getExistHorario(String hinicio, String hfin, String dia) {
+    public boolean getExistCiclo(String ciclo,Integer anio) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from Horario where hinicio=? and hfin=? and dia=?")
-                                            .setParameter(0, hinicio).setParameter(1, hfin).setParameter(2, dia).list();
+                                            .createQuery("from Ciclo where ciclo=? and anio=?")
+                                            .setParameter(0, ciclo).setParameter(1, anio).list();
         
         if(list.isEmpty()){
             return false;
@@ -60,8 +60,13 @@ public class HorarioDao {
         }
     }
     
-    public List<Horario> getHorarios() {
-        List list = getSessionFactory().getCurrentSession().createQuery("from Horario").list();
+    public List<Ciclo> getCiclos() {
+        List list = getSessionFactory().getCurrentSession().createQuery("from Ciclo").list();
+        return list;
+    }
+    
+    public List<Ciclo> getCiclosActivos() {
+        List list = getSessionFactory().getCurrentSession().createQuery("from Ciclo where ci_estado=1").list();
         return list;
     }
     

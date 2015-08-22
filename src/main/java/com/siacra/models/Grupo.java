@@ -29,27 +29,41 @@ public class Grupo implements Serializable{
     @Column(name="idgrupo", nullable = false)
     Integer idGrupo;
     
-    @Column(name="cupo", nullable = true)
+    @Column(name="cupo", nullable = false)
     Integer cupo;
     
-    @Column(name = "numerogrupo", nullable = true )
+    @Column(name = "numerogrupo", nullable = false )
     Integer numeroGrupo;
     
-    @Column(name = "aprobargrupo", nullable = true)
+    @Column(name = "aprobargrupo", nullable = false)
     boolean aprobarGrupo;
+    
+    @Column(name = "gr_estado", nullable = false)
+    boolean grEstado;
     
     @ManyToOne
     @JoinColumn(name="idtipogrupo")
-    private TipoGrupo idTipoGrupo;
+    private TipoGrupo tipoGrupo;
     
-    @OneToMany(mappedBy="idGrupo")
+    @OneToMany(mappedBy="grupo")
     private Set<Oferta> oferta;
+    
+    @OneToMany(mappedBy="grupo")
+    private Set<AcademicaGrupo> academicaGrupo;
+    
+    @ManyToOne
+    @JoinColumn(name="idhorario")
+    private Horario horario;
+    
+    @ManyToOne
+    @JoinColumn(name="idasignatura")
+    private Asignatura asignatura;
 
     public int getIdGrupo() {
         return idGrupo;
     }
 
-    public void setIdGrupo(int idGrupo) {
+    public void setIdGrupo(Integer idGrupo) {
         this.idGrupo = idGrupo;
     }
 
@@ -57,7 +71,7 @@ public class Grupo implements Serializable{
         return cupo;
     }
 
-    public void setCupo(int cupo) {
+    public void setCupo(Integer cupo) {
         this.cupo = cupo;
     }
 
@@ -65,12 +79,8 @@ public class Grupo implements Serializable{
         return numeroGrupo;
     }
 
-    public void setNumeroGrupo(int numeroGrupo) {
+    public void setNumeroGrupo(Integer numeroGrupo) {
         this.numeroGrupo = numeroGrupo;
-    }
-
-    public boolean isAprobarGrupo() {
-        return aprobarGrupo;
     }
 
     public void setAprobarGrupo(boolean aprobarGrupo) {
@@ -80,12 +90,12 @@ public class Grupo implements Serializable{
         return aprobarGrupo;
     }
 
-    public TipoGrupo getIdTipoGrupo() {
-        return idTipoGrupo;
+    public TipoGrupo getTipoGrupo() {
+        return tipoGrupo;
     }
 
-    public void setIdTipoGrupo(TipoGrupo idTipoGrupo) {
-        this.idTipoGrupo = idTipoGrupo;
+    public void setTipoGrupo(TipoGrupo tipoGrupo) {
+        this.tipoGrupo = tipoGrupo;
     }
     
     public Set<Oferta> getOferta() {
@@ -94,5 +104,39 @@ public class Grupo implements Serializable{
 
     public void setOferta(Set<Oferta> oferta) {
         this.oferta = oferta;
-    }   
+    } 
+
+    public boolean getGrEstado() {
+        return grEstado;
+    }
+
+    public void setGrEstado(boolean grEstado) {
+        this.grEstado = grEstado;
+    }
+
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
+    }
+
+    public Asignatura getAsignatura() {
+        return asignatura;
+    }
+
+    public void setAsignatura(Asignatura asignatura) {
+        this.asignatura = asignatura;
+    }
+
+    public Set<AcademicaGrupo> getAcademicaGrupo() {
+        return academicaGrupo;
+    }
+
+    public void setAcademicaGrupo(Set<AcademicaGrupo> academicaGrupo) {
+        this.academicaGrupo = academicaGrupo;
+    }
+    
+    
 }

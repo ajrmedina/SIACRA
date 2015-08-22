@@ -5,8 +5,8 @@
  */
 package com.siacra.services;
 
-import com.siacra.daos.HorarioDao;
-import com.siacra.models.Horario;
+import com.siacra.daos.CicloDao;
+import com.siacra.models.Ciclo;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,54 +16,58 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Daniel
  */
-@Service("HorarioService")
+@Service("CicloService")
 @Transactional(readOnly = true)
-public class HorarioService {
+public class CicloService {
     
     @Autowired
-    private HorarioDao horarioDAO;
+    private CicloDao cicloDAO;
     
     //Invocamos el acceso al DAO
-    public HorarioDao getHorarioDao() {
-        return horarioDAO;
+    public CicloDao getCicloDao() {
+        return cicloDAO;
     }
     
     //setteamos el accceso al DAO en una variable
-    public void setHorarioDao(HorarioDao horarioDAO) {
-        this.horarioDAO = horarioDAO;
+    public void setCicloDao(CicloDao cicloDAO) {
+        this.cicloDAO = cicloDAO;
     }
     
     //Agregando un nuevo Tipo Grupo
     @Transactional(readOnly = false)
-    public void addHorario(Horario horario) {
-        getHorarioDao().addHorario(horario);
+    public void addCiclo(Ciclo ciclo) {
+        getCicloDao().addCiclo(ciclo);
     }
     
     //eliminando un Tipo grupo
     @Transactional(readOnly = false)
-    public void deleteHorario(Horario horario) {
-        getHorarioDao().deleteHorario(horario);
+    public void deleteCiclo(Ciclo ciclo) {
+        getCicloDao().deleteCiclo(ciclo);
     }
     
     //Actualizando un Tipo grupo
     @Transactional(readOnly = false)
-    public void updateHorario(Horario horario) {
-        getHorarioDao().updateHorario(horario);
+    public void updateCiclo(Ciclo ciclo) {
+        getCicloDao().updateCiclo(ciclo);
     }
     
     //Buscamos un tipo grupo en especifico
-    public Horario getHorarioById(Integer id) {
-        return getHorarioDao().getHorarioById(id);
+    public Ciclo getCicloById(Integer id) {
+        return getCicloDao().getCicloById(id);
     }
     
     //verificamos si el grupo ya esta registrado
-    public boolean getExistHorario(String hinicio,String hfin,String dia){
-        return getHorarioDao().getExistHorario(hinicio,hfin ,dia);
+    public boolean getExistCiclo(String ciclo,Integer anio){
+        return getCicloDao().getExistCiclo( ciclo, anio);
     }
     
     //Seleccionamos todos los tipos de grupos existentes
-    public List<Horario> getHorarios() {
-        return getHorarioDao().getHorarios();
+    public List<Ciclo> getCiclos() {
+        return getCicloDao().getCiclos();
+    }
+    
+    public List<Ciclo> getCiclosActivos() {
+        return getCicloDao().getCiclosActivos();
     }
     
 }

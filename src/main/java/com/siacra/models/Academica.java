@@ -42,6 +42,10 @@ public class Academica implements Serializable {
     @JoinColumn(name = "IDRESPONSABILIDAD", referencedColumnName = "IDRESPONSABILIDAD")
     @ManyToOne
     private Responsabilidad idresponsabilidad;
+    
+    
+    @OneToMany(mappedBy="academica")
+    private Set<AcademicaGrupo> academicaGrupo;
 
     public Academica() {
     }
@@ -55,6 +59,14 @@ public class Academica implements Serializable {
         this.horasacaemicas = horasacaemicas;
     }
 
+    public Set<AcademicaGrupo> getAcademicaGrupo() {
+        return academicaGrupo;
+    }
+
+    public void setAcademicaGrupo(Set<AcademicaGrupo> academicaGrupo) {
+        this.academicaGrupo = academicaGrupo;
+    }
+    
     public Integer getIdacademica() {
         return idacademica;
     }

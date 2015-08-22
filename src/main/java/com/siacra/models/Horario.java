@@ -27,14 +27,23 @@ public class Horario implements Serializable{
     @Column(name="idhorario")
     private int idHorario;
     
-    @Column(name="periodo",nullable=false,length = 13 )
-    String periodo;
+    @Column(name="hinicio")
+    String hinicio;
+    
+    @Column(name="hfin" )
+    String hfin;
     
     @Column(name="dia",nullable=false,length = 50)
     String dia;
     
-    @OneToMany(mappedBy="idHorario")
-    private Set<Oferta> oferta;
+    @Column(name="ho_estado")
+    boolean hoEstado;
+    
+    @OneToMany(mappedBy="horario")
+    private Set<Grupo> grupo;
+    
+    @OneToMany(mappedBy="horario")
+    private Set<Permanencia> permanencia;
 
     public int getIdHorario() {
         return idHorario;
@@ -44,12 +53,20 @@ public class Horario implements Serializable{
         this.idHorario = idHorario;
     }
 
-    public String getPeriodo() {
-        return periodo;
+    public String getHinicio() {
+        return hinicio;
     }
 
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
+    public void setHinicio(String hinicio) {
+        this.hinicio = hinicio;
+    }
+
+    public String getHfin() {
+        return hfin;
+    }
+
+    public void setHfin(String hfin) {
+        this.hfin = hfin;
     }
 
     public String getDia() {
@@ -60,12 +77,28 @@ public class Horario implements Serializable{
         this.dia = dia;
     }
 
-    public Set<Oferta> getOferta() {
-        return oferta;
+    public Set<Grupo> getGrupo() {
+        return grupo;
     }
 
-    public void setOferta(Set<Oferta> oferta) {
-        this.oferta = oferta;
+    public void setGrupo(Set<Grupo> grupo) {
+        this.grupo = grupo;
+    }
+
+    public boolean getHoEstado() {
+        return hoEstado;
+    }
+
+    public void setHoEstado(boolean hoEstado) {
+        this.hoEstado = hoEstado;
+    }
+
+    public Set<Permanencia> getPermanencia() {
+        return permanencia;
+    }
+
+    public void setPermanencia(Set<Permanencia> permanencia) {
+        this.permanencia = permanencia;
     }
 
     

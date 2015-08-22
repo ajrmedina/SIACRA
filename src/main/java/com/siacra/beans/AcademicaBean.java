@@ -9,14 +9,14 @@ import com.siacra.models.Academica;
 import com.siacra.models.Responsabilidad;
 import com.siacra.services.AcademicaService;
 import com.siacra.services.ResponsabilidadService;
-import com.sun.javafx.logging.PulseLogger;
-import static com.sun.javafx.logging.PulseLogger.addMessage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
@@ -208,5 +208,8 @@ public class AcademicaBean implements Serializable{
         this.idacademica = idacademica;
     }
     
-    
+    public void addMessage(String mensaje) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 }

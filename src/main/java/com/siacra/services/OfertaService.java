@@ -5,8 +5,8 @@
  */
 package com.siacra.services;
 
-import com.siacra.daos.HorarioDao;
-import com.siacra.models.Horario;
+import com.siacra.daos.OfertaDao;
+import com.siacra.models.Oferta;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,54 +16,57 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Daniel
  */
-@Service("HorarioService")
+@Service("OfertaService")
 @Transactional(readOnly = true)
-public class HorarioService {
+public class OfertaService {
     
     @Autowired
-    private HorarioDao horarioDAO;
+    private OfertaDao ofertaDAO;
     
     //Invocamos el acceso al DAO
-    public HorarioDao getHorarioDao() {
-        return horarioDAO;
+    public OfertaDao getOfertaDao() {
+        return ofertaDAO;
     }
     
     //setteamos el accceso al DAO en una variable
-    public void setHorarioDao(HorarioDao horarioDAO) {
-        this.horarioDAO = horarioDAO;
+    public void setOfertaDao(OfertaDao ofertaDAO) {
+        this.ofertaDAO = ofertaDAO;
     }
     
     //Agregando un nuevo Tipo Grupo
     @Transactional(readOnly = false)
-    public void addHorario(Horario horario) {
-        getHorarioDao().addHorario(horario);
+    public void addOferta(Oferta oferta) {
+        getOfertaDao().addOferta(oferta);
     }
     
     //eliminando un Tipo grupo
     @Transactional(readOnly = false)
-    public void deleteHorario(Horario horario) {
-        getHorarioDao().deleteHorario(horario);
+    public void deleteOferta(Oferta oferta) {
+        getOfertaDao().deleteOferta(oferta);
     }
     
     //Actualizando un Tipo grupo
     @Transactional(readOnly = false)
-    public void updateHorario(Horario horario) {
-        getHorarioDao().updateHorario(horario);
+    public void updateOferta(Oferta oferta) {
+        getOfertaDao().updateOferta(oferta);
     }
     
     //Buscamos un tipo grupo en especifico
-    public Horario getHorarioById(Integer id) {
-        return getHorarioDao().getHorarioById(id);
+    public Oferta getOfertaById(Integer id) {
+        return getOfertaDao().getOfertaById(id);
+    }
+    
+    public List<Oferta> getOfertasByCiclo(Integer id) {
+        return getOfertaDao().getOfertasByCiclo(id);
     }
     
     //verificamos si el grupo ya esta registrado
-    public boolean getExistHorario(String hinicio,String hfin,String dia){
-        return getHorarioDao().getExistHorario(hinicio,hfin ,dia);
+    public boolean getExistOferta(Integer idCiclo,Integer idGrupo,Integer idAcuerdo){
+        return getOfertaDao().getExistOferta( idCiclo, idGrupo, idAcuerdo);
     }
     
     //Seleccionamos todos los tipos de grupos existentes
-    public List<Horario> getHorarios() {
-        return getHorarioDao().getHorarios();
+    public List<Oferta> getOfertas() {
+        return getOfertaDao().getOfertas();
     }
-    
 }

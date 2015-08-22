@@ -26,29 +26,74 @@ public class Oferta implements Serializable{
     @GeneratedValue
     @Column(name="idoferta")
     private Integer idOferta;
-    /*
-    @ManyToOne
-    @Column(name="idacuerdo")
-    private Acuerdo idAcuerdo;
-    */
-    @ManyToOne
-    @JoinColumn(name="idhorario")
-    private Horario idHorario;
+    
+//    @ManyToOne
+//    @Column(name="idacuerdo")
+    private Acuerdo acuerdo;
+
+    
+    
+//    @ManyToOne
+//    @JoinColumn(name="idhorario")
+//    private Horario idHorario;
     
     @ManyToOne
     @JoinColumn(name="idgrupo")
-    private Grupo idGrupo;
+    private Grupo grupo;
+    
+//    @ManyToOne
+//    @JoinColumn(name="idasignatura")
+//    private Asignatura idAsignatura;
     
     @ManyToOne
-    @JoinColumn(name="idasignatura")
-    private Asignatura idAsignatura;
-    /*
-    @ManyToOne
-    @Column(name="idciclo")
-    private Ciclo idCiclo;
-    */
+    @JoinColumn(name="idciclo")
+    private Ciclo ciclo;
+    
     
     @Column(name="aprobaroferta")
     private boolean aprobarOferta;
+
+    public Integer getIdOferta() {
+        return idOferta;
+    }
+
+    public void setIdOferta(Integer idOferta) {
+        this.idOferta = idOferta;
+    }
+
+    public Acuerdo getAcuerdo() {
+        return acuerdo;
+    }
+
+    public void setAcuerdo(Acuerdo acuerdo) {
+        this.acuerdo = acuerdo;
+    }
+
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public Ciclo getCiclo() {
+        return ciclo;
+    }
+
+    public void setCiclo(Ciclo ciclo) {
+        this.ciclo = ciclo;
+    }
+
+    public boolean isAprobarOferta() {
+        return aprobarOferta;
+    }
+
+    public void setAprobarOferta(boolean aprobarOferta) {
+        this.aprobarOferta = aprobarOferta;
+    }
+    
+    
     
 }

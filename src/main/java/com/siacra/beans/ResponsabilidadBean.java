@@ -11,13 +11,14 @@ import com.siacra.models.Responsabilidad;
 import com.siacra.services.ActividadService;
 import com.siacra.services.DocenteService;
 import com.siacra.services.ResponsabilidadService;
-import static com.sun.javafx.logging.PulseLogger.addMessage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -288,6 +289,11 @@ public class ResponsabilidadBean implements Serializable {
     private void reset() {
       this.totalhoras=0;
       this.tipodetiempo="";
+    }
+    
+    public void addMessage(String mensaje) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
 }
