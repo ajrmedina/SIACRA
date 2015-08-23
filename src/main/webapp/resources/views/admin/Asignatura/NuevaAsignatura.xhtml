@@ -26,7 +26,7 @@
                 <p:outputLabel for="escuela" value="Escuela : " />
                 <h:panelGroup layout="block">
                     <p:selectOneMenu id="escuela" value="#{asignaturaBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                        <f:selectItems value="#{asignaturaBean.escuelaList}" var="escuela" itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                        <f:selectItems value="#{asignaturaBean.escuelaList}" var="escuela" itemValue="#{escuela.idescuela}" itemLabel="#{escuela.nombreescuela}"/>
                     </p:selectOneMenu>
                     <p:tooltip id="forNivel" for="escuela" value="Selecciona la escuela de la asignatura" />
                 </h:panelGroup>

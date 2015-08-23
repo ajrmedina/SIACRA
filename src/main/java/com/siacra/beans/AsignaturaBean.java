@@ -189,9 +189,11 @@ public class AsignaturaBean implements Serializable{
             else{
                 getAsignaturaService().addAsignatura(asignatura);
                 addMessage("La asignatura :" + getNombreAsignatura() + " - " + getCodigoAsignatura() + " fue creada exitosamente");
+                reset();
             }
         }catch (DataAccessException e){
             e.printStackTrace();
+            reset();
         }
     }
     
@@ -250,5 +252,39 @@ public class AsignaturaBean implements Serializable{
 
     }
     
+    /**
+     * Locked Asignatura
+     *
+     */
+    public void lockedAsignatura() {
+        
+        try {
+            Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
+            String asignaturaBloqueada = asignatura.getNombreAsignatura();
+            asignatura.setEstadoAsignatura(false);
+            getAsignaturaService().updateAsignatura(asignatura);
+            addMessage("La asignatura " + asignaturaBloqueada + " fue inhabilitada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
     
+    /**
+     * Unlocked Asignatura
+     *
+     */
+    public void unlockedAsignatura() {
+        
+        try {
+            Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
+            String asignaturaBloqueada = asignatura.getNombreAsignatura();
+            asignatura.setEstadoAsignatura(true);
+            getAsignaturaService().updateAsignatura(asignatura);
+            addMessage("La asignatura " + asignaturaBloqueada + " fue inhabilitada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
 }

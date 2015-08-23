@@ -181,5 +181,40 @@ public class HorarioBean implements Serializable{
         }
 
     }
+    /**
+     * Locked Horario
+     *
+     */
+    public void lockedHorario() {
+        
+        try {
+            Horario horario = getHorarioService().getHorarioById(getIdHorario());
+            String horarioBloqueada = horario.getDia()+" "+horario.getHinicio()+" - "+horario.getHfin();
+            horario.setHoEstado(false);
+            getHorarioService().updateHorario(horario);
+            addMessage("El horario " + horarioBloqueada + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked Horario
+     *
+     */
+    public void unlockedHorario() {
+        
+        try {
+            Horario horario = getHorarioService().getHorarioById(getIdHorario());
+            String horarioBloqueada = horario.getDia()+" "+horario.getHinicio()+" - "+horario.getHfin();
+            horario.setHoEstado(true);
+            getHorarioService().updateHorario(horario);
+            addMessage("El horario " + horarioBloqueada + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
     
 }

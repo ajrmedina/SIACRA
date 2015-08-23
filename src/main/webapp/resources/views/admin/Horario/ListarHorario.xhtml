@@ -16,9 +16,9 @@
                     
     <ui:define name="content">
         <h:form id="list">
-            <p:growl id="messages" />
+           
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="horario" var="horario" value="#{horarioBean.horarioList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="horarioTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+            <p:dataTable id="horario" var="horario" value="#{horarioBean.horarioList}" style="width: 70%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="horarioTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nuevo Horario" outcome="/resources/views/admin/Horario/NuevoHorario.xhtml" icon="fa fa-plus"/>                       
                     
@@ -41,7 +41,9 @@
                 <p:column style="width: 20%" headerText="Hora de fin" filterBy="#{horario.hfin}" filterStyleClass="hide">                         
                     <h:outputText value="#{horario.hfin}" class="center-element"/>
                 </p:column>
-                
+                <p:column style="width: 20%" headerText="Habilitado" filterBy="#{horario.hoEstado}" filterStyleClass="hide">
+                    <h:outputText value="#{horario.hoEstado?'Habilitado':'Deshabilitado'}"/>
+                </p:column>
                 <p:column style="width: 15%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
@@ -50,6 +52,11 @@
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('update_horario').show()" icon="fa fa-edit" />                                    
                     <p:commandButton id="delete_button" update=":dialogDeleteHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('delete_horario').show()" icon="fa fa-times"/> 
+                    <p:commandButton id="locked" update=":dialogLockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('lock_horario').show()" icon="fa fa-unlock-alt" rendered="#{horario.hoEstado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('unlock_horario').show()" icon="fa fa-unlock" rendered="#{horario.hoEstado == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Horario" rendered="#{horario.hoEstado== true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Horario" rendered="#{horario.hoEstado == false}" />
+                    
                 </p:column>               
             </p:dataTable>
         </h:form>
@@ -96,7 +103,27 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
+         <p:dialog header="Bloquear horario" id="dialogLockHorario" widgetVar="lock_horario" modal="true" resizable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear la horario #{horarioBean.dia}, #{horarioBean.hinicio}-#{horarioBean.hfin} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{horarioBean.lockedHorario()}" update=":list:horario" oncomplete="PF('lock_horario').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_horario').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
         
+        <p:dialog header="Desbloquear Horario" id="dialogUnlockHorario" widgetVar="unlock_horario" modal="true" resizable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear la horario #{horarioBean.dia}, #{horarioBean.hinicio}-#{horarioBean.hfin}  ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{horarioBean.unlockedHorario()}" update=":list:horario" oncomplete="PF('unlock_horario').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_horario').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
     </ui:define>
     
 </ui:composition>

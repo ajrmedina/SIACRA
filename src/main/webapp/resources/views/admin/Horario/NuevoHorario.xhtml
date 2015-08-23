@@ -10,7 +10,7 @@
     </ui:define>
     
     <ui:define name="add-menu-items">
-        <!-- <p:menuitem value="Regresar" url="/resources/views/admin/User/ListarUsuarios.xhtml" icon="fa fa-mail-reply"/> -->
+       <p:menuitem value="Regresar" url="/resources/views/admin/Horario/ListarHorario.xhtml" icon="fa fa-mail-reply"/> 
     </ui:define>
     
     <ui:define name="title-view">
@@ -38,7 +38,7 @@
                 <p:outputLabel for="hinicio" value="Hora de inicio :" />
                 <p:calendar id="hinicio" value="#{horarioBean.hinicio}" pattern="HH:mm" timeOnly="true"  required="true" requiredMessage="Ingrese hora de inicio"/>
                 
-                <p:outputLabel for="hfin" value="Hora de inicio :" />
+                <p:outputLabel for="hfin" value="Hora de fin :" />
                 <p:calendar id="hfin" value="#{horarioBean.hfin}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Ingrese hora de fin" />
                 
                 <p:commandButton value="Agregar" action="#{horarioBean.addHorario()}" update="messages" ajax="false"/>
