@@ -8,10 +8,12 @@ package com.siacra.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -39,6 +41,12 @@ public class Acuerdo implements Serializable{
     
     @Column(name = "nombreacuerdo", nullable = false)
     private String nombreacuerdo; 
+    
+    @Column(name = "ac_estado", nullable = false)
+    private boolean estadoacuerdo;
+    
+    @OneToMany(mappedBy="escuela")
+    private Set<Oferta> oferta;
 
     
     public int getIdacuerdo() {
@@ -72,7 +80,21 @@ public class Acuerdo implements Serializable{
     public void setNombreacuerdo(String nombreacuerdo) {
         this.nombreacuerdo = nombreacuerdo;
     }
-     
-    
+
+    public boolean getEstadoacuerdo() {
+        return estadoacuerdo;
+    }
+
+    public void setEstadoacuerdo(boolean estadoacuerdo) {
+        this.estadoacuerdo = estadoacuerdo;
+    }   
+
+    public Set<Oferta> getOferta() {
+        return oferta;
+    }
+
+    public void setOferta(Set<Oferta> oferta) {
+        this.oferta = oferta;
+    }      
     
 }

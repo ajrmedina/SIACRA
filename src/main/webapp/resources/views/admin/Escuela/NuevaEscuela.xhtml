@@ -39,6 +39,15 @@
                     <f:validateLength maximum="50" />      
                     
                 </p:inputText>
+                
+                <p:outputLabel for="nombreCarrera" value="Nombre de la Carrera: " />
+                <p:inputText id="nombreCarrera" value="#{escuelaBean.nombrecarrera}" size="45" required="true"
+                             requiredMessage="Por favor, ingrese el nombre."
+                             validatorMessage="Máximo 50 caracteres"
+                             >
+                    <f:validateLength maximum="50" />      
+                    
+                </p:inputText>
 
                 <p:commandButton value="Agregar" actionListener="#{escuelaBean.addEscuela()}" update="messages" ajax="false"/>
                 <p:commandButton value="Limpiar" type="reset" />

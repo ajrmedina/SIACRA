@@ -36,6 +36,7 @@ public class EscuelaBean implements Serializable{
     private int idescuela; 
     private String codigoescuela;
     private String nombreescuela;
+    private String nombrecarrera;
     
     /**
      * Add Escuela
@@ -47,6 +48,7 @@ public class EscuelaBean implements Serializable{
             //escuela.setIdescuela(getIdescuela());
             escuela.setCodigoescuela(getCodigoescuela());
             escuela.setNombreescuela(getNombreescuela());
+            escuela.setNombrecarrera(getNombrecarrera());
             getEscuelaService().addEscuela(escuela);
             addMessage("La Escuela " + getNombreescuela() + " fue añadida correctamente");           
             reset();
@@ -67,7 +69,8 @@ public class EscuelaBean implements Serializable{
             //escuela = getEscuelaService().getEscuelaById(escuela.getIdescuela()); 
             setIdescuela(escuela.getIdescuela());
             setCodigoescuela(escuela.getCodigoescuela());
-            setNombreescuela(escuela.getNombreescuela());                        
+            setNombreescuela(escuela.getNombreescuela());
+            setNombrecarrera(escuela.getNombrecarrera());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -83,7 +86,8 @@ public class EscuelaBean implements Serializable{
         try {
             Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());    
             escuela.setCodigoescuela(getCodigoescuela());
-            escuela.setNombreescuela(getNombreescuela());                        
+            escuela.setNombreescuela(getNombreescuela());   
+            escuela.setNombrecarrera(getNombrecarrera());
             getEscuelaService().updateEscuela(escuela);
             addMessage("La Escuela " + getCodigoescuela() + " fue actualizada correctamente ");
            // reset();
@@ -118,6 +122,7 @@ public class EscuelaBean implements Serializable{
       // this.setIdescuela("");
        this.setCodigoescuela("");
        this.setNombreescuela("");
+       this.setNombrecarrera("");
     }
 
     /**
@@ -173,6 +178,17 @@ public class EscuelaBean implements Serializable{
     public EscuelaService getEscuelaService() {
         return escuelaService;
     }    
+    
+    public String getNombrecarrera() {
+        return nombrecarrera;
+    }
+    
+     public void setNombrecarrera(String nombrecarrera) { 
+        this.nombrecarrera = nombrecarrera;
+    }
+    
+   
+    
     
     
     

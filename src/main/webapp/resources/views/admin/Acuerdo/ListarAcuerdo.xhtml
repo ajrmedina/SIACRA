@@ -41,6 +41,11 @@
                 <p:column style="width: 50%" headerText="Nombre de Acuerdo" filterBy="#{acuerdo.nombreacuerdo}" filterStyleClass="hide">                    
                     <h:outputText value="#{acuerdo.nombreacuerdo}" />
                 </p:column>
+                
+                <p:column style="width: 50%" headerText="Estado" filterBy="#{acuerdo.estadoacuerdo}" filterStyleClass="hide">                    
+                    <h:outputText value="#{acuerdo.estadoacuerdo?'Habilitado':'Deshabilitado'}" />
+                </p:column>
+                
                 <p:column style="width: 25%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
@@ -49,8 +54,12 @@
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateAcuerdo" actionListener="#{acuerdoBean.loadAcuerdo(acuerdo)}" oncomplete="PF('update_acuerdo').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteAcuerdo" actionListener="#{acuerdoBean.loadAcuerdo(acuerdo)}" oncomplete="PF('delete_acuerdo').show()" icon="fa fa-times"/>
-                
+                    <p:commandButton id="locked" update=":dialogLockAcuerdo" actionListener="#{acuerdoBean.loadAcuerdo(acuerdo)}" oncomplete="PF('lock_acuerdo').show()" icon="fa fa-unlock-alt" rendered="#{acuerdo.estadoacuerdo == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockAcuerdo" actionListener="#{acuerdoBean.loadAcuerdo(acuerdo)}" oncomplete="PF('unlock_acuerdo').show()" icon="fa fa-unlock" rendered="#{acuerdo.estadoacuerdo == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Acuerdo" rendered="#{acuerdo.estadoacuerdo == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Acuerdo" rendered="#{acuerdo.estadoacuerdo == false}" />
                     
+               
                 </p:column>               
             </p:dataTable>
         </h:form>
@@ -96,6 +105,28 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{acuerdoBean.deleteAcuerdo()}" update=":list:acuerdo" oncomplete="PF('delete_acuerdo').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_acuerdo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+         <p:dialog header="Bloquear Acuerdo" id="dialogLockAcuerdo" widgetVar="lock_acuerdo" modal="true" resizable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear el acuerdo #{acuerdoBean.codigoacuerdo} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{acuerdoBean.lockedAcuerdo()}" update=":list:acuerdo" oncomplete="PF('lock_acuerdo').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_acuerdo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Desbloquear Acuerdo" id="dialogUnlockAcuerdo" widgetVar="unlock_accuerdo" modal="true" resizable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear al acuerdo #{acuerdoBean.codigoacuerdo} ?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{acuerdoBean.unlockedAcuerdo()}" update=":list:acuerdo" oncomplete="PF('unlock_acuerdo').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_acuerdo').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

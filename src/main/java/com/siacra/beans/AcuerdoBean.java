@@ -40,7 +40,8 @@ public class AcuerdoBean implements Serializable{
     private int idacuerdo; 
     private String codigoacuerdo;
     private Date fechaacuerdo;
-    private String nombreacuerdo;
+    private String nombreacuerdo;    
+    private boolean estadoacuerdo;
     
    
     public void addAcuerdo() {
@@ -50,6 +51,7 @@ public class AcuerdoBean implements Serializable{
             acuerdo.setCodigoacuerdo(getCodigoacuerdo());
             acuerdo.setFechaacuerdo(getFechaacuerdo());
             acuerdo.setNombreacuerdo(getNombreacuerdo());
+            acuerdo.setEstadoacuerdo(true);
           
             getAcuerdoService().addAcuerdo(acuerdo);
             //getEscuelaService().addEscuela(escuela);
@@ -106,6 +108,32 @@ public class AcuerdoBean implements Serializable{
             addMessage("El acuerdo no puede ser eliminado debido a que tiene registros relacionados");
         }
     }
+     public void lockedAcuerdo() {
+        
+        try {
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdacuerdo());
+            String acuerdoBloqueado = acuerdo.getCodigoacuerdo();
+            acuerdo.setEstadoacuerdo(false);         
+            addMessage("El Acuerdo " + acuerdoBloqueado + " fue inhabilitado correctamente");
+            getAcuerdoService().updateAcuerdo(acuerdo);           
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+     
+      public void unlockedAcuerdo() {
+        
+        try {
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdacuerdo());
+            String acuerdoBloqueado = acuerdo.getCodigoacuerdo();
+            acuerdo.setEstadoacuerdo(true);          
+            addMessage("El Acuerdo " + acuerdoBloqueado + " fue habilitado correctamente");
+            getAcuerdoService().updateAcuerdo(acuerdo);           
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }    
+     
     
     /**
      * Reset Fields
@@ -179,7 +207,16 @@ public class AcuerdoBean implements Serializable{
     public void setNombreacuerdo(String nombreacuerdo) {
         this.nombreacuerdo = nombreacuerdo;
     }
+
+    public boolean getEstadoacuerdo() {
+        return estadoacuerdo;
+    }
+
+    public void setEstadoacuerdo(boolean estadoacuerdo) {
+        this.estadoacuerdo = estadoacuerdo;
+    }
         
+    
     /**
      * Add Messages
      *
