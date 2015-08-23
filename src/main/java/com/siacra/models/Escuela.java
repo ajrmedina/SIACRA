@@ -37,8 +37,19 @@ public class Escuela implements Serializable{
     @Column(name = "nombreescuela", nullable = false)
     private String nombreescuela; 
     
+    @Column(name = "nombrecarrera", nullable = false)
+    private String nombrecarrera; 
+    
     @OneToMany(mappedBy="escuela")
     private Set<Docente> docente;
+    
+    @OneToMany(mappedBy="escuela")
+    private Set<Asignatura> asignatura;
+    
+    @OneToMany(mappedBy="idescuela")
+    private Set<Actividad> actividad;
+    
+    
     
     public int getIdescuela() {
         return idescuela;
@@ -63,7 +74,16 @@ public class Escuela implements Serializable{
     public void setNombreescuela(String nombreescuela) {
         this.nombreescuela = nombreescuela;
     }
+
+    public String getNombrecarrera() {
+        return nombrecarrera;
+    }
+
+    public void setNombrecarrera(String nombrecarrera) {
+        this.nombrecarrera = nombrecarrera;
+    }
     
+        
      /**
      * Get Docente
      *
@@ -81,7 +101,25 @@ public class Escuela implements Serializable{
     public void setDocente(Set<Docente> docente) {
         this.docente = docente;
     }
+
+    public Set<Asignatura> getAsignatura() {
+        return asignatura;
+    }
     
+
+    public void setAsignatura(Set<Asignatura> asignatura) {
+        this.asignatura = asignatura;
+    }
+
+    public Set<Actividad> getActividad() {
+        return actividad;
+    }
+
+    public void setActividad(Set<Actividad> actividad) {
+        this.actividad = actividad;
+    }
+    
+        
     @Override
     public String toString() {
         StringBuilder strBuff = new StringBuilder();

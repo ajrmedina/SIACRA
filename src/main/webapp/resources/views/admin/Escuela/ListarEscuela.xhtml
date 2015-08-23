@@ -17,7 +17,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 70%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
                     <p:button style="float: right" value="Nueva Escuela" outcome="/resources/views/admin/Escuela/NuevaEscuela.xhtml" icon="fa fa-plus"/>                       
                     
@@ -28,14 +28,20 @@
                     
                     <div style="clear:both" />
                 </f:facet>                                 
-                <p:column style="width: 20%" headerText="Código de Escuela" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
-                    <h:outputText value="#{escuela.codigoescuela}" class="center-element"/>
+                
+                <p:column style="width:50%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
+                    <h:outputText value="#{escuela.codigoescuela}" />
                 </p:column>
                 
-                <p:column style="width: 50%" headerText="Nombre de Escuela" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
-                    <h:outputText value="#{escuela.nombreescuela}" class="center-element"/>
+                <p:column style="width: 70%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
+                    <h:outputText value="#{escuela.nombreescuela}" />
                 </p:column>
-                <p:column style="width: 10%">
+                
+                <p:column style="width: 70%" headerText="Nombre de la Carrera" filterBy="#{escuela.nombrecarrera}" filterStyleClass="hide">                  
+                    <h:outputText value="#{escuela.nombrecarrera}" />
+                </p:column>
+                
+                <p:column style="width: 30%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
@@ -62,6 +68,14 @@
                         
                     <p:outputLabel for="nombreEscuela" value="Nombre de la Escuela: " />
                     <p:inputText id="nombreEscuela" value="#{escuelaBean.nombreescuela}" 
+                             requiredMessage="Por favor, ingrese el nombre."
+                             validatorMessage="Máximo 50 caracteres" size="45">
+                        <f:validateLength maximum="50"/>
+                        <f:validateRequired />
+                    </p:inputText>
+                    
+                     <p:outputLabel for="nombreCarrera" value="Nombre de la Carrera: " />
+                     <p:inputText id="nombreCarrera" value="#{escuelaBean.nombrecarrera}" 
                              requiredMessage="Por favor, ingrese el nombre."
                              validatorMessage="Máximo 50 caracteres" size="45">
                         <f:validateLength maximum="50"/>
