@@ -45,7 +45,7 @@ public class Acuerdo implements Serializable{
     @Column(name = "ac_estado", nullable = false)
     private boolean estadoacuerdo;
     
-    @OneToMany(mappedBy="escuela")
+    @OneToMany(mappedBy="acuerdo")
     private Set<Oferta> oferta;
 
     

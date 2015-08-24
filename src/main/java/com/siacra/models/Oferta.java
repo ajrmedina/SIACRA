@@ -27,28 +27,17 @@ public class Oferta implements Serializable{
     @Column(name="idoferta")
     private Integer idOferta;
     
-//    @ManyToOne
-//    @Column(name="idacuerdo")
+    @ManyToOne
+    @JoinColumn(name="idacuerdo")
     private Acuerdo acuerdo;
-
-    
-    
-//    @ManyToOne
-//    @JoinColumn(name="idhorario")
-//    private Horario idHorario;
     
     @ManyToOne
     @JoinColumn(name="idgrupo")
     private Grupo grupo;
     
-//    @ManyToOne
-//    @JoinColumn(name="idasignatura")
-//    private Asignatura idAsignatura;
-    
     @ManyToOne
     @JoinColumn(name="idciclo")
     private Ciclo ciclo;
-    
     
     @Column(name="aprobaroferta")
     private boolean aprobarOferta;
