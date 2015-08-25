@@ -35,7 +35,7 @@
                             <h4 class="title">
                                 <br />
                                 #{request.userPrincipal.name} <br />
-                                <sec:authorize access="hasAnyRole('ROLE_ADMIN')"> ADMINISTRADOR </sec:authorize>
+                                <sec:authorize access="hasRole('ROLE_ADMIN')"> LOGUEADO </sec:authorize>
                                 <br />
                             </h4>
                             <h:form>

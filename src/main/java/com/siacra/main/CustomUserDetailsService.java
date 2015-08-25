@@ -88,15 +88,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<String> roles = new ArrayList<String>();
 
         if (role.intValue() == 1) {
-            roles.add("ADMINISTRADOR");
+            roles.add("ROLE_ADMINISTRADOR");
         } else if (role.intValue() == 2) {
-            roles.add("RESPONSABLE");
+            roles.add("ROLE_RESPONSABLE");
         } else if (role.intValue() == 3) {
-            roles.add("DIRECTOR");
+            roles.add("ROLE_DIRECTOR");
         } else if (role.intValue() == 4) {
-            roles.add("MIEMBRO_JD");
+            roles.add("ROLE_MIEMBRO_JD");
         } else if (role.intValue() == 5) {
-            roles.add("DOCENTE");
+            roles.add("ROLE_DOCENTE");
         }
         return roles;
     }
