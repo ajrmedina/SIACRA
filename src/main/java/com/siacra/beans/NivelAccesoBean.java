@@ -36,6 +36,7 @@ public class NivelAccesoBean implements Serializable {
 
     private int idnivelacceso;
     private String nombreacceso;
+    private boolean insert;
     
     /**
      * Add NivelAcceso
@@ -50,6 +51,7 @@ public class NivelAccesoBean implements Serializable {
             addMessage("El Nivel de Acceso " + getAcceso() + " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
             reset();
+            setInsert(false);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -63,10 +65,10 @@ public class NivelAccesoBean implements Serializable {
      * @param acceso Nivel Acceso
      */
     public void loadNivelAcceso(NivelAcceso acceso) {
-        
-        setId(acceso.getId());
-        setAcceso(acceso.getAcceso());
-            
+        if(!getInsert()) {
+            setId(acceso.getId());
+            setAcceso(acceso.getAcceso());
+        }    
 
     }
     
@@ -218,6 +220,14 @@ public class NivelAccesoBean implements Serializable {
      */
     public void setAcceso(String acceso) {
         this.nombreacceso = acceso;
+    }
+    
+    public boolean getInsert() {
+        return insert;
+    }
+    
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
     
     /**

@@ -19,7 +19,9 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 56%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="nivelesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nuevo Nivel de Acceso" outcome="/resources/views/admin/NivelAcceso/NuevoNivelAcceso.xhtml" icon="fa fa-plus"/>                       
+                    <p:commandButton id="insert_button" update=":dialogUpdateNivel" actionListener="#{nivelAccesoBean.reset()}" oncomplete="PF('update_nivel').show()" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{nivelAccesoBean.insert}" value="true" />
+                    </p:commandButton>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de niveles de acceso:" />
                         <p:inputText id="globalFilter" onkeyup="PF('nivelesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -38,7 +40,7 @@
                 <p:column style="width: 10%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('update_nivel').show()" icon="fa fa-edit" />
-                    <p:commandButton id="delete_button" update=":dialogDeleteNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('delete_nivel').show()" icon="fa fa-times" />
+                    <p:commandButton id="delete_button" update=":dialogDeleteNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('delete_nivel').show()" icon="fa fa-times" />   
                     <p:commandButton id="locked" update=":dialogLockAcceso" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('lock_acceso').show()" icon="fa fa-unlock-alt" rendered="#{nivel.estadoAcceso == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockAcceso" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('unlock_acceso').show()" icon="fa fa-unlock" rendered="#{nivel.estadoAcceso == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Nivel de Acceso" rendered="#{nivel.estadoAcceso == true}" />
@@ -52,15 +54,14 @@
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:outputLabel for="idAcceso" value="Id del Nivel de Acceso: " />
-                    <p:inputText id="idAcceso" value="#{nivelAccesoBean.id}" readonly="true" />
                     <p:outputLabel for="nombreAcceso" value="Nombre del Acceso: " />
                     <p:inputText id="nombreAcceso" value="#{nivelAccesoBean.acceso}" validatorMessage="Solo letras, espacios y guiones son permitidos para este campo, con una longitud minima de 2 y maxima de 25 caracteres">
                         <f:validateLength minimum="2" maximum="25" />
                         <f:validateRegex pattern="^[a-zA-Z -_]+$" />
                     </p:inputText>
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{nivelAccesoBean.updateAcceso()}" update=":list:nivel" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{nivelAccesoBean.updateAcceso()}" update=":list:nivel" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-refresh" rendered="#{nivelAccesoBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{nivelAccesoBean.addAcceso()}" update=":list:nivel" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-refresh" rendered="#{nivelAccesoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_nivel').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                     </p:commandButton>
