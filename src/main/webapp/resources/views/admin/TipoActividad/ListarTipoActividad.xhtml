@@ -19,7 +19,9 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="tipoactividad" var="tipoactividad" value="#{tipoActividadBean.tipoActividadList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipoactividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nuevo TipoActividad  " outcome="/resources/views/admin/TipoActividad/NuevoTipoActividad.xhtml" icon="fa fa-plus"/>                       
+                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateTipoActividad" actionListener="#{tipoActividadBean.reset()}" oncomplete="PF('update_tipoactividad').show()"  value="Nuevo Tipo Actividad" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{tipoActividadBean.insert}" value="true" />
+                    </p:commandButton>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de Tipo actividades:" />
                         <p:inputText id="globalFilter" onkeyup="PF('tipoactividadesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -46,7 +48,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="Actualizar TipoActividad  " id="dialogUpdateTipoActividad" widgetVar="update_tipoactividad" modal="true" resizable="false">
+        <p:dialog header="#{tipoActividadBean.insert?'Insertar TipoActividad':'Actualizar TipoActividad'}" id="dialogUpdateTipoActividad" widgetVar="update_tipoactividad" modal="true" resizable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
@@ -58,9 +60,11 @@
                     </p:inputText>
                   
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipoActividadBean.updateTipoActividad()}" update=":list:tipoactividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipoActividadBean.updateTipoActividad()}" update=":list:tipoactividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-refresh"  rendered="#{tipoActividadBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{tipoActividadBean.addTipoActividad()}" update=":list:tipoactividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-plus" rendered="#{tipoActividadBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tipoactividad').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
+                      <f:setPropertyActionListener target="#{tipoActividadBean.insert}" value="false" />
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>

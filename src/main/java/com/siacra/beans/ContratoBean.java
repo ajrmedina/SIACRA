@@ -36,6 +36,7 @@ public class ContratoBean implements Serializable {
     private int idcontrato;
     private String tipocontrato;
     private boolean co_estado;
+    private boolean insert;
     
     /**
      * Add Contrato
@@ -51,6 +52,7 @@ public class ContratoBean implements Serializable {
             addMessage("El contrato " + getTipocontrato()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
             reset();
+            setInsert(false);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -64,10 +66,12 @@ public class ContratoBean implements Serializable {
      * @param contrato contrato
      */
     public void loadContrato(Contrato contrato) {
-        
+        if(!isInsert()){
         setIdcontrato(contrato.getIdcontrato());
         setTipocontrato(contrato.getTipocontrato());
         setCo_estado(contrato.isCo_estado());
+        }
+        
     }
     
     /**
@@ -176,7 +180,7 @@ public class ContratoBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    private void reset() {
+    public void reset() {
         this.setTipocontrato(""); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -228,5 +232,19 @@ public class ContratoBean implements Serializable {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @return the insert
+     */
+    public boolean isInsert() {
+        return insert;
+    }
+
+    /**
+     * @param insert the insert to set
+     */
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
 }

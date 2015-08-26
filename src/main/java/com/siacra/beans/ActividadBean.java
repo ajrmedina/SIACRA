@@ -52,7 +52,7 @@ public class ActividadBean implements Serializable{
     private String descripcionactividad;
     private int idtipoactividad;
     private int idescuela;
-    
+    private boolean insert;  
    
     
     
@@ -67,20 +67,20 @@ public class ActividadBean implements Serializable{
             Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
             actividad.setIdescuela(escuela);
             actividad.setIdtipoactividad(tipoActividad);
-            if(isEstadoactividad())
+            
                 actividad.setEstadoactividad(true);
-            else
-                actividad.setEstadoactividad(false);
+            
+                
             if(isAprovaractividad())
                 actividad.setAprobaractividad(true);
             else
                 actividad.setAprobaractividad(false);
-            actividad.setNombreactividad(nombreactividad);
-            actividad.setDescripcionactividad(descripcionactividad);
+            actividad.setNombreactividad(getNombreactividad());
+            actividad.setDescripcionactividad(getDescripcionactividad());
             getActividadService().addActividad(actividad);
             addMessage("La actividad "+actividad.getNombreactividad() + " fue añadida correctamente");
             reset();
-            
+            setInsert(false);
         } catch (Exception e) {
              reset();
             e.printStackTrace();
@@ -99,22 +99,30 @@ public class ActividadBean implements Serializable{
          * @param actividad Actividad
          */
         public void loadActividad(Actividad actividad){
-           TipoActividad tipoActividad= getTipoActividadService().getTipoActividadById(actividad.getIdtipoactividad().getIdtipoactividad());
+            if(!isInsert()){
+             TipoActividad tipoActividad= getTipoActividadService().getTipoActividadById(actividad.getIdtipoactividad().getIdtipoactividad());
            Escuela escuela = getEscuelaService().getEscuelaById(actividad.getIdescuela().getIdescuela());
             setIdactividad(actividad.getIdactividad());
-            if(actividad.getEstadoactividad())
-                setEstadoactividad(true);
+            
+            if(isEstadoactividad())   
+            setEstadoactividad(true);
             else
                 setEstadoactividad(false);
+            
             
             if(actividad.getAprobaractividad())
                 setAprovaractividad(true);
             else
                 setAprovaractividad(false);
             setNombreactividad(actividad.getNombreactividad());
-            setDescripcionactividad(actividad.getDescripcionactividad());
+          
+           setDescripcionactividad(actividad.getDescripcionactividad());
+            
             setIdescuela(escuela.getIdescuela());
             setIdtipoactividad(tipoActividad.getIdtipoactividad());
+            
+            }
+          
             
         }
         
@@ -405,6 +413,20 @@ public class ActividadBean implements Serializable{
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @return the insert
+     */
+    public boolean isInsert() {
+        return insert;
+    }
+
+    /**
+     * @param insert the insert to set
+     */
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
 
    

@@ -34,6 +34,7 @@ public class TipoActividadBean implements Serializable {
     private int idtipoactividad;
     private String tipoactividad;
     private boolean ta_estado;
+    private boolean insert;
    
      /**
      * Add TipoActividad
@@ -48,6 +49,7 @@ public class TipoActividadBean implements Serializable {
             addMessage("El tipoactividad " + getTipoactividad()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
             reset();
+            setInsert(false);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -61,10 +63,12 @@ public class TipoActividadBean implements Serializable {
      * @param tipoactividad tipoactividad
      */
     public void loadTipoActividad(TipoActividad tipoactividad) {
-        
-        setIdtipoactividad(tipoactividad.getIdtipoactividad());
-        setTipoactividad(tipoactividad.getTipoactividad());
-        setTa_estado(tipoactividad.isTa_estado());
+        if (!isInsert()) {
+            setIdtipoactividad(tipoactividad.getIdtipoactividad());
+            setTipoactividad(tipoactividad.getTipoactividad());
+            setTa_estado(tipoactividad.isTa_estado());
+        }
+       
     }
     
     /**
@@ -81,7 +85,8 @@ public class TipoActividadBean implements Serializable {
             tipoactividad.setTa_estado(isTa_estado());
             getTipoActividadService().updateTipoActividad(tipoactividad);
             addMessage("El tipoactividad " + getIdtipoactividad()+ " fue actualizado correctamente a: "+ getTipoactividad());
-            
+            setInsert(false);
+            reset();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -172,7 +177,7 @@ public class TipoActividadBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    private void reset() {
+  public void reset() {
         this.setTipoactividad(""); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -225,5 +230,19 @@ public class TipoActividadBean implements Serializable {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @return the insert
+     */
+    public boolean isInsert() {
+        return insert;
+    }
+
+    /**
+     * @param insert the insert to set
+     */
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
 }

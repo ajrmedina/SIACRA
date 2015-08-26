@@ -19,7 +19,10 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="contrato" var="contrato" value="#{contratoBean.contratoList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="contratosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nuevo Contrato  " outcome="/resources/views/admin/Contrato/NuevoContrato.xhtml" icon="fa fa-plus"/>                       
+                    
+                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateContrato" actionListener="#{contratoBean.reset()}" oncomplete="PF('update_contrato').show()"  value="Nuevo contrato" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{contratoBean.insert}" value="true" />
+                    </p:commandButton>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de contratos:" />
                         <p:inputText id="globalFilter" onkeyup="PF('contratosTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -46,7 +49,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="Actualizar Contrato  " id="dialogUpdateContrato" widgetVar="update_contrato" modal="true" resizable="false">
+        <p:dialog header="#{contratoBean.insert?'Insertar Contrato':'Actualizar Contrato'}  " id="dialogUpdateContrato" widgetVar="update_contrato" modal="true" resizable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
@@ -58,9 +61,11 @@
                     </p:inputText>
                     <p:outputLabel id="estado" value="Estado"/>
                     <p:selectBooleanCheckbox value="#{contratoBean.co_estado}"/>
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" rendered="#{contratoBean.insert == false}" />
+                   <p:commandButton id="save_new" value="Agregar" actionListener="#{contratoBean.addContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-plus" rendered="#{contratoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_contrato').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
+                      <f:setPropertyActionListener target="#{escalafonBean.insert}" value="false" />
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>
