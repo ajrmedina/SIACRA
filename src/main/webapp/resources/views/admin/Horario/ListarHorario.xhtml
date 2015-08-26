@@ -20,7 +20,9 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="horario" var="horario" value="#{horarioBean.horarioList}" style="width: 70%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="horarioTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nuevo Horario" outcome="/resources/views/admin/Horario/NuevoHorario.xhtml" icon="fa fa-plus"/>                       
+                    <p:commandButton id="insert_button" update=":dialogUpdateHorario" actionListener="#{horarioBean.reset()}" oncomplete="PF('update_horario').show()" value="Nuevo Horario" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{horarioBean.insert}" value="true" />
+                    </p:commandButton>                       
                     
                     <p:outputPanel style="float: left">
                         <h:outputText value="Búsqueda de Tipo de grupo:" />
@@ -61,7 +63,7 @@
             </p:dataTable>
         </h:form>
         
-         <p:dialog header=" Actualizar Horario" id="dialogUpdateHorario" widgetVar="update_horario" modal="true" resizable="false">
+        <p:dialog header="#{horarioBean.insert?'Nuevo Horario':'Actualizar Horario'}" id="dialogUpdateHorario" widgetVar="update_horario" modal="true" resizable="false">
             <h:form id="update">
                 <p:growl id="messages" />
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -82,12 +84,14 @@
                     <p:outputLabel for="hinicio" value="Hora de inicio :" />
                     <p:calendar id="hinicio" value="#{horarioBean.hinicio}" pattern="HH:mm" timeOnly="true"  required="true" requiredMessage="Ingrese hora de inicio"/>
                     
-                    <p:outputLabel for="hfin" value="Hora de inicio :" />
+                    <p:outputLabel for="hfin" value="Hora de fin :" />
                     <p:calendar id="hfin" value="#{horarioBean.hfin}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Ingrese hora de fin" />
                         
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" rendered="#{horarioBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{horarioBean.addHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" rendered="#{horarioBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_horario').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
+                        <f:setPropertyActionListener target="#{horarioBean.insert}" value="false" />
                     </p:commandButton> 
                 </h:panelGrid>
             </h:form>

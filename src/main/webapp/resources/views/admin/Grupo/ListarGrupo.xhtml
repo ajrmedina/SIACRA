@@ -20,7 +20,9 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="grupos" var="grupo" value="#{grupoBean.gruposList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="gruposTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nuevo grupo" outcome="/resources/views/admin/Grupo/NuevoGrupo.xhtml" icon="fa fa-plus"/>                       
+                    <p:commandButton id="insert_button" update=":dialogUpdateGrupo" actionListener="#{grupoBean.reset()}" oncomplete="PF('update_grupo').show()" value="Nuevo Grupo" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{grupoBean.insert}" value="true" />
+                    </p:commandButton>                       
                     
                     <p:outputPanel style="float: left">
                         <h:outputText value="Búsqueda de grupo:" />
@@ -53,7 +55,7 @@
             </p:dataTable>
         </h:form>
         
-         <p:dialog header=" Actualizar grupo" id="dialogUpdateGrupo" widgetVar="update_grupo" modal="true" resizable="false">
+        <p:dialog header="#{grupoBean.insert?'Nuevo Grupo':'Actualizar Grupo'}" id="dialogUpdateGrupo" widgetVar="update_grupo" modal="true" resizable="false">
             <h:form id="update">
                 <p:growl id="messages" />
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -77,9 +79,11 @@
                         <f:validateLength maximum="3" minimum="1" />
                     </p:inputText>
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:grupos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:grupos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" rendered="#{grupoBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{grupoBean.addGrupo()}" update=":list:grupos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" rendered="#{grupoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_grupo').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
+                        <f:setPropertyActionListener target="#{grupoBean.insert}" value="false" />
                     </p:commandButton> 
                 </h:panelGrid>
             </h:form>

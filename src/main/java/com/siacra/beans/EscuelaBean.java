@@ -37,6 +37,7 @@ public class EscuelaBean implements Serializable{
     private String codigoescuela;
     private String nombreescuela;
     private String nombrecarrera;
+    private boolean insert;
     
     /**
      * Add Escuela
@@ -45,7 +46,7 @@ public class EscuelaBean implements Serializable{
     public void addEscuela() {
         try {
             Escuela escuela = new Escuela(); 
-            //escuela.setIdescuela(getIdescuela());
+            
             escuela.setCodigoescuela(getCodigoescuela());
             escuela.setNombreescuela(getNombreescuela());
             escuela.setNombrecarrera(getNombrecarrera());
@@ -62,18 +63,16 @@ public class EscuelaBean implements Serializable{
      *
      * Get and Load the data for Escuela to update
      */
-    public void loadEscuela(Escuela escuela) {
-        
-        try {
-            //Escuela escuela;            
-            //escuela = getEscuelaService().getEscuelaById(escuela.getIdescuela()); 
+    public void loadEscuela(Escuela escuela) {      
+      
+           if(!getInsert()){ 
             setIdescuela(escuela.getIdescuela());
             setCodigoescuela(escuela.getCodigoescuela());
             setNombreescuela(escuela.getNombreescuela());
             setNombrecarrera(escuela.getNombrecarrera());
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+           
+           }            
+        
 
     }
     
@@ -186,8 +185,14 @@ public class EscuelaBean implements Serializable{
      public void setNombrecarrera(String nombrecarrera) { 
         this.nombrecarrera = nombrecarrera;
     }
-    
-   
+
+    public boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }   
     
     
     

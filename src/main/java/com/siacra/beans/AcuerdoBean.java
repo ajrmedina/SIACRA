@@ -42,6 +42,7 @@ public class AcuerdoBean implements Serializable{
     private Date fechaacuerdo;
     private String nombreacuerdo;    
     private boolean estadoacuerdo;
+    private boolean insert;
     
    
     public void addAcuerdo() {
@@ -65,16 +66,14 @@ public class AcuerdoBean implements Serializable{
     
     public void loadAcuerdo(Acuerdo acuerdo) {
         
-        try {
-             
+        if(!getInsert()){
             setIdacuerdo(acuerdo.getIdacuerdo());           
             setCodigoacuerdo(acuerdo.getCodigoacuerdo());           
             setFechaacuerdo(acuerdo.getFechaacuerdo());           
-            setNombreacuerdo(acuerdo.getNombreacuerdo());
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+            setNombreacuerdo(acuerdo.getNombreacuerdo());      
+       
         }
-
+                    
     }
     
    
@@ -215,7 +214,16 @@ public class AcuerdoBean implements Serializable{
     public void setEstadoacuerdo(boolean estadoacuerdo) {
         this.estadoacuerdo = estadoacuerdo;
     }
+
+    public boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }
         
+    
     
     /**
      * Add Messages
