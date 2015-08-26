@@ -19,7 +19,10 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="actividad" var="actividad" value="#{actividadBean.actividadList}" style="width: 80%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="actividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nuevo Actividad  " outcome="/resources/views/admin/Actividad/NuevaActividad.xhtml" icon="fa fa-plus"/>                       
+                   
+                   <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.reset()}" oncomplete="PF('update_actividad').show()"  value="Nueva Actividad" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{actividadBean.insert}" value="true" />
+                    </p:commandButton>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de actividades:" />
                         <p:inputText id="globalFilter" onkeyup="PF('actividadesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -58,7 +61,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="Actualizar Actividad  " id="dialogUpdateActividad" widgetVar="update_actividad" modal="true" resizable="false">
+        <p:dialog header="#{actividadBean.insert?'Nueva actividad':'Actualizar actividad'}  " id="dialogUpdateActividad" widgetVar="update_actividad" modal="true" resizable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
@@ -86,9 +89,9 @@
                 </p:inputText>
                
                 <p:outputLabel for="descripcionactividad" value="Descripción de la actividad: " />
-                <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="true" validatorMessage="Solo letras son permitidas.">
+                <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="false" validatorMessage="Solo letras son permitidas.">
                     <f:validateLength minimum="1" maximum="50" />
-                    <f:validateRegex pattern="[ a-zA-Z]+$" />
+                   
                 </p:inputTextarea>
                               
                                
@@ -96,9 +99,11 @@
                 <p:selectBooleanCheckbox value="#{actividadBean.aprovaractividad}" />
                 
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{actividadBean.updateActividad()}" update=":list:actividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-refresh" />
+                <p:commandButton id="save_update" value="Actualizar" actionListener="#{actividadBean.updateActividad()}" update=":list:actividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-refresh" rendered="#{actividadBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{actividadBean.addActividad()}" update=":list:actividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-plus" rendered="#{actividadBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_actividad').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
+                      <f:setPropertyActionListener target="#{actividadBean.insert}" value="false" />
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>

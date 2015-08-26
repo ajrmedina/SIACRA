@@ -39,6 +39,7 @@ public class EscalafonBean implements Serializable{
     private int idescalafon;
     private String tipoescalafon;
     private boolean es_escalafon;
+    private boolean insert;
     /**
      * Add Escalafon
      *
@@ -52,6 +53,7 @@ public class EscalafonBean implements Serializable{
             addMessage("El escalafon " + getTipoescalafon()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
             reset();
+            setInsert(false);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -65,10 +67,12 @@ public class EscalafonBean implements Serializable{
      * @param escalafon
      */
     public void loadEscalafon(Escalafon escalafon) {
-        
+        if(!isInsert()){
         setIdescalafon(escalafon.getIdescalafon());
         setTipoescalafon(escalafon.getTipoescalafon());
         setEs_escalafon(escalafon.isEs_estado());
+        }
+        
     }
     
     /**
@@ -177,7 +181,7 @@ public class EscalafonBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    private void reset() {
+    public void reset() {
         this.setTipoescalafon(""); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -229,5 +233,19 @@ public class EscalafonBean implements Serializable{
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @return the insert
+     */
+    public boolean isInsert() {
+        return insert;
+    }
+
+    /**
+     * @param insert the insert to set
+     */
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
 }
