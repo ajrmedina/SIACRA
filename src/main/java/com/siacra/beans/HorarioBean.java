@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -41,6 +43,7 @@ public class HorarioBean implements Serializable{
     Date hfin;
     String dia;
     boolean hoEstado;
+    private boolean insert;
 
     public List<Horario> getHorarioList() {
         horarioList = new ArrayList<>();
@@ -96,6 +99,15 @@ public class HorarioBean implements Serializable{
         this.hoEstado = hoEstado;
     }
 
+    public boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }    
+    
+
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -103,8 +115,16 @@ public class HorarioBean implements Serializable{
     
     //reset a las variables
     public void reset() {       
-       //this.setTipoGrupos("");
-       //this.setNombreGrupo("");
+      SimpleDateFormat formato = new SimpleDateFormat("HH:mm");
+        Date fechaDate = null;
+         try {
+             fechaDate = formato.parse(" ");
+         } catch (ParseException ex) {
+             Logger.getLogger(AcuerdoBean.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         this.setHfin(fechaDate);
+         this.setHinicio(fechaDate);
+         this.setDia("");
     }
     
     //Invocamos metodos de agregacion y agregamos parametros obtenidos de la vista
@@ -169,17 +189,16 @@ public class HorarioBean implements Serializable{
     
     public void loadHorario(Horario horario) throws ParseException {
         
-        try {
+        if(!getInsert()){
             setIdHorario(horario.getIdHorario());
             setHinicio(formato2.parse(horario.getHinicio()));
             setHfin(formato2.parse(horario.getHfin()));
             setHoEstado(horario.getHoEstado());
             setDia(horario.getDia());
-                                  
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+            
+            
         }
-
+    
     }
     /**
      * Locked Horario

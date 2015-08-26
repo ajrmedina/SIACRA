@@ -34,28 +34,32 @@
                         <div class="ui-grid-col-4">
                             <h4 class="title">
                                 <br />
-                                #{request.userPrincipal.name} <br />
-                                <sec:authorize access="hasRole('ROLE_ADMIN')"> LOGUEADO </sec:authorize>
+                                #{request.userPrincipal.name} <br /> 
+                                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                    
+                                </sec:authorize>
                                 <br />
-                            </h4>
+                            </h4>                            
                             <h:form>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <p:commandButton value="Cerrar Sesion" action="#{loginMBean.logout}" icon="fa fa-lock" ajax="false" />
-                            </h:form>
+                            </h:form>                          
                         </div>
                     </div>
                 </div>
             </header>
-            
+           
             <nav>
                 <h:form class="pad-top-20">
-                    <p:menubar styleClass="menu">
+                    <p:menubar styleClass="menu">  
                         
-                        <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>
-                        
+                        <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>                                                             
+                       
                         <p:submenu label="Mantenimientos" icon="fa fa-gears">
+                            
                             <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/NivelAcceso/ListarNivelesAcceso.xhtml" icon="fa fa-key" />
                             <p:menuitem value="Usuarios" url="/resources/views/admin/User/ListarUsuarios.xhtml" icon="fa fa-users" />
+                            
                             <p:separator />
                             <p:menuitem value="Docentes" url="/resources/views/admin/Docente/ListarDocentes.xhtml" icon="fa fa-user" />
                             <p:menuitem value="Escuelas" url="/resources/views/admin/Escuela/ListarEscuela.xhtml" icon="fa fa-building" />
@@ -80,6 +84,7 @@
                 </h:form>
             </nav>
             
+                        
             <section class="pad-top-20">
                 <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
                 <p:dialog widgetVar="statusDialog" draggable="false" closable="false" resizable="false" showHeader="false" showEffect="fade" hideEffect="fade" position="right,bottom">

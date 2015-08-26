@@ -19,7 +19,10 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 90%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="asignaturaesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nuevo Asignatura  " outcome="/resources/views/admin/Asignatura/NuevaAsignatura.xhtml" icon="fa fa-plus"/>                       
+                    <p:commandButton id="insert_button" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.reset()}" oncomplete="PF('update_asignatura').show()" value="Nueva Asignatura" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="true" />
+                    </p:commandButton>                       
+                    
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de asignaturas:" />
                         <p:inputText id="globalFilter" onkeyup="PF('asignaturasTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -66,7 +69,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="Actualizar Asignatura  " id="dialogUpdateAsignatura" widgetVar="update_asignatura" modal="true" resizable="false">
+        <p:dialog header="#{asignaturaBean.insert?'Nueva Asignatura':'Actualizar Asignatura'}" id="dialogUpdateAsignatura" widgetVar="update_asignatura" modal="true" resizable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
@@ -108,17 +111,19 @@
                     <f:selectItem itemLabel="" itemValue="Seleccionar tipo de asignatura" />
                     <f:selectItem itemLabel="Obligatoria" itemValue="Obligatoria" />
                     <f:selectItem itemLabel="Electiva" itemValue="Electiva" />
-                </p:selectOneMenu>
-               
+                </p:selectOneMenu>              
                               
-                               
+                      
+                
                 <p:outputLabel id="aprobada" value="Aprobar asignatura? " />
                 <p:selectBooleanCheckbox value="#{asignaturaBean.aprobarAsignatura}" />
                 
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{asignaturaBean.addAsignatura()}" update=":list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_asignatura').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
+                      <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="false" />
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>

@@ -41,6 +41,7 @@ public class GrupoBean implements Serializable{
     Integer cupo;
     Integer numeroGrupo;
     boolean aprobarGrupo;
+    private boolean insert;
 
     public GrupoService getGrupoService() {
         return grupoService;
@@ -121,6 +122,15 @@ public class GrupoBean implements Serializable{
     public boolean getAprobarGrupo(){
         return aprobarGrupo;
     }
+
+    public boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }    
+    
     
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
@@ -183,17 +193,24 @@ public class GrupoBean implements Serializable{
     
     public void loadGrupo(Grupo grupo) {
         
-        try {
-            setIdGrupo(grupo.getIdGrupo());
+        if(!getInsert()){
+             setIdGrupo(grupo.getIdGrupo());
             setIdTipoGrupo(grupo.getTipoGrupo().getIdTipoGrupo());
             setCupo(grupo.getCupo());
             setNumeroGrupo(grupo.getNumeroGrupo());
             setAprobarGrupo(grupo.getAprobarGrupo());
-                                  
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+           
+            
         }
+              
 
+    }
+    
+    public void reset(){
+        this.setIdTipoGrupo(Integer.parseInt(""));
+        this.setCupo(Integer.parseInt(""));
+        this.setNumeroGrupo(Integer.parseInt(""));
+        
     }
     
 }

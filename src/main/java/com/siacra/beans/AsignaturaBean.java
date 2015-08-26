@@ -45,6 +45,7 @@ public class AsignaturaBean implements Serializable{
     Integer unidadesValorativas;
     String tipoAsignatura;
     String nombreAsignatura;
+    private boolean insert;
 
     public AsignaturaService getAsignaturaService() {
         return asignaturaService;
@@ -153,6 +154,14 @@ public class AsignaturaBean implements Serializable{
     public void setNombreAsignatura(String nombreAsignatura) {
         this.nombreAsignatura = nombreAsignatura;
     }
+
+    public boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }    
     
     
     public void addMessage(String mensaje) {
@@ -161,11 +170,15 @@ public class AsignaturaBean implements Serializable{
     }
     
     //reset a las variables
-    public void reset() {   
-        /*
-       this.setTipoGrupos("");
-       this.setNombreGrupo("");
-       */
+    public void reset() {           
+       this.setIdEscuela(Integer.parseInt(""));
+       this.setCodigoAsignatura("");
+       this.setNombreAsignatura("");
+       this.setCicloImpartir(Integer.parseInt(""));
+       this.setUnidadesValorativas(Integer.parseInt(""));
+       this.setTipoAsignatura("");
+       this.setEstadoAsignatura(false);
+       
     }
     
     //Invocamos metodos de agregacion y agregamos parametros obtenidos de la vista
@@ -235,7 +248,7 @@ public class AsignaturaBean implements Serializable{
     
     public void loadAsignatura(Asignatura asignatura) {
         
-        try {
+        if(!getInsert()){
             setIdAsignatura(asignatura.getIdAsignatura());
             setIdEscuela(asignatura.getEscuela().getIdescuela());
             setCodigoAsignatura(asignatura.getCodigoAsignatura());
@@ -245,10 +258,9 @@ public class AsignaturaBean implements Serializable{
             setUnidadesValorativas(asignatura.getUnidadesValorativas());
             setTipoAsignatura(asignatura.getTipoAsignatura());
             setNombreAsignatura(asignatura.getNombreAsignatura());
-                                  
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+            
+            
+        }      
 
     }
     
