@@ -51,6 +51,7 @@ public class CategoriaBean implements Serializable {
     private int horas;
     private String tipoEscalafon;
     private String tipoContrato;
+    private boolean insert;
     
     /**
      * Add Categoria
@@ -68,6 +69,7 @@ public class CategoriaBean implements Serializable {
             getCategoriaService().addCategoria(categoria);
             addMessage("La Categoria " + escalafon.getTipoescalafon() + " " + contrato.getTipocontrato() + " fue añadida correctamente");
             reset();
+            setInsert(false);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -81,15 +83,16 @@ public class CategoriaBean implements Serializable {
      * @param categoria Categoria
      */
     public void loadCategoria(Categoria categoria) {
-        
-        Escalafon escalafon = getEscalafonService().getEscalafonById(categoria.getEscalafon().getIdescalafon());
-        Contrato contrato = getContratoService().getContratoById(categoria.getContrato().getIdcontrato());
-        setIdCategoria(categoria.getIdCategoria());
-        setHorasObligatorias(categoria.getHorasObligatorias());
-        setTipoEscalafon(escalafon.getTipoescalafon());
-        setIdEscalafon(escalafon.getIdescalafon());
-        setTipoContrato(contrato.getTipocontrato());
-        setIdContrato(contrato.getIdcontrato());
+        if(!getInsert()) {
+            Escalafon escalafon = getEscalafonService().getEscalafonById(categoria.getEscalafon().getIdescalafon());
+            Contrato contrato = getContratoService().getContratoById(categoria.getContrato().getIdcontrato());
+            setIdCategoria(categoria.getIdCategoria());
+            setHorasObligatorias(categoria.getHorasObligatorias());
+            setTipoEscalafon(escalafon.getTipoescalafon());
+            setIdEscalafon(escalafon.getIdescalafon());
+            setTipoContrato(contrato.getTipocontrato());
+            setIdContrato(contrato.getIdcontrato());
+        }
 
     }
     
@@ -174,6 +177,8 @@ public class CategoriaBean implements Serializable {
      *
      */
     public void reset() {
+       this.setIdContrato(0);
+       this.setIdEscalafon(0);
        this.setHorasObligatorias(0);
     }
 
@@ -380,6 +385,14 @@ public class CategoriaBean implements Serializable {
      */
     public void setTipoContrato(String contrato) {
         this.tipoContrato = contrato;
+    }
+    
+    public boolean getInsert() {
+        return insert;
+    }
+    
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
     
     /**

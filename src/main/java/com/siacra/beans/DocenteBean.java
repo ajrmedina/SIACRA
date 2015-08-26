@@ -59,6 +59,7 @@ public class DocenteBean implements Serializable {
     private int idCategoria;
     private String nombres;
     private String apellidos;
+    private boolean insert;
     
     /**
      * Add Docente
@@ -80,8 +81,9 @@ public class DocenteBean implements Serializable {
                         docente.setEscuela(escuela);
                         docente.setCategoria(categoria);
                         getDocenteService().addDocente(docente);
-                        addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
+                        addMessage("Docente: " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
                         reset();
+                        setInsert(false);
                     //return "ListarNivelesAcceso?faces-redirect=true";
                     }
                     else {
@@ -108,17 +110,18 @@ public class DocenteBean implements Serializable {
      * @param docente Docente
      */
     public void loadDocente(Docente docente) {
-        
-        User user = getUserService().getUserById(docente.getUser().getIdUsuario());
-        Escuela escuela = getEscuelaService().getEscuelaById(docente.getEscuela().getIdescuela());
-        //Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
-        setIdDocente(docente.getIdDocente());
-        setAprobado(docente.getAprobarDocente());
-        setNombres(user.getNombres());
-        setApellidos(user.getApellidos());
-        setIdUser(user.getIdUsuario());
-        setIdEscuela(escuela.getIdescuela());
-        //setIdCategoria(categoria.getIdCategoria());
+        if(!getInsert()) {
+            User user = getUserService().getUserById(docente.getUser().getIdUsuario());
+            Escuela escuela = getEscuelaService().getEscuelaById(docente.getEscuela().getIdescuela());
+            //Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
+            setIdDocente(docente.getIdDocente());
+            setAprobado(docente.getAprobarDocente());
+            setNombres(user.getNombres());
+            setApellidos(user.getApellidos());
+            setIdUser(user.getIdUsuario());
+            setIdEscuela(escuela.getIdescuela());
+            //setIdCategoria(categoria.getIdCategoria());
+        }
 
     }
     
@@ -138,7 +141,7 @@ public class DocenteBean implements Serializable {
             docente.setEscuela(escuela);
             docente.setCategoria(categoria);
             getDocenteService().updateDocente(docente);
-            addMessage("El Docente " + user.getNombres() + " " + user.getApellidos() + " fue actualizado correctamente");
+            addMessage("Docente: " + user.getNombres() + " " + user.getApellidos() + " fue actualizado correctamente");
             
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -155,7 +158,7 @@ public class DocenteBean implements Serializable {
             User user = getUserService().getUserById(getIdUser());
             String docenteBloqueado = user.getNombres() + " " + user.getApellidos();
             user.setEstadoUsuario(false);
-            addMessage("El Docente " + docenteBloqueado + " fue inhabilitado correctamente");
+            addMessage("Docente: " + docenteBloqueado + " fue inhabilitado correctamente");
             getUserService().updateUser(user);
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -172,7 +175,7 @@ public class DocenteBean implements Serializable {
             User user = getUserService().getUserById(getIdUser());
             String docenteDesbloqueado = user.getNombres() + " " + user.getApellidos();
             user.setEstadoUsuario(true);
-            addMessage("El Docente " + docenteDesbloqueado + " fue habilitado correctamente");
+            addMessage("Docente: " + docenteDesbloqueado + " fue habilitado correctamente");
             getUserService().updateUser(user);
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -185,6 +188,11 @@ public class DocenteBean implements Serializable {
      */
     public void reset() {
        this.setAprobado(false);
+       this.setIdUser(0);
+       this.setIdEscuela(0);
+       this.setIdCategoria(0);
+       this.setNombres("");
+       this.setApellidos("");
     }
 
     /**
@@ -446,6 +454,14 @@ public class DocenteBean implements Serializable {
      */
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+    
+    public boolean getInsert() {
+        return insert;
+    }
+    
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
     
     /**
