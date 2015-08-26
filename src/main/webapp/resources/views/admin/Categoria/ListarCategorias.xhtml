@@ -19,7 +19,9 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="categoria" var="categoria" value="#{categoriaBean.categoriasList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="categoriasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nueva Categoria" outcome="/resources/views/admin/Categoria/NuevaCategoria.xhtml" icon="fa fa-plus"/>                       
+                    <p:commandButton id="insert_button" style="float: right" value="Nueva Categoria" update=":dialogUpdateCategoria" actionListener="#{categoriaBean.reset()}" oncomplete="PF('update_categoria').show()" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{categoriaBean.insert}" value="true" />
+                    </p:commandButton>
                     
                     <p:outputPanel style="float: left">
                         <h:outputText value="Búsqueda de Categorias:" />
@@ -27,7 +29,10 @@
                     </p:outputPanel>
                     
                     <div style="clear:both" />
-                </f:facet>                                 
+                </f:facet>
+                <p:column style="width: 10%" headerText="Identificador" filterBy="#{categoria.idCategoria}" filterStyleClass="hide">
+                    <h:outputText value="#{categoria.idCategoria}" />
+                </p:column>
                 <p:column style="width: 20%" headerText="Escalafon" filterBy="#{categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
                     <h:outputText value="#{categoria.escalafon.tipoescalafon}" />
                 </p:column>
@@ -54,7 +59,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="Actualizar Categoria" id="dialogUpdateCategoria" widgetVar="update_categoria" modal="true" resizable="false">
+        <p:dialog header="#{categoriaBean.insert?'Nueva Categoria':'Actualizar Categoria'}" id="dialogUpdateCategoria" widgetVar="update_categoria" modal="true" resizable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
@@ -76,11 +81,15 @@
                     </h:panelGroup>
 
                     <p:outputLabel for="horas" value="Horas obligatorias para la categoria: " />
-                    <p:inputMask id="horas" value="#{categoriaBean.horasObligatorias}" mask="9?99" required="true" />
-                    
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{categoriaBean.updateCategoria()}" update=":list:categoria" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-refresh" />
+                    <p:inputMask id="horas" value="#{categoriaBean.horasObligatorias}" mask="9?99" required="true" >
+                        <f:validateDoubleRange minimum="1" maximum="99" />
+                    </p:inputMask>
+                        
+                    <p:commandButton id="save_insert" value="Agregar" actionListener="#{categoriaBean.addCategoria()}" update=":list:categoria" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-plus" rendered="#{categoriaBean.insert == true}"/>
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{categoriaBean.updateCategoria()}" update=":list:categoria" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-refresh" rendered="#{categoriaBean.insert == false}"/>
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_categoria').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
+                        <f:setPropertyActionListener target="#{categoriaBean.insert}" value="false" />
                     </p:commandButton> 
                 </h:panelGrid>
             </h:form>

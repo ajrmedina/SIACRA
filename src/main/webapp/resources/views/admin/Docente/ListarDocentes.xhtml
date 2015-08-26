@@ -18,7 +18,9 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 98%" class="center-element" paginator="true" rows="10" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:button style="float: right" value="Nuevo Docente" outcome="/resources/views/admin/Docente/NuevoDocente.xhtml" icon="fa fa-plus"/>                       
+                    <p:commandButton id="insert_button" style="float: right" value="Nuevo Docente" update=":dialogUpdateDocente" actionListener="#{docenteBean.reset()}" oncomplete="PF('update_docente').show()" icon="fa fa-plus">                       
+                        <f:setPropertyActionListener target="#{docenteBean.insert}" value="true" />
+                    </p:commandButton>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de docentes:" />
                         <p:inputText id="globalFilter" onkeyup="PF('docentesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -59,15 +61,15 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header=" Actualizar Docentes de la Escuela" id="dialogUpdateDocente" widgetVar="update_docente" modal="true" resizable="false">
+        <p:dialog header="#{docenteBean.insert?'Agregar Docente':'Actualizar Docente'}" id="dialogUpdateDocente" widgetVar="update_docente" modal="true" resizable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:outputLabel for="nombres" value="Nombres del docente: " />
-                    <p:inputText id="nombres" value="#{docenteBean.nombres}" readonly="true" />
+                    <p:outputLabel for="nombres" value="Nombres del docente: " rendered="#{docenteBean.insert == false}" />
+                    <p:inputText id="nombres" value="#{docenteBean.nombres}" readonly="true" rendered="#{docenteBean.insert == false}" />
 
-                    <p:outputLabel for="apellidos" value="Apellidos del docente: " />
-                    <p:inputText id="apellidos" value="#{docenteBean.apellidos}" readonly="true" />
+                    <p:outputLabel for="apellidos" value="Apellidos del docente: " rendered="#{docenteBean.insert == false}" />
+                    <p:inputText id="apellidos" value="#{docenteBean.apellidos}" readonly="true" rendered="#{docenteBean.insert == false}" />
 
                     <p:outputLabel id="estado" value="Aprobado" />
                     <p:selectBooleanCheckbox value="#{docenteBean.aprobado}" required="true" />
@@ -96,9 +98,11 @@
                         <p:tooltip id="forEscuela" for="escuela" value="Seleccione la escuela a la que pertenece el docente" />
                     </h:panelGroup>
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{docenteBean.updateDocente()}" update=":list:docentes" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-refresh" />
+                    <p:commandButton id="save_insert" value="Agregar" actionListener="#{docenteBean.addDocente()}" update=":list:docentes" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-plus" rendered="#{docenteBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{docenteBean.updateDocente()}" update=":list:docentes" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-refresh" rendered="#{docenteBean.insert == false}"/>
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_docente').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
+                        <f:setPropertyActionListener target="#{docenteBean.insert}" value="false" />
                     </p:commandButton> 
                 </h:panelGrid>
             </h:form>

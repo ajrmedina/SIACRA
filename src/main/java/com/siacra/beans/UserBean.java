@@ -49,7 +49,8 @@ public class UserBean implements Serializable {
     private boolean estadoUsuario;
     private boolean esDocente;
     private int nivel;
-
+    private boolean insert;
+    
     /**
      * Add User
      *
@@ -67,6 +68,7 @@ public class UserBean implements Serializable {
             getUserService().addUser(user);
             addMessage("El Usuario " + getNombreUsuario() + " fue añadido correctamente");
             reset();
+            setInsert(false);
             //return "ListarNivelesAcceso?faces-redirect=true";
             
         } catch (DataAccessException e) {
@@ -83,15 +85,15 @@ public class UserBean implements Serializable {
      */
     public void loadUser(User user) {
         
-        setIdUsuario(user.getIdUsuario());
-        setNombreUsuario(user.getNombreUsuario());
-        setNombres(user.getNombres());
-        setApellidos(user.getApellidos());
-        setEstadoUsuario(user.getEstadoUsuario());
-        setEsDocente(user.getEsDocente());
-        setNivel(user.getNivel().getId());
-            
-
+        if(!getInsert()) {
+            setIdUsuario(user.getIdUsuario());
+            setNombreUsuario(user.getNombreUsuario());
+            setNombres(user.getNombres());
+            setApellidos(user.getApellidos());
+            setEstadoUsuario(user.getEstadoUsuario());
+            setEsDocente(user.getEsDocente());
+            setNivel(user.getNivel().getId());
+        }
     }
     
     /**
@@ -390,6 +392,14 @@ public class UserBean implements Serializable {
      */
     public void setNivel(int nivel) {
         this.nivel = nivel;
+    }
+    
+    public boolean getInsert() {
+        return insert;
+    }
+    
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
     
     /**
