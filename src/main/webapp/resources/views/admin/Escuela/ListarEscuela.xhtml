@@ -19,7 +19,7 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 70%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">    
-                    <p:commandButton id="insert_button" update=":dialogUpdateEscuela" actionListener="#{escuelaBean.reset()}" oncomplete="PF('update_escuela').show()" value="Nueva Escuela" icon="fa fa-plus">
+                    <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateEscuela" actionListener="#{escuelaBean.reset()}" oncomplete="PF('update_escuela').show()" value="Nueva Escuela" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{escuelaBean.insert}" value="true" />
                     </p:commandButton>                                         
                     

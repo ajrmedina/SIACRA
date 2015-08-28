@@ -34,6 +34,8 @@ public class CicloBean implements Serializable{
     boolean ciEstado;
     private List<Ciclo> cicloList;
     private List<Ciclo> cicloActivoList;
+    
+    private boolean insert;
 
     public CicloService getCicloService() {
         return cicloService;
@@ -75,6 +77,15 @@ public class CicloBean implements Serializable{
         this.ciEstado = ciEstado;
     }
 
+    public boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }
+
+    
     public List<Ciclo> getCicloList() {
         cicloList = new ArrayList<>();
         cicloList.addAll(getCicloService().getCiclos());
@@ -101,9 +112,10 @@ public class CicloBean implements Serializable{
     }
     
     //reset a las variables
-    public void reset() {       
-//       this.setTipoGrupos("");
-//       this.setNombreGrupo("");
+    public void reset() {    
+        this.ciclo="";
+        this.anio=null;       
+
     }
     
     //Invocamos metodos de agregacion y agregamos parametros obtenidos de la vista
@@ -111,17 +123,19 @@ public class CicloBean implements Serializable{
         
         try{
             Ciclo cicloN = new Ciclo();
-            cicloN.setCiclo(ciclo);
-            cicloN.setAnio(anio);
+            cicloN.setCiclo(getCiclo());
+            cicloN.setAnio(getAnio());
             cicloN.setCiEstado(true);
-
+            
             //Consultamos si el tipo grupo existe o no
             if(getCicloService().getExistCiclo(getCiclo(), getAnio()) ){
                 addMessage("El Ciclo : " + getCiclo()+ " para el año : " + getAnio()+ " ya existe");
             }
             else{
                 getCicloService().addCiclo(cicloN);
+                
                 addMessage("El Ciclo :" + getCiclo()+ " para el año : " + getAnio()+ " fue creado exitosamente");
+                setInsert(false);
             }
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -166,16 +180,44 @@ public class CicloBean implements Serializable{
     
     public void loadCiclo(Ciclo cicloLoad) {
         
-        try {
-            setIdCiclo(cicloLoad.getIdCiclo());
-            setCiclo(cicloLoad.getCiclo());
-            setAnio(cicloLoad.getAnio());
-            setCiEstado(cicloLoad.getCiEstado());
+       if(!getInsert()){
+           setIdCiclo(cicloLoad.getIdCiclo());
+           setCiclo(cicloLoad.getCiclo());
+           setAnio(cicloLoad.getAnio());
+           setCiEstado(cicloLoad.getCiEstado());
+           
+           
+       }       
             
+    }
+    
+    public void lockedCiclo() {
+        
+        try {
+            Ciclo ciclo = getCicloService().getCicloById(getIdCiclo());
+            String cicloBloqueado = ciclo.getCiclo(); 
+            String anio = Integer.toString(ciclo.getAnio()); 
+            ciclo.setCiEstado(false);
+            addMessage("El ciclo " + cicloBloqueado + " del año " + anio + " fue inhabilitado correctamente");
+            getCicloService().updateCiclo(ciclo);                     
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-
     }
+     
+    public void unlockedCiclo() {
+        
+        try {
+            Ciclo ciclo = getCicloService().getCicloById(getIdCiclo());
+            String cicloBloqueado = ciclo.getCiclo(); 
+            String anio = Integer.toString(ciclo.getAnio()); 
+            ciclo.setCiEstado(true);
+            addMessage("El ciclo " + cicloBloqueado + " del año " + anio + " fue habilitado correctamente");
+            getCicloService().updateCiclo(ciclo);                     
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+       
     
 }
