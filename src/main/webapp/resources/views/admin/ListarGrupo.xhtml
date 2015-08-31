@@ -20,7 +20,7 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="grupos" var="grupo" value="#{grupoBean.gruposList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="gruposTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
-                    <p:commandButton id="insert_button" update=":dialogUpdateGrupo" actionListener="#{grupoBean.reset()}" oncomplete="PF('update_grupo').show()" value="Nuevo Grupo" icon="fa fa-plus">
+                    <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateGrupo" actionListener="#{grupoBean.reset()}" oncomplete="PF('update_grupo').show()" value="Nuevo Grupo" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{grupoBean.insert}" value="true" />
                     </p:commandButton>                       
                     

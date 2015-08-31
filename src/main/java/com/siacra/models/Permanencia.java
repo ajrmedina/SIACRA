@@ -31,6 +31,15 @@ public class Permanencia implements Serializable{
     @Column(name="descripciontiempop", nullable = false)
     private String descTiempo;
     
+    @Column(name="hiniciop", nullable = false)
+    private String hInicio;
+    
+    @Column(name="hfinp", nullable = false)
+    private String hFin;
+    
+    @Column(name="diap", nullable = false)
+    private String dia;
+    
     @ManyToOne
     @JoinColumn(name="iddocente")
     private Docente docente;
@@ -38,10 +47,6 @@ public class Permanencia implements Serializable{
     @ManyToOne
     @JoinColumn(name="idciclo")
     private Ciclo ciclo;
-    
-    @ManyToOne
-    @JoinColumn(name="idhorario")
-    private Horario horario;
     
     /**
      * Get Id Permanencia
@@ -73,10 +78,64 @@ public class Permanencia implements Serializable{
     /**
      * Set Descripcion Tiempo Permanencia
      *
-     * @param descripcion int - DescripcionTiempo
+     * @param descripcion String - DescripcionTiempo
      */
     public void setDescripcionTiempo(String desc) {
         this.descTiempo = desc;
+    }
+    
+    /**
+     * Get Hora Inicio
+     *
+     * @return String - hInicio
+     */
+    public String getHoraInicio() {
+        return hInicio;
+    }
+
+    /**
+     * Set Hora Inicio
+     *
+     * @param horai - HoraInicio
+     */
+    public void setHoraInicio(String horai) {
+        this.hInicio = horai;
+    }
+    
+    /**
+     * Get Hora Fin
+     *
+     * @return String - hFin
+     */
+    public String getHoraFin() {
+        return hFin;
+    }
+
+    /**
+     * Set Hora Fin
+     *
+     * @param horaf - HoraFin
+     */
+    public void setHoraFin(String horaf) {
+        this.hFin = horaf;
+    }
+    
+    /**
+     * Get Dia
+     *
+     * @return String - dia
+     */
+    public String getDia() {
+        return dia;
+    }
+
+    /**
+     * Set Dia
+     *
+     * @param dia - Dia
+     */
+    public void setDia(String dia) {
+        this.dia = dia;
     }
     
     /**
@@ -114,25 +173,6 @@ public class Permanencia implements Serializable{
     public void setCiclo(Ciclo ciclo) {
         this.ciclo = ciclo;
     }
-    
-    /**
-     * Get Horario
-     *
-     * @return horario Horario
-     */
-    public Horario getHorario() {
-        return this.horario;
-    }
-    
-    /**
-     * Set Horario
-     *
-     * @param horario Horario
-     */
-    public void setHorario(Horario horario) {
-        this.horario = horario;
-    }
-    
     
     @Override
     public String toString() {

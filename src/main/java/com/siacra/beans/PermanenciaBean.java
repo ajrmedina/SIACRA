@@ -37,17 +37,15 @@ public class PermanenciaBean implements Serializable {
     @ManagedProperty(value="#{DocenteService}")
     private DocenteService docenteService;
     
-    @ManagedProperty(value="#{HorarioService}")
-    private HorarioService horarioService;
-    
     private List<Permanencia> permanenciasList;
     private List<Docente> docentesList;
-    private List<Horario> horariosList;
     
     private int idPermanencia;
     private int idDocente;
-    private int idHorario;
     private String descripcion;
+    private String hInicio;
+    private String hFin;
+    private String dia;
     
     /**
      * Add Permanencia
@@ -57,10 +55,8 @@ public class PermanenciaBean implements Serializable {
         try {
             Permanencia permanencia = new Permanencia();
             Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            Horario horario = getHorarioService().getHorarioById(getIdHorario());
             permanencia.setDescripcionTiempo(getDescripcionPermanencia());
             permanencia.setDocente(docente);
-            permanencia.setHorario(horario);
             getPermanenciaService().addPermanencia(permanencia);
             addMessage("La descripcion del tiempo de permanencia fue añadida correctamente");
             reset();
@@ -79,11 +75,9 @@ public class PermanenciaBean implements Serializable {
     public void loadPermanencia(Permanencia permanencia) {
         
         Docente docente = getDocenteService().getDocenteById(permanencia.getDocente().getIdDocente());
-        Horario horario = getHorarioService().getHorarioById(permanencia.getHorario().getIdHorario());
         setIdPermanencia(permanencia.getIdPermanencia());
         setDescripcionPermanencia(permanencia.getDescripcionTiempo());
         setIdDocente(docente.getIdDocente());
-        setIdHorario(horario.getIdHorario());
 
     }
     
@@ -96,10 +90,8 @@ public class PermanenciaBean implements Serializable {
         try {
             Permanencia permanencia = getPermanenciaService().getPermanenciaById(getIdPermanencia());
             Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            Horario horario = getHorarioService().getHorarioById(getIdHorario());
             permanencia.setDescripcionTiempo(getDescripcionPermanencia());
             permanencia.setDocente(docente);
-            permanencia.setHorario(horario);
             getPermanenciaService().updatePermanencia(permanencia);
             addMessage("La descripcion del tiempo de permanencia fue actualizada correctamente");
             
@@ -149,17 +141,6 @@ public class PermanenciaBean implements Serializable {
     }
     
     /**
-     * Get Horarios List
-     *
-     * @return List - Horario List
-     */
-    public List<Horario> getHorariosList() {
-        horariosList = new ArrayList<>();
-        horariosList.addAll(getHorarioService().getHorarios());
-        return horariosList;
-    }
-    
-    /**
      * Get Permanencia List
      *
      * @return List - Permanencia List
@@ -195,24 +176,6 @@ public class PermanenciaBean implements Serializable {
      */
     public void setDocenteService(DocenteService docenteService) {
         this.docenteService = docenteService;
-    }
-    
-    /**
-     * Get Horario Service
-     *
-     * @return IHorarioService - Horario Service
-     */
-    public HorarioService getHorarioService() {
-        return horarioService;
-    }
-
-    /**
-     * Set Horario Service
-     *
-     * @param horarioService IHorarioService - Horario Service
-     */
-    public void setHorarioService(HorarioService horarioService) {
-        this.horarioService = horarioService;
     }
     
     /**
@@ -271,6 +234,60 @@ public class PermanenciaBean implements Serializable {
     }
     
     /**
+     * Get Hora Inicio
+     *
+     * @return String - Hora Inicio de la Actividad
+     */
+    public String getHoraInicio() {
+        return hInicio;
+    }
+
+    /**
+     * Set Hora Inicio
+     *
+     * @param horai - Hora de Inicio
+     */
+    public void setHoraInicio(String horai) {
+        this.hInicio = horai;
+    }
+    
+    /**
+     * Get Hora Fin
+     *
+     * @return String - Hora Fin de la Actividad
+     */
+    public String getHoraFin() {
+        return hFin;
+    }
+
+    /**
+     * Set Hora Fin
+     *
+     * @param horaf - Hora de Fin
+     */
+    public void setHoraFin(String horaf) {
+        this.hFin = horaf;
+    }
+    
+    /**
+     * Get Dia
+     *
+     * @return String - Dia de la Actividad
+     */
+    public String getDia() {
+        return dia;
+    }
+
+    /**
+     * Set Dia
+     *
+     * @param dia - Dia de la Actividad
+     */
+    public void setDia(String dia) {
+        this.dia = dia;
+    }
+    
+    /**
      * Get Docente ID
      *
      * @return int idDocente - Permanencia docente ID
@@ -286,24 +303,6 @@ public class PermanenciaBean implements Serializable {
      */
     public void setIdDocente(int idusuario) {
         this.idDocente = idusuario;
-    }
-    
-    /**
-     * Get Horario ID
-     *
-     * @return int idHorario - Permanencia horario ID
-     */
-    public int getIdHorario() {
-        return this.idHorario;
-    }
-    
-    /**
-     * Set Horario ID
-     *
-     * @param idhorario int - Permanencia Horario ID
-     */
-    public void setIdHorario(int idhorario) {
-        this.idHorario = idhorario;
     }
     
     /**
