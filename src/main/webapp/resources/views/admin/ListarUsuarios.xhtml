@@ -58,7 +58,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{userBean.insert?'Agregar Usuario':'Actualizar Usuario'}" id="dialogUpdateUser" widgetVar="update_user" modal="true" resizable="false">
+        <p:dialog header="#{userBean.insert?'Agregar Usuario':'Actualizar Usuario'}" id="dialogUpdateUser" widgetVar="update_user" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
@@ -91,8 +91,8 @@
                         <f:validateRegex pattern="^[a-zA-Z ]+$" />
                     </p:inputText>
 
-                    <p:outputLabel id="estado" value="Habilitar usuario? " />
-                    <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" />
+                    <p:outputLabel id="estado" value="Habilitar usuario? " rendered="#{userBean.insert == true}" />
+                    <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" rendered="#{userBean.insert == true}" />
 
                     <p:outputLabel id="esDocente" value="Este usuario es docente? " />
                     <p:selectBooleanCheckbox value="#{userBean.esDocente}" />
@@ -117,7 +117,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Eliminar Usuario del Sistema" id="dialogDeleteUser" widgetVar="delete_user" modal="true" resizable="false">
+        <p:dialog header="Eliminar Usuario del Sistema" id="dialogDeleteUser" widgetVar="delete_user" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea eliminar el usuario #{userBean.nombres} #{userBean.apellidos}?" />
@@ -128,7 +128,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Bloquear Usuario" id="dialogLockUser" widgetVar="lock_user" modal="true" resizable="false">
+        <p:dialog header="Bloquear Usuario" id="dialogLockUser" widgetVar="lock_user" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea bloquear al usuario #{userBean.nombreUsuario} ?" />
@@ -139,7 +139,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Desbloquear Usuario" id="dialogUnlockUser" widgetVar="unlock_user" modal="true" resizable="false">
+        <p:dialog header="Desbloquear Usuario" id="dialogUnlockUser" widgetVar="unlock_user" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea desbloquear al Usuario #{userBean.nombreUsuario} ?" />

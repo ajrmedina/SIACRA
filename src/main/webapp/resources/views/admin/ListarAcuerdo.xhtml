@@ -17,7 +17,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="acuerdo" var="acuerdo" value="#{acuerdoBean.acuerdoList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="acuerdosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="acuerdo" var="acuerdo" value="#{acuerdoBean.acuerdoList}" style="width: 80%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="acuerdosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" update=":dialogUpdateAcuerdo" style="float: right" actionListener="#{acuerdoBean.reset()}" oncomplete="PF('update_acuerdo').show()" value="Nuevo Acuerdo" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{acuerdoBean.insert}" value="true" />
@@ -30,25 +30,25 @@
                     
                     <div style="clear:both" />
                 </f:facet>                                 
-                <p:column style="width: 25%" headerText="Código de Acuerdo" filterBy="#{acuerdo.codigoacuerdo}" filterStyleClass="hide">                    
+                <p:column style="width: 15%" headerText="Código de Acuerdo" filterBy="#{acuerdo.codigoacuerdo}" filterStyleClass="hide">                    
                     <h:outputText value="#{acuerdo.codigoacuerdo}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 25%" headerText="Fecha de Acuerdo" filterBy="#{acuerdo.fechaacuerdo}" filterStyleClass="hide"  >                    
+                <p:column style="width: 15%" headerText="Fecha de Acuerdo" filterBy="#{acuerdo.fechaacuerdo}" filterStyleClass="hide"  >                    
                     <h:outputText value="#{acuerdo.fechaacuerdo}" class="center-element">
                          <f:convertDateTime pattern="dd-MM-yyyy"/>
                     </h:outputText>
                 </p:column>
                 
-                <p:column style="width: 50%" headerText="Nombre de Acuerdo" filterBy="#{acuerdo.nombreacuerdo}" filterStyleClass="hide">                    
+                <p:column style="width: 30%" headerText="Nombre de Acuerdo" filterBy="#{acuerdo.nombreacuerdo}" filterStyleClass="hide">                    
                     <h:outputText value="#{acuerdo.nombreacuerdo}" />
                 </p:column>
                 
-                <p:column style="width: 50%" headerText="Estado" filterBy="#{acuerdo.estadoacuerdo}" filterStyleClass="hide">                    
+                <p:column style="width: 10%" headerText="Estado" filterBy="#{acuerdo.estadoacuerdo}" filterStyleClass="hide">                    
                     <h:outputText value="#{acuerdo.estadoacuerdo?'Habilitado':'Deshabilitado'}" />
                 </p:column>
                 
-                <p:column style="width: 25%">
+                <p:column style="width: 10%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
@@ -66,7 +66,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{acuerdoBean.insert?'Nuevo Acuerdo':'Actualizar Acuerdo'}" id="dialogUpdateAcuerdo" widgetVar="update_acuerdo" modal="true" resizable="false">
+        <p:dialog header="#{acuerdoBean.insert?'Nuevo Acuerdo':'Actualizar Acuerdo'}" id="dialogUpdateAcuerdo" widgetVar="update_acuerdo" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                   
@@ -93,7 +93,7 @@
                     </p:inputText>
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{acuerdoBean.updateAcuerdo()}" update=":list:acuerdo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-refresh" rendered="#{acuerdoBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{acuerdoBean.addAcuerdo()}" update=":list:acuerdo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-refresh" rendered="#{acuerdoBean.insert == true}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{acuerdoBean.addAcuerdo()}" update=":list:acuerdo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-plus" rendered="#{acuerdoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_acuerdo').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{acuerdoBean.insert}" value="false" />
@@ -102,7 +102,7 @@
             </h:form>
         </p:dialog>
         
-         <p:dialog header="Eliminar Acuerdo" id="dialogDeleteAcuerdo" widgetVar="delete_acuerdo" modal="true" resizable="false">
+         <p:dialog header="Eliminar Acuerdo" id="dialogDeleteAcuerdo" widgetVar="delete_acuerdo" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea eliminar el acuerdo #{acuerdoBean.codigoacuerdo}?" />
@@ -113,7 +113,7 @@
             </h:form>
         </p:dialog>
         
-         <p:dialog header="Bloquear Acuerdo" id="dialogLockAcuerdo" widgetVar="lock_acuerdo" modal="true" resizable="false">
+         <p:dialog header="Bloquear Acuerdo" id="dialogLockAcuerdo" widgetVar="lock_acuerdo" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea bloquear el acuerdo #{acuerdoBean.codigoacuerdo} ?" />
@@ -124,7 +124,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Desbloquear Acuerdo" id="dialogUnlockAcuerdo" widgetVar="unlock_acuerdo" modal="true" resizable="false">
+        <p:dialog header="Desbloquear Acuerdo" id="dialogUnlockAcuerdo" widgetVar="unlock_acuerdo" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea desbloquear al acuerdo #{acuerdoBean.codigoacuerdo} ?" />

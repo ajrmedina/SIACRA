@@ -53,6 +53,7 @@ public class EscuelaBean implements Serializable{
             getEscuelaService().addEscuela(escuela);
             addMessage("La Escuela " + getNombreescuela() + " fue añadida correctamente");           
             reset();
+            setInsert(false);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }        

@@ -71,9 +71,9 @@ public class TrabajoGraduacion implements Serializable {
     @Size(max = 100)
     @Column(name = "OBSERVACIONTG", length = 100)
     private String observaciontg;
-    @JoinColumn(name = "IDACADEMICA", referencedColumnName = "IDACADEMICA", nullable = false)
+    @JoinColumn(name = "IDRESPONSABILIDAD", referencedColumnName = "IDRESPONSABILIDAD", nullable = false)
     @ManyToOne(optional = false)
-    private Academica idacademica;
+    private Responsabilidad idresponsabilidad;
 
     public TrabajoGraduacion() {
     }
@@ -164,12 +164,12 @@ public class TrabajoGraduacion implements Serializable {
         this.observaciontg = observaciontg;
     }
 
-    public Academica getIdacademica() {
-        return idacademica;
+    public Responsabilidad getIdresponsabilidad() {
+        return idresponsabilidad;
     }
 
-    public void setIdacademica(Academica idacademica) {
-        this.idacademica = idacademica;
+    public void setIdresponsabilidad(Responsabilidad idresponsabilidad) {
+        this.idresponsabilidad = idresponsabilidad;
     }
 
  

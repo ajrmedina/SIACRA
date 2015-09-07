@@ -1,12 +1,14 @@
 package com.siacra.models;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,6 +45,9 @@ public class Docente implements Serializable {
     @ManyToOne
     @JoinColumn(name="idcategoria")
     private Categoria categoria;
+    
+    @OneToMany(mappedBy="docente")
+    private Set<Responsabilidad> responsabilidad;
     
     /**
      * Get Id Docente
@@ -137,6 +142,24 @@ public class Docente implements Serializable {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-   
+    
+    /**
+     * Get Responsabilidad
+     *
+     * @return responsabilidad Set<Responsabilidad>
+     */
+    public Set<Responsabilidad> getResponsabilidad() {
+        return responsabilidad;
+    }
+    
+    /**
+     * Set Responsabilidad
+     *
+     * @param responsabilidad Set<Responsabilidad>
+     */
+    public void setResponsabilidad(Set<Responsabilidad> responsabilidad) {
+        this.responsabilidad = responsabilidad;
+    }
+    
 }
 

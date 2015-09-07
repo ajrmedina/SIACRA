@@ -57,25 +57,27 @@
                        
                         <p:submenu label="Mantenimientos" icon="fa fa-gears">
                             
+                            <p:menuitem value="Responsabilidad" url="/resources/views/admin/Responsabilidad.xhtml" icon="fa fa-clipboard" />
+                            <p:menuitem value="TG" url="/resources/views/admin/ListarTG.xhtml" icon="fa fa-clipboard" />
+                            
+                            <p:separator />
                             <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/ListarNivelesAcceso.xhtml" icon="fa fa-key" />
                             <p:menuitem value="Usuarios" url="/resources/views/admin/ListarUsuarios.xhtml" icon="fa fa-users" />
-                            
-                            <p:separator />
                             <p:menuitem value="Docentes" url="/resources/views/admin/ListarDocentes.xhtml" icon="fa fa-user" />
                             <p:menuitem value="Escuelas" url="/resources/views/admin/ListarEscuela.xhtml" icon="fa fa-building" />
-                            <p:separator />
-                            <p:menuitem value="Categorias" url="/resources/views/admin/ListarCategorias.xhtml" icon="fa fa-book" />
-                            <p:menuitem value="Escalafon" url="/resources/views/admin/ListarEscalafon.xhtml" icon="fa fa-book" />
-                            <p:menuitem value="Contrato" url="/resources/views/admin/ListarContrato.xhtml" icon="fa fa-book" />
+                            <p:menuitem value="Escalafon" url="/resources/views/admin/ListarEscalafon.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Contrato" url="/resources/views/admin/ListarContrato.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Categorias" url="/resources/views/admin/ListarCategorias.xhtml" icon="fa fa-list" />
                             <p:menuitem value="TipoActividad" url="/resources/views/admin/ListarTipoActividad.xhtml" icon="fa fa-list" />
-                             <p:menuitem value="Actividad" url="/resources/views/admin/ListarActividad.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Actividad" url="/resources/views/admin/ListarActividad.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Ciclo" url="/resources/views/admin/ListarCiclo.xhtml" icon="fa fa-clock-o" />
                             <p:separator />
                             <p:menuitem value="Acuerdos" url="/resources/views/admin/ListarAcuerdo.xhtml" icon="fa fa-book" />
-                            <p:menuitem value="Grupo" url="/resources/views/admin/ListarGrupo.xhtml" icon="fa fa-book" />
-                            <p:menuitem value="Horario" url="/resources/views/admin/Horario/ListarHorario.xhtml" icon="fa fa-book" />
-                            <p:menuitem value="Asignatura" url="/resources/views/admin/ListarAsignatura.xhtml" icon="fa fa-book" />
-                            <p:menuitem value="Ciclo" url="/resources/views/admin/ListarCiclo.xhtml" icon="fa fa-book" />
-                            
+                            <p:separator />
+                            <p:menuitem value="Horario" url="/resources/views/admin/Horario/ListarHorario.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Asignatura" url="/resources/views/admin/ListarAsignatura.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Grupo" url="/resources/views/admin/ListarGrupo.xhtml" icon="fa fa-list" />
+                            <p:separator />
                         </p:submenu>
 
                         <ui:insert name="add-menu-items"> </ui:insert>

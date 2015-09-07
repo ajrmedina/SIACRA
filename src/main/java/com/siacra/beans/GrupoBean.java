@@ -194,12 +194,12 @@ public class GrupoBean implements Serializable{
     public void loadGrupo(Grupo grupo) {
         
         if(!getInsert()){
-             setIdGrupo(grupo.getIdGrupo());
+            setIdGrupo(grupo.getIdGrupo());
             setIdTipoGrupo(grupo.getTipoGrupo().getIdTipoGrupo());
             setCupo(grupo.getCupo());
             setNumeroGrupo(grupo.getNumeroGrupo());
             setAprobarGrupo(grupo.getAprobarGrupo());
-           
+            
             
         }
               

@@ -5,20 +5,27 @@
  */
 package com.siacra.beans;
 
+
 import com.siacra.models.Actividad;
 import com.siacra.models.Docente;
 import com.siacra.models.Responsabilidad;
+import com.siacra.models.TrabajoGraduacion;
 import com.siacra.services.ActividadService;
 import com.siacra.services.DocenteService;
 import com.siacra.services.ResponsabilidadService;
+import com.siacra.services.TrabajoGraduacionService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -32,22 +39,55 @@ public class ResponsabilidadBean implements Serializable {
     //Responsabilidad Service is injected
     @ManagedProperty(value = "#{ResponsabilidadService}")
     private ResponsabilidadService responsabilidadService;
-    //Docente Service is injected
-    @ManagedProperty(value = "#{DocenteService}")
-    private DocenteService docenteService;
     //Actividad is injected
     @ManagedProperty(value = "#{ActividadService}")
     private ActividadService actividadService;
+    //Docente Service is injected
+    @ManagedProperty(value = "#{DocenteService}")
+    private DocenteService docenteService;
+    @ManagedProperty(value = "#{TrabajoGraduacionService}")
+    private TrabajoGraduacionService trabajoGraduacionService;
     
     private List<Responsabilidad> responsabilidadList;
     private List<Actividad> actividadList;
     private List<Docente> docenteList;
+    private List<TrabajoGraduacion> trabajoGraduacionList;
+    
+    /***************************************** Responsabilidad *****************************************/
     
     private int idresponsabilidad;
     private int iddocente;
     private int idactividad;
     private int totalhoras;
     private String tipodetiempo;
+    private List<SelectItem> opciones;    
+    private String opcion;
+    private boolean mostrar;
+    
+    @PostConstruct
+    public void init() {
+        opciones = new ArrayList<SelectItem>();
+        SelectItemGroup proyectos = new SelectItemGroup("Proyectos");
+        SelectItemGroup tg = new SelectItemGroup("Trabajo de Graduacion");
+        SelectItemGroup grupos = new SelectItemGroup("Grupos");
+         
+        SelectItem nuevop = new SelectItem("NP","Nuevo Proyecto");
+        SelectItem pexistente = new SelectItem("PE","Proyecto Existente");
+        
+        SelectItem nuevotg = new SelectItem("NT","Nuevo TDG");
+        SelectItem tgexistente = new SelectItem("TE","TDG Existente");
+        
+        SelectItem nuevog = new SelectItem("NG","Nuevo Grupo");
+        SelectItem gexistente = new SelectItem("GE","Grupo Existente");
+        
+        proyectos.setSelectItems(new SelectItem[]{nuevop, pexistente});
+        tg.setSelectItems(new SelectItem[]{nuevotg, tgexistente});
+        grupos.setSelectItems(new SelectItem[]{nuevog, gexistente});
+       
+        opciones.add(proyectos);
+        opciones.add(tg);
+        opciones.add(grupos);
+    }
     
     /**
      * Add Responsabilidad
@@ -55,16 +95,24 @@ public class ResponsabilidadBean implements Serializable {
     public void addResponsabilidad(){
         try {
             Responsabilidad responsabilidad = new Responsabilidad();
-            Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            Docente docente = getDocenteService().getDocenteById(getIddocente());
-            responsabilidad.setIdactividad(actividad);
-            responsabilidad.setIddocente(docente);
-            responsabilidad.setTotalhoras(totalhoras);
-            responsabilidad.setTipodetiempo(tipodetiempo);
-            getResponsabilidadService().addResponsabilidad(responsabilidad);
-            addMessage("La responsabilidad al docente"+ " fue añadida correctamente");
-            reset();
-            
+            if(getIdactividad() != 0){
+                Actividad actividad = getActividadService().getActividadById(getIdactividad());
+                Docente docente = getDocenteService().getDocenteById(getIdDocente());
+                responsabilidad.setIdactividad(actividad);
+                responsabilidad.setDocente(docente);
+                responsabilidad.setTotalhoras(getTotalhoras());
+                responsabilidad.setTipodetiempo(getTipodetiempo());
+                getResponsabilidadService().addResponsabilidad(responsabilidad);
+                addMessage("La responsabilidad administrativa del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
+                RequestContext context = RequestContext.getCurrentInstance();
+                if(this.getOpcion().equals("TE"))
+                    context.execute("PF('tg_existe').show();");
+                System.out.print(this.getIdDocente());
+                
+            }
+            else{
+                 addMessage("Elija una actividad valida");
+            }
         } catch (Exception e) {
             reset();
             e.printStackTrace();
@@ -77,11 +125,11 @@ public class ResponsabilidadBean implements Serializable {
      * @param responsabilidad Responsabilidad
      */
     public void loadResponsabilidad(Responsabilidad responsabilidad){
-    Actividad actividad = getActividadService().getActividadById(responsabilidad.getIdactividad().getIdactividad());
-    Docente docente = getDocenteService().getDocenteById(responsabilidad.getIddocente().getIdDocente());
+        Actividad actividad = getActividadService().getActividadById(responsabilidad.getIdactividad().getIdactividad());
+        Docente docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
         setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
         setIdactividad(actividad.getIdactividad());
-        setIddocente(docente.getIdDocente());
+        setIdDocente(docente.getIdDocente());
         setTotalhoras(responsabilidad.getTotalhoras());
         setTipodetiempo(responsabilidad.getTipodetiempo());
     }
@@ -94,9 +142,9 @@ public class ResponsabilidadBean implements Serializable {
         try {
             Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
             Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            Docente docente = getDocenteService().getDocenteById(getIddocente());
+            Docente docente = getDocenteService().getDocenteById(getIdDocente());
             responsabilidad.setIdactividad(actividad);
-            responsabilidad.setIddocente(docente);
+            responsabilidad.setDocente(docente);
             responsabilidad.setTipodetiempo(responsabilidad.getTipodetiempo());
             responsabilidad.setTotalhoras(responsabilidad.getTotalhoras());
             
@@ -113,18 +161,54 @@ public class ResponsabilidadBean implements Serializable {
     /**
      * Delte Responsabilidad
      */
-    
     public void deleteResponsabilidad(){
         try {
             Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-            String eliminado = responsabilidad.getIddocente().getUser().getNombres();
+            String eliminado = responsabilidad.getDocente().getUser().getNombres();
             getResponsabilidadService().deleteResponsabilidad(responsabilidad);
             addMessage("La responsabilidad de "+eliminado+ "fue eliminada correctamente");
         } catch (Exception e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
         
     }
+    
+    public void vincularTG(TrabajoGraduacion tg){
+        try {
+            
+                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
+                tg.setIdresponsabilidad(responsabilidad);
+                getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
+                addMessage("El Trabajo de Graduacion fue vinculado correctamente a la responsabilidad");
+                
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    public void showOpciones() {
+        if(getIdactividad() != 0){
+            Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            if(actividad.getIdtipoactividad().getTipoactividad().matches("(.*)Academica(.*)")){
+                this.setMostrar(true);
+            }
+            else{
+                this.setMostrar(false);
+            }
+        }
+        else{
+            this.setMostrar(false);
+        }
+    }
+    
+    private void reset() {
+      this.totalhoras=0;
+      this.idactividad=0;
+      this.iddocente=0;
+      this.tipodetiempo="";
+    }
+    
     /**
      * @return the responsabilidadService
      */
@@ -138,7 +222,7 @@ public class ResponsabilidadBean implements Serializable {
     public void setResponsabilidadService(ResponsabilidadService responsabilidadService) {
         this.responsabilidadService = responsabilidadService;
     }
-
+    
     /**
      * @return the docenteService
      */
@@ -166,7 +250,21 @@ public class ResponsabilidadBean implements Serializable {
     public void setActividadService(ActividadService actividadService) {
         this.actividadService = actividadService;
     }
+    
+    /**
+     * @return the trabajoGraduacionService
+     */
+    public TrabajoGraduacionService getTrabajoGraduacionService() {
+        return trabajoGraduacionService;
+    }
 
+    /**
+     * @param trabajoGraduacionService the trabajoGraduacionService to set
+     */
+    public void setTrabajoGraduacionService(TrabajoGraduacionService trabajoGraduacionService) {
+        this.trabajoGraduacionService = trabajoGraduacionService;
+    }
+    
     /**
      * @return the responsabilidadList
      */
@@ -175,7 +273,14 @@ public class ResponsabilidadBean implements Serializable {
         responsabilidadList.addAll(getResponsabilidadService().getResponsabilidades());
         return responsabilidadList;
     }
-
+    
+     /**
+     * @param responsabilidadList the responsabilidadList to set
+     */
+    public void setResponsabilidadList(List<Responsabilidad> responsabilidadList) {
+        this.responsabilidadList = responsabilidadList;
+    }
+    
     /**
      * @return the actividadList
      */
@@ -184,7 +289,14 @@ public class ResponsabilidadBean implements Serializable {
         actividadList.addAll(getActividadService().getActividades());
         return actividadList;
     }
-
+    
+    /**
+     * @param actividadList the actividadList to set
+     */
+    public void setActividadList(List<Actividad> actividadList) {
+        this.actividadList = actividadList;
+    }
+    
     /**
      * @return the docenteList
      */
@@ -201,21 +313,23 @@ public class ResponsabilidadBean implements Serializable {
     public void setDocenteList(List<Docente> docenteList) {
         this.docenteList = docenteList;
     }
-
+    
     /**
-     * @param responsabilidadList the responsabilidadList to set
+     * @return the trabajoGraduacionList
      */
-    public void setResponsabilidadList(List<Responsabilidad> responsabilidadList) {
-        this.responsabilidadList = responsabilidadList;
+    public List<TrabajoGraduacion> getTrabajoGraduacionList() {
+        trabajoGraduacionList = new ArrayList<>();
+        trabajoGraduacionList.addAll(getTrabajoGraduacionService().getTrabajosGraduacionFinalizados());
+        return trabajoGraduacionList;
     }
 
     /**
-     * @param actividadList the actividadList to set
+     * @param trabajoGraduacionList the trabajoGraduacionList to set
      */
-    public void setActividadList(List<Actividad> actividadList) {
-        this.actividadList = actividadList;
+    public void setTrabajoGraduacionList(List<TrabajoGraduacion> trabajoGraduacionList) {
+        this.trabajoGraduacionList = trabajoGraduacionList;
     }
-
+    
     /**
      * @return the idresponsabilidad
      */
@@ -231,20 +345,6 @@ public class ResponsabilidadBean implements Serializable {
     }
 
     /**
-     * @return the iddocente
-     */
-    public int getIddocente() {
-        return iddocente;
-    }
-
-    /**
-     * @param iddocente the iddocente to set
-     */
-    public void setIddocente(int iddocente) {
-        this.iddocente = iddocente;
-    }
-
-    /**
      * @return the idactividad
      */
     public int getIdactividad() {
@@ -257,7 +357,21 @@ public class ResponsabilidadBean implements Serializable {
     public void setIdactividad(int idactividad) {
         this.idactividad = idactividad;
     }
+    
+    /**
+     * @return the docente
+     */
+    public int getIdDocente() {
+        return iddocente;
+    }
 
+    /**
+     * @param docente the iddocente to set
+     */
+    public void setIdDocente(int iddocente) {
+        this.iddocente = iddocente;
+    }
+    
     /**
      * @return the totalhoras
      */
@@ -271,7 +385,7 @@ public class ResponsabilidadBean implements Serializable {
     public void setTotalhoras(int totalhoras) {
         this.totalhoras = totalhoras;
     }
-
+    
     /**
      * @return the tipodetiempo
      */
@@ -285,11 +399,28 @@ public class ResponsabilidadBean implements Serializable {
     public void setTipodetiempo(String tipodetiempo) {
         this.tipodetiempo = tipodetiempo;
     }
-
-    private void reset() {
-      this.totalhoras=0;
-      this.tipodetiempo="";
+    
+    public List<SelectItem> getOpciones() {
+        return opciones;
     }
+    
+    public String getOpcion() {
+        return opcion;
+    }
+    public void setOpcion(String opcion) {
+        this.opcion = opcion;
+    }
+    
+    public boolean getMostrar() {
+        return mostrar;
+    }
+    public void setMostrar(boolean mostrar) {
+        this.mostrar = mostrar;
+    }
+    
+    /***************************************** Responsabilidad *****************************************/
+    
+    /************************************** Trabajo de Graduacion **************************************/
     
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);

@@ -80,7 +80,11 @@ public class TrabajoGraduacionService {
         return getTrabajoGraduacionDao().getTrabajoGraduacionById(id);
     }
 
-     public List<TrabajoGraduacion> getTrabajosGraduacion() {
+    public List<TrabajoGraduacion> getTrabajosGraduacion() {
         return getTrabajoGraduacionDao().getTrabajosGraduacion();
+    }
+    
+    public List<TrabajoGraduacion> getTrabajosGraduacionFinalizados() {
+        return getTrabajoGraduacionDao().getTrabajosGraduacionFinalizados();
     }
 }

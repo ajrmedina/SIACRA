@@ -70,7 +70,7 @@ public class ResponsabilidadService {
     }
 
      /**
-     * Get NivelAcceso
+     * Get Responsabilidad by ID
      *
      * @param  id int - Responsabilidad 
      * @return Responsabilidad By ID - Responsabilidad by ID
@@ -79,7 +79,17 @@ public class ResponsabilidadService {
     public Responsabilidad getResponsabilidadById(int id) {
         return getResponsabilidadDao().getResponsabilidadById(id);
     }
+    
+    /**
+     * Get Last Responsabilidad
+     *
+     * @return Responsabilidad
+     */
 
+    public Responsabilidad getLastResponsabilidad(int id) {
+        return getResponsabilidadDao().getLastResponsabilidad(id);
+    }
+    
      public List<Responsabilidad> getResponsabilidades() {
         return getResponsabilidadDao().getResponsabilidades();
     }

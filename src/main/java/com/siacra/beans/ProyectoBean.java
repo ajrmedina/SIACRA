@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package com.siacra.beans;
-import com.siacra.models.Academica;
+import com.siacra.models.Responsabilidad;
 import com.siacra.models.Proyecto;
-import com.siacra.services.AcademicaService;
+import com.siacra.services.ResponsabilidadService;
 import com.siacra.services.ProyectoService;
 import java.io.Serializable;
 import java.util.Date;
@@ -31,14 +31,14 @@ public class ProyectoBean implements Serializable{
     @ManagedProperty(value = "#{ProyectoService}")
     private ProyectoService proyectoService;
            
-    @ManagedProperty(value = "#{AcademicaService}")
-    private AcademicaService academicaService;
+    @ManagedProperty(value = "#{ResponsabilidadService}")
+    private ResponsabilidadService responsabilidadService;
     
     private List<Proyecto> proyectoList; 
-    private List<Academica> academicaList; 
+    private List<Responsabilidad> responsabilidadList; 
     
     private int idproyecto; 
-    private int idacademica;
+    private int idresponsabilidad;
     private boolean aprobarproyecto; 
     private Date fechainicio; 
     private Date fechafin; 
@@ -50,8 +50,8 @@ public class ProyectoBean implements Serializable{
     public void addProyecto(){
         try{
             Proyecto proyecto = new Proyecto();
-            Academica academica = getAcademicaService().getAcademicaById(getIdacademica());
-            proyecto.setIdacademica(academica);
+            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
+            proyecto.setIdresponsabilidad(responsabilidad);
             proyecto.setAprobarproyecto(aprobarproyecto);
             proyecto.setFechainicio(fechainicio);
             proyecto.setFechafin(fechafin);
@@ -80,8 +80,8 @@ public class ProyectoBean implements Serializable{
     }
     
     public void loadProyecto(Proyecto proyecto){
-        Academica academica =getAcademicaService().getAcademicaById(proyecto.getIdacademica().getHorasacaemicas());
-        setIdacademica(academica.getIdacademica());
+        Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getIdresponsabilidad().getTotalhoras());
+        setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
         setAprobarproyecto(proyecto.getAprobarproyecto());
         setFechainicio(proyecto.getFechainicio());
         setFechafin(proyecto.getFechafin());
@@ -94,8 +94,8 @@ public class ProyectoBean implements Serializable{
     public void updateProyecto(){
          try {
             Proyecto proyecto = getProyectoService().getProyectoById(getIdproyecto());            
-            Academica academica = getAcademicaService().getAcademicaById(getIdacademica());
-            proyecto.setIdacademica(academica);
+            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
+            proyecto.setIdresponsabilidad(responsabilidad);
             proyecto.setAprobarproyecto(proyecto.getAprobarproyecto());
             proyecto.setFechainicio(proyecto.getFechainicio());
             proyecto.setFechafin(proyecto.getFechafin());
@@ -120,12 +120,12 @@ public class ProyectoBean implements Serializable{
         this.proyectoService = proyectoService;
     }
 
-    public AcademicaService getAcademicaService() {
-        return academicaService;
+    public ResponsabilidadService getResponsabilidadService() {
+        return responsabilidadService;
     }
 
-    public void setAcademicaService(AcademicaService academicaService) {
-        this.academicaService = academicaService;
+    public void setResponsabilidadService(ResponsabilidadService responsabilidadService) {
+        this.responsabilidadService = responsabilidadService;
     }
 
     public List<Proyecto> getProyectoList() {
@@ -136,12 +136,12 @@ public class ProyectoBean implements Serializable{
         this.proyectoList = proyectoList;
     }
 
-    public List<Academica> getAcademicaList() {
-        return academicaList;
+    public List<Responsabilidad> getResponsabilidadList() {
+        return responsabilidadList;
     }
 
-    public void setAcademicaList(List<Academica> academicaList) {
-        this.academicaList = academicaList;
+    public void setResponsabilidadList(List<Responsabilidad> responsabilidadList) {
+        this.responsabilidadList = responsabilidadList;
     }
 
     public int getIdproyecto() {
@@ -152,12 +152,12 @@ public class ProyectoBean implements Serializable{
         this.idproyecto = idproyecto;
     }
 
-    public int getIdacademica() {
-        return idacademica;
+    public int getIdresponsabilidad() {
+        return idresponsabilidad;
     }
 
-    public void setIdacademica(int idacademica) {
-        this.idacademica = idacademica;
+    public void setIdresponsabilidad(int idresponsabilidad) {
+        this.idresponsabilidad = idresponsabilidad;
     }
 
     public boolean getAprobarproyecto() {

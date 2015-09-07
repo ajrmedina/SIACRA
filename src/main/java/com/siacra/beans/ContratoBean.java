@@ -104,12 +104,10 @@ public class ContratoBean implements Serializable {
         
         try {
              
-             Contrato contrato = new Contrato();
+            Contrato contrato = new Contrato();
             contrato = getContratoService().getContratoById(getIdcontrato());
             String eliminado = contrato.getTipocontrato();
             getContratoService().deleteContrato(contrato);
-           
-           
             addMessage("El contrato " + eliminado + " fue eliminado correctamente");
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();

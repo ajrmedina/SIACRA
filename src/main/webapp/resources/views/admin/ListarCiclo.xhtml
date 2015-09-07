@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="ciclo" var="ciclo" value="#{cicloBean.cicloList}" style="width: 55%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="cicloTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+            <p:dataTable id="ciclo" var="ciclo" value="#{cicloBean.cicloList}" style="width: 50%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="cicloTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateCiclo" actionListener="#{cicloBean.reset()}" oncomplete="PF('update_ciclo').show()" value="Nuevo Ciclo" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{cicloBean.insert}" value="true" />
@@ -39,11 +39,11 @@
                     <h:outputText value="#{ciclo.anio}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 20%" headerText="Estado" filterBy="#{ciclo.ciEstado}" filterStyleClass="hide">                  
+                <p:column style="width: 15%" headerText="Estado" filterBy="#{ciclo.ciEstado}" filterStyleClass="hide">                  
                     <h:outputText value="#{ciclo.ciEstado?'Habilitado':'Deshabilitado'}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 25%">
+                <p:column style="width: 10%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
@@ -59,7 +59,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{cicloBean.insert?'Nuevo Ciclo':'Actualizar Ciclo'}" id="dialogUpdateCiclo" widgetVar="update_ciclo" modal="true" resizable="false">
+        <p:dialog header="#{cicloBean.insert?'Nuevo Ciclo':'Actualizar Ciclo'}" id="dialogUpdateCiclo" widgetVar="update_ciclo" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <p:growl id="messages" />
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -80,7 +80,7 @@
                     </p:inputText>                    
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{cicloBean.updateCiclo()}" update=":list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-refresh" rendered="#{cicloBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{cicloBean.addCiclo()}" update=":list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-refresh" rendered="#{cicloBean.insert == true}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{cicloBean.addCiclo()}" update=":list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-plus" rendered="#{cicloBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_ciclo').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{cicloBean.insert}" value="false" />
@@ -89,7 +89,7 @@
             </h:form>
         </p:dialog>
         
-         <p:dialog header="Eliminar ciclo" id="dialogDeleteCiclo" widgetVar="delete_ciclo" modal="true" resizable="false">
+         <p:dialog header="Eliminar ciclo" id="dialogDeleteCiclo" widgetVar="delete_ciclo" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea eliminar el ciclo : #{cicloBean.ciclo}? " />
@@ -100,7 +100,7 @@
             </h:form>
         </p:dialog>
         
-         <p:dialog header="Bloquear Ciclo" id="dialogLockCiclo" widgetVar="lock_ciclo" modal="true" resizable="false">
+         <p:dialog header="Bloquear Ciclo" id="dialogLockCiclo" widgetVar="lock_ciclo" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea bloquear el ciclo #{cicloBean.ciclo} del año #{cicloBean.anio} ?" />
@@ -111,7 +111,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Desbloquear Ciclo" id="dialogUnlockCiclo" widgetVar="unlock_ciclo" modal="true" resizable="false">
+        <p:dialog header="Desbloquear Ciclo" id="dialogUnlockCiclo" widgetVar="unlock_ciclo" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea desbloquear el ciclo #{cicloBean.ciclo} del año #{cicloBean.anio} ?" />

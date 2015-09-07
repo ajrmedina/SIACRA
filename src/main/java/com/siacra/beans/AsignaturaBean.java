@@ -203,6 +203,7 @@ public class AsignaturaBean implements Serializable{
                 getAsignaturaService().addAsignatura(asignatura);
                 addMessage("La asignatura :" + getNombreAsignatura() + " - " + getCodigoAsignatura() + " fue creada exitosamente");
                 reset();
+                setInsert(false);
             }
         }catch (DataAccessException e){
             e.printStackTrace();

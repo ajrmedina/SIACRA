@@ -28,8 +28,8 @@ public class AcademicaGrupo implements Serializable{
     Integer idAcademicaGrupo;
     
     @ManyToOne
-    @JoinColumn(name="idacademica")
-    private Academica academica;
+    @JoinColumn(name="idresponsabilidad")
+    private Responsabilidad responsabilidad;
     
     @ManyToOne
     @JoinColumn(name="idgrupo")
@@ -45,12 +45,12 @@ public class AcademicaGrupo implements Serializable{
         this.idAcademicaGrupo = idAcademicaGrupo;
     }
 
-    public Academica getAcademica() {
-        return academica;
+    public Responsabilidad getResponsabilidad() {
+        return responsabilidad;
     }
 
-    public void setAcademica(Academica academica) {
-        this.academica = academica;
+    public void setResponsabilidad(Responsabilidad responsabilidad) {
+        this.responsabilidad = responsabilidad;
     }
 
     public Grupo getGrupo() {

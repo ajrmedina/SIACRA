@@ -54,7 +54,7 @@ public class ResponsabilidadDao {
     }
     
     /**
-     * Get Escuela
+     * Get Responsabilidad
      *
      * @param  id responsabilidad
      * 
@@ -65,7 +65,18 @@ public class ResponsabilidadDao {
                 .createQuery("from Responsabilidad where idresponsabilidad=?").setParameter(0, id).list();
         return (Responsabilidad)list.get(0);
     }        
-
+    
+    /**
+     * Get Last Record
+     * 
+     * @return Responsabilidad
+     */
+    public Responsabilidad getLastResponsabilidad(int docente){         
+        Responsabilidad result = (Responsabilidad) getSessionFactory().getCurrentSession()
+                .createQuery("FROM Responsabilidad WHERE iddocente=? ORDER BY idresponsabilidad DESC").setParameter(0, docente).setMaxResults(1).uniqueResult();
+        return  result;
+    }
+    
     /**
      * Get Responsabilidad List
      *

@@ -62,7 +62,7 @@ public class TrabajoGraduacionDao {
      */
     public TrabajoGraduacion getTrabajoGraduacionById(int id){         
         List list = getSessionFactory().getCurrentSession()
-                .createQuery("from TrabajoGraduacion where idtrabajograduacion=?").setParameter(0, id).list();
+                .createQuery("from TrabajoGraduacion where idtg=?").setParameter(0, id).list();
         return (TrabajoGraduacion)list.get(0);
     }        
 
@@ -73,6 +73,16 @@ public class TrabajoGraduacionDao {
      */
     public List<TrabajoGraduacion> getTrabajosGraduacion(){
         List list = getSessionFactory().getCurrentSession().createQuery("from TrabajoGraduacion").list();
+        return list;
+    }
+    
+    /**
+     * Get TrabajoGraduacion List
+     *
+     * @return List - Lista TrabajoGraduacion
+     */
+    public List<TrabajoGraduacion> getTrabajosGraduacionFinalizados(){
+        List list = getSessionFactory().getCurrentSession().createQuery("from TrabajoGraduacion WHERE estadotg!='Finalizado' AND idresponsabilidad IS NULL").list();
         return list;
     }
 }

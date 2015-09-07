@@ -17,7 +17,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="categoria" var="categoria" value="#{categoriaBean.categoriasList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="categoriasTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="categoria" var="categoria" value="#{categoriaBean.categoriasList}" style="width: 85%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="categoriasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" style="float: right" value="Nueva Categoria" update=":dialogUpdateCategoria" actionListener="#{categoriaBean.reset()}" oncomplete="PF('update_categoria').show()" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{categoriaBean.insert}" value="true" />
@@ -30,9 +30,6 @@
                     
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 10%" headerText="Identificador" filterBy="#{categoria.idCategoria}" filterStyleClass="hide">
-                    <h:outputText value="#{categoria.idCategoria}" />
-                </p:column>
                 <p:column style="width: 20%" headerText="Escalafon" filterBy="#{categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
                     <h:outputText value="#{categoria.escalafon.tipoescalafon}" />
                 </p:column>
@@ -59,7 +56,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{categoriaBean.insert?'Nueva Categoria':'Actualizar Categoria'}" id="dialogUpdateCategoria" widgetVar="update_categoria" modal="true" resizable="false">
+        <p:dialog header="#{categoriaBean.insert?'Nueva Categoria':'Actualizar Categoria'}" id="dialogUpdateCategoria" widgetVar="update_categoria" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
@@ -95,7 +92,7 @@
             </h:form>
         </p:dialog>
         
-         <p:dialog header="Eliminar Categoria" id="dialogDeleteCategoria" widgetVar="delete_categoria" modal="true" resizable="false">
+        <p:dialog header="Eliminar Categoria" id="dialogDeleteCategoria" widgetVar="delete_categoria" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea eliminar la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />
@@ -106,7 +103,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Bloquear Categoria" id="dialogLockCategoria" widgetVar="lock_categoria" modal="true" resizable="false">
+        <p:dialog header="Bloquear Categoria" id="dialogLockCategoria" widgetVar="lock_categoria" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea bloquear la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />
@@ -117,7 +114,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Desbloquear Categoria" id="dialogUnlockCategoria" widgetVar="unlock_categoria" modal="true" resizable="false">
+        <p:dialog header="Desbloquear Categoria" id="dialogUnlockCategoria" widgetVar="unlock_categoria" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea desbloquear la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />

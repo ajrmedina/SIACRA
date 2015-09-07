@@ -1,0 +1,143 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Trabajos de Graduacion
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+        Trabajos de Graduacion de la Escuela de ...
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="tg" var="tdg" value="#{trabajoGraduacionBean.trabajoGraduacionList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tgTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">                  
+                    <p:commandButton id="insert_button" update=":dialogUpdateTG" style="float: right" actionListener="#{trabajoGraduacionBean.reset()}" oncomplete="PF('update_tg').show()" value="Nuevo Trabajo de Graduacion" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{trabajoGraduacionBean.insert}" value="true" />
+                    </p:commandButton>                      
+                    
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Búsqueda de Trabajos de Graduacion:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('tgTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    
+                    <div style="clear:both" />
+                </f:facet>                                 
+                <p:column style="width: 30%" headerText="Tema" filterBy="#{tdg.tematg}" filterStyleClass="hide">                    
+                    <h:outputText value="#{tdg.tematg}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 10%" headerText="Inicio" filterBy="#{tdg.fechainiciotg}" filterStyleClass="hide"  >                    
+                    <h:outputText value="#{tdg.fechainiciotg}" class="center-element">
+                         <f:convertDateTime pattern="dd-MM-yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width: 10%" headerText="Fin" filterBy="#{tdg.fechafintg}" filterStyleClass="hide"  >                    
+                    <h:outputText value="#{tdg.fechafintg}" class="center-element">
+                         <f:convertDateTime pattern="dd-MM-yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width: 8%" headerText="Estado" filterBy="#{tdg.estadotg}" filterStyleClass="hide">                    
+                    <h:outputText value="#{tdg.estadotg}" />
+                </p:column>
+                
+                <p:column style="width: 8%" headerText="Aprobacion" filterBy="#{tdg.aprobartg}" filterStyleClass="hide">                    
+                    <h:outputText value="#{tdg.aprobartg?'Aprobado':'En Espera'}" />
+                </p:column>
+                
+                <p:column style="width: 8%" headerText="Prorroga" filterBy="#{tdg.prorrogatg}" filterStyleClass="hide">                    
+                    <h:outputText value="#{tdg.prorrogatg?'Si':'No'}" />
+                </p:column>
+                
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                    
+                    <p:growl id="messages" />                    
+                    <p:commandButton id="update_button" update=":dialogUpdateTG" actionListener="#{trabajoGraduacionBean.loadTrabajoGraduacion(tdg)}" oncomplete="PF('update_tg').show()" icon="fa fa-edit" />
+                    <p:commandButton id="change_status" update=":dialogChangeTG" actionListener="#{trabajoGraduacionBean.loadTrabajoGraduacion(tdg)}" oncomplete="PF('change_tg').show()" icon="fa fa-refresh" />
+                    <p:tooltip id="forChangeStatus" for="change_status" value="Dar por finalizado este trabajo de graduacion"  />
+                    
+               
+                </p:column>               
+            </p:dataTable>
+        </h:form>
+        
+        <p:dialog header="#{trabajoGraduacionBean.insert?'Nuevo Trabajo de Graduacion':'Actualizar Trabajo de Graduacion'}" id="dialogUpdateTG" widgetVar="update_tg" modal="true" resizable="false" closable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
+                    <p:outputLabel for="tema" value="Tema: " />
+                    <p:inputText id="tema" value="#{trabajoGraduacionBean.tematg}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo">
+                        <f:validateLength minimum="3" maximum="100" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="descripcion" value="Descripcion: " />
+                    <p:inputTextarea id="descripcion" value="#{trabajoGraduacionBean.descripciontg}" required="true">
+                        <f:validateLength minimum="3" maximum="150" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="observacion" value="Observaciones: " />
+                    <p:inputTextarea id="observacion" value="#{trabajoGraduacionBean.observaciontg}" required="true">
+                        <f:validateLength minimum="3" maximum="100" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
+                    <p:calendar id="fechaInicio" value="#{trabajoGraduacionBean.fechainiciotg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de inicio."/>                        
+                                     
+                    <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
+                    <p:calendar id="fechaFin" value="#{trabajoGraduacionBean.fechafintg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de finalizacion."/>                        
+                    
+                    <p:outputLabel for="estado" value="Estado actual: " rendered="#{trabajoGraduacionBean.insert == true}"/>
+                    <h:panelGroup layout="block2" rendered="#{trabajoGraduacionBean.insert == true}">
+                        <p:selectOneMenu id="estado" value="#{trabajoGraduacionBean.estadotg}" effect="fade" required="true" >    
+                            <f:selectItem itemValue="En desarrollo" itemLabel="En desarrollo"/>
+                            <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forEstado" for="estado" value="Seleccione el estado actual del Trabajo de Graduacion" />
+                    </h:panelGroup>
+                    
+                    <p:outputLabel id="prorroga" value="Tiene prorroga este Trabajo de Graduacion? " />
+                    <p:selectBooleanCheckbox value="#{trabajoGraduacionBean.prorrogatg}" />
+                    
+                    <p:outputLabel id="aprobado" value="Aprobar Trabajo de Graduacion? " />
+                    <p:selectBooleanCheckbox value="#{trabajoGraduacionBean.aprobargt}" />
+                    
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{trabajoGraduacionBean.updateTrabajoGraduacion()}" update=":list:tg" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tg').hide()" icon="fa fa-refresh" rendered="#{trabajoGraduacionBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{trabajoGraduacionBean.addTrabajoGraduacion()}" update=":list:tg" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tg').hide()" icon="fa fa-plus" rendered="#{trabajoGraduacionBean.insert == true}" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tg').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                        <f:setPropertyActionListener target="#{trabajoGraduacionBean.insert}" value="false" />
+                    </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Cambiar estado del Trabajo de Graduacion" id="dialogChangeTG" widgetVar="change_tg" modal="true" resizable="false" closable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Dar por finalizado el trabajo de graduacion #{trabajoGraduacionBean.tematg}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_change" value="Aceptar" actionListener="#{trabajoGraduacionBean.finalizarTG()}" update=":list:tg" oncomplete="PF('change_tg').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('change_tg').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+    
+</ui:composition>

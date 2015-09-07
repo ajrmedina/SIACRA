@@ -7,6 +7,7 @@ package com.siacra.models;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,11 +34,11 @@ public class Responsabilidad implements Serializable {
     @JoinColumn(name = "IDACTIVIDAD",nullable = false)
     @ManyToOne(optional = false)
     private Actividad idactividad;
-    @Basic(optional = false)
-    @NotNull
-    @JoinColumn(name = "IDDOCENTE", nullable = false)
-    @ManyToOne(optional = false)
-    private Docente iddocente;
+    
+    @ManyToOne
+    @JoinColumn(name = "IDDOCENTE")
+    private Docente docente;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,9 +52,17 @@ public class Responsabilidad implements Serializable {
     @Size(max = 9)
     @Column(name = "TIPODETIEMPO", length = 9)
     private String tipodetiempo;
+    
     @OneToMany(mappedBy = "idresponsabilidad")
-    private Collection<Academica> academicaCollection;
-
+    private Collection<TrabajoGraduacion> tgCollection;
+    
+    @OneToMany(mappedBy = "idresponsabilidad")
+    private Collection<Proyecto> proyectoCollection;
+    
+    @OneToMany(mappedBy="responsabilidad")
+    private Set<AcademicaGrupo> academicaGrupo;
+    
+    
     public Responsabilidad() {
     }
 
@@ -90,25 +99,35 @@ public class Responsabilidad implements Serializable {
         this.tipodetiempo = tipodetiempo;
     }
 
-    public Collection<Academica> getAcademicaCollection() {
-        return academicaCollection;
+    public Collection<TrabajoGraduacion> getTrabajoGraduacionCollection() {
+        return tgCollection;
     }
 
-    public void setAcademicaCollection(Collection<Academica> academicaCollection) {
-        this.academicaCollection = academicaCollection;
+    public void setTrabajoGraduacionCollection(Collection<TrabajoGraduacion> tgCollection) {
+        this.tgCollection = tgCollection;
     }
-
     
+    public Collection<Proyecto> getProyectoCollection() {
+        return proyectoCollection;
+    }
 
+    public void setProyectoCollection(Collection<Proyecto> proyectoCollection) {
+        this.proyectoCollection = proyectoCollection;
+    }
+    
+    public Set<AcademicaGrupo> getAcademicaGrupo() {
+        return academicaGrupo;
+    }
+    
+    public void setAcademicaGrupo(Set<AcademicaGrupo> academicaGrupo) {
+        this.academicaGrupo = academicaGrupo;
+    }
+    
     @Override
     public String toString() {
         return "com.siacra.models.Responsabilidad[ idresponsabilidad=" + idresponsabilidad + " ]";
     }
-
-   
-
-  
-
+    
     /**
      * @return the idactividad
      */
@@ -124,17 +143,17 @@ public class Responsabilidad implements Serializable {
     }
 
     /**
-     * @param iddocente the iddocente to set
+     * @param docente the docente to set
      */
-    public void setIddocente(Docente iddocente) {
-        this.iddocente = iddocente;
+    public void setDocente(Docente docente) {
+        this.docente = docente;
     }
 
     /**
      * @return the iddocente
      */
-    public Docente getIddocente() {
-        return iddocente;
+    public Docente getDocente() {
+        return docente;
     }
     
 }

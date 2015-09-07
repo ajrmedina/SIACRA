@@ -67,10 +67,8 @@ public class ActividadBean implements Serializable{
             Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
             actividad.setIdescuela(escuela);
             actividad.setIdtipoactividad(tipoActividad);
+            actividad.setEstadoactividad(true);
             
-                actividad.setEstadoactividad(true);
-            
-                
             if(isAprovaractividad())
                 actividad.setAprobaractividad(true);
             else
@@ -82,7 +80,7 @@ public class ActividadBean implements Serializable{
             reset();
             setInsert(false);
         } catch (Exception e) {
-             reset();
+            reset();
             e.printStackTrace();
            
         }
@@ -100,24 +98,21 @@ public class ActividadBean implements Serializable{
          */
         public void loadActividad(Actividad actividad){
             if(!isInsert()){
-             TipoActividad tipoActividad= getTipoActividadService().getTipoActividadById(actividad.getIdtipoactividad().getIdtipoactividad());
-           Escuela escuela = getEscuelaService().getEscuelaById(actividad.getIdescuela().getIdescuela());
+            TipoActividad tipoActividad= getTipoActividadService().getTipoActividadById(actividad.getIdtipoactividad().getIdtipoactividad());
+            Escuela escuela = getEscuelaService().getEscuelaById(actividad.getIdescuela().getIdescuela());
             setIdactividad(actividad.getIdactividad());
             
             if(isEstadoactividad())   
-            setEstadoactividad(true);
+                setEstadoactividad(true);
             else
                 setEstadoactividad(false);
-            
             
             if(actividad.getAprobaractividad())
                 setAprovaractividad(true);
             else
                 setAprovaractividad(false);
             setNombreactividad(actividad.getNombreactividad());
-          
-           setDescripcionactividad(actividad.getDescripcionactividad());
-            
+            setDescripcionactividad(actividad.getDescripcionactividad());
             setIdescuela(escuela.getIdescuela());
             setIdtipoactividad(tipoActividad.getIdtipoactividad());
             
@@ -163,7 +158,6 @@ public class ActividadBean implements Serializable{
                Actividad actividad = getActividadService().getActividadById(getIdactividad());
                String eliminado = actividad.getNombreactividad();
                getActividadService().deleteActividad(actividad);
-               
                addMessage("La actividad "+eliminado+ " fue eliminada correctamente");
            } catch (DataIntegrityViolationException e) {
                e.printStackTrace();
@@ -173,12 +167,12 @@ public class ActividadBean implements Serializable{
         /**
          * Reset Fields
          */
-        public void reset(){
+    public void reset(){
         this.setEstadoactividad(false);
         this.setAprovaractividad(false);
         this.nombreactividad="";
         this.descripcionactividad="";
-                }
+    }
     /**
      * @return the actividadService
      */
@@ -428,10 +422,5 @@ public class ActividadBean implements Serializable{
     public void setInsert(boolean insert) {
         this.insert = insert;
     }
-
-   
-  
-
-  
 
 }

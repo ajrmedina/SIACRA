@@ -34,9 +34,9 @@ public class Proyecto implements Serializable{
     @GeneratedValue
     private int idproyecto; 
     
-    @JoinColumn(name="idacademica", referencedColumnName = "idacademica", nullable = false)
+    @JoinColumn(name="idresponsabilidad", referencedColumnName = "idresponsabilidad", nullable = false)
     @ManyToOne
-    private Academica idacademica; 
+    private Responsabilidad idresponsabilidad; 
     
     @Column(name="aprobarproyecto", nullable = false)
     private boolean aprobarproyecto; 
@@ -70,12 +70,12 @@ public class Proyecto implements Serializable{
         this.idproyecto = idproyecto;
     }
 
-    public Academica getIdacademica() {
-        return idacademica;
+    public Responsabilidad getIdresponsabilidad() {
+        return idresponsabilidad;
     }
 
-    public void setIdacademica(Academica idacademica) {
-        this.idacademica = idacademica;
+    public void setIdresponsabilidad(Responsabilidad idresponsabilidad) {
+        this.idresponsabilidad = idresponsabilidad;
     }
    
 

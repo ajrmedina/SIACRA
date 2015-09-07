@@ -17,7 +17,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 70%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 90%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">    
                     <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateEscuela" actionListener="#{escuelaBean.reset()}" oncomplete="PF('update_escuela').show()" value="Nueva Escuela" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{escuelaBean.insert}" value="true" />
@@ -31,19 +31,19 @@
                     <div style="clear:both" />
                 </f:facet>                                 
                 
-                <p:column style="width:50%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
+                <p:column style="width:20%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
                     <h:outputText value="#{escuela.codigoescuela}" />
                 </p:column>
                 
-                <p:column style="width: 70%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
+                <p:column style="width: 30%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
                     <h:outputText value="#{escuela.nombreescuela}" />
                 </p:column>
                 
-                <p:column style="width: 70%" headerText="Nombre de la Carrera" filterBy="#{escuela.nombrecarrera}" filterStyleClass="hide">                  
+                <p:column style="width: 30%" headerText="Nombre de la Carrera" filterBy="#{escuela.nombrecarrera}" filterStyleClass="hide">                  
                     <h:outputText value="#{escuela.nombrecarrera}" />
                 </p:column>
                 
-                <p:column style="width: 30%">
+                <p:column style="width: 10%">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
@@ -55,7 +55,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{escuelaBean.insert?'Nueva Escuela':'Actualizar Escuela'}" id="dialogUpdateEscuela" widgetVar="update_escuela" modal="true" resizable="false">
+        <p:dialog header="#{escuelaBean.insert?'Nueva Escuela':'Actualizar Escuela'}" id="dialogUpdateEscuela" widgetVar="update_escuela" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
@@ -85,7 +85,7 @@
                     </p:inputText>
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{escuelaBean.updateEscuela()}" update=":list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-refresh" rendered="#{escuelaBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{escuelaBean.addEscuela()}" update=":list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-refresh" rendered="#{escuelaBean.insert == true}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{escuelaBean.addEscuela()}" update=":list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-plus" rendered="#{escuelaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_escuela').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{escuelaBean.insert}" value="false" />
@@ -94,7 +94,7 @@
             </h:form>
         </p:dialog>
         
-         <p:dialog header="Eliminar Escuela o Unidad" id="dialogDeleteEscuela" widgetVar="delete_escuela" modal="true" resizable="false">
+         <p:dialog header="Eliminar Escuela o Unidad" id="dialogDeleteEscuela" widgetVar="delete_escuela" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea eliminar la Escuela o Unidad #{escuelaBean.codigoescuela}?" />

@@ -10,14 +10,14 @@
     </ui:define>
     
     <ui:define name="title-view">
-        Escalafon al SIACRA
+        Escalafones
     </ui:define>
                     
     <ui:define name="content">
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="escalafonTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="escalafonTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                     <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateEscalafon" actionListener="#{escalafonBean.reset()}" oncomplete="PF('update_escalafon').show()"  value="Nuevo escalafon" icon="fa fa-plus">
@@ -30,17 +30,17 @@
                     <div style="clear:both" />
                 </f:facet>
                 
-                <p:column style="width: 20%" headerText="Tipo escalafon" filterBy="#{escalafon.tipoescalafon}" filterStyleClass="hide">
+                <p:column style="width: 20%" headerText="Tipo Escalafon" filterBy="#{escalafon.tipoescalafon}" filterStyleClass="hide">
                     <h:outputText value="#{escalafon.tipoescalafon}" />
                 </p:column>
                 <p:column style="width: 12%" headerText="Habilitado" filterBy="#{escalafon.es_estado}" filterStyleClass="hide">
                     <h:outputText value="#{escalafon.es_estado?'Habilitado':'Deshabilitado'}"/>
                 </p:column>
-                <p:column style="width: 8%" headerText="Acciones">
+                <p:column style="width: 10%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('update_escalafon').show()" icon="fa fa-edit" />
-                   <p:commandButton id="delete_button" update=":dialogDeleteEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('delete_escalafon').show()" icon="fa fa-times" />
-                   <p:commandButton id="locked" update=":dialogLockEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('lock_escalafon').show()" icon="fa fa-unlock-alt" rendered="#{escalafon.es_estado == true}" />
+                    <p:commandButton id="delete_button" update=":dialogDeleteEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('delete_escalafon').show()" icon="fa fa-times" />
+                    <p:commandButton id="locked" update=":dialogLockEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('lock_escalafon').show()" icon="fa fa-unlock-alt" rendered="#{escalafon.es_estado == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('unlock_escalafon').show()" icon="fa fa-unlock" rendered="#{escalafon.es_estado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Escalafon" rendered="#{escalafon.es_estado == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Escalafon" rendered="#{escalafon.es_estado== false}" />
@@ -49,7 +49,7 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{escalafonBean.insert?'Insertar escalafon':'Actualizar escalafon'}" id="dialogUpdateEscalafon" widgetVar="update_escalafon" modal="true" resizable="false">
+        <p:dialog header="#{escalafonBean.insert?'Insertar escalafon':'Actualizar escalafon'}" id="dialogUpdateEscalafon" widgetVar="update_escalafon" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
@@ -70,7 +70,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Eliminar Escalafon" id="dialogDeleteEscalafon" widgetVar="delete_escalafon" modal="true" resizable="false">
+        <p:dialog header="Eliminar Escalafon" id="dialogDeleteEscalafon" widgetVar="delete_escalafon" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea eliminar el escalafon #{escalafonBean.tipoescalafon}?" />
@@ -82,7 +82,7 @@
         </p:dialog>
         
         
-        <p:dialog header="Bloquear escalafon" id="dialogLockEscalafon" widgetVar="lock_escalafon" modal="true" resizable="false">
+        <p:dialog header="Bloquear escalafon" id="dialogLockEscalafon" widgetVar="lock_escalafon" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea bloquear el escalafon #{escalafon.tipoescalafon} ?" />
@@ -93,7 +93,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Desbloquear Actividad" id="dialogUnlockEscalafon" widgetVar="unlock_escalafon" modal="true" resizable="false">
+        <p:dialog header="Desbloquear Actividad" id="dialogUnlockEscalafon" widgetVar="unlock_escalafon" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea desbloquear el escalafon #{escalafonBean.tipoescalafon} ?" />

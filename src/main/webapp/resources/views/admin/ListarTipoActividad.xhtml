@@ -10,14 +10,14 @@
     </ui:define>
     
     <ui:define name="title-view">
-        TipoActividad al SIACRA
+        Tipos de Actividad
     </ui:define>
                     
     <ui:define name="content">
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="tipoactividad" var="tipoactividad" value="#{tipoActividadBean.tipoActividadList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipoactividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="tipoactividad" var="tipoactividad" value="#{tipoActividadBean.tipoActividadList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipoactividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateTipoActividad" actionListener="#{tipoActividadBean.reset()}" oncomplete="PF('update_tipoactividad').show()"  value="Nuevo Tipo Actividad" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{tipoActividadBean.insert}" value="true" />
@@ -29,13 +29,13 @@
                     <div style="clear:both" />
                 </f:facet>
                
-                <p:column style="width: 20%" headerText="Tipo tipoactividad" filterBy="#{tipoactividad.tipoactividad}" filterStyleClass="hide">
+                <p:column style="width: 20%" headerText="Tipo de Actividad" filterBy="#{tipoactividad.tipoactividad}" filterStyleClass="hide">
                     <h:outputText value="#{tipoactividad.tipoactividad}" />
                 </p:column>
                 <p:column style="width: 12%" headerText="Habilitado" filterBy="#{tipoactividad.ta_estado}" filterStyleClass="hide">
                     <h:outputText value="#{tipoactividad.ta_estado ? 'Habilitado':'Deshabilitado'}"/>
                 </p:column>
-                <p:column style="width: 8%" headerText="Acciones">
+                <p:column style="width: 10%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('update_tipoactividad').show()" icon="fa fa-edit" />
                   <p:commandButton id="delete_button" update=":dialogDeleteTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('delete_tipoactividad').show()" icon="fa fa-times" />
@@ -48,12 +48,12 @@
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{tipoActividadBean.insert?'Insertar TipoActividad':'Actualizar TipoActividad'}" id="dialogUpdateTipoActividad" widgetVar="update_tipoactividad" modal="true" resizable="false">
+        <p:dialog header="#{tipoActividadBean.insert?'Insertar TipoActividad':'Actualizar TipoActividad'}" id="dialogUpdateTipoActividad" widgetVar="update_tipoactividad" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                    
-                    <p:outputLabel for="nombre" value="Nombre del tipoactividad : " />
+                    <p:outputLabel for="nombre" value="Nombre del tipo de actividad : " />
                     <p:inputText id="nombre" value="#{tipoActividadBean.tipoactividad}" validatorMessage="Solo debe contener letras">
                         <f:validateLength minimum="2" maximum="25" />
                         <f:validateRegex pattern="[ a-zA-Z]+$" />
@@ -70,7 +70,7 @@
             </h:form>
         </p:dialog>
         
-       <p:dialog header="Eliminar TipoActividad  " id="dialogDeleteTipoActividad" widgetVar="delete_tipoactividad" modal="true" resizable="false">
+       <p:dialog header="Eliminar TipoActividad  " id="dialogDeleteTipoActividad" widgetVar="delete_tipoactividad" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea eliminar el TipoActividad  #{tipoActividadBean.tipoactividad}?" />
@@ -82,7 +82,7 @@
         </p:dialog>
         
         
-        <p:dialog header="Bloquear tipoactividad" id="dialogLockTipoActividad" widgetVar="lock_tipoactividad" modal="true" resizable="false">
+        <p:dialog header="Bloquear tipoactividad" id="dialogLockTipoActividad" widgetVar="lock_tipoactividad" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea bloquear el tipoactividad #{tipoActividadBean.tipoactividad} ?" />
@@ -93,7 +93,7 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Desbloquear TipoActividad" id="dialogUnlockTipoActividad" widgetVar="unlock_tipoactividad" modal="true" resizable="false">
+        <p:dialog header="Desbloquear TipoActividad" id="dialogUnlockTipoActividad" widgetVar="unlock_tipoactividad" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea desbloquear el tipoactividad #{tipoActividadBean.tipoactividad} ?" />

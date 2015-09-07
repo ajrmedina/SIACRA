@@ -1,0 +1,90 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Responsabilidad Academica
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Asignar Responsabilidad
+        <h2 class="title"> Asignar Actividad </h2>
+    </ui:define>
+                    
+    <ui:define name="content">
+        
+        <h:form id="actividad">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:growl id="messages" />
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                
+                <p:outputLabel for="docente" value="Docente: " />
+                <h:panelGroup layout="block2">
+                    <p:selectOneMenu id="docente" value="#{responsabilidadBean.idDocente}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <f:selectItems value="#{responsabilidadBean.docenteList}" var="docente" itemValue="#{docente.idDocente}" itemLabel="#{docente.user.nombres} #{docente.user.apellidos}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forDocente" for="docente" value="Seleccione el docente" />
+                </h:panelGroup>
+                
+                <p:outputLabel for="actividad" value="Actividad: " />
+                <p:selectOneMenu id="actividad" value="#{responsabilidadBean.idactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                    <f:selectItem itemValue="0" itemLabel="Seleccione una actividad"  />
+                    <f:selectItems value="#{responsabilidadBean.actividadList}" var="actividad" itemValue="#{actividad.idactividad}" itemLabel="#{actividad.nombreactividad}"/>
+                    <p:ajax event="change" update="opciones" listener="#{responsabilidadBean.showOpciones()}" />
+                </p:selectOneMenu>
+                
+                <p:outputLabel for="tiempo" value="Tipo de Tiempo: " />
+                <h:panelGroup layout="block2">
+                    <p:selectOneMenu id="tiempo" value="#{responsabilidadBean.tipodetiempo}" effect="fade" required="true" >    
+                        <f:selectItem itemValue="Adicional" itemLabel="Tiempo Adicional"/>
+                        <f:selectItem itemValue="Integral" itemLabel="Tiempo Integral"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forTiempo" for="tiempo" value="Seleccione el tipo de tiempo en que se realiza la actividad" />
+                </h:panelGroup>
+                
+                <p:outputLabel for="horast" value="Total de horas: " />
+                <p:inputMask id="horast" value="#{responsabilidadBean.totalhoras}" mask="9?99" required="true" >
+                    <f:validateDoubleRange minimum="1" maximum="99" />
+                </p:inputMask>
+                
+                <p:outputLabel for="opciones" value="Para actividades academicas *" />
+                <h:panelGrid id="opciones" columns="2" cellpadding="5" class="center-element">
+                    <p:outputLabel for="tipoacad" value="Vincular a: " rendered="#{responsabilidadBean.mostrar == true}" />
+                    <p:multiSelectListbox id="tipoacad" value="#{responsabilidadBean.opcion}" effect="slide" showHeaders="false" rendered="#{responsabilidadBean.mostrar == true}">
+                        <f:selectItems value="#{responsabilidadBean.opciones}" />
+                    </p:multiSelectListbox>
+                </h:panelGrid>
+                
+                
+                <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.addResponsabilidad()}" update=":dialogTGExiste" icon="fa fa-plus" />
+                
+            </h:panelGrid>
+        </h:form>
+        
+        <p:dialog header="Vincular a Trabajo de Graduacion" id="dialogTGExiste" widgetVar="tg_existe" modal="true" resizable="false" closable="false" width="700" height="450">
+            <center><h2 class="title">Vincular a un Trabajo de Graduacion En Curso</h2></center>
+            <h:form id="tge_form">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p:dataTable id="tge" var="tdg" value="#{responsabilidadBean.trabajoGraduacionList}" style="width: 90%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tge_table">                           
+                    <p:column style="width: 70%" headerText="Tema" filterBy="#{tdg.tematg}" filterStyleClass="hide">                    
+                        <h:outputText value="#{tdg.tematg}" class="center-element"/>
+                    </p:column>
+                    <p:column style="width: 20%">
+                        <f:facet name="header">
+                            <h:outputText value="Acciones" />
+                        </f:facet>
+                        <p:growl id="messages" />  
+                        <p:commandButton id="vincular" actionListener="#{responsabilidadBean.vincularTG(tdg)}" update=":actividad:messages" oncomplete="PF('tg_existe').hide()" icon="fa fa-external-link" />
+                    </p:column>
+                </p:dataTable>
+                <br />
+                <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('tg_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+    
+</ui:composition>

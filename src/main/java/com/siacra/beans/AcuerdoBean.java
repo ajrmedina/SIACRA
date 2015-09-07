@@ -58,6 +58,7 @@ public class AcuerdoBean implements Serializable{
             //getEscuelaService().addEscuela(escuela);
             addMessage("El acuerdo " + getCodigoacuerdo() + " fue añadido correctamente");           
             reset();
+            setInsert(false);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }        
@@ -163,7 +164,7 @@ public class AcuerdoBean implements Serializable{
         return acuerdoList;        
     }       
     
-      public void setAcuerdoList(List<Acuerdo> acuerdoList) {
+    public void setAcuerdoList(List<Acuerdo> acuerdoList) {
         this.acuerdoList = acuerdoList;
     }
     
@@ -221,9 +222,7 @@ public class AcuerdoBean implements Serializable{
 
     public void setInsert(boolean insert) {
         this.insert = insert;
-    }
-        
-    
+    } 
     
     /**
      * Add Messages
