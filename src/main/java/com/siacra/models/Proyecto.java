@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,9 +30,10 @@ import javax.persistence.Temporal;
 @Table(name="proyecto")
 public class Proyecto implements Serializable{
     
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(name="idproyecto")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idproyecto; 
     
     @JoinColumn(name="idresponsabilidad", referencedColumnName = "idresponsabilidad", nullable = false)
@@ -134,6 +136,23 @@ public class Proyecto implements Serializable{
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    
+    public Proyecto() {
+    }
+
+    public Proyecto(Integer idproyecto){
+        this.idproyecto = idproyecto;
+    }
+    
+    public Proyecto (Integer idproyecto, boolean aprobarproyecto, Date fechainicio, Date fechafin, String estadoproyecto, String nombreproyecto){
+        this.idproyecto = idproyecto; 
+        this.aprobarproyecto = aprobarproyecto;
+        this.fechainicio = fechainicio; 
+        this.fechafin = fechafin;
+        this.estadoproyecto = estadoproyecto;
+        this.nombreproyecto = nombreproyecto;
+    }
+    
     
     
     
