@@ -59,5 +59,10 @@ public class ProyectoDao {
         return list; 
     }
     
+    public List<Proyecto> getProyectosFinalizados(){
+        List list = getSessionFactory().getCurrentSession().createQuery("from Proyecto WHERE estadoproyecto!='Finalizado' AND idresponsabilidad IS NULL").list();
+        return list;
+    }
+          
     
 }

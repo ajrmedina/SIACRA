@@ -34,6 +34,9 @@ public class ProyectoBean implements Serializable{
     @ManagedProperty(value = "#{ResponsabilidadService}")
     private ResponsabilidadService responsabilidadService;
     
+    @ManagedProperty(value="#{responsabilidadBean}")
+    private ResponsabilidadBean responsabilidadBean;
+    
     private List<Proyecto> proyectoList; 
     private List<Responsabilidad> responsabilidadList; 
     
@@ -46,22 +49,30 @@ public class ProyectoBean implements Serializable{
     private String nombreproyecto; 
     private String observacion; 
     private String descripcion; 
+    private boolean insert;
     
     public void addProyecto(){
         try{
-            Proyecto proyecto = new Proyecto();
-            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-            proyecto.setIdresponsabilidad(responsabilidad);
-            proyecto.setAprobarproyecto(aprobarproyecto);
-            proyecto.setFechainicio(fechainicio);
-            proyecto.setFechafin(fechafin);
-            proyecto.setNombreproyecto(nombreproyecto);
-            proyecto.setObservacion(observacion);
-            proyecto.setDescripcion(descripcion);
+            if(fechainicio.before(fechafin)){                
+                Proyecto proyecto = new Proyecto();
+                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(getResponsabilidadBean().getIdDocente());
+                proyecto.setIdresponsabilidad(responsabilidad);                
+                
+                proyecto.setFechainicio(fechainicio);
+                proyecto.setFechafin(fechafin);
+                proyecto.setNombreproyecto(nombreproyecto);
+                proyecto.setObservacion(observacion);
+                proyecto.setDescripcion(descripcion);
+                proyecto.setAprobarproyecto(true);
+                proyecto.setEstadoproyecto(estadoproyecto); 
+                getProyectoService().addProyecto(proyecto);
+                addMessage("El proyecto fue añadido correctamente");
+                reset();
+                this.setInsert(false);
+            }
+            else
+                addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio"); 
             
-            getProyectoService().addProyecto(proyecto);
-            addMessage("El registro fue añadido correctamente");
-            reset();
             
         }
         catch (DataAccessException e) {
@@ -80,32 +91,56 @@ public class ProyectoBean implements Serializable{
     }
     
     public void loadProyecto(Proyecto proyecto){
-        Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getIdresponsabilidad().getTotalhoras());
-        setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
-        setAprobarproyecto(proyecto.getAprobarproyecto());
-        setFechainicio(proyecto.getFechainicio());
-        setFechafin(proyecto.getFechafin());
-        setEstadoproyecto(proyecto.getEstadoproyecto());
-        setNombreproyecto(proyecto.getNombreproyecto());
-        setObservacion(proyecto.getObservacion());
-        setDescripcion(proyecto.getDescripcion());
+        if(!getInsert()){
+            try{
+                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getIdresponsabilidad().getIdresponsabilidad());
+                setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
+            }catch (NullPointerException e) {
+                e.printStackTrace();
+            }  
+           
+            setAprobarproyecto(proyecto.getAprobarproyecto());
+            setFechainicio(proyecto.getFechainicio());
+            setFechafin(proyecto.getFechafin());
+            setEstadoproyecto(proyecto.getEstadoproyecto());
+            setNombreproyecto(proyecto.getNombreproyecto());
+            setObservacion(proyecto.getObservacion());
+            setDescripcion(proyecto.getDescripcion());
+        }        
     }
     
     public void updateProyecto(){
          try {
-            Proyecto proyecto = getProyectoService().getProyectoById(getIdproyecto());            
-            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-            proyecto.setIdresponsabilidad(responsabilidad);
-            proyecto.setAprobarproyecto(proyecto.getAprobarproyecto());
-            proyecto.setFechainicio(proyecto.getFechainicio());
-            proyecto.setFechafin(proyecto.getFechafin());
-            proyecto.setEstadoproyecto(proyecto.getEstadoproyecto());
-            proyecto.setNombreproyecto(proyecto.getNombreproyecto());
-            proyecto.setObservacion(proyecto.getObservacion());
-            proyecto.setDescripcion(proyecto.getDescripcion());
+            Proyecto proyecto = getProyectoService().getProyectoById(this.getIdproyecto());
+            try{
+                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getIdresponsabilidad().getIdresponsabilidad());
+                proyecto.setIdresponsabilidad(responsabilidad);
+            }
+             catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            
+            proyecto.setAprobarproyecto(isAprobarproyecto());
+            proyecto.setFechainicio(getFechainicio());
+            proyecto.setFechafin(getFechafin());
+            proyecto.setEstadoproyecto(getEstadoproyecto());
+            proyecto.setNombreproyecto(getNombreproyecto());
+            proyecto.setObservacion(getObservacion());
+            proyecto.setDescripcion(getDescripcion());
             
             getProyectoService().updateProyecto(proyecto);            
             addMessage("El proyecto fue actualizado correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void finalizarProyecto(){
+        try{
+            Proyecto proyecto = getProyectoService().getProyectoById(this.getIdproyecto());
+            proyecto.setEstadoproyecto("Finalizado");
+            getProyectoService().updateProyecto(proyecto);
+            addMessage("El estado del proyecto fue actualizado a finalizado correctamente");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -160,7 +195,7 @@ public class ProyectoBean implements Serializable{
         this.idresponsabilidad = idresponsabilidad;
     }
 
-    public boolean getAprobarproyecto() {
+    public boolean isAprobarproyecto() {
         return aprobarproyecto;
     }
 
@@ -216,6 +251,22 @@ public class ProyectoBean implements Serializable{
         this.descripcion = descripcion;
     }
 
+    public ResponsabilidadBean getResponsabilidadBean() {
+        return responsabilidadBean;
+    }
+
+    public void setResponsabilidadBean(ResponsabilidadBean responsabilidadBean) {
+        this.responsabilidadBean = responsabilidadBean;
+    }
+
+    public boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }    
+    
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);

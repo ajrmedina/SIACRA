@@ -54,4 +54,8 @@ public class ProyectoService {
         return getProyectoDao().getProyectos();
     }    
     
+    public List<Proyecto> getProyectosFinalizados(){
+        return getProyectoDao().getProyectosFinalizados();
+    }
+    
 }

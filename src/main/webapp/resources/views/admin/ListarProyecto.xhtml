@@ -1,0 +1,135 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Proyectos
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+        Proyectos de la Escuela de 
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="proyecto" var="proyecto" value="#{proyectoBean.proyectoList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="proyectoTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">                  
+                    <p:commandButton id="insert_button" update=":dialogUpdateProyecto" style="float: right" actionListener="#{proyectoBean.reset()}" oncomplete="PF('update_proyecto').show()" value="Nuevo Proyecto" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{proyectoBean.insert}" value="true" />
+                    </p:commandButton>                      
+                    
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Búsqueda de Proyectos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('proyectoTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    
+                    <div style="clear:both" />
+                </f:facet>                                 
+                <p:column style="width: 30%" headerText="Nombre" filterBy="#{proyecto.nombreproyecto}" filterStyleClass="hide">                    
+                    <h:outputText value="#{proyecto.nombreproyecto}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 10%" headerText="Inicio" filterBy="#{proyecto.fechainicio}" filterStyleClass="hide"  >                    
+                    <h:outputText value="#{proyecto.fechainicio}" class="center-element">
+                         <f:convertDateTime pattern="dd-MM-yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width: 10%" headerText="Fin" filterBy="#{proyecto.fechafin}" filterStyleClass="hide"  >                    
+                    <h:outputText value="#{proyecto.fechafin}" class="center-element">
+                         <f:convertDateTime pattern="dd-MM-yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width: 8%" headerText="Estado" filterBy="#{proyecto.estadoproyecto}" filterStyleClass="hide">                    
+                    <h:outputText value="#{proyecto.estadoproyecto}" />
+                </p:column>
+                
+                <p:column style="width: 8%" headerText="Aprobacion" filterBy="#{proyecto.aprobarproyecto}" filterStyleClass="hide">                    
+                    <h:outputText value="#{proyecto.aprobarproyecto?'Aprobado':'En Espera'}" />
+                </p:column>                
+                              
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                    
+                    <p:growl id="messages" />                    
+                    <p:commandButton id="update_button" update=":dialogUpdateProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('update_proyecto').show()" icon="fa fa-edit" />
+                    <p:commandButton id="change_status" update=":dialogChangeProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('change_proyecto').show()" icon="fa fa-refresh" />
+                    <p:tooltip id="forChangeStatus" for="change_status" value="Dar por finalizado este proyecto"  />
+                                   
+                </p:column>               
+            </p:dataTable>
+        </h:form>
+        
+        <p:dialog header="#{proyectoBean.insert?'Nuevo Proyecto':'Actualizar Proyecto'}" id="dialogUpdateProyecto" widgetVar="update_proyecto" modal="true" resizable="false" closable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
+                    <p:outputLabel for="nombre" value="Nombre de Proyecto: " />
+                    <p:inputText id="nombre" value="#{proyectoBean.nombreproyecto}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo">
+                        <f:validateLength minimum="3" maximum="100" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="descripcion" value="Descripción: " />
+                    <p:inputTextarea id="descripcion" value="#{proyectoBean.descripcion}" required="true">
+                        <f:validateLength minimum="3" maximum="150" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="observacion" value="Observaciones: " />
+                    <p:inputTextarea id="observacion" value="#{proyectoBean.observacion}" required="true">
+                        <f:validateLength minimum="3" maximum="100" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
+                    <p:calendar id="fechaInicio" value="#{proyectoBean.fechainicio}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de inicio."/>                        
+                                     
+                    <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
+                    <p:calendar id="fechaFin" value="#{proyectoBean.fechafin}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de finalizacion."/>                        
+                    
+                    <p:outputLabel for="estado" value="Estado actual: " rendered="#{proyectoBean.insert == true}"/>
+                    <h:panelGroup layout="block2" rendered="#{proyectoBean.insert == true}">
+                        <p:selectOneMenu id="estado" value="#{proyectoBean.estadoproyecto}" effect="fade" required="true" >    
+                            <f:selectItem itemValue="En desarrollo" itemLabel="En desarrollo"/>
+                            <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forEstado" for="estado" value="Seleccione el estado actual del Proyecto" />
+                    </h:panelGroup>                    
+                                       
+                    <p:outputLabel id="aprobado" value="Aprobar Proyecto? " />
+                    <p:selectBooleanCheckbox value="#{proyectoBean.aprobarproyecto}" />
+                    
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{proyectoBean.updateProyecto()}" update=":list:proyecto" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-refresh" rendered="#{proyectoBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{proyectoBean.addProyecto()}" update=":list:proyecto" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-plus" rendered="#{proyectoBean.insert == true}" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_proyecto').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                        <f:setPropertyActionListener target="#{proyectoBean.insert}" value="false" />
+                    </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Cambiar estado del Proyecto" id="dialogChangeProyecto" widgetVar="change_proyecto" modal="true" resizable="false" closable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Dar por finalizado el proyecto #{proyectoBean.nombreproyecto}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_change" value="Aceptar" actionListener="#{proyectoBean.finalizarProyecto()}" update=":list:proyecto" oncomplete="PF('change_proyecto').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('change_proyecto').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+    
+</ui:composition>
