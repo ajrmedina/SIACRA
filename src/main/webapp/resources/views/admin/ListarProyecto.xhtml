@@ -17,7 +17,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="proyecto" var="proyecto" value="#{proyectoBean.proyectoList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="proyectoTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="proyectos" var="proyecto" value="#{proyectoBean.proyectoList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="proyectoTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" update=":dialogUpdateProyecto" style="float: right" actionListener="#{proyectoBean.reset()}" oncomplete="PF('update_proyecto').show()" value="Nuevo Proyecto" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{proyectoBean.insert}" value="true" />
@@ -60,10 +60,10 @@
                     </f:facet>   
                     
                     <p:growl id="messages" />                    
-                    <p:commandButton id="update_button" update=":dialogUpdateProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('update_proyecto').show()" icon="fa fa-edit" />
-                    <p:commandButton id="change_status" update=":dialogChangeProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('change_proyecto').show()" icon="fa fa-refresh" />
+                    <p:commandButton id="update_button" update=":dialogUpdateProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('update_proyecto').show()" icon="fa fa-edit" rendered="#{proyecto.estadoproyecto == 'En desarrollo'}" />
+                    <p:commandButton id="change_status" update=":dialogChangeProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('change_proyecto').show()" icon="fa fa-refresh" rendered="#{proyecto.estadoproyecto == 'En desarrollo'}" />
                     <p:tooltip id="forChangeStatus" for="change_status" value="Dar por finalizado este proyecto"  />
-                                   
+                    <h:outputText value="No es modificable" style="color: red" rendered="#{proyecto.estadoproyecto == 'Finalizado'}" />               
                 </p:column>               
             </p:dataTable>
         </h:form>
@@ -109,8 +109,8 @@
                     <p:outputLabel id="aprobado" value="Aprobar Proyecto? " />
                     <p:selectBooleanCheckbox value="#{proyectoBean.aprobarproyecto}" />
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{proyectoBean.updateProyecto()}" update=":list:proyecto" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-refresh" rendered="#{proyectoBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{proyectoBean.addProyecto()}" update=":list:proyecto" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-plus" rendered="#{proyectoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{proyectoBean.updateProyecto()}" update=":list:proyectos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-refresh" rendered="#{proyectoBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{proyectoBean.addProyecto()}" update=":list:proyectos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-plus" rendered="#{proyectoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_proyecto').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{proyectoBean.insert}" value="false" />
@@ -124,7 +124,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Dar por finalizado el proyecto #{proyectoBean.nombreproyecto}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_change" value="Aceptar" actionListener="#{proyectoBean.finalizarProyecto()}" update=":list:proyecto" oncomplete="PF('change_proyecto').hide()" icon="fa fa-times" />
+                    <p:commandButton id="save_change" value="Aceptar" actionListener="#{proyectoBean.finalizarProyecto()}" update=":list:proyectos" oncomplete="PF('change_proyecto').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('change_proyecto').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>

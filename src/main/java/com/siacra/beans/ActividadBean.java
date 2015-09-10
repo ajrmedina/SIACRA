@@ -98,27 +98,25 @@ public class ActividadBean implements Serializable{
          */
         public void loadActividad(Actividad actividad){
             if(!isInsert()){
-            TipoActividad tipoActividad= getTipoActividadService().getTipoActividadById(actividad.getIdtipoactividad().getIdtipoactividad());
-            Escuela escuela = getEscuelaService().getEscuelaById(actividad.getIdescuela().getIdescuela());
-            setIdactividad(actividad.getIdactividad());
-            
-            if(isEstadoactividad())   
-                setEstadoactividad(true);
-            else
-                setEstadoactividad(false);
-            
-            if(actividad.getAprobaractividad())
-                setAprovaractividad(true);
-            else
-                setAprovaractividad(false);
-            setNombreactividad(actividad.getNombreactividad());
-            setDescripcionactividad(actividad.getDescripcionactividad());
-            setIdescuela(escuela.getIdescuela());
-            setIdtipoactividad(tipoActividad.getIdtipoactividad());
+                TipoActividad tipoActividad= getTipoActividadService().getTipoActividadById(actividad.getIdtipoactividad().getIdtipoactividad());
+                Escuela escuela = getEscuelaService().getEscuelaById(actividad.getIdescuela().getIdescuela());
+                setIdactividad(actividad.getIdactividad());
+
+                if(isEstadoactividad())   
+                    setEstadoactividad(true);
+                else
+                    setEstadoactividad(false);
+
+                if(actividad.getAprobaractividad())
+                    setAprovaractividad(true);
+                else
+                    setAprovaractividad(false);
+                setNombreactividad(actividad.getNombreactividad());
+                setDescripcionactividad(actividad.getDescripcionactividad());
+                setIdescuela(escuela.getIdescuela());
+                setIdtipoactividad(tipoActividad.getIdtipoactividad());
             
             }
-          
-            
         }
         
         /**

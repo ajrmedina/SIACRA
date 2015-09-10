@@ -57,12 +57,14 @@ public class ResponsabilidadBean implements Serializable {
     
     private int idresponsabilidad;
     private int iddocente;
+    private int cdocente;
     private int idactividad;
     private int totalhoras;
     private String tipodetiempo;
     private List<SelectItem> opciones;    
     private String opcion;
     private boolean mostrar;
+    private boolean insert;
     
     @PostConstruct
     public void init() {
@@ -107,8 +109,7 @@ public class ResponsabilidadBean implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 if(this.getOpcion().equals("TE"))
                     context.execute("PF('tg_existe').show();");
-                System.out.print(this.getIdDocente());
-                
+                reset();
             }
             else{
                  addMessage("Elija una actividad valida");
@@ -125,11 +126,11 @@ public class ResponsabilidadBean implements Serializable {
      * @param responsabilidad Responsabilidad
      */
     public void loadResponsabilidad(Responsabilidad responsabilidad){
-        Actividad actividad = getActividadService().getActividadById(responsabilidad.getIdactividad().getIdactividad());
-        Docente docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
+        //Actividad actividad = getActividadService().getActividadById(responsabilidad.getIdactividad().getIdactividad());
+        //Docente docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
         setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
-        setIdactividad(actividad.getIdactividad());
-        setIdDocente(docente.getIdDocente());
+        //setIdactividad(actividad.getIdactividad());
+        //setIdDocente(docente.getIdDocente());
         setTotalhoras(responsabilidad.getTotalhoras());
         setTipodetiempo(responsabilidad.getTipodetiempo());
     }
@@ -141,18 +142,13 @@ public class ResponsabilidadBean implements Serializable {
     public void updateResponsabilidad(){
         try {
             Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-            Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            responsabilidad.setIdactividad(actividad);
-            responsabilidad.setDocente(docente);
-            responsabilidad.setTipodetiempo(responsabilidad.getTipodetiempo());
-            responsabilidad.setTotalhoras(responsabilidad.getTotalhoras());
-            
+            //Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            //Docente docente = getDocenteService().getDocenteById(getIdDocente());
+            //responsabilidad.setDocente(docente);
+            responsabilidad.setTipodetiempo(this.getTipodetiempo());
+            responsabilidad.setTotalhoras(this.getTotalhoras());
             getResponsabilidadService().updateResponsabilidad(responsabilidad);
             addMessage("La Responsabilidad fue actualizada correctamente");
-            
-                    
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -175,11 +171,11 @@ public class ResponsabilidadBean implements Serializable {
     
     public void vincularTG(TrabajoGraduacion tg){
         try {
-            
                 Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
                 tg.setIdresponsabilidad(responsabilidad);
                 getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
                 addMessage("El Trabajo de Graduacion fue vinculado correctamente a la responsabilidad");
+                //reset();
                 
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,11 +198,17 @@ public class ResponsabilidadBean implements Serializable {
         }
     }
     
-    private void reset() {
+     public void refresh() {
+        
+        this.setResponsabilidadList(getResponsabilidadService().getResponsabilidadesByDocente(this.getCDocente()));
+    }
+    
+    public void reset() {
       this.totalhoras=0;
       this.idactividad=0;
-      this.iddocente=0;
       this.tipodetiempo="";
+      this.opcion="";
+      this.mostrar=false;
     }
     
     /**
@@ -269,12 +271,10 @@ public class ResponsabilidadBean implements Serializable {
      * @return the responsabilidadList
      */
     public List<Responsabilidad> getResponsabilidadList() {
-        responsabilidadList = new ArrayList<>();
-        responsabilidadList.addAll(getResponsabilidadService().getResponsabilidades());
         return responsabilidadList;
     }
     
-     /**
+    /**
      * @param responsabilidadList the responsabilidadList to set
      */
     public void setResponsabilidadList(List<Responsabilidad> responsabilidadList) {
@@ -303,7 +303,6 @@ public class ResponsabilidadBean implements Serializable {
     public List<Docente> getDocenteList() {
         docenteList = new ArrayList<>();
         docenteList.addAll(getDocenteService().getDocentes());
-        
         return docenteList;
     }
 
@@ -366,7 +365,7 @@ public class ResponsabilidadBean implements Serializable {
     }
 
     /**
-     * @param docente the iddocente to set
+     * @param iddocente the iddocente to set
      */
     public void setIdDocente(int iddocente) {
         this.iddocente = iddocente;
@@ -414,8 +413,37 @@ public class ResponsabilidadBean implements Serializable {
     public boolean getMostrar() {
         return mostrar;
     }
+    
     public void setMostrar(boolean mostrar) {
         this.mostrar = mostrar;
+    }
+    
+    /**
+     * @return the docente for filter
+     */
+    public int getCDocente() {
+        return this.cdocente;
+    }
+    
+    /**
+     * @param docente the iddocente to filter
+     */
+    public void setCDocente(int cdocente) {
+        this.cdocente = cdocente;
+    }
+    
+    /**
+     * @return the insert
+     */
+    public boolean isInsert() {
+        return insert;
+    }
+
+    /**
+     * @param insert the insert to set
+     */
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
     
     /***************************************** Responsabilidad *****************************************/

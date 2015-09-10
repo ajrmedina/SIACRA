@@ -179,16 +179,10 @@ public class CicloBean implements Serializable{
     
     
     public void loadCiclo(Ciclo cicloLoad) {
-        
-       if(!getInsert()){
-           setIdCiclo(cicloLoad.getIdCiclo());
-           setCiclo(cicloLoad.getCiclo());
-           setAnio(cicloLoad.getAnio());
-           setCiEstado(cicloLoad.getCiEstado());
-           
-           
-       }       
-            
+        setIdCiclo(cicloLoad.getIdCiclo());
+        setCiclo(cicloLoad.getCiclo());
+        setAnio(cicloLoad.getAnio());
+        setCiEstado(cicloLoad.getCiEstado());
     }
     
     public void lockedCiclo() {

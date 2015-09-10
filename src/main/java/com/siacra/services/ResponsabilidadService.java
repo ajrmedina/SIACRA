@@ -90,7 +90,12 @@ public class ResponsabilidadService {
         return getResponsabilidadDao().getLastResponsabilidad(id);
     }
     
-     public List<Responsabilidad> getResponsabilidades() {
+    public List<Responsabilidad> getResponsabilidadesByDocente(int id) {
+        return getResponsabilidadDao().getResponsabilidadesByDocente(id);
+    }
+    
+    
+    public List<Responsabilidad> getResponsabilidades() {
         return getResponsabilidadDao().getResponsabilidades();
     }
 }

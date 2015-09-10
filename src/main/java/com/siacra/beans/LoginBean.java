@@ -83,5 +83,5 @@ public class LoginBean {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
- 
+    
 }

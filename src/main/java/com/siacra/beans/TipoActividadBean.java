@@ -63,11 +63,9 @@ public class TipoActividadBean implements Serializable {
      * @param tipoactividad tipoactividad
      */
     public void loadTipoActividad(TipoActividad tipoactividad) {
-        if (!isInsert()) {
-            setIdtipoactividad(tipoactividad.getIdtipoactividad());
-            setTipoactividad(tipoactividad.getTipoactividad());
-            setTa_estado(tipoactividad.isTa_estado());
-        }
+        setIdtipoactividad(tipoactividad.getIdtipoactividad());
+        setTipoactividad(tipoactividad.getTipoactividad());
+        setTa_estado(tipoactividad.isTa_estado());
        
     }
     

@@ -110,19 +110,14 @@ public class DocenteBean implements Serializable {
      * @param docente Docente
      */
     public void loadDocente(Docente docente) {
-        if(!getInsert()) {
-            User user = getUserService().getUserById(docente.getUser().getIdUsuario());
-            Escuela escuela = getEscuelaService().getEscuelaById(docente.getEscuela().getIdescuela());
-            //Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
-            setIdDocente(docente.getIdDocente());
-            setAprobado(docente.getAprobarDocente());
-            setNombres(user.getNombres());
-            setApellidos(user.getApellidos());
-            setIdUser(user.getIdUsuario());
-            setIdEscuela(escuela.getIdescuela());
-            //setIdCategoria(categoria.getIdCategoria());
-        }
-
+        User user = getUserService().getUserById(docente.getUser().getIdUsuario());
+        Escuela escuela = getEscuelaService().getEscuelaById(docente.getEscuela().getIdescuela());
+        setIdDocente(docente.getIdDocente());
+        setAprobado(docente.getAprobarDocente());
+        setNombres(user.getNombres());
+        setApellidos(user.getApellidos());
+        setIdUser(user.getIdUsuario());
+        setIdEscuela(escuela.getIdescuela());
     }
     
     /**

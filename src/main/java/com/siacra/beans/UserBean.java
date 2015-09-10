@@ -84,16 +84,13 @@ public class UserBean implements Serializable {
      * @param user User
      */
     public void loadUser(User user) {
-        
-        if(!getInsert()) {
-            setIdUsuario(user.getIdUsuario());
-            setNombreUsuario(user.getNombreUsuario());
-            setNombres(user.getNombres());
-            setApellidos(user.getApellidos());
-            setEstadoUsuario(user.getEstadoUsuario());
-            setEsDocente(user.getEsDocente());
-            setNivel(user.getNivel().getId());
-        }
+        setIdUsuario(user.getIdUsuario());
+        setNombreUsuario(user.getNombreUsuario());
+        setNombres(user.getNombres());
+        setApellidos(user.getApellidos());
+        setEstadoUsuario(user.getEstadoUsuario());
+        setEsDocente(user.getEsDocente());
+        setNivel(user.getNivel().getId());
     }
     
     /**

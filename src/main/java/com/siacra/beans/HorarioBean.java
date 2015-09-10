@@ -188,17 +188,11 @@ public class HorarioBean implements Serializable{
     
     
     public void loadHorario(Horario horario) throws ParseException {
-        
-        if(!getInsert()){
-            setIdHorario(horario.getIdHorario());
-            setHinicio(formato2.parse(horario.getHinicio()));
-            setHfin(formato2.parse(horario.getHfin()));
-            setHoEstado(horario.getHoEstado());
-            setDia(horario.getDia());
-            
-            
-        }
-    
+        setIdHorario(horario.getIdHorario());
+        setHinicio(formato2.parse(horario.getHinicio()));
+        setHfin(formato2.parse(horario.getHfin()));
+        setHoEstado(horario.getHoEstado());
+        setDia(horario.getDia());
     }
     /**
      * Locked Horario

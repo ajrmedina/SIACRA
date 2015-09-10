@@ -64,17 +64,11 @@ public class EscuelaBean implements Serializable{
      *
      * Get and Load the data for Escuela to update
      */
-    public void loadEscuela(Escuela escuela) {      
-      
-           if(!getInsert()){ 
-            setIdescuela(escuela.getIdescuela());
-            setCodigoescuela(escuela.getCodigoescuela());
-            setNombreescuela(escuela.getNombreescuela());
-            setNombrecarrera(escuela.getNombrecarrera());
-           
-           }            
-        
-
+    public void loadEscuela(Escuela escuela) {
+        setIdescuela(escuela.getIdescuela());
+        setCodigoescuela(escuela.getCodigoescuela());
+        setNombreescuela(escuela.getNombreescuela());
+        setNombrecarrera(escuela.getNombrecarrera());
     }
     
     /**

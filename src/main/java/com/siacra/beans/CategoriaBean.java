@@ -83,16 +83,14 @@ public class CategoriaBean implements Serializable {
      * @param categoria Categoria
      */
     public void loadCategoria(Categoria categoria) {
-        if(!getInsert()) {
-            Escalafon escalafon = getEscalafonService().getEscalafonById(categoria.getEscalafon().getIdescalafon());
-            Contrato contrato = getContratoService().getContratoById(categoria.getContrato().getIdcontrato());
-            setIdCategoria(categoria.getIdCategoria());
-            setHorasObligatorias(categoria.getHorasObligatorias());
-            setTipoEscalafon(escalafon.getTipoescalafon());
-            setIdEscalafon(escalafon.getIdescalafon());
-            setTipoContrato(contrato.getTipocontrato());
-            setIdContrato(contrato.getIdcontrato());
-        }
+        Escalafon escalafon = getEscalafonService().getEscalafonById(categoria.getEscalafon().getIdescalafon());
+        Contrato contrato = getContratoService().getContratoById(categoria.getContrato().getIdcontrato());
+        setIdCategoria(categoria.getIdCategoria());
+        setHorasObligatorias(categoria.getHorasObligatorias());
+        setTipoEscalafon(escalafon.getTipoescalafon());
+        setIdEscalafon(escalafon.getIdescalafon());
+        setTipoContrato(contrato.getTipocontrato());
+        setIdContrato(contrato.getIdcontrato());
 
     }
     
