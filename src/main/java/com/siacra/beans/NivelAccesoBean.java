@@ -65,11 +65,8 @@ public class NivelAccesoBean implements Serializable {
      * @param acceso Nivel Acceso
      */
     public void loadNivelAcceso(NivelAcceso acceso) {
-        if(!getInsert()) {
-            setId(acceso.getId());
-            setAcceso(acceso.getAcceso());
-        }    
-
+        setId(acceso.getId());
+        setAcceso(acceso.getAcceso());
     }
     
     /**

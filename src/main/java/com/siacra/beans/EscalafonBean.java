@@ -67,12 +67,9 @@ public class EscalafonBean implements Serializable{
      * @param escalafon
      */
     public void loadEscalafon(Escalafon escalafon) {
-        if(!isInsert()){
         setIdescalafon(escalafon.getIdescalafon());
         setTipoescalafon(escalafon.getTipoescalafon());
         setEs_escalafon(escalafon.isEs_estado());
-        }
-        
     }
     
     /**

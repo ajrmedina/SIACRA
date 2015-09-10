@@ -14,6 +14,7 @@
     </ui:define>
     
     <ui:define name="content">
+        <h:outputText value="Docente: #{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} pertenece a la Escuela: #{identityBean.principal.escuela.nombreescuela}" />
         <h:form> 
             <p:growl id="messages" showDetail="true" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

@@ -9,6 +9,7 @@ import com.siacra.models.Proyecto;
 import com.siacra.services.ResponsabilidadService;
 import com.siacra.services.ProyectoService;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -55,9 +56,8 @@ public class ProyectoBean implements Serializable{
         try{
             if(fechainicio.before(fechafin)){                
                 Proyecto proyecto = new Proyecto();
-                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(getResponsabilidadBean().getIdDocente());
-                proyecto.setIdresponsabilidad(responsabilidad);                
-                
+                //Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(getResponsabilidadBean().getIdDocente());
+                proyecto.setIdresponsabilidad(null);
                 proyecto.setFechainicio(fechainicio);
                 proyecto.setFechafin(fechafin);
                 proyecto.setNombreproyecto(nombreproyecto);
@@ -67,8 +67,8 @@ public class ProyectoBean implements Serializable{
                 proyecto.setEstadoproyecto(estadoproyecto); 
                 getProyectoService().addProyecto(proyecto);
                 addMessage("El proyecto fue añadido correctamente");
-                reset();
                 this.setInsert(false);
+                reset();
             }
             else
                 addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio"); 
@@ -91,22 +91,21 @@ public class ProyectoBean implements Serializable{
     }
     
     public void loadProyecto(Proyecto proyecto){
-        if(!getInsert()){
-            try{
-                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getIdresponsabilidad().getIdresponsabilidad());
-                setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
-            }catch (NullPointerException e) {
-                e.printStackTrace();
-            }  
-           
-            setAprobarproyecto(proyecto.getAprobarproyecto());
-            setFechainicio(proyecto.getFechainicio());
-            setFechafin(proyecto.getFechafin());
-            setEstadoproyecto(proyecto.getEstadoproyecto());
-            setNombreproyecto(proyecto.getNombreproyecto());
-            setObservacion(proyecto.getObservacion());
-            setDescripcion(proyecto.getDescripcion());
-        }        
+        try{
+            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getIdresponsabilidad().getIdresponsabilidad());
+            setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
+        }catch (NullPointerException e) {
+            e.printStackTrace();
+        }  
+        setIdproyecto(proyecto.getIdproyecto());
+        setNombreproyecto(proyecto.getNombreproyecto());
+        setObservacion(proyecto.getObservacion());
+        setDescripcion(proyecto.getDescripcion());
+        setFechainicio(proyecto.getFechainicio());
+        setFechafin(proyecto.getFechafin());
+        setAprobarproyecto(proyecto.getAprobarproyecto());
+        setEstadoproyecto(proyecto.getEstadoproyecto());
+        
     }
     
     public void updateProyecto(){
@@ -119,17 +118,19 @@ public class ProyectoBean implements Serializable{
              catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            
-            proyecto.setAprobarproyecto(isAprobarproyecto());
-            proyecto.setFechainicio(getFechainicio());
-            proyecto.setFechafin(getFechafin());
-            proyecto.setEstadoproyecto(getEstadoproyecto());
-            proyecto.setNombreproyecto(getNombreproyecto());
-            proyecto.setObservacion(getObservacion());
-            proyecto.setDescripcion(getDescripcion());
-            
-            getProyectoService().updateProyecto(proyecto);            
-            addMessage("El proyecto fue actualizado correctamente");
+            if(fechainicio.before(fechafin)){
+                proyecto.setAprobarproyecto(isAprobarproyecto());
+                proyecto.setFechainicio(getFechainicio());
+                proyecto.setFechafin(getFechafin());
+                proyecto.setEstadoproyecto(getEstadoproyecto());
+                proyecto.setNombreproyecto(getNombreproyecto());
+                proyecto.setObservacion(getObservacion());
+                proyecto.setDescripcion(getDescripcion());
+                getProyectoService().updateProyecto(proyecto);            
+                addMessage("El proyecto fue actualizado correctamente");
+            }
+            else
+                addMessage("No se pudo completar la actualizacion: la fecha de finalizacon debe ser mayor a la fecha de inicio");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,6 +165,8 @@ public class ProyectoBean implements Serializable{
     }
 
     public List<Proyecto> getProyectoList() {
+        proyectoList = new ArrayList<>();
+        proyectoList.addAll(getProyectoService().getProyectos());
         return proyectoList;
     }
 

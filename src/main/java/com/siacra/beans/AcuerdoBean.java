@@ -66,15 +66,10 @@ public class AcuerdoBean implements Serializable{
     
     
     public void loadAcuerdo(Acuerdo acuerdo) {
-        
-        if(!getInsert()){
-            setIdacuerdo(acuerdo.getIdacuerdo());           
-            setCodigoacuerdo(acuerdo.getCodigoacuerdo());           
-            setFechaacuerdo(acuerdo.getFechaacuerdo());           
-            setNombreacuerdo(acuerdo.getNombreacuerdo());      
-       
-        }
-                    
+        setIdacuerdo(acuerdo.getIdacuerdo());           
+        setCodigoacuerdo(acuerdo.getCodigoacuerdo());           
+        setFechaacuerdo(acuerdo.getFechaacuerdo());           
+        setNombreacuerdo(acuerdo.getNombreacuerdo());
     }
     
    

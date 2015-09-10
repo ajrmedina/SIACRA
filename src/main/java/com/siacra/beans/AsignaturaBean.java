@@ -248,21 +248,15 @@ public class AsignaturaBean implements Serializable{
     
     
     public void loadAsignatura(Asignatura asignatura) {
-        
-        if(!getInsert()){
-            setIdAsignatura(asignatura.getIdAsignatura());
-            setIdEscuela(asignatura.getEscuela().getIdescuela());
-            setCodigoAsignatura(asignatura.getCodigoAsignatura());
-            setEstadoAsignatura(asignatura.getEstadoAsignatura());
-            setAprobarAsignatura(asignatura.getAprobarasignatura());
-            setCicloImpartir(asignatura.getCicloImpartir());
-            setUnidadesValorativas(asignatura.getUnidadesValorativas());
-            setTipoAsignatura(asignatura.getTipoAsignatura());
-            setNombreAsignatura(asignatura.getNombreAsignatura());
-            
-            
-        }      
-
+        setIdAsignatura(asignatura.getIdAsignatura());
+        setIdEscuela(asignatura.getEscuela().getIdescuela());
+        setCodigoAsignatura(asignatura.getCodigoAsignatura());
+        setEstadoAsignatura(asignatura.getEstadoAsignatura());
+        setAprobarAsignatura(asignatura.getAprobarasignatura());
+        setCicloImpartir(asignatura.getCicloImpartir());
+        setUnidadesValorativas(asignatura.getUnidadesValorativas());
+        setTipoAsignatura(asignatura.getTipoAsignatura());
+        setNombreAsignatura(asignatura.getNombreAsignatura());
     }
     
     /**

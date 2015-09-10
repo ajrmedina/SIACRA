@@ -60,8 +60,8 @@ public class TrabajoGraduacionBean implements Serializable {
         try {
             if(fechainiciotg.before(fechafintg)){
                 TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
-                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(getResponsabilidadBean().getIdDocente());
-                trabajograduacion.setIdresponsabilidad(responsabilidad);
+                //Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(getResponsabilidadBean().getIdDocente());
+                trabajograduacion.setIdresponsabilidad(null);
                 trabajograduacion.setTematg(tematg);
                 trabajograduacion.setDescripciontg(descripciontg);
                 trabajograduacion.setObservaciontg(observaciontg);
@@ -87,23 +87,21 @@ public class TrabajoGraduacionBean implements Serializable {
      * @param trabajograduacion TrabajoGraduacion
      */
     public void loadTrabajoGraduacion(TrabajoGraduacion trabajograduacion){
-        if(!getInsert()){
-            try {
-                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(trabajograduacion.getIdresponsabilidad().getIdresponsabilidad());
-                setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            setIdtrabajograduacion(trabajograduacion.getIdtg());
-            setTematg(trabajograduacion.getTematg());
-            setDescripciontg(trabajograduacion.getDescripciontg());
-            setObservaciontg(trabajograduacion.getObservaciontg());
-            setEstadotg(trabajograduacion.getEstadotg());
-            setFechainiciotg(trabajograduacion.getFechainiciotg());
-            setFechafintg(trabajograduacion.getFechafintg());
-            setProrrogatg(trabajograduacion.getProrrogatg());
-            setAprobargt(trabajograduacion.getAprobartg());
+        try {
+            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(trabajograduacion.getIdresponsabilidad().getIdresponsabilidad());
+            setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+        setIdtrabajograduacion(trabajograduacion.getIdtg());
+        setTematg(trabajograduacion.getTematg());
+        setDescripciontg(trabajograduacion.getDescripciontg());
+        setObservaciontg(trabajograduacion.getObservaciontg());
+        setEstadotg(trabajograduacion.getEstadotg());
+        setFechainiciotg(trabajograduacion.getFechainiciotg());
+        setFechafintg(trabajograduacion.getFechafintg());
+        setProrrogatg(trabajograduacion.getProrrogatg());
+        setAprobargt(trabajograduacion.getAprobartg());
     }
     
     /**
@@ -119,16 +117,21 @@ public class TrabajoGraduacionBean implements Serializable {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            trabajograduacion.setTematg(getTematg());
-            trabajograduacion.setDescripciontg(getDescripciontg());
-            trabajograduacion.setObservaciontg(getObservaciontg());
-            trabajograduacion.setEstadotg(getEstadotg());
-            trabajograduacion.setFechainiciotg(getFechainiciotg());
-            trabajograduacion.setFechafintg(getFechafintg());
-            trabajograduacion.setProrrogatg(isProrrogatg());
-            trabajograduacion.setAprobartg(isAprobargt());
-            getTrabajoGraduacionService().updateTrabajoGraduacion(trabajograduacion);
-            addMessage("El trabajo de graduacion fue actualizado correctamente");
+            if(fechainiciotg.before(fechafintg)){
+                trabajograduacion.setTematg(getTematg());
+                trabajograduacion.setDescripciontg(getDescripciontg());
+                trabajograduacion.setObservaciontg(getObservaciontg());
+                trabajograduacion.setEstadotg(getEstadotg());
+                trabajograduacion.setFechainiciotg(getFechainiciotg());
+                trabajograduacion.setFechafintg(getFechafintg());
+                trabajograduacion.setProrrogatg(isProrrogatg());
+                trabajograduacion.setAprobartg(isAprobargt());
+                getTrabajoGraduacionService().updateTrabajoGraduacion(trabajograduacion);
+                addMessage("El trabajo de graduacion fue actualizado correctamente");
+            }
+            else {
+               addMessage("No se pudo completar la actualizacion: la fecha de finalizacon debe ser mayor a la fecha de inicio"); 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

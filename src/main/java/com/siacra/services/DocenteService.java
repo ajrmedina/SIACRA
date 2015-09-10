@@ -58,7 +58,7 @@ public class DocenteService {
     }
 
     /**
-     * Get Docente
+     * Get Docente By ID
      *
      * @param  id int - Docente ID
      * @return Docente - Docente
@@ -66,6 +66,17 @@ public class DocenteService {
 
     public Docente getDocenteById(int id) {
         return getDocenteDao().getDocenteById(id);
+    }
+    
+    /**
+     * Get Docente By User ID
+     *
+     * @param  id int - Docente ID
+     * @return Docente - Docente
+     */
+
+    public Docente getDocenteByUser(int id) {
+        return getDocenteDao().getDocenteByUser(id);
     }
     
     /**

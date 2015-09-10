@@ -70,7 +70,7 @@ public class DocenteDao  {
     }
 
     /**
-     * Get Docente
+     * Get Docente By ID
      *
      * @param  id int
      * @return Docente
@@ -79,6 +79,20 @@ public class DocenteDao  {
     public Docente getDocenteById(int id) {
         List list = getSessionFactory().getCurrentSession()
                                             .createQuery("from Docente where idDocente=?")
+                                            .setParameter(0, id).list();
+        return (Docente)list.get(0);
+    }
+    
+    /**
+     * Get Docente By User ID
+     *
+     * @param  id int
+     * @return Docente
+     */
+
+    public Docente getDocenteByUser(int id) {
+        List list = getSessionFactory().getCurrentSession()
+                                            .createQuery("from Docente where idUsuario=?")
                                             .setParameter(0, id).list();
         return (Docente)list.get(0);
     }

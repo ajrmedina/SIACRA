@@ -66,12 +66,9 @@ public class ContratoBean implements Serializable {
      * @param contrato contrato
      */
     public void loadContrato(Contrato contrato) {
-        if(!isInsert()){
         setIdcontrato(contrato.getIdcontrato());
         setTipocontrato(contrato.getTipocontrato());
         setCo_estado(contrato.isCo_estado());
-        }
-        
     }
     
     /**

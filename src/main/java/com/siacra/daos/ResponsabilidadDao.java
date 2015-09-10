@@ -78,6 +78,16 @@ public class ResponsabilidadDao {
     }
     
     /**
+     * Get Responsabilidad By Docente
+     *
+     * @return List - Lista Responsabilidad
+     */
+    public List<Responsabilidad> getResponsabilidadesByDocente(int docente){
+        List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad WHERE iddocente=?").setParameter(0, docente).list();
+        return list;
+    }
+    
+    /**
      * Get Responsabilidad List
      *
      * @return List - Lista Responsabilidad
