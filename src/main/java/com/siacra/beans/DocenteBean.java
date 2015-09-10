@@ -15,10 +15,20 @@ import com.siacra.services.CategoriaService;
 import com.siacra.services.UserService;
 import com.siacra.services.DocenteService;
 import com.siacra.services.EscuelaService;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -468,6 +478,27 @@ public class DocenteBean implements Serializable {
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public void docentesServicioProfesionalReport(ActionEvent actionEvent) throws JRException, IOException{
+        ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();  
+    JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(docenteService.getDocentesSP(),false);
+    HashMap parameter = new HashMap();
+    parameter.put("LOGO", context.getRealPath("/WEB-INF/web-reports/logoues.gif"));
+    String fullPath = context.getRealPath("/WEB-INF/web-reports/DocentesServiciosProfesionales.jasper");   
+       File jasper = new File(fullPath);		
+		
+		byte[] bytes = JasperRunManager.runReportToPdf(jasper.getPath(),parameter, beanCollectionDataSource);
+		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		response.setContentType("application/pdf");
+		response.setContentLength(bytes.length);
+		ServletOutputStream outStream = response.getOutputStream();
+		outStream.write(bytes, 0 , bytes.length);
+		outStream.flush();
+		outStream.close();
+			
+		FacesContext.getCurrentInstance().responseComplete();
+    
     }
 }
 

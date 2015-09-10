@@ -122,5 +122,15 @@ public class DocenteDao  {
         return list;
     }
 
+    /**
+     * @return List - Lista Docente con contrato servicio profesional
+     */
+    public List<Docente> getDocentesServiciosProfesionales(){
+    List list = getSessionFactory().getCurrentSession()
+                .createQuery("from Docente as doc where "
+                        + "doc.categoria.contrato.idcontrato=4")
+                .list();
+    return list;
+    }
 }
 

@@ -117,4 +117,11 @@ public class DocenteService {
     public void setDocenteDao(DocenteDao docenteDAO) {
         this.docenteDAO = docenteDAO;
     }
+    
+    /**
+     * @return DocenteDAO - Docentes servicio profesional
+     */
+    public List<Docente> getDocentesSP(){
+    return getDocenteDao().getDocentesServiciosProfesionales();
+    }
 }
