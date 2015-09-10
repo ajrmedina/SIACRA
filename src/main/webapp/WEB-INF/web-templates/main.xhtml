@@ -51,6 +51,7 @@
            
             <nav>
                 <h:form class="pad-top-20">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p:menubar styleClass="menu">  
                         
                         <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>                                                             
@@ -79,7 +80,12 @@
                             <p:menuitem value="Grupo" url="/resources/views/admin/ListarGrupo.xhtml" icon="fa fa-list" />
                             <p:separator />
                         </p:submenu>
-
+                        <p:submenu label="reportes" icon="fa fa-file-pdf-o">
+                            <p:menuitem actionListener="#{docenteBean.docentesServicioProfesionalReport}"
+                                        ajax="false"
+                                        target="_blank" 
+                                        value="Docentes S.P." icon="fa fa-file-o"/>
+                        </p:submenu>     
                         <ui:insert name="add-menu-items"> </ui:insert>
                         
                         <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
