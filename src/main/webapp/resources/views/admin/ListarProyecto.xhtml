@@ -22,7 +22,11 @@
                     <p:commandButton id="insert_button" update=":dialogUpdateProyecto" style="float: right" actionListener="#{proyectoBean.reset()}" oncomplete="PF('update_proyecto').show()" value="Nuevo Proyecto" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{proyectoBean.insert}" value="true" />
                     </p:commandButton>                      
-                    
+                    <p:commandLink ajax="false" style="float: right">
+                            <p:graphicImage library="img" name="pdf.png"/>
+                            <f:setPropertyActionListener value="Proyectos" target="#{exporter.title}" />
+                            <p:dataExporter type="pdf" target="proyectos" fileName="proyectosPDF" preProcessor="#{exporter.preProcessPDF}" />
+                    </p:commandLink>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Búsqueda de Proyectos:" />
                         <p:inputText id="globalFilter" onkeyup="PF('proyectoTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -54,7 +58,7 @@
                     <h:outputText value="#{proyecto.aprobarproyecto?'Aprobado':'En Espera'}" />
                 </p:column>                
                               
-                <p:column style="width: 10%">
+                <p:column style="width: 10%" exportable="false">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   

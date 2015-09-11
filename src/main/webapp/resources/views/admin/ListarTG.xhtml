@@ -22,7 +22,11 @@
                     <p:commandButton id="insert_button" update=":dialogUpdateTG" style="float: right" actionListener="#{trabajoGraduacionBean.reset()}" oncomplete="PF('update_tg').show()" value="Nuevo Trabajo de Graduacion" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{trabajoGraduacionBean.insert}" value="true" />
                     </p:commandButton>                      
-                    
+                    <p:commandLink ajax="false" style="float: right">
+                            <p:graphicImage library="img" name="pdf.png"/>
+                            <f:setPropertyActionListener value="Trabajo de graduacion" target="#{exporter.title}" />
+                            <p:dataExporter type="pdf" target="tg" fileName="trabajodegraduacionPDF" preProcessor="#{exporter.preProcessPDF}" />
+                    </p:commandLink>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Búsqueda de Trabajos de Graduacion:" />
                         <p:inputText id="globalFilter" onkeyup="PF('tgTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -58,7 +62,7 @@
                     <h:outputText value="#{tdg.prorrogatg?'Si':'No'}" />
                 </p:column>
                 
-                <p:column style="width: 12%">
+                <p:column style="width: 12%" exportable="false">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
