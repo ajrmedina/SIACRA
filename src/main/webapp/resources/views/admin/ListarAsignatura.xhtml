@@ -10,28 +10,29 @@
     </ui:define>
     
     <ui:define name="title-view">
-        Asignaturas
+        Asignaturas de la #{identityBean.principal.escuela.nombreescuela}
     </ui:define>
                     
     <ui:define name="content">
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 90%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="asignaturaesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 90%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="asignaturaesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.reset()}" oncomplete="PF('update_asignatura').show()" value="Nueva Asignatura" icon="fa fa-plus">
-                        <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="true" />
-                    </p:commandButton>                       
-                     <p:commandLink ajax="false" style="float: right">
+                    <p:outputPanel>
+                        <h:outputText value="Busqueda de asignaturas:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('asignaturasTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <p:spacer width="700" height="10" />
+                        <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.reset()}" oncomplete="PF('update_asignatura').show()" value="Nueva Asignatura" icon="fa fa-plus">
+                            <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="true" />
+                        </p:commandButton>
+                        <p:spacer width="10" />
+                        <p:commandLink ajax="false" style="float: right">
                             <p:graphicImage library="img" name="pdf.png"/>
                             <f:setPropertyActionListener value="Asignaturas" target="#{exporter.title}" />
                             <p:dataExporter type="pdf" target="asignatura" fileName="asignaturaPDF" preProcessor="#{exporter.preProcessPDF}" />
-                    </p:commandLink>
-                    <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de asignaturas:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('asignaturasTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        </p:commandLink>
                     </p:outputPanel>
-                    <div style="clear:both" />
                 </f:facet>
                 
                 <p:column style="width: 15%" headerText="Codigo Asignatura" filterBy="#{asignatura.codigoAsignatura}" filterStyleClass="hide">

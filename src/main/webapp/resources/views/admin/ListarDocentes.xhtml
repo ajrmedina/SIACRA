@@ -10,27 +10,28 @@
     </ui:define>
     
     <ui:define name="title-view">
-        Docentes de la Escuela de {{ ---- }}
+        Docentes de la #{identityBean.principal.escuela.nombreescuela}
     </ui:define>
                     
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 95%" class="center-element" paginator="true" rows="10" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
-                <f:facet name="header">                  
-                    <p:commandButton id="insert_button" style="float: right" value="Nuevo Docente" update=":dialogUpdateDocente" actionListener="#{docenteBean.reset()}" oncomplete="PF('update_docente').show()" icon="fa fa-plus">                       
-                        <f:setPropertyActionListener target="#{docenteBean.insert}" value="true" />
-                    </p:commandButton>
-                    <p:commandLink ajax="false" style="float: right">
+            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 95%" class="center-element" paginator="true" rows="10" paginatorPosition="bottom" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header" >
+                   <p:outputPanel>
+                        <h:outputText value="Busqueda de docentes:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('docentesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <p:spacer width="750" height="10" />
+                        <p:commandButton id="insert_button" style="float: right" value="Nuevo Docente" update=":dialogUpdateDocente" actionListener="#{docenteBean.reset()}" oncomplete="PF('update_docente').show()" icon="fa fa-plus">                       
+                            <f:setPropertyActionListener target="#{docenteBean.insert}" value="true" />
+                        </p:commandButton>
+                        <p:spacer width="10" />
+                        <p:commandLink ajax="false" style="float: right">
                             <p:graphicImage library="img" name="pdf.png"/>
                             <f:setPropertyActionListener value="Docentes" target="#{exporter.title}" />
                             <p:dataExporter type="pdf" target="docentes" fileName="docentesPDF" preProcessor="#{exporter.preProcessPDF}" />
-                    </p:commandLink>
-                    <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de docentes:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('docentesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
-                    </p:outputPanel>
-                    <div style="clear:both" />
+                        </p:commandLink>
+                   </p:outputPanel>
                 </f:facet>
                 <p:column style="width: 20%" headerText="Nombres" filterBy="#{docente.user.nombres}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.nombres}" />

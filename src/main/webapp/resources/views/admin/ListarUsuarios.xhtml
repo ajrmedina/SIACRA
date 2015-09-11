@@ -17,20 +17,21 @@
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 95%" class="center-element" paginator="true" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
-                 <f:facet name="header">                  
-                     <p:commandButton id="insert_button" style="float: right" value="Nuevo Usuario" update=":dialogUpdateUser" actionListener="#{userBean.reset()}" oncomplete="PF('update_user').show()" icon="fa fa-plus">
-                         <f:setPropertyActionListener target="#{userBean.insert}" value="true" />
-                    </p:commandButton>
-                     <p:commandLink ajax="false" style="float: right">
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Busqueda de usuarios:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('usuariosTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <p:spacer width="750" height="10" />
+                        <p:commandButton id="insert_button" style="float: right" value="Nuevo Usuario" update=":dialogUpdateUser" actionListener="#{userBean.reset()}" oncomplete="PF('update_user').show()" icon="fa fa-plus">
+                            <f:setPropertyActionListener target="#{userBean.insert}" value="true" />
+                        </p:commandButton> 
+                        <p:spacer width="10" />
+                        <p:commandLink ajax="false" style="float: right">
                             <p:graphicImage library="img" name="pdf.png"/>
                             <f:setPropertyActionListener value="Usuarios" target="#{exporter.title}" />
                             <p:dataExporter type="pdf" target="usuarios" fileName="usuariosPDF" preProcessor="#{exporter.preProcessPDF}" />
-                    </p:commandLink>
-                    <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de usuarios:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('usuariosTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        </p:commandLink>
                     </p:outputPanel>
-                    <div style="clear:both" />
                 </f:facet>
                 <p:column style="width: 13%" headerText="Username" filterBy="#{user.nombreUsuario}" filterStyleClass="hide">
                     <h:outputText value="#{user.nombreUsuario}" />
