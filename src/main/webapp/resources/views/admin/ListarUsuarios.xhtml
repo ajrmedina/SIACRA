@@ -21,6 +21,11 @@
                      <p:commandButton id="insert_button" style="float: right" value="Nuevo Usuario" update=":dialogUpdateUser" actionListener="#{userBean.reset()}" oncomplete="PF('update_user').show()" icon="fa fa-plus">
                          <f:setPropertyActionListener target="#{userBean.insert}" value="true" />
                     </p:commandButton>
+                     <p:commandLink ajax="false" style="float: right">
+                            <p:graphicImage library="img" name="pdf.png"/>
+                            <f:setPropertyActionListener value="Usuarios" target="#{exporter.title}" />
+                            <p:dataExporter type="pdf" target="usuarios" fileName="usuariosPDF" preProcessor="#{exporter.preProcessPDF}" />
+                    </p:commandLink>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de usuarios:" />
                         <p:inputText id="globalFilter" onkeyup="PF('usuariosTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -45,7 +50,7 @@
                 <p:column style="width: 8%" headerText="Es Docente" filterBy="#{user.esDocente}" filterStyleClass="hide">
                     <h:outputText value="#{user.esDocente?'Si':'No'}" />
                 </p:column>
-                <p:column style="width: 10%" headerText="Acciones" >
+                <p:column style="width: 10%" headerText="Acciones" exportable="false">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('update_user').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('delete_user').show()" icon="fa fa-times" />

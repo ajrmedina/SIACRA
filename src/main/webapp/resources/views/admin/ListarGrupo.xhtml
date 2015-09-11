@@ -23,7 +23,11 @@
                     <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateGrupo" actionListener="#{grupoBean.reset()}" oncomplete="PF('update_grupo').show()" value="Nuevo Grupo" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{grupoBean.insert}" value="true" />
                     </p:commandButton>                       
-                    
+                    <p:commandLink ajax="false" style="float: right">
+                            <p:graphicImage library="img" name="pdf.png"/>
+                            <f:setPropertyActionListener value="Grupos" target="#{exporter.title}" />
+                            <p:dataExporter type="pdf" target="grupos" fileName="gruposPDF" preProcessor="#{exporter.preProcessPDF}" />
+                    </p:commandLink>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Búsqueda de grupo:" />
                         <p:inputText id="globalFilter" onkeyup="PF('gruposTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
@@ -43,7 +47,7 @@
                     <h:outputText value="#{grupo.numeroGrupo}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 10%">
+                <p:column style="width: 10%" exportable="false">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
