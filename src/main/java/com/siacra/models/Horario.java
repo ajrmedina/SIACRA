@@ -6,13 +6,19 @@
 package com.siacra.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -23,55 +29,117 @@ import javax.persistence.Table;
 public class Horario implements Serializable{
     
     @Id
-    @GeneratedValue
-    @Column(name="idhorario")
-    private int idHorario;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IDHORARIO")
+    private Integer idhorario;
+
+    @Column(name = "HINICIO1")
+    @Temporal(TemporalType.TIME)
+    private Date hinicio1;
     
-    @Column(name="hinicio")
-    String hinicio;
+    @Column(name = "HFIN1")
+    @Temporal(TemporalType.TIME)
+    private Date hfin1;
     
-    @Column(name="hfin" )
-    String hfin;
+    @Column(name = "DIA1")
+    private String dia1;
     
-    @Column(name="dia",nullable=false,length = 50)
-    String dia;
+    @Column(name = "HINICIO2")
+    @Temporal(TemporalType.TIME)
+    private Date hinicio2;
     
-    @Column(name="ho_estado")
-    boolean hoEstado;
+    @Column(name = "HFIN2")
+    @Temporal(TemporalType.TIME)
+    private Date hfin2;
+    
+    @Column(name = "DIA2")
+    private String dia2;
+    
+    @Column(name = "HO_ESTADO")
+    private Boolean hoEstado;
     
     @OneToMany(mappedBy="horario")
     private Set<Grupo> grupo;
     
-    public int getIdHorario() {
-        return idHorario;
+    @ManyToOne
+    @JoinColumn(name="idescuela")
+    private Escuela escuela;
+
+    public Horario() {
     }
 
-    public void setIdHorario(int idHorario) {
-        this.idHorario = idHorario;
+    public Horario(Integer idhorario, Date hinicio1, Date hfin1, String dia1, Date hinicio2, Date hfin2, String dia2) {
+        this.idhorario = idhorario;
+        this.hinicio1 = hinicio1;
+        this.hfin1 = hfin1;
+        this.dia1 = dia1;
+        this.hinicio2 = hinicio2;
+        this.hfin2 = hfin2;
+        this.dia2 = dia2;
     }
 
-    public String getHinicio() {
-        return hinicio;
+    public Integer getIdhorario() {
+        return idhorario;
     }
 
-    public void setHinicio(String hinicio) {
-        this.hinicio = hinicio;
+    public void setIdhorario(Integer idhorario) {
+        this.idhorario = idhorario;
     }
 
-    public String getHfin() {
-        return hfin;
+    public Date getHinicio1() {
+        return hinicio1;
     }
 
-    public void setHfin(String hfin) {
-        this.hfin = hfin;
+    public void setHinicio1(Date hinicio1) {
+        this.hinicio1 = hinicio1;
     }
 
-    public String getDia() {
-        return dia;
+    public Date getHfin1() {
+        return hfin1;
     }
 
-    public void setDia(String dia) {
-        this.dia = dia;
+    public void setHfin1(Date hfin1) {
+        this.hfin1 = hfin1;
+    }
+
+    public String getDia1() {
+        return dia1;
+    }
+
+    public void setDia1(String dia1) {
+        this.dia1 = dia1;
+    }
+
+    public Date getHinicio2() {
+        return hinicio2;
+    }
+
+    public void setHinicio2(Date hinicio2) {
+        this.hinicio2 = hinicio2;
+    }
+
+    public Date getHfin2() {
+        return hfin2;
+    }
+
+    public void setHfin2(Date hfin2) {
+        this.hfin2 = hfin2;
+    }
+
+    public String getDia2() {
+        return dia2;
+    }
+
+    public void setDia2(String dia2) {
+        this.dia2 = dia2;
+    }
+
+    public Boolean getHoEstado() {
+        return hoEstado;
+    }
+
+    public void setHoEstado(Boolean hoEstado) {
+        this.hoEstado = hoEstado;
     }
 
     public Set<Grupo> getGrupo() {
@@ -82,12 +150,14 @@ public class Horario implements Serializable{
         this.grupo = grupo;
     }
 
-    public boolean getHoEstado() {
-        return hoEstado;
+    public Escuela getEscuela() {
+        return escuela;
     }
 
-    public void setHoEstado(boolean hoEstado) {
-        this.hoEstado = hoEstado;
+    public void setEscuela(Escuela escuela) {
+        this.escuela = escuela;
     }
+    
+    
 
 }
