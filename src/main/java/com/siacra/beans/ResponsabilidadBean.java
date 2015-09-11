@@ -8,10 +8,12 @@ package com.siacra.beans;
 
 import com.siacra.models.Actividad;
 import com.siacra.models.Docente;
+import com.siacra.models.Proyecto;
 import com.siacra.models.Responsabilidad;
 import com.siacra.models.TrabajoGraduacion;
 import com.siacra.services.ActividadService;
 import com.siacra.services.DocenteService;
+import com.siacra.services.ProyectoService;
 import com.siacra.services.ResponsabilidadService;
 import com.siacra.services.TrabajoGraduacionService;
 import java.io.Serializable;
@@ -47,11 +49,14 @@ public class ResponsabilidadBean implements Serializable {
     private DocenteService docenteService;
     @ManagedProperty(value = "#{TrabajoGraduacionService}")
     private TrabajoGraduacionService trabajoGraduacionService;
+    @ManagedProperty(value = "#{ProyectoService}")
+    private ProyectoService proyectoService;
     
     private List<Responsabilidad> responsabilidadList;
     private List<Actividad> actividadList;
     private List<Docente> docenteList;
     private List<TrabajoGraduacion> trabajoGraduacionList;
+    private List<Proyecto> proyectoList;
     
     /***************************************** Responsabilidad *****************************************/
     
@@ -98,22 +103,28 @@ public class ResponsabilidadBean implements Serializable {
         try {
             Responsabilidad responsabilidad = new Responsabilidad();
             if(getIdactividad() != 0){
-                Actividad actividad = getActividadService().getActividadById(getIdactividad());
-                Docente docente = getDocenteService().getDocenteById(getIdDocente());
-                responsabilidad.setIdactividad(actividad);
-                responsabilidad.setDocente(docente);
-                responsabilidad.setTotalhoras(getTotalhoras());
-                responsabilidad.setTipodetiempo(getTipodetiempo());
-                getResponsabilidadService().addResponsabilidad(responsabilidad);
-                addMessage("La responsabilidad administrativa del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
-                RequestContext context = RequestContext.getCurrentInstance();
-                if(this.getOpcion().equals("TE"))
-                    context.execute("PF('tg_existe').show();");
-                reset();
+                if(this.getMostrar() && this.getOpcion() != null){
+                    Actividad actividad = getActividadService().getActividadById(getIdactividad());
+                    Docente docente = getDocenteService().getDocenteById(getIdDocente());
+                    responsabilidad.setIdactividad(actividad);
+                    responsabilidad.setDocente(docente);
+                    responsabilidad.setTotalhoras(getTotalhoras());
+                    responsabilidad.setTipodetiempo(getTipodetiempo());
+                    getResponsabilidadService().addResponsabilidad(responsabilidad);
+                    addMessage("La responsabilidad administrativa del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    if(this.getOpcion().equals("TE"))
+                        context.execute("PF('tg_existe').show();");
+                    if(this.getOpcion().equals("PE"))
+                        context.execute("PF('proyecto_existe').show();");
+                    reset();
+                }
+                else
+                    addMessage("Seleccione el tipo de actividad academica");
             }
-            else{
-                 addMessage("Elija una actividad valida");
-            }
+            else
+                addMessage("Seleccione una actividad valida");
+            
         } catch (Exception e) {
             reset();
             e.printStackTrace();
@@ -183,6 +194,20 @@ public class ResponsabilidadBean implements Serializable {
         
     }
     
+    public void vincularProyecto(Proyecto pry){
+        try {
+                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
+                pry.setIdresponsabilidad(responsabilidad);
+                getProyectoService().updateProyecto(pry);
+                addMessage("El Proyecto fue vinculado correctamente a la responsabilidad");
+                //reset();
+                
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
     public void showOpciones() {
         if(getIdactividad() != 0){
             Actividad actividad = getActividadService().getActividadById(getIdactividad());
@@ -199,16 +224,15 @@ public class ResponsabilidadBean implements Serializable {
     }
     
      public void refresh() {
-        
         this.setResponsabilidadList(getResponsabilidadService().getResponsabilidadesByDocente(this.getCDocente()));
     }
     
     public void reset() {
-      this.totalhoras=0;
-      this.idactividad=0;
-      this.tipodetiempo="";
-      this.opcion="";
-      this.mostrar=false;
+        this.totalhoras=0;
+        this.idactividad=0;
+        this.tipodetiempo="";
+        this.opcion="";
+        this.mostrar=false;
     }
     
     /**
@@ -265,6 +289,14 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void setTrabajoGraduacionService(TrabajoGraduacionService trabajoGraduacionService) {
         this.trabajoGraduacionService = trabajoGraduacionService;
+    }
+    
+    public ProyectoService getProyectoService() {
+        return proyectoService;
+    }
+
+    public void setProyectoService(ProyectoService proyectoService) {
+        this.proyectoService = proyectoService;
     }
     
     /**
@@ -327,6 +359,16 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void setTrabajoGraduacionList(List<TrabajoGraduacion> trabajoGraduacionList) {
         this.trabajoGraduacionList = trabajoGraduacionList;
+    }
+    
+    public List<Proyecto> getProyectoList() {
+        proyectoList = new ArrayList<>();
+        proyectoList.addAll(getProyectoService().getProyectosFinalizados());
+        return proyectoList;
+    }
+
+    public void setProyectoList(List<Proyecto> proyectoList) {
+        this.proyectoList = proyectoList;
     }
     
     /**

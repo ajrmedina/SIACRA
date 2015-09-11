@@ -11,28 +11,28 @@
     
        
     <ui:define name="title-view">
-        Trabajos de Graduacion de la Escuela de ...
+        Trabajos de Graduacion de la #{identityBean.principal.escuela.nombreescuela}
     </ui:define>
                     
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="tg" var="tdg" value="#{trabajoGraduacionBean.trabajoGraduacionList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tgTable" emptyMessage="No hay registros en base al criterio proporcionado">
-                <f:facet name="header">                  
-                    <p:commandButton id="insert_button" update=":dialogUpdateTG" style="float: right" actionListener="#{trabajoGraduacionBean.reset()}" oncomplete="PF('update_tg').show()" value="Nuevo Trabajo de Graduacion" icon="fa fa-plus">
-                        <f:setPropertyActionListener target="#{trabajoGraduacionBean.insert}" value="true" />
-                    </p:commandButton>                      
-                    <p:commandLink ajax="false" style="float: right">
+            <p:dataTable id="tg" var="tdg" value="#{trabajoGraduacionBean.trabajoGraduacionList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tgTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Búsqueda de Trabajos de Graduacion:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('tgTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <p:spacer width="600" height="10" />
+                        <p:commandButton id="insert_button" update=":dialogUpdateTG" style="float: right" actionListener="#{trabajoGraduacionBean.reset()}" oncomplete="PF('update_tg').show()" value="Nuevo Trabajo de Graduacion" icon="fa fa-plus">
+                            <f:setPropertyActionListener target="#{trabajoGraduacionBean.insert}" value="true" />
+                        </p:commandButton> 
+                        <p:spacer width="10" />
+                        <p:commandLink ajax="false" style="float: right">
                             <p:graphicImage library="img" name="pdf.png"/>
                             <f:setPropertyActionListener value="Trabajo de graduacion" target="#{exporter.title}" />
                             <p:dataExporter type="pdf" target="tg" fileName="trabajodegraduacionPDF" preProcessor="#{exporter.preProcessPDF}" />
-                    </p:commandLink>
-                    <p:outputPanel style="float: left">
-                        <h:outputText value="Búsqueda de Trabajos de Graduacion:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('tgTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        </p:commandLink>
                     </p:outputPanel>
-                    
-                    <div style="clear:both" />
                 </f:facet>                                 
                 <p:column style="width: 30%" headerText="Tema" filterBy="#{tdg.tematg}" filterStyleClass="hide">                    
                     <h:outputText value="#{tdg.tematg}" class="center-element"/>
