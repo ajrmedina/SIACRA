@@ -210,7 +210,7 @@
                     <p:calendar id="fechaFin" value="#{responsabilidadBean.fechafintg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
                                 requiredMessage="Por favor, ingrese la fecha de finalizacion.">                        
                         <f:attribute name="startDate" value="#{responsabilidadBean.fechainiciotg}" />
-                        <f:validator validatorId="primeDateRangeValidator" />
+                        <f:validator validatorId="dateRangeValidator" />
                     </p:calendar>
                     
                     <p:outputLabel for="estado" value="Estado actual: "/>
@@ -266,7 +266,7 @@
                     <p:calendar id="fechaFin" value="#{responsabilidadBean.fechafinProyecto}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
                                 requiredMessage="Por favor, ingrese la fecha de finalizacion.">
                         <f:attribute name="startDate" value="#{responsabilidadBean.fechainicioProyecto}" />
-                        <f:validator validatorId="primeDateRangeValidator" />
+                        <f:validator validatorId="dateRangeValidator" />
                     </p:calendar>
                     
                     <p:outputLabel for="estado" value="Estado actual: " />

@@ -518,25 +518,20 @@ public class ResponsabilidadBean implements Serializable {
     
     public void addTDG(){
         try {
-            //if(fechainiciotg.before(fechafintg)){
-                TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
-                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
-                trabajograduacion.setIdresponsabilidad(responsabilidad);
-                trabajograduacion.setTematg(tematg);
-                trabajograduacion.setDescripciontg(descripciontg);
-                trabajograduacion.setObservaciontg(observaciontg);
-                trabajograduacion.setEstadotg(estadotg);
-                trabajograduacion.setFechainiciotg(fechainiciotg);
-                trabajograduacion.setFechafintg(fechafintg);
-                trabajograduacion.setProrrogatg(prorrogatg);
-                trabajograduacion.setAprobartg(false);
-                getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
-                addMessage("El Trabajo de Graduacion fue añadido y vinculado a la responsabilidad correctamente");
-                reset();
-            /*}
-            else {
-               addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio"); 
-            }*/
+            TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
+            Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
+            trabajograduacion.setIdresponsabilidad(responsabilidad);
+            trabajograduacion.setTematg(tematg);
+            trabajograduacion.setDescripciontg(descripciontg);
+            trabajograduacion.setObservaciontg(observaciontg);
+            trabajograduacion.setEstadotg(estadotg);
+            trabajograduacion.setFechainiciotg(fechainiciotg);
+            trabajograduacion.setFechafintg(fechafintg);
+            trabajograduacion.setProrrogatg(prorrogatg);
+            trabajograduacion.setAprobartg(false);
+            getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
+            addMessage("El Trabajo de Graduacion fue añadido y vinculado a la responsabilidad correctamente");
+            reset();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -660,22 +655,18 @@ public class ResponsabilidadBean implements Serializable {
     
     public void addProyecto(){
         try{
-            if(fechainicioproy.before(fechafinproy)){                
-                Proyecto proyecto = new Proyecto();
-                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
-                proyecto.setIdresponsabilidad(responsabilidad);
-                proyecto.setFechainicio(fechainicioproy);
-                proyecto.setFechafin(fechafinproy);
-                proyecto.setNombreproyecto(nombreproyecto);
-                proyecto.setObservacion(observacion);
-                proyecto.setDescripcion(descripcion);
-                proyecto.setAprobarproyecto(false);
-                proyecto.setEstadoproyecto(estadoproyecto); 
-                getProyectoService().addProyecto(proyecto);
-                addMessage("El proyecto fue añadido y vinculado a la responsabilidad correctamente");
-            }
-            else
-                addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio");
+            Proyecto proyecto = new Proyecto();
+            Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
+            proyecto.setIdresponsabilidad(responsabilidad);
+            proyecto.setFechainicio(fechainicioproy);
+            proyecto.setFechafin(fechafinproy);
+            proyecto.setNombreproyecto(nombreproyecto);
+            proyecto.setObservacion(observacion);
+            proyecto.setDescripcion(descripcion);
+            proyecto.setAprobarproyecto(false);
+            proyecto.setEstadoproyecto(estadoproyecto); 
+            getProyectoService().addProyecto(proyecto);
+            addMessage("El proyecto fue añadido y vinculado a la responsabilidad correctamente");
         }
         catch (DataAccessException e) {
             e.printStackTrace();
