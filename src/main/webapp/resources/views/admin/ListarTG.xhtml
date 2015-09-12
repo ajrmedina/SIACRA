@@ -17,7 +17,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="tg" var="tdg" value="#{trabajoGraduacionBean.trabajoGraduacionList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tgTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="tg" var="tdg" value="#{trabajoGraduacionBean.trabajoGraduacionList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tgTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Búsqueda de Trabajos de Graduacion:" />
@@ -100,11 +100,16 @@
                     
                     <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
                     <p:calendar id="fechaInicio" value="#{trabajoGraduacionBean.fechainiciotg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de inicio."/>                        
+                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                        <p:ajax event="dateSelect" update="fechaFin" />
+                    </p:calendar>
                                      
                     <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
                     <p:calendar id="fechaFin" value="#{trabajoGraduacionBean.fechafintg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de finalizacion."/>                        
+                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">
+                        <f:attribute name="startDate" value="#{trabajoGraduacionBean.fechainiciotg}" />
+                        <f:validator validatorId="dateRangeValidator" />
+                    </p:calendar>
                     
                     <p:outputLabel for="estado" value="Estado actual: " rendered="#{trabajoGraduacionBean.insert == true}"/>
                     <h:panelGroup layout="block2" rendered="#{trabajoGraduacionBean.insert == true}">
