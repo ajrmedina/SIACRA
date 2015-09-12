@@ -18,6 +18,7 @@ import com.siacra.services.ResponsabilidadService;
 import com.siacra.services.TrabajoGraduacionService;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -28,6 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import org.primefaces.context.RequestContext;
+import org.springframework.dao.DataAccessException;
 
 /**
  *
@@ -70,6 +72,26 @@ public class ResponsabilidadBean implements Serializable {
     private String opcion;
     private boolean mostrar;
     private boolean insert;
+    
+    /************************************** Trabajo de Graduacion **************************************/
+    
+    /* Aprobar TG */
+    private boolean prorrogatg;
+    private Date fechainiciotg;
+    private Date fechafintg;
+    private String estadotg;
+    private String tematg;
+    private String descripciontg;
+    private String observaciontg;
+    
+    /******************************************** Proyectos *******************************************/
+    
+    private Date fechainicioproy; 
+    private Date fechafinproy; 
+    private String estadoproyecto; 
+    private String nombreproyecto; 
+    private String observacion; 
+    private String descripcion; 
     
     @PostConstruct
     public void init() {
@@ -115,8 +137,12 @@ public class ResponsabilidadBean implements Serializable {
                     RequestContext context = RequestContext.getCurrentInstance();
                     if(this.getOpcion().equals("TE"))
                         context.execute("PF('tg_existe').show();");
+                    if(this.getOpcion().equals("NT"))
+                        context.execute("PF('new_tg').show();");
                     if(this.getOpcion().equals("PE"))
                         context.execute("PF('proyecto_existe').show();");
+                    if(this.getOpcion().equals("NP"))
+                        context.execute("PF('new_proyecto').show();");
                     reset();
                 }
                 else
@@ -174,34 +200,6 @@ public class ResponsabilidadBean implements Serializable {
             String eliminado = responsabilidad.getDocente().getUser().getNombres();
             getResponsabilidadService().deleteResponsabilidad(responsabilidad);
             addMessage("La responsabilidad de "+eliminado+ "fue eliminada correctamente");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-    }
-    
-    public void vincularTG(TrabajoGraduacion tg){
-        try {
-                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
-                tg.setIdresponsabilidad(responsabilidad);
-                getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
-                addMessage("El Trabajo de Graduacion fue vinculado correctamente a la responsabilidad");
-                //reset();
-                
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-    }
-    
-    public void vincularProyecto(Proyecto pry){
-        try {
-                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
-                pry.setIdresponsabilidad(responsabilidad);
-                getProyectoService().updateProyecto(pry);
-                addMessage("El Proyecto fue vinculado correctamente a la responsabilidad");
-                //reset();
-                
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -441,21 +439,42 @@ public class ResponsabilidadBean implements Serializable {
         this.tipodetiempo = tipodetiempo;
     }
     
+    /**
+     * 
+     * @return List Opciones 
+     */
     public List<SelectItem> getOpciones() {
         return opciones;
     }
     
+    /**
+     * 
+     * @return String Opcion elegida en la responsabilidad academica
+     */
     public String getOpcion() {
         return opcion;
     }
+    
+    /**
+     * 
+     * @param opcion de responsabilidad academica
+     */
     public void setOpcion(String opcion) {
         this.opcion = opcion;
     }
     
+    /**
+     * 
+     * @return boolean Mostrar opciones de academica
+     */
     public boolean getMostrar() {
         return mostrar;
     }
     
+    /**
+     * 
+     * @param mostrar opcion de academica
+     */
     public void setMostrar(boolean mostrar) {
         this.mostrar = mostrar;
     }
@@ -475,26 +494,254 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     /**
-     * @return the insert
+     * @return the insert Se esta insertando o no
      */
     public boolean isInsert() {
         return insert;
     }
 
     /**
-     * @param insert the insert to set
+     * @param insert
      */
     public void setInsert(boolean insert) {
         this.insert = insert;
+    }
+    
+    public void addMessage(String mensaje) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     /***************************************** Responsabilidad *****************************************/
     
     /************************************** Trabajo de Graduacion **************************************/
     
-    public void addMessage(String mensaje) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
+    public void addTDG(){
+        try {
+            //if(fechainiciotg.before(fechafintg)){
+                TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
+                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
+                trabajograduacion.setIdresponsabilidad(responsabilidad);
+                trabajograduacion.setTematg(tematg);
+                trabajograduacion.setDescripciontg(descripciontg);
+                trabajograduacion.setObservaciontg(observaciontg);
+                trabajograduacion.setEstadotg(estadotg);
+                trabajograduacion.setFechainiciotg(fechainiciotg);
+                trabajograduacion.setFechafintg(fechafintg);
+                trabajograduacion.setProrrogatg(prorrogatg);
+                trabajograduacion.setAprobartg(false);
+                getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
+                addMessage("El Trabajo de Graduacion fue añadido y vinculado a la responsabilidad correctamente");
+                reset();
+            /*}
+            else {
+               addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio"); 
+            }*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void vincularTG(TrabajoGraduacion tg){
+        try {
+                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
+                tg.setIdresponsabilidad(responsabilidad);
+                getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
+                addMessage("El Trabajo de Graduacion fue vinculado correctamente a la responsabilidad");
+                //reset();
+                
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    /**
+     * @return the prorrogatg
+     */
+    public boolean isProrrogatg() {
+        return prorrogatg;
+    }
+
+    /**
+     * @param prorrogatg the prorrogatg to set
+     */
+    public void setProrrogatg(boolean prorrogatg) {
+        this.prorrogatg = prorrogatg;
+    }
+    
+    /**
+     * @return the fechainiciotg
+     */
+    public Date getFechainiciotg() {
+        return fechainiciotg;
+    }
+
+    /**
+     * @param fechainiciotg the fechainiciotg to set
+     */
+    public void setFechainiciotg(Date fechainiciotg) {
+        this.fechainiciotg = fechainiciotg;
+    }
+
+    /**
+     * @return the fechafintg
+     */
+    public Date getFechafintg() {
+        return fechafintg;
+    }
+
+    /**
+     * @param fechafintg the fechafintg to set
+     */
+    public void setFechafintg(Date fechafintg) {
+        this.fechafintg = fechafintg;
+    }
+
+    /**
+     * @return the estadotg
+     */
+    public String getEstadotg() {
+        return estadotg;
+    }
+
+    /**
+     * @param estadotg the estadotg to set
+     */
+    public void setEstadotg(String estadotg) {
+        this.estadotg = estadotg;
+    }
+
+    /**
+     * @return the tematg
+     */
+    public String getTematg() {
+        return tematg;
+    }
+
+    /**
+     * @param tematg the tematg to set
+     */
+    public void setTematg(String tematg) {
+        this.tematg = tematg;
+    }
+
+    /**
+     * @return the descripciontg
+     */
+    public String getDescripciontg() {
+        return descripciontg;
+    }
+
+    /**
+     * @param descripciontg the descripciontg to set
+     */
+    public void setDescripciontg(String descripciontg) {
+        this.descripciontg = descripciontg;
+    }
+
+    /**
+     * @return the observaciontg
+     */
+    public String getObservaciontg() {
+        return observaciontg;
+    }
+
+    /**
+     * @param observaciontg the observaciontg to set
+     */
+    public void setObservaciontg(String observaciontg) {
+        this.observaciontg = observaciontg;
+    }
+    
+    /************************************** Trabajo de Graduacion **************************************/
+    
+    /******************************************** Proyectos *******************************************/
+    
+    public void addProyecto(){
+        try{
+            if(fechainicioproy.before(fechafinproy)){                
+                Proyecto proyecto = new Proyecto();
+                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
+                proyecto.setIdresponsabilidad(responsabilidad);
+                proyecto.setFechainicio(fechainicioproy);
+                proyecto.setFechafin(fechafinproy);
+                proyecto.setNombreproyecto(nombreproyecto);
+                proyecto.setObservacion(observacion);
+                proyecto.setDescripcion(descripcion);
+                proyecto.setAprobarproyecto(false);
+                proyecto.setEstadoproyecto(estadoproyecto); 
+                getProyectoService().addProyecto(proyecto);
+                addMessage("El proyecto fue añadido y vinculado a la responsabilidad correctamente");
+            }
+            else
+                addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio");
+        }
+        catch (DataAccessException e) {
+            e.printStackTrace();
+        }      
+    }
+    
+    public void vincularProyecto(Proyecto pry){
+        try {
+                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
+                pry.setIdresponsabilidad(responsabilidad);
+                getProyectoService().updateProyecto(pry);
+                addMessage("El Proyecto fue vinculado correctamente a la responsabilidad");
+                //reset();
+                
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    public Date getFechainicioProyecto() {
+        return fechainicioproy;
+    }
+
+    public void setFechainicioProyecto(Date fechainicioproy) {
+        this.fechainicioproy = fechainicioproy;
+    }
+
+    public Date getFechafinProyecto() {
+        return fechafinproy;
+    }
+
+    public void setFechafinProyecto(Date fechafinproy) {
+        this.fechafinproy = fechafinproy;
+    }
+
+    public String getEstadoproyecto() {
+        return estadoproyecto;
+    }
+
+    public void setEstadoproyecto(String estadoproyecto) {
+        this.estadoproyecto = estadoproyecto;
+    }
+
+    public String getNombreproyecto() {
+        return nombreproyecto;
+    }
+
+    public void setNombreproyecto(String nombreproyecto) {
+        this.nombreproyecto = nombreproyecto;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     
 }

@@ -18,7 +18,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.springframework.dao.DataAccessException;
 
 /**
  *
@@ -60,7 +59,6 @@ public class TrabajoGraduacionBean implements Serializable {
         try {
             if(fechainiciotg.before(fechafintg)){
                 TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
-                //Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(getResponsabilidadBean().getIdDocente());
                 trabajograduacion.setIdresponsabilidad(null);
                 trabajograduacion.setTematg(tematg);
                 trabajograduacion.setDescripciontg(descripciontg);
@@ -68,8 +66,8 @@ public class TrabajoGraduacionBean implements Serializable {
                 trabajograduacion.setEstadotg(estadotg);
                 trabajograduacion.setFechainiciotg(fechainiciotg);
                 trabajograduacion.setFechafintg(fechafintg);
-                trabajograduacion.setProrrogatg(false);
-                trabajograduacion.setAprobartg(true);
+                trabajograduacion.setProrrogatg(prorrogatg);
+                trabajograduacion.setAprobartg(aprobargt);
                 getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
                 addMessage("El Trabajo de Graduacion fue añadido correctamente");
                 reset();
@@ -82,6 +80,7 @@ public class TrabajoGraduacionBean implements Serializable {
             e.printStackTrace();
         }
     }
+    
     /**
      * Load Trabajo de Graduacion
      * @param trabajograduacion TrabajoGraduacion

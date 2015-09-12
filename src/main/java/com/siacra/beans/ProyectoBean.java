@@ -35,9 +35,6 @@ public class ProyectoBean implements Serializable{
     @ManagedProperty(value = "#{ResponsabilidadService}")
     private ResponsabilidadService responsabilidadService;
     
-    @ManagedProperty(value="#{responsabilidadBean}")
-    private ResponsabilidadBean responsabilidadBean;
-    
     private List<Proyecto> proyectoList; 
     private List<Responsabilidad> responsabilidadList; 
     
@@ -56,14 +53,13 @@ public class ProyectoBean implements Serializable{
         try{
             if(fechainicio.before(fechafin)){                
                 Proyecto proyecto = new Proyecto();
-                //Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(getResponsabilidadBean().getIdDocente());
                 proyecto.setIdresponsabilidad(null);
                 proyecto.setFechainicio(fechainicio);
                 proyecto.setFechafin(fechafin);
                 proyecto.setNombreproyecto(nombreproyecto);
                 proyecto.setObservacion(observacion);
                 proyecto.setDescripcion(descripcion);
-                proyecto.setAprobarproyecto(true);
+                proyecto.setAprobarproyecto(aprobarproyecto);
                 proyecto.setEstadoproyecto(estadoproyecto); 
                 getProyectoService().addProyecto(proyecto);
                 addMessage("El proyecto fue añadido correctamente");
@@ -71,9 +67,7 @@ public class ProyectoBean implements Serializable{
                 reset();
             }
             else
-                addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio"); 
-            
-            
+                addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio");
         }
         catch (DataAccessException e) {
             e.printStackTrace();
@@ -252,14 +246,6 @@ public class ProyectoBean implements Serializable{
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public ResponsabilidadBean getResponsabilidadBean() {
-        return responsabilidadBean;
-    }
-
-    public void setResponsabilidadBean(ResponsabilidadBean responsabilidadBean) {
-        this.responsabilidadBean = responsabilidadBean;
     }
 
     public boolean getInsert() {

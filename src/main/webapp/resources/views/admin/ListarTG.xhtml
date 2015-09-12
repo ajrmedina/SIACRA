@@ -17,7 +17,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="tg" var="tdg" value="#{trabajoGraduacionBean.trabajoGraduacionList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tgTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="tg" var="tdg" value="#{trabajoGraduacionBean.trabajoGraduacionList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tgTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Búsqueda de Trabajos de Graduacion:" />

@@ -144,7 +144,9 @@
                     </p:column>
                 </p:dataTable>
                 <br />
+                <!--
                 <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('tg_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
+                -->
             </h:form>
         </p:dialog>
         
@@ -171,7 +173,118 @@
                     </p:column>
                 </p:dataTable>
                 <br />
+                <!--
                 <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('proyecto_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
+                -->
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Nuevo Trabajo de Graduacion" id="dialogNuevoTG" widgetVar="new_tg" modal="true" resizable="false" closable="false">
+            <h:form id="newTG">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
+                    <p:outputLabel for="tema" value="Tema: " />
+                    <p:inputText id="tema" value="#{responsabilidadBean.tematg}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo">
+                        <f:validateLength minimum="3" maximum="100" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="descripcion" value="Descripcion: " />
+                    <p:inputTextarea id="descripcion" value="#{responsabilidadBean.descripciontg}" required="true">
+                        <f:validateLength minimum="3" maximum="150" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="observacion" value="Observaciones: " />
+                    <p:inputTextarea id="observacion" value="#{responsabilidadBean.observaciontg}" required="true">
+                        <f:validateLength minimum="3" maximum="100" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
+                    <p:calendar id="fechaInicio" value="#{responsabilidadBean.fechainiciotg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                        <p:ajax event="dateSelect" update="fechaFin" />
+                    </p:calendar>
+                                     
+                    <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
+                    <p:calendar id="fechaFin" value="#{responsabilidadBean.fechafintg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">                        
+                        <f:attribute name="startDate" value="#{responsabilidadBean.fechainiciotg}" />
+                        <f:validator validatorId="primeDateRangeValidator" />
+                    </p:calendar>
+                    
+                    <p:outputLabel for="estado" value="Estado actual: "/>
+                    <h:panelGroup layout="block2">
+                        <p:selectOneMenu id="estado" value="#{responsabilidadBean.estadotg}" effect="fade" required="true" >    
+                            <f:selectItem itemValue="En desarrollo" itemLabel="En desarrollo"/>
+                            <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forEstado" for="estado" value="Seleccione el estado actual del Trabajo de Graduacion" />
+                    </h:panelGroup>
+                    
+                    <p:outputLabel id="prorroga" value="Tiene prorroga este Trabajo de Graduacion? " />
+                    <p:selectBooleanCheckbox value="#{responsabilidadBean.prorrogatg}" />
+                    
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{responsabilidadBean.addTDG()}" update=":responsabilidadForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('new_tg').hide()" icon="fa fa-plus" />
+                    <!--
+                    <p:commandButton id="cancel" value="Cancelar" update="newTG" process="@this" oncomplete="PF('new_tg').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton> 
+                    -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Nuevo Proyecto" id="dialogNewProyecto" widgetVar="new_proyecto" modal="true" resizable="false" closable="false">
+            <h:form id="newProyecto">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
+                    <p:outputLabel for="nombre" value="Nombre de Proyecto: " />
+                    <p:inputText id="nombre" value="#{responsabilidadBean.nombreproyecto}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo">
+                        <f:validateLength minimum="3" maximum="100" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="descripcion" value="Descripción: " />
+                    <p:inputTextarea id="descripcion" value="#{responsabilidadBean.descripcion}" required="true">
+                        <f:validateLength minimum="3" maximum="150" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="observacion" value="Observaciones: " />
+                    <p:inputTextarea id="observacion" value="#{responsabilidadBean.observacion}" required="true">
+                        <f:validateLength minimum="3" maximum="100" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
+                    <p:calendar id="fechaInicio" value="#{responsabilidadBean.fechainicioProyecto}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                        <p:ajax event="dateSelect" update="fechaFin" />
+                    </p:calendar>
+                                     
+                    <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
+                    <p:calendar id="fechaFin" value="#{responsabilidadBean.fechafinProyecto}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">
+                        <f:attribute name="startDate" value="#{responsabilidadBean.fechainicioProyecto}" />
+                        <f:validator validatorId="primeDateRangeValidator" />
+                    </p:calendar>
+                    
+                    <p:outputLabel for="estado" value="Estado actual: " />
+                    <h:panelGroup layout="block2">
+                        <p:selectOneMenu id="estado" value="#{responsabilidadBean.estadoproyecto}" effect="fade" required="true" >    
+                            <f:selectItem itemValue="En desarrollo" itemLabel="En desarrollo"/>
+                            <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forEstado" for="estado" value="Seleccione el estado actual del Proyecto" />
+                    </h:panelGroup>
+                    
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{responsabilidadBean.addProyecto()}" update=":responsabilidadForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('new_proyecto').hide()" icon="fa fa-plus" />
+                    <!--
+                    <p:commandButton id="cancel" value="Cancelar" update="newProyecto" process="@this" oncomplete="PF('new_proyecto').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton> 
+                    -->
+                </h:panelGrid>
             </h:form>
         </p:dialog>
         
