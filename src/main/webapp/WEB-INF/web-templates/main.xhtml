@@ -35,7 +35,8 @@
                             <h4 class="title">
                                 <br />
                                 #{request.userPrincipal.name} <br /> 
-                                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <sec:authorize access="hasRole('ROLE_ADMINISTRADOR')">                                    
+                                    
                                     
                                 </sec:authorize>
                                 <br />
@@ -79,6 +80,7 @@
                             <p:menuitem value="Asignatura" url="/resources/views/admin/ListarAsignatura.xhtml" icon="fa fa-list" />
                             <p:menuitem value="Grupo" url="/resources/views/admin/ListarGrupo.xhtml" icon="fa fa-list" />
                             <p:separator />
+                            <p:menuitem value="Permanencia" url="/resources/views/admin/ListarPermanencia.xhtml" icon="fa fa-list" />
                         </p:submenu>
                         <p:submenu label="Reportes" icon="fa fa-file-pdf-o">
                             <p:menuitem actionListener="#{docenteBean.docentesServicioProfesionalReport}"
