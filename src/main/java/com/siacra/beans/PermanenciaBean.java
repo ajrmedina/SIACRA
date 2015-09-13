@@ -1,21 +1,27 @@
 package com.siacra.beans;
 
 
+import com.siacra.models.Ciclo;
 import com.siacra.models.Permanencia;
-import com.siacra.models.Horario;
+import com.siacra.beans.IdentityBean;
 import com.siacra.models.Docente;
+import com.siacra.models.User;
+import com.siacra.services.CicloService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import com.siacra.services.PermanenciaService;
-import com.siacra.services.HorarioService;
+
 import com.siacra.services.DocenteService;
+import com.siacra.services.UserService;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -37,29 +43,67 @@ public class PermanenciaBean implements Serializable {
     @ManagedProperty(value="#{DocenteService}")
     private DocenteService docenteService;
     
+    @ManagedProperty(value="#{CicloService}")
+    private CicloService cicloService;
+    
+    //Spring User Service is injected...
+    @ManagedProperty(value="#{UserService}")
+    private UserService userService;
+    
     private List<Permanencia> permanenciasList;
     private List<Docente> docentesList;
+    private List<Ciclo> cicloList; 
     
     private int idPermanencia;
     private int idDocente;
     private String descripcion;
-    private String hInicio;
-    private String hFin;
+    private String horaInicio;
+    private String horaFin;
     private String dia;
+    private boolean insert;
+    private int idCiclo;
     
+    private Docente principal = null;  
+    
+    
+    /***** Get Logged username *****/ 
+    public Docente getPrincipal(){
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String name = auth.getName();
+            User user = getUserService().getUserLogin(name);
+            principal = getDocenteService().getDocenteByUser(user.getIdUsuario());
+            return principal;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return principal;
+    }
     /**
      * Add Permanencia
      *
      */
     public void addPermanencia() {
-        try {
-            Permanencia permanencia = new Permanencia();
-            Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            permanencia.setDescripcionTiempo(getDescripcionPermanencia());
-            permanencia.setDocente(docente);
-            getPermanenciaService().addPermanencia(permanencia);
-            addMessage("La descripcion del tiempo de permanencia fue añadida correctamente");
-            reset();
+        try {            
+               
+               /* System.out.println("El id del docente es");
+                System.out.println(idDoc);*/
+                Permanencia permanencia = new Permanencia();                
+                Docente docente = getDocenteService().getDocenteById(getPrincipal().getIdDocente());
+                Ciclo ciclo = getCicloService().getCicloById(getIdCiclo()); 
+                
+                permanencia.setDocente(docente);
+                permanencia.setCiclo(ciclo);            
+                permanencia.setDescripcionTiempo(getDescripcionPermanencia());
+                permanencia.setDia(getDia());
+                permanencia.setHoraInicio(getHoraInicio());
+                permanencia.setHoraFin(getHoraFin());
+                getPermanenciaService().addPermanencia(permanencia);
+                addMessage("La descripcion del tiempo de permanencia fue añadida correctamente");
+                reset();                
+                this.setInsert(false);               
+            
+            
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -74,11 +118,16 @@ public class PermanenciaBean implements Serializable {
      */
     public void loadPermanencia(Permanencia permanencia) {
         
-        Docente docente = getDocenteService().getDocenteById(permanencia.getDocente().getIdDocente());
-        setIdPermanencia(permanencia.getIdPermanencia());
-        setDescripcionPermanencia(permanencia.getDescripcionTiempo());
-        setIdDocente(docente.getIdDocente());
-
+            Docente docente = getDocenteService().getDocenteById(permanencia.getDocente().getIdDocente());
+            Ciclo ciclo = getCicloService().getCicloById(permanencia.getCiclo().getIdCiclo());
+            setIdPermanencia(permanencia.getIdPermanencia());
+            setDescripcionPermanencia(permanencia.getDescripcionTiempo());
+            setIdDocente(docente.getIdDocente());
+            setDia(permanencia.getDia());
+            setHoraInicio(permanencia.getHoraInicio());
+            setHoraFin(permanencia.getHoraFin());
+            setIdCiclo(ciclo.getIdCiclo());
+        
     }
     
     /**
@@ -87,14 +136,20 @@ public class PermanenciaBean implements Serializable {
      */
     public void updatePermanencia() {
         
-        try {
-            Permanencia permanencia = getPermanenciaService().getPermanenciaById(getIdPermanencia());
-            Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            permanencia.setDescripcionTiempo(getDescripcionPermanencia());
-            permanencia.setDocente(docente);
-            getPermanenciaService().updatePermanencia(permanencia);
-            addMessage("La descripcion del tiempo de permanencia fue actualizada correctamente");
-            
+        try {           
+                Permanencia permanencia = getPermanenciaService().getPermanenciaById(getIdPermanencia());
+               
+                Docente docente = getDocenteService().getDocenteById(getPrincipal().getIdDocente());
+                Ciclo ciclo = getCicloService().getCicloById(getIdCiclo());
+                permanencia.setDescripcionTiempo(getDescripcionPermanencia());               
+                permanencia.setDocente(docente);
+                permanencia.setCiclo(ciclo);
+                permanencia.setDia(getDia());
+                permanencia.setHoraInicio(getHoraInicio());
+                permanencia.setHoraFin(getHoraFin());
+                getPermanenciaService().updatePermanencia(permanencia);
+                addMessage("La descripcion del tiempo de permanencia fue actualizada correctamente");
+               
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -127,8 +182,11 @@ public class PermanenciaBean implements Serializable {
      */
     public void reset() {
        this.setDescripcionPermanencia("");
+       this.setHoraInicio("");
+       this.setHoraFin("");
+       this.setDia("");      
+       
     }
-
     /**
      * Get Docentees List
      *
@@ -239,7 +297,7 @@ public class PermanenciaBean implements Serializable {
      * @return String - Hora Inicio de la Actividad
      */
     public String getHoraInicio() {
-        return hInicio;
+        return horaInicio;
     }
 
     /**
@@ -248,7 +306,7 @@ public class PermanenciaBean implements Serializable {
      * @param horai - Hora de Inicio
      */
     public void setHoraInicio(String horai) {
-        this.hInicio = horai;
+        this.horaInicio = horai;
     }
     
     /**
@@ -257,7 +315,7 @@ public class PermanenciaBean implements Serializable {
      * @return String - Hora Fin de la Actividad
      */
     public String getHoraFin() {
-        return hFin;
+        return horaFin;
     }
 
     /**
@@ -266,7 +324,7 @@ public class PermanenciaBean implements Serializable {
      * @param horaf - Hora de Fin
      */
     public void setHoraFin(String horaf) {
-        this.hFin = horaf;
+        this.horaFin = horaf;
     }
     
     /**
@@ -304,6 +362,75 @@ public class PermanenciaBean implements Serializable {
     public void setIdDocente(int idusuario) {
         this.idDocente = idusuario;
     }
+
+    public boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }
+
+    public int getIdCiclo() {
+        return idCiclo;
+    }
+
+    public void setIdCiclo(int idCiclo) {
+        this.idCiclo = idCiclo;
+    }
+
+    public CicloService getCicloService() {
+        return cicloService;
+    }
+
+    public void setCicloService(CicloService cicloService) {
+        this.cicloService = cicloService;
+    }
+
+    public List<Ciclo> getCicloList() {
+        cicloList = new ArrayList<>();
+        cicloList.addAll(getCicloService().getCiclos());
+        return cicloList;
+    }
+
+    public void setCicloList(List<Ciclo> cicloList) {
+        this.cicloList = cicloList;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String gethInicio() {
+        return horaInicio;
+    }
+
+    public void sethInicio(String hInicio) {
+        this.horaInicio = hInicio;
+    }
+
+    public String gethFin() {
+        return horaFin;
+    }
+
+    public void sethFin(String hFin) {
+        this.horaFin = hFin;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+    
+     
+    
     
     /**
      * Add Messages

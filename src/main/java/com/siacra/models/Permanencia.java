@@ -47,7 +47,23 @@ public class Permanencia implements Serializable{
     @ManyToOne
     @JoinColumn(name="idciclo")
     private Ciclo ciclo;
+   /* 
+    public Permanencia(){
+        
+    }
     
+    public Permanencia(Integer idpermanencia) {
+        this.idPermanencia = idpermanencia; 
+    }
+
+    public Permanencia(Integer idPermanencia, String descTiempo, String hInicio, String hFin, String dia){
+        this.idPermanencia = idPermanencia; 
+        this.descTiempo = descTiempo; 
+        this.hInicio = hInicio;
+        this.hFin = hFin;
+        this.dia = dia;
+    }    */
+       
     /**
      * Get Id Permanencia
      *
@@ -137,42 +153,53 @@ public class Permanencia implements Serializable{
     public void setDia(String dia) {
         this.dia = dia;
     }
-    
-    /**
-     * Get Docente
-     *
-     * @return docente Docente
-     */
-    public Docente getDocente() {
-        return this.docente;
+
+    public String getDescTiempo() {
+        return descTiempo;
     }
+
+    public void setDescTiempo(String descTiempo) {
+        this.descTiempo = descTiempo;
+    }
+
+    public String gethInicio() {
+        return hInicio;
+    }
+
+    public void sethInicio(String hInicio) {
+        this.hInicio = hInicio;
+    }
+
+    public String gethFin() {
+        return hFin;
+    }
+
+    public void sethFin(String hFin) {
+        this.hFin = hFin;
+    }
+
+    public Docente getDocente() {
+        return docente;
+    }
+
     
-    /**
-     * Set Docente
-     *
-     * @param docente Docente
-     */
     public void setDocente(Docente docente) {
         this.docente = docente;
     }
+
     
-    /**
-     * Get Ciclo
-     *
-     * @return ciclo Ciclo
-     */
     public Ciclo getCiclo() {
-        return this.ciclo;
+        return ciclo;
     }
+
     
-    /**
-     * Set Ciclo
-     *
-     * @param ciclo Ciclo
-     */
     public void setCiclo(Ciclo ciclo) {
         this.ciclo = ciclo;
     }
+
+    
+    
+   
     
     @Override
     public String toString() {

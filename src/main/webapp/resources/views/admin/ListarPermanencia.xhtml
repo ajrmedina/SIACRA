@@ -1,0 +1,167 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Permanencia
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+        Horario de Permanencia Docente
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                     
+            <p:panelGrid style="margin-top:20px" class="center-element">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">Datos del docente</p:column>
+                    </p:row>           
+                </f:facet>
+
+                <p:row>
+                    <p:column style="font-weight: bold;">Nombre del Docente</p:column>
+                    <p:column>#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos}</p:column>                  
+                </p:row>
+
+                <p:row>
+                    <p:column style="font-weight: bold;">Escuela</p:column>
+                    <p:column >#{identityBean.principal.escuela.nombreescuela}</p:column>                  
+                </p:row> 
+                
+                <p:row>
+                    <p:column style="font-weight: bold;">Escalafón</p:column>
+                    <p:column >#{identityBean.principal.categoria.escalafon.tipoescalafon}</p:column>                  
+                </p:row> 
+                
+                <p:row>
+                    <p:column style="font-weight: bold;">Contrato</p:column>
+                    <p:column >#{identityBean.principal.categoria.contrato.tipocontrato}</p:column>                  
+                </p:row>                 
+               
+            </p:panelGrid>        
+                        
+            <br/>
+            <h3 style="margin-left: 10%">Actividades a realizar</h3>
+            <br/>
+            <p:dataTable id="permanencia" var="permanencia" value="#{permanenciaBean.permanenciasList}" style="width: 70%" class="center-element" paginator="true" rows="10" paginatorPosition="bottom" widgetVar="permanenciaTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">  
+                    <p:outputPanel>
+                        <h:outputText value="Búsqueda de Actividades:" style="float: left"/>
+                        <p:inputText id="globalFilter" onkeyup="PF('permanenciaTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px; float: left" />
+                                                
+                        <p:commandButton id="insert_button" style="float: right" update=":dialogUpdatePermanencia" actionListener="#{permanenciaBean.reset()}" oncomplete="PF('update_permanencia').show()" value="Nueva Actividad" icon="fa fa-plus">
+                            <f:setPropertyActionListener target="#{permanenciaBean.insert}" value="true" />
+                        </p:commandButton> 
+                        <p:spacer width="10" />
+                            <p:commandLink ajax="false" style="float: right">
+                                <p:graphicImage library="img" name="pdf.png"/>
+                                <f:setPropertyActionListener value="Tiempo de Permanencia Docente" target="#{exporter.title}" />
+                                <p:dataExporter type="pdf" target="permanencia" fileName="permanenciaPDF" preProcessor="#{exporter.preProcessPDF}" />
+                            </p:commandLink>            
+                                        
+                    
+                    </p:outputPanel>
+                    <div style="clear:both" />
+                </f:facet>                                 
+                
+                <p:column style="width:35%" headerText="Día" filterBy="#{permanencia.dia}" filterStyleClass="hide">                         
+                    <h:outputText value="#{permanencia.dia}" />
+                </p:column>
+                
+                <p:column style="width:25%" headerText="Hora inicio" filterBy="#{permanencia.horaInicio}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.horaInicio}" />
+                </p:column>
+                
+                <p:column style="width: 25%" headerText="Hora fin" filterBy="#{permanencia.horaFin}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.horaFin}" />
+                </p:column>
+                
+                <p:column style="width: 55%" headerText="Descripción" filterBy="#{permanencia.descripcionTiempo}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.descripcionTiempo}" />
+                </p:column>
+                
+                <p:column style="width: 20%" headerText="Ciclo" filterBy="#{permanencia.ciclo.ciclo}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.ciclo.ciclo} - #{permanencia.ciclo.anio}" />
+                </p:column>
+                <!--
+                <p:column style="width: 15%" headerText="Año" filterBy="#{permanencia.ciclo.anio}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.ciclo.anio}" />
+                </p:column>
+                -->
+                
+                <p:column style="width: 30%" exportable="false">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                    
+                    <p:growl id="messages" />                    
+                    <p:commandButton id="update_button" update=":dialogUpdatePermanencia" actionListener="#{permanenciaBean.loadPermanencia(permanencia)}" oncomplete="PF('update_permanencia').show()" icon="fa fa-edit" />                                    
+                    <p:commandButton id="delete_button" update=":dialogDeletePermanencia" actionListener="#{permanenciaBean.loadPermanencia(permanencia)}" oncomplete="PF('delete_permanencia').show()" icon="fa fa-times"/>
+                </p:column>               
+            </p:dataTable>
+        </h:form>
+        
+        <p:dialog header="#{permanenciaBean.insert?'Nueva Actividad':'Actualizar Permanencia'}" id="dialogUpdatePermanencia" widgetVar="update_permanencia" modal="true" resizable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+               <h:panelGrid columns="2" cellpadding="5" class="center-element">    
+                   
+                                                  
+                    <p:outputLabel for="ciclo" value="Ciclo en curso: " />
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="ciclo" value="#{permanenciaBean.idCiclo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                            <f:selectItems value="#{permanenciaBean.cicloList}" var="ciclo" itemValue="#{ciclo.idCiclo}" itemLabel="#{ciclo.ciclo} #{ciclo.anio}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forCiclo" for="ciclo" value="Seleccione el ciclo actual" />
+                    </h:panelGroup>
+                                   
+                    <p:outputLabel for="descripcion" value="Descripción: " />
+                    <p:inputTextarea id="descripcion" value="#{permanenciaBean.descripcion}" 
+                             requiredMessage="Por favor, ingrese la descripción."
+                             validatorMessage="Máximo 50 caracteres" >                        
+                        <f:validateRequired />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="dia" value="Día: " />
+                    <p:inputText id="dia" value="#{permanenciaBean.dia}" 
+                             requiredMessage="Por favor, ingrese el día."
+                             validatorMessage="Máximo 25 caracteres" >                        
+                        <f:validateRequired />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="horainicio" value="Hora de Inicio:" />
+                    <p:inputMask id="horainicio" value="#{permanenciaBean.horaInicio}" mask="99:99" required="true"/>
+                    
+                    <p:outputLabel for="horafin" value="Hora de Finalización:" />
+                    <p:inputMask id="horafin" value="#{permanenciaBean.horaFin}" mask="99:99" required="true"/>
+                    
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{permanenciaBean.updatePermanencia()}" update=":list:permanencia" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{permanenciaBean.addPermanencia()}" update=":list:permanencia" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == true}" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_permanencia').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                        <f:setPropertyActionListener target="#{permanenciaBean.insert}" value="false" />
+                    </p:commandButton> 
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+         <p:dialog header="EliminarActividad" id="dialogDeletePermanencia" widgetVar="delete_permanencia" modal="true" resizable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar la actividad del día #{permanenciaBean.dia}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{permanenciaBean.deletePermanencia()}" update=":list:permanencia" oncomplete="PF('delete_permanencia').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_permanencia').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+    
+</ui:composition>
