@@ -34,6 +34,7 @@ public class TipoGrupoBean implements Serializable {
     String tipoGrupos;
     String nombreGrupo;
     boolean tgEstado;
+    boolean insert;
 
     public List<TipoGrupo> getGruposList() {
         gruposList = new ArrayList<>();
@@ -84,6 +85,16 @@ public class TipoGrupoBean implements Serializable {
     public void setTipoGrupoService(TipoGrupoService tipoGrupoService) {
         this.tipoGrupoService = tipoGrupoService;
     }
+
+    public boolean isInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }
+    
+    
     
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
@@ -94,6 +105,7 @@ public class TipoGrupoBean implements Serializable {
     public void reset() {       
        this.setTipoGrupos("");
        this.setNombreGrupo("");
+       this.setTgEstado(false);
     }
     
     //Invocamos metodos de agregacion y agregamos parametros obtenidos de la vista
@@ -113,6 +125,8 @@ public class TipoGrupoBean implements Serializable {
             else{
                 getTipoGrupoService().addTipoGrupo(tipoGrupo);
                 addMessage("El tipo de grupo :" + getTipoGrupos() + " nombre : " + getNombreGrupo() + " fue creado exitosamente");
+                reset();
+                setInsert(false);
             }
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -167,6 +181,35 @@ public class TipoGrupoBean implements Serializable {
             e.printStackTrace();
         }
 
+    }
+    
+    
+    public void lockedTipoGrupo() {
+        
+        try {
+            TipoGrupo tgrupo = getTipoGrupoService().getTipoGrupoById(getIdTipoGrupo());
+            String tipogrupoBloqueado = tgrupo.getTipoGrupo() + " - " + tgrupo.getNombreGrupo();
+            tgrupo.setTgEstado(false);
+            getTipoGrupoService().updateTipoGrupo(tgrupo);
+            addMessage("El Tipo de grupo " + tipogrupoBloqueado + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void unlockedTipoGrupo() {
+        
+        try {
+            TipoGrupo tgrupo = getTipoGrupoService().getTipoGrupoById(getIdTipoGrupo());
+            String tipogrupoBloqueado = tgrupo.getTipoGrupo() + " - " + tgrupo.getNombreGrupo();
+            tgrupo.setTgEstado(true);
+            getTipoGrupoService().updateTipoGrupo(tgrupo);
+            addMessage("El Tipo de grupo " + tipogrupoBloqueado + " fue inhabilitado correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
     }
     
     /***************************************************************************************************************/

@@ -60,7 +60,9 @@
                 
                 <p:column style="width: 10%" headerText="Acciones" exportable="false">
                     <p:growl id="messages" />
-                    <p:commandButton id="update_button" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('update_asignatura').show()" icon="fa fa-edit" />
+                    <p:commandButton id="update_button" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('update_asignatura').show()" icon="fa fa-edit" >
+                        <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="false" />
+                    </p:commandButton>
                     <p:commandButton id="delete_button" update=":dialogDeleteAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('delete_asignatura').show()" icon="fa fa-times" />
                     <p:commandButton id="locked" update=":dialogLockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('lock_asignatura').show()" icon="fa fa-unlock-alt" rendered="#{asignatura.estadoAsignatura == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('unlock_asignatura').show()" icon="fa fa-unlock" rendered="#{asignatura.estadoAsignatura == false}" />

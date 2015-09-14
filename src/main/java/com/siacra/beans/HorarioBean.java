@@ -5,7 +5,9 @@
  */
 package com.siacra.beans;
 
+import com.siacra.models.Escuela;
 import com.siacra.models.Horario;
+import com.siacra.services.EscuelaService;
 import com.siacra.services.HorarioService;
 import java.io.Serializable;
 import java.text.Format;
@@ -34,14 +36,23 @@ public class HorarioBean implements Serializable{
     @ManagedProperty(value="#{HorarioService}")
     private HorarioService horarioService;
     
+    @ManagedProperty(value="#{EscuelaService}")
+    private EscuelaService escuelaService;
+    
     private List<Horario> horarioList;
-    Format formato = new SimpleDateFormat("HH:mm");
-    SimpleDateFormat formato2 = new SimpleDateFormat("HH:mm");
+    private List<Horario> horarioEscuelaList;
+    private List<Escuela> escuelaList;
+    //Format formato = new SimpleDateFormat("HH:mm");
+    //SimpleDateFormat formato2 = new SimpleDateFormat("HH:mm");
     
     Integer idHorario;
-    Date hinicio;
-    Date hfin;
-    String dia;
+    Integer idescuela;
+    Date hinicio1;
+    Date hfin1;
+    String dia1;
+    Date hinicio2;
+    Date hfin2;
+    String dia2;
     boolean hoEstado;
     private boolean insert;
 
@@ -50,7 +61,27 @@ public class HorarioBean implements Serializable{
         horarioList.addAll(getHorarioService().getHorarios());
         return horarioList;
     }
+    
+    public List<Horario> getHorarioEscuelaList(Integer idescuela) {
+        horarioEscuelaList = new ArrayList<>();
+        horarioEscuelaList.addAll(getHorarioService().getHorariosbyEscuela(idescuela));
+        return horarioEscuelaList;
+    }
 
+    public List<Escuela> getEscuelaList() {
+        escuelaList = new ArrayList<>();
+        escuelaList.addAll(getEscuelaService().getEscuelas());
+        return escuelaList;
+    }
+    
+    public EscuelaService getEscuelaService() {
+        return escuelaService;
+    }
+
+    public void setEscuelaService(EscuelaService escuelaService) {
+        this.escuelaService = escuelaService;
+    }
+    
     public HorarioService getHorarioService() {
         return horarioService;
     }
@@ -67,46 +98,77 @@ public class HorarioBean implements Serializable{
         this.idHorario = idHorario;
     }
 
-    public Date getHinicio() {
-        return hinicio;
+    public Date getHinicio1() {
+        return hinicio1;
     }
 
-    public void setHinicio(Date hinicio) {
-        this.hinicio = hinicio;
+    public void setHinicio1(Date hinicio1) {
+        this.hinicio1 = hinicio1;
     }
 
-    public Date getHfin() {
-        return hfin;
+    public Date getHfin1() {
+        return hfin1;
     }
 
-    public void setHfin(Date hfin) {
-        this.hfin = hfin;
+    public void setHfin1(Date hfin1) {
+        this.hfin1 = hfin1;
     }
 
-    public String getDia() {
-        return dia;
+    public String getDia1() {
+        return dia1;
     }
 
-    public void setDia(String dia) {
-        this.dia = dia;
+    public void setDia1(String dia1) {
+        this.dia1 = dia1;
     }
 
+    public Date getHinicio2() {
+        return hinicio2;
+    }
+
+    public void setHinicio2(Date hinicio2) {
+        this.hinicio2 = hinicio2;
+    }
+
+    public Date getHfin2() {
+        return hfin2;
+    }
+
+    public void setHfin2(Date hfin2) {
+        this.hfin2 = hfin2;
+    }
+
+    public String getDia2() {
+        return dia2;
+    }
+
+    public void setDia2(String dia2) {
+        this.dia2 = dia2;
+    }
+    
     public boolean isHoEstado() {
         return hoEstado;
     }
 
-    public void setHoEstado(boolean hoEstado) {
-        this.hoEstado = hoEstado;
+    public Integer getIdescuela() {
+        return idescuela;
     }
 
-    public boolean getInsert() {
+    public void setIdescuela(Integer idescuela) {
+        this.idescuela = idescuela;
+    }
+    
+    public void setHoEstado(boolean hoEstado) {
+        this.hoEstado = hoEstado;
+    }   
+
+    public boolean isInsert() {
         return insert;
     }
 
     public void setInsert(boolean insert) {
         this.insert = insert;
-    }    
-    
+    }
 
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
@@ -114,7 +176,8 @@ public class HorarioBean implements Serializable{
     }
     
     //reset a las variables
-    public void reset() {       
+    public void reset() {     
+        /*
       SimpleDateFormat formato = new SimpleDateFormat("HH:mm");
         Date fechaDate = null;
          try {
@@ -122,9 +185,15 @@ public class HorarioBean implements Serializable{
          } catch (ParseException ex) {
              Logger.getLogger(AcuerdoBean.class.getName()).log(Level.SEVERE, null, ex);
          }
-         this.setHfin(fechaDate);
-         this.setHinicio(fechaDate);
-         this.setDia("");
+         */
+         this.setHfin1(null);
+         this.setHinicio1(null);
+         this.setDia1("");
+         this.setHfin2(null);
+         this.setHinicio2(null);
+         this.setDia2("");
+         this.setIdescuela(null);
+         this.hoEstado = false;
     }
     
     //Invocamos metodos de agregacion y agregamos parametros obtenidos de la vista
@@ -132,52 +201,63 @@ public class HorarioBean implements Serializable{
         
         try{
             Horario horario = new Horario();
-            horario.setHinicio( formato.format(hinicio) );
-            horario.setHfin( formato.format(hfin));
-            horario.setDia(dia);
+            horario.setHinicio1( hinicio1 );
+            horario.setHfin1( hfin1 );
+            horario.setDia1(dia1);
+            horario.setHinicio2( hinicio2 );
+            horario.setHfin2( hfin2 );
+            horario.setDia2(dia2);
+            horario.setEscuela(escuelaService.getEscuelaById(idescuela));
             horario.setHoEstado(true);
 
-            if( getHorarioService().getExistHorario(formato.format(getHinicio()), formato.format(getHfin()),getDia()) ){
-                addMessage("El horario con periodo :" + formato.format(getHinicio()) +" - "+formato.format(getHfin())+ " para el dia  : " + getDia()+ " ya existe");
+            if( getHorarioService().getExistHorario(getHinicio1(), getHfin1(), getDia1(),getHinicio2(),getHfin2(),getDia2(),getIdescuela()) )
+            {
+                //addMessage("El horario con periodo :" + formato.format(getHinicio()) +" - "+formato.format(getHfin())+ " para el dia  : " + getDia()+ " ya existe");
+                addMessage("El horario ya existe, por favor ingrese un horario no registrado");
             }
             else{
                 getHorarioService().addHorario(horario);
-                addMessage("El horario con periodo :" + formato.format(getHinicio())+ " - "+formato.format(getHfin()) + " para el dia : " + getDia()+ " fue creado exitosamente");
+                addMessage("El horario fue creado exitosamente");
+                reset();
+                setInsert(false);
+//                addMessage("El horario con periodo :" + formato.format(getHinicio())+ " - "+formato.format(getHfin()) + " para el dia : " + getDia()+ " fue creado exitosamente");
             }
         }catch (DataAccessException e){
             e.printStackTrace();
         }
     }
     
-    //Actualizar el tipo de grupo
     public void updateHorario(){
         try{
             
             Horario horario = getHorarioService().getHorarioById(getIdHorario());
-            horario.setHinicio(formato.format(getHinicio()));
-            horario.setHfin(formato.format(getHfin()));
-            horario.setDia(getDia());
+            horario.setHinicio1(getHinicio1());
+            horario.setHfin1(getHfin1());
+            horario.setDia1(getDia1());
+            horario.setHinicio2(getHinicio2());
+            horario.setHfin2(getHfin2());
+            horario.setDia2(getDia2());
+            horario.setEscuela(escuelaService.getEscuelaById(getIdescuela()));
             getHorarioService().updateHorario(horario);
-            addMessage("El Horario con periodo : " + formato.format(getHinicio())+" - "+ formato.format(getHfin()) + " para el dia : " + getDia() + " fue actualizado correctamente");
+            addMessage("El Horario fue actualizado correctamente");
             
         }catch (DataAccessException e){
             e.printStackTrace();
         }
     }
     
-    //Eliminamos el tipo de grupo
     public void deleteHorario(){
         try{
             Horario horario = getHorarioService().getHorarioById(getIdHorario());
             
-            if( horario.getGrupo() != null ){
+            if( horario.getGrupo() == null ){
                 getHorarioService().deleteHorario(horario);
-                addMessage("La Horario con periodo : " + formato.format(getHinicio())+" - "+ formato.format(getHfin()) + " para el dia :"+ getDia() +" fue eliminado correctamente");
+                addMessage("El Horario fue eliminado correctamente");
             }
             else{
                 horario.setHoEstado(false);
                 getHorarioService().updateHorario(horario);
-                addMessage("La Horario con periodo : " + formato.format(getHinicio())+" - "+ formato.format(getHfin()) + " para el dia :"+ getDia() +" fue dado de baja correctamente");
+                addMessage("El Horario fue dado de baja correctamente");
             }
             
         }catch (DataAccessException e){
@@ -188,11 +268,14 @@ public class HorarioBean implements Serializable{
     
     
     public void loadHorario(Horario horario) throws ParseException {
-        setIdHorario(horario.getIdHorario());
-        setHinicio(formato2.parse(horario.getHinicio()));
-        setHfin(formato2.parse(horario.getHfin()));
+        setIdHorario(horario.getIdhorario());
+        setHinicio1(horario.getHinicio1());
+        setHfin1(horario.getHfin1());
+        setDia1(horario.getDia1());
+        setHinicio2(horario.getHinicio2());
+        setHfin2(horario.getHfin2());
+        setDia2(horario.getDia2());
         setHoEstado(horario.getHoEstado());
-        setDia(horario.getDia());
     }
     /**
      * Locked Horario
@@ -202,10 +285,10 @@ public class HorarioBean implements Serializable{
         
         try {
             Horario horario = getHorarioService().getHorarioById(getIdHorario());
-            String horarioBloqueada = horario.getDia()+" "+horario.getHinicio()+" - "+horario.getHfin();
+            String horarioBloqueado = horario.getDia1()+": "+horario.getHinicio1()+" - "+horario.getHfin1() + " a " + horario.getDia2()+": "+horario.getHinicio2()+" - "+horario.getHfin2();
             horario.setHoEstado(false);
             getHorarioService().updateHorario(horario);
-            addMessage("El horario " + horarioBloqueada + " fue inhabilitado correctamente");
+            addMessage("El horario " + horarioBloqueado + " fue inhabilitado correctamente");
             
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -220,10 +303,10 @@ public class HorarioBean implements Serializable{
         
         try {
             Horario horario = getHorarioService().getHorarioById(getIdHorario());
-            String horarioBloqueada = horario.getDia()+" "+horario.getHinicio()+" - "+horario.getHfin();
+            String horarioBloqueado = horario.getDia1()+": "+horario.getHinicio1()+" - "+horario.getHfin1() + " a " + horario.getDia2()+": "+horario.getHinicio2()+" - "+horario.getHfin2();
             horario.setHoEstado(true);
             getHorarioService().updateHorario(horario);
-            addMessage("El horario " + horarioBloqueada + " fue inhabilitado correctamente");
+            addMessage("El horario " + horarioBloqueado + " fue habilitado correctamente");
             
         } catch (DataAccessException e) {
             e.printStackTrace();

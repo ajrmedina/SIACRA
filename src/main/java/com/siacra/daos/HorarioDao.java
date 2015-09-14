@@ -6,6 +6,7 @@
 package com.siacra.daos;
 
 import com.siacra.models.Horario;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +49,11 @@ public class HorarioDao {
         return (Horario)list.get(0);
     }
     
-    public boolean getExistHorario(String hinicio, String hfin, String dia) {
+    public boolean getExistHorario(Date hinicio1, Date hfin1, String dia1,Date hinicio2,Date hfin2,String dia2,Integer idescuela) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from Horario where hinicio=? and hfin=? and dia=?")
-                                            .setParameter(0, hinicio).setParameter(1, hfin).setParameter(2, dia).list();
+                                            .createQuery("from Horario where idescuela=? and hinicio1=? and hfin1=? and dia1=? and hinicio2=? and hfin2=? and dia2=?")
+                                            .setParameter(0, idescuela).setParameter(1, hinicio1).setParameter(2, hfin1).setParameter(3, dia1)
+                                            .setParameter(4, hinicio2).setParameter(5, hfin2).setParameter(6, dia2).list();
         
         if(list.isEmpty()){
             return false;
@@ -62,6 +64,11 @@ public class HorarioDao {
     
     public List<Horario> getHorarios() {
         List list = getSessionFactory().getCurrentSession().createQuery("from Horario").list();
+        return list;
+    }
+    
+    public List<Horario> getHorariosbyEscuela(Integer idescuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("from Horario where idescuela=?").setParameter(0, idescuela).list();
         return list;
     }
     

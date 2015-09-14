@@ -7,6 +7,7 @@ package com.siacra.services;
 
 import com.siacra.daos.HorarioDao;
 import com.siacra.models.Horario;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,13 +58,17 @@ public class HorarioService {
     }
     
     //verificamos si el grupo ya esta registrado
-    public boolean getExistHorario(String hinicio,String hfin,String dia){
-        return getHorarioDao().getExistHorario(hinicio,hfin ,dia);
+    public boolean getExistHorario(Date hinicio1, Date hfin1, String dia1,Date hinicio2,Date hfin2,String dia2,Integer idescuela){
+        return getHorarioDao().getExistHorario( hinicio1,  hfin1,  dia1, hinicio2, hfin2, dia2, idescuela);
     }
     
     //Seleccionamos todos los tipos de grupos existentes
     public List<Horario> getHorarios() {
         return getHorarioDao().getHorarios();
+    }
+    
+    public List<Horario> getHorariosbyEscuela(Integer idescuela) {
+        return getHorarioDao().getHorariosbyEscuela(idescuela);
     }
     
 }

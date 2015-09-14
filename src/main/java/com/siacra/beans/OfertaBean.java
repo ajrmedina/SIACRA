@@ -52,6 +52,7 @@ public class OfertaBean implements Serializable{
     private List<Ciclo> cicloList;
     private List<Grupo> grupoList;
     private List<Acuerdo> acuerdoList;
+    Integer insert;
 
     public OfertaService getOfertaService() {
         return ofertaService;
@@ -125,6 +126,14 @@ public class OfertaBean implements Serializable{
         this.idAcuerdo = idAcuerdo;
     }
 
+    public Integer getInsert() {
+        return insert;
+    }
+
+    public void setInsert(Integer insert) {
+        this.insert = insert;
+    }
+    
     public List<Oferta> getOfertaList() {
         ofertaList = new ArrayList<>();
         ofertaList.addAll(getOfertaService().getOfertas());
@@ -189,6 +198,7 @@ public class OfertaBean implements Serializable{
             else{
                 getOfertaService().addOferta(oferta);
                 addMessage("La oferta para el ciclo :" + c.getCiclo() + " asignatura : " + g.getAsignatura().getCodigoAsignatura() + " Acuerdo :" + a.getCodigoacuerdo() +" fue creada exitosamente");
+                setInsert(insert);
             }
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -231,11 +241,38 @@ public class OfertaBean implements Serializable{
             setIdAcuerdo(oferta.getAcuerdo().getIdacuerdo());
             setIdCiclo(oferta.getCiclo().getIdCiclo());
             setIdGrupo(oferta.getGrupo().getIdGrupo());
+            setAprobarOferta(false);
                                   
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
 
+    }
+    
+    public void lockedOferta() {
+        
+        try {
+            Oferta oferta = getOfertaService().getOfertaById(getIdOferta());
+            oferta.setAprobarOferta(false);
+            getOfertaService().updateOferta(oferta);
+            addMessage("La oferta fue rechazada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void unlockedOferta() {
+        
+        try {
+            Oferta oferta = getOfertaService().getOfertaById(getIdOferta());
+            oferta.setAprobarOferta(true);
+            getOfertaService().updateOferta(oferta);
+            addMessage("La oferta fue aprobada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
     }
     
 }
