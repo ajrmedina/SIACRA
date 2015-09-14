@@ -46,7 +46,7 @@ public class Docente implements Serializable {
     @JoinColumn(name="idcategoria")
     private Categoria categoria;
     
-    @OneToMany(mappedBy="docente")
+    @OneToMany(mappedBy="iddocente")
     private Set<Responsabilidad> responsabilidad;
     
     /**
