@@ -10,26 +10,30 @@
     </ui:define>
     
     <ui:define name="title-view">
-        Actividades
+        Actividades de la #{identityBean.principal.escuela.nombreescuela}
     </ui:define>
                     
     <ui:define name="content">
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="actividad" var="actividad" value="#{actividadBean.actividadList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="actividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
-                <f:facet name="header">                  
-                   
-                   <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.reset()}" oncomplete="PF('update_actividad').show()"  value="Nueva Actividad" icon="fa fa-plus">
-                        <f:setPropertyActionListener target="#{actividadBean.insert}" value="true" />
-                    </p:commandButton>
-                    <p:outputPanel style="float: left">
+            <p:dataTable id="actividad" var="actividad" value="#{actividadBean.actividadList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="actividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header" >
+                   <p:outputPanel>
                         <h:outputText value="Busqueda de actividades:" />
                         <p:inputText id="globalFilter" onkeyup="PF('actividadesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
-                    </p:outputPanel>
-                    <div style="clear:both" />
+                        <p:spacer width="750" height="10" />
+                        <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.reset()}" oncomplete="PF('update_actividad').show()"  value="Nueva Actividad" icon="fa fa-plus">
+                            <f:setPropertyActionListener target="#{actividadBean.insert}" value="true" />
+                        </p:commandButton>
+                        <p:spacer width="10" />
+                        <p:commandLink ajax="false" style="float: right">
+                            <p:graphicImage library="img" name="pdf.png"/>
+                            <f:setPropertyActionListener value="Actividades" target="#{exporter.title}" />
+                            <p:dataExporter type="pdf" target="actividad" fileName="actividadesPDF" preProcessor="#{exporter.preProcessPDF}" />
+                        </p:commandLink>
+                   </p:outputPanel>
                 </f:facet>
-                
                 <p:column style="width: 10%" headerText="Tipo Actividad" filterBy="#{actividad.idtipoactividad.tipoactividad}" filterStyleClass="hide">
                      <h:outputText value="#{actividad.idtipoactividad.tipoactividad}"/>
                 </p:column>
@@ -45,7 +49,7 @@
                 <p:column style="width: 30%" headerText="Descripcion" filterBy="#{actividad.descripcionactividad}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.descripcionactividad}"/>
                 </p:column>
-                <p:column style="width: 10%" headerText="Acciones">
+                <p:column style="width: 10%" headerText="Acciones" exportable="false">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('update_actividad').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('delete_actividad').show()" icon="fa fa-times" />
@@ -87,7 +91,7 @@
                
                     <p:outputLabel for="descripcionactividad" value="Descripción de la actividad: " />
                     <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="false" validatorMessage="Solo letras son permitidas.">
-                        <f:validateLength minimum="1" maximum="50" />
+                       <!-- <f:validateLength minimum="1" maximum="50" />-->
                     </p:inputTextarea>
                     
                     <p:outputLabel id="aprobada" value="Aprobar actividad? " />

@@ -35,7 +35,8 @@
                             <h4 class="title">
                                 <br />
                                 #{request.userPrincipal.name} <br /> 
-                                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <sec:authorize access="hasRole('ROLE_ADMINISTRADOR')">                                    
+                                    
                                     
                                 </sec:authorize>
                                 <br />
@@ -51,6 +52,7 @@
            
             <nav>
                 <h:form class="pad-top-20">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p:menubar styleClass="menu">  
                         
                         <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>                                                             
@@ -78,8 +80,14 @@
                             <p:menuitem value="Asignatura" url="/resources/views/admin/ListarAsignatura.xhtml" icon="fa fa-list" />
                             <p:menuitem value="Grupo" url="/resources/views/admin/ListarGrupo.xhtml" icon="fa fa-list" />
                             <p:separator />
+                            <p:menuitem value="Permanencia" url="/resources/views/admin/ListarPermanencia.xhtml" icon="fa fa-list" />
                         </p:submenu>
-
+                        <p:submenu label="Reportes" icon="fa fa-file-pdf-o">
+                            <p:menuitem actionListener="#{docenteBean.docentesServicioProfesionalReport}"
+                                        ajax="false"
+                                        target="_blank" 
+                                        value="Docentes S.P." icon="fa fa-file-o"/>
+                        </p:submenu>     
                         <ui:insert name="add-menu-items"> </ui:insert>
                         
                         <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>

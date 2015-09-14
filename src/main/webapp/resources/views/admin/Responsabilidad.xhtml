@@ -10,7 +10,7 @@
     </ui:define>
     
     <ui:define name="title-view">
-        Asignar Responsabilidad
+        Asignar Responsabilidad a los docentes de la #{identityBean.principal.escuela.nombreescuela}
         <h2 class="title"> Asignar Actividad </h2>
     </ui:define>
                     
@@ -36,11 +36,11 @@
                         <h:outputText value="Busqueda de responsabilidades:" />
                         <p:inputText id="globalFilter" onkeyup="PF('resp_table').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
                         <p:spacer width="600" height="10" />
-                        <p:commandButton id="insert_button" update=":dialogResponsabilidad" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('dialog_responsabilidad').show()"  value="Ingresar Responsabilidad" icon="fa fa-plus">
+                        <p:commandButton id="insert_button" update=":dialogResponsabilidad" style="float: right" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('dialog_responsabilidad').show()"  value="Ingresar Responsabilidad" icon="fa fa-plus">
                             <f:setPropertyActionListener target="#{responsabilidadBean.insert}" value="true" />
                         </p:commandButton>
                         <p:spacer width="10" />
-                        <p:commandLink ajax="false">
+                        <p:commandLink ajax="false" style="float: right">
                             <p:graphicImage library="img" name="pdf.png"/>
                             <f:setPropertyActionListener value="Responsabilidad" target="#{exporter.title}" />
                             <p:dataExporter type="pdf" target="responsabilidadTable" fileName="responsabilidadPDF" preProcessor="#{exporter.preProcessPDF}" />
@@ -78,10 +78,14 @@
                     <h:panelGroup layout="block2" rendered="#{responsabilidadBean.insert == true}">
                         <p:selectOneMenu id="docente" value="#{responsabilidadBean.idDocente}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
                             <f:selectItems value="#{responsabilidadBean.docenteList}" var="docente" itemValue="#{docente.idDocente}" itemLabel="#{docente.user.nombres} #{docente.user.apellidos}"/>
+                            <p:ajax event="change" update="horasAct" listener="#{responsabilidadBean.showHorasActuales()}" />
                         </p:selectOneMenu>
                         <p:tooltip id="forDocente" for="docente" value="Seleccione el docente" />
                     </h:panelGroup>
-
+                    
+                    <p:outputLabel for="horasAct" value="Numero de horas asignadas actualmente: " />
+                    <p:outputLabel id="horasAct" value="#{responsabilidadBean.horasActuales}" />
+                    
                     <p:outputLabel for="actividad" value="Actividad: " rendered="#{responsabilidadBean.insert == true}"/>
                     <p:selectOneMenu id="actividad" value="#{responsabilidadBean.idactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" rendered="#{responsabilidadBean.insert == true}">
                         <f:selectItem itemValue="0" itemLabel="Seleccione una actividad"  />
@@ -90,8 +94,9 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="tiempo" value="Tipo de Tiempo: " />
-                    <h:panelGroup layout="block2">
+                    <h:panelGroup id="tipoTiempo" layout="block2">
                         <p:selectOneMenu id="tiempo" value="#{responsabilidadBean.tipodetiempo}" effect="fade" required="true" >    
+                            <f:selectItem itemValue="Obligatorio" itemLabel="Tiempo Obligatorio" itemDisabled="#{responsabilidadBean.sobrecarga == true}"/>
                             <f:selectItem itemValue="Integral" itemLabel="Tiempo Integral"/>
                             <f:selectItem itemValue="Adicional" itemLabel="Tiempo Adicional"/>
                         </p:selectOneMenu>
@@ -122,10 +127,16 @@
         </p:dialog>
         
         <p:dialog header="Vincular a Trabajo de Graduacion" id="dialogTGExiste" widgetVar="tg_existe" modal="true" resizable="false" closable="false" width="700" height="450">
-            <center><h2 class="title">Vincular a un Trabajo de Graduacion En Curso</h2></center>
+            <center><h2 class="title">Vincular a un Trabajo de Graduacion En Desarrollo</h2></center>
             <h:form id="tge_form">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <p:dataTable id="tge" var="tdg" value="#{responsabilidadBean.trabajoGraduacionList}" style="width: 90%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="tge_table">                           
+                    <f:facet name="header" >
+                        <p:outputPanel>
+                            <h:outputText value="Busqueda de trabajos de graduacion:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('tge_table').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        </p:outputPanel>
+                    </f:facet>
                     <p:column style="width: 70%" headerText="Tema" filterBy="#{tdg.tematg}" filterStyleClass="hide">                    
                         <h:outputText value="#{tdg.tematg}" class="center-element"/>
                     </p:column>
@@ -139,6 +150,153 @@
                 </p:dataTable>
                 <br />
                 <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('tg_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Vincular a Proyectos" id="dialogProyectoExiste" widgetVar="proyecto_existe" modal="true" resizable="false" closable="false" width="700" height="450">
+            <center><h2 class="title">Vincular a un Proyecto En Curso</h2></center>
+            <h:form id="proyecto_form">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p:dataTable id="proyecto" var="pry" value="#{responsabilidadBean.proyectoList}" style="width: 90%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="proyecto_table">                           
+                    <f:facet name="header" >
+                        <p:outputPanel>
+                            <h:outputText value="Busqueda de proyectos:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('proyecto_table').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column style="width: 70%" headerText="Proyecto" filterBy="#{pry.nombreproyecto}" filterStyleClass="hide">                    
+                        <h:outputText value="#{pry.nombreproyecto}" class="center-element"/>
+                    </p:column>
+                    <p:column style="width: 20%">
+                        <f:facet name="header">
+                            <h:outputText value="Acciones" />
+                        </f:facet>
+                        <p:growl id="messages" />  
+                        <p:commandButton id="vincular" actionListener="#{responsabilidadBean.vincularProyecto(pry)}" update=":responsabilidadForm" oncomplete="PF('proyecto_existe').hide()" icon="fa fa-external-link" />
+                    </p:column>
+                </p:dataTable>
+                <br />
+                <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('proyecto_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Nuevo Trabajo de Graduacion" id="dialogNuevoTG" widgetVar="new_tg" modal="true" resizable="false" closable="false">
+            <h:form id="newTG">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
+                    <p:outputLabel for="tema" value="Tema: " />
+                    <p:inputText id="tema" value="#{responsabilidadBean.tematg}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo">
+                        <f:validateLength minimum="3" maximum="100" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="descripcion" value="Descripcion: " />
+                    <p:inputTextarea id="descripcion" value="#{responsabilidadBean.descripciontg}" required="true">
+                        <f:validateLength minimum="3" maximum="150" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="observacion" value="Observaciones: " />
+                    <p:inputTextarea id="observacion" value="#{responsabilidadBean.observaciontg}" required="true">
+                        <f:validateLength minimum="3" maximum="100" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
+                    <p:calendar id="fechaInicio" value="#{responsabilidadBean.fechainiciotg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                        <p:ajax event="dateSelect" update="fechaFin" />
+                    </p:calendar>
+                                     
+                    <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
+                    <p:calendar id="fechaFin" value="#{responsabilidadBean.fechafintg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">                        
+                        <f:attribute name="startDate" value="#{responsabilidadBean.fechainiciotg}" />
+                        <f:validator validatorId="dateRangeValidator" />
+                    </p:calendar>
+                    
+                    <p:outputLabel for="estado" value="Estado actual: "/>
+                    <h:panelGroup layout="block2">
+                        <p:selectOneMenu id="estado" value="#{responsabilidadBean.estadotg}" effect="fade" required="true" >    
+                            <f:selectItem itemValue="En desarrollo" itemLabel="En desarrollo"/>
+                            <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forEstado" for="estado" value="Seleccione el estado actual del Trabajo de Graduacion" />
+                    </h:panelGroup>
+                    
+                    <p:outputLabel id="prorroga" value="Tiene prorroga este Trabajo de Graduacion? " />
+                    <p:selectBooleanCheckbox value="#{responsabilidadBean.prorrogatg}" />
+                    
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{responsabilidadBean.addTDG()}" update=":responsabilidadForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('new_tg').hide()" icon="fa fa-plus" />
+                    <p:commandButton id="cancel" value="Cancelar" update="newTG" process="@this" oncomplete="PF('new_tg').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Nuevo Proyecto" id="dialogNewProyecto" widgetVar="new_proyecto" modal="true" resizable="false" closable="false">
+            <h:form id="newProyecto">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    
+                    <p:outputLabel for="nombre" value="Nombre de Proyecto: " />
+                    <p:inputText id="nombre" value="#{responsabilidadBean.nombreproyecto}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo">
+                        <f:validateLength minimum="3" maximum="100" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="descripcion" value="Descripción: " />
+                    <p:inputTextarea id="descripcion" value="#{responsabilidadBean.descripcion}" required="true">
+                        <f:validateLength minimum="3" maximum="150" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="observacion" value="Observaciones: " />
+                    <p:inputTextarea id="observacion" value="#{responsabilidadBean.observacion}" required="true">
+                        <f:validateLength minimum="3" maximum="100" />
+                    </p:inputTextarea>
+                    
+                    <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
+                    <p:calendar id="fechaInicio" value="#{responsabilidadBean.fechainicioProyecto}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                        <p:ajax event="dateSelect" update="fechaFin" />
+                    </p:calendar>
+                                     
+                    <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
+                    <p:calendar id="fechaFin" value="#{responsabilidadBean.fechafinProyecto}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
+                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">
+                        <f:attribute name="startDate" value="#{responsabilidadBean.fechainicioProyecto}" />
+                        <f:validator validatorId="dateRangeValidator" />
+                    </p:calendar>
+                    
+                    <p:outputLabel for="estado" value="Estado actual: " />
+                    <h:panelGroup layout="block2">
+                        <p:selectOneMenu id="estado" value="#{responsabilidadBean.estadoproyecto}" effect="fade" required="true" >    
+                            <f:selectItem itemValue="En desarrollo" itemLabel="En desarrollo"/>
+                            <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forEstado" for="estado" value="Seleccione el estado actual del Proyecto" />
+                    </h:panelGroup>
+                    
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{responsabilidadBean.addProyecto()}" update=":responsabilidadForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('new_proyecto').hide()" icon="fa fa-plus" />
+                    <p:commandButton id="cancel" value="Cancelar" update="newProyecto" process="@this" oncomplete="PF('new_proyecto').hide()" icon="fa fa-ban">
+                        <p:resetInput target="update" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Sobrecargar Docente" id="dialogSobrecarga" widgetVar="sobrecarga_docente" modal="true" resizable="false" closable="false">
+            <h:form id="sobrecarga">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Este docente ya cumple con su tiempo obligatorio desea sobrecargarlo?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="yes" value="Si" update=":responsabilidadForm:tipoTiempo" oncomplete="PF('sobrecarga_docente').hide()" icon="fa fa-check" >
+                        <f:setPropertyActionListener target="#{responsabilidadBean.sobrecarga}" value="true" />
+                    </p:commandButton>
+                    <p:commandButton id="no" value="No" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('sobrecarga_docente').hide(); PF('dialog_responsabilidad').hide()" icon="fa fa-ban" >
+                        <f:setPropertyActionListener target="#{responsabilidadBean.sobrecarga}" value="false" />
+                    </p:commandButton>
+                </h:panelGrid>
             </h:form>
         </p:dialog>
         

@@ -7,6 +7,7 @@ package com.siacra.daos;
 
 import com.siacra.models.Responsabilidad;
 import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -85,6 +86,16 @@ public class ResponsabilidadDao {
     public List<Responsabilidad> getResponsabilidadesByDocente(int docente){
         List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad WHERE iddocente=?").setParameter(0, docente).list();
         return list;
+    }
+    
+    /**
+     * Get Horas Totales asignadas By Docente
+     *
+     * @return int Sumatoria de horas asignadas actualmente
+     */
+    public Long getHorasActualesByDocente(int docente){
+        Query horas = getSessionFactory().getCurrentSession().createQuery("SELECT SUM(totalhoras) AS resultado FROM Responsabilidad WHERE iddocente=? AND tipodetiempo='Obligatorio'").setParameter(0, docente);
+        return (Long) horas.uniqueResult();
     }
     
     /**

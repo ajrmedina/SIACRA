@@ -11,25 +11,29 @@
     
        
     <ui:define name="title-view">
-        Proyectos de la Escuela de 
+        Proyectos de la #{identityBean.principal.escuela.nombreescuela} 
     </ui:define>
                     
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="proyectos" var="proyecto" value="#{proyectoBean.proyectoList}" style="width: 95%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="proyectoTable" emptyMessage="No hay registros en base al criterio proporcionado">
-                <f:facet name="header">                  
-                    <p:commandButton id="insert_button" update=":dialogUpdateProyecto" style="float: right" actionListener="#{proyectoBean.reset()}" oncomplete="PF('update_proyecto').show()" value="Nuevo Proyecto" icon="fa fa-plus">
-                        <f:setPropertyActionListener target="#{proyectoBean.insert}" value="true" />
-                    </p:commandButton>                      
-                    
-                    <p:outputPanel style="float: left">
+            <p:dataTable id="proyectos" var="proyecto" value="#{proyectoBean.proyectoList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="proyectoTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">
+                    <p:outputPanel>
                         <h:outputText value="Búsqueda de Proyectos:" />
                         <p:inputText id="globalFilter" onkeyup="PF('proyectoTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <p:spacer width="750" height="10" />
+                        <p:commandButton id="insert_button" update=":dialogUpdateProyecto" style="float: right" actionListener="#{proyectoBean.reset()}" oncomplete="PF('update_proyecto').show()" value="Nuevo Proyecto" icon="fa fa-plus">
+                            <f:setPropertyActionListener target="#{proyectoBean.insert}" value="true" />
+                        </p:commandButton> 
+                        <p:spacer width="10" />
+                        <p:commandLink ajax="false" style="float: right">
+                            <p:graphicImage library="img" name="pdf.png"/>
+                            <f:setPropertyActionListener value="Proyectos" target="#{exporter.title}" />
+                            <p:dataExporter type="pdf" target="proyectos" fileName="proyectosPDF" preProcessor="#{exporter.preProcessPDF}" />
+                        </p:commandLink>
                     </p:outputPanel>
-                    
-                    <div style="clear:both" />
-                </f:facet>                                 
+                </f:facet>                             
                 <p:column style="width: 30%" headerText="Nombre" filterBy="#{proyecto.nombreproyecto}" filterStyleClass="hide">                    
                     <h:outputText value="#{proyecto.nombreproyecto}" class="center-element"/>
                 </p:column>
@@ -54,7 +58,7 @@
                     <h:outputText value="#{proyecto.aprobarproyecto?'Aprobado':'En Espera'}" />
                 </p:column>                
                               
-                <p:column style="width: 10%">
+                <p:column style="width: 10%" exportable="false">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
@@ -91,11 +95,16 @@
                     
                     <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
                     <p:calendar id="fechaInicio" value="#{proyectoBean.fechainicio}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de inicio."/>                        
+                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                        <p:ajax event="dateSelect" update="fechaFin" />
+                    </p:calendar>
                                      
                     <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
                     <p:calendar id="fechaFin" value="#{proyectoBean.fechafin}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de finalizacion."/>                        
+                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">
+                        <f:attribute name="startDate" value="#{proyectoBean.fechainicio}" />
+                        <f:validator validatorId="dateRangeValidator" />
+                    </p:calendar>
                     
                     <p:outputLabel for="estado" value="Estado actual: " rendered="#{proyectoBean.insert == true}"/>
                     <h:panelGroup layout="block2" rendered="#{proyectoBean.insert == true}">

@@ -34,11 +34,11 @@ public class Responsabilidad implements Serializable {
     @JoinColumn(name = "IDACTIVIDAD",nullable = false)
     @ManyToOne(optional = false)
     private Actividad idactividad;
-    
-    @ManyToOne
-    @JoinColumn(name = "IDDOCENTE")
-    private Docente docente;
-    
+    @Basic(optional = false)
+    @NotNull
+    @JoinColumn(name = "IDDOCENTE", nullable = false)
+    @ManyToOne(optional = false)
+    private Docente iddocente;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -143,17 +143,17 @@ public class Responsabilidad implements Serializable {
     }
 
     /**
-     * @param docente the docente to set
+     * @param iddocente the iddocente to set
      */
-    public void setDocente(Docente docente) {
-        this.docente = docente;
+    public void setIddocente(Docente iddocente) {
+        this.iddocente = iddocente;
     }
 
     /**
      * @return the iddocente
      */
-    public Docente getDocente() {
-        return docente;
+    public Docente getIddocente() {
+        return iddocente;
     }
     
 }

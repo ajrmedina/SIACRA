@@ -18,7 +18,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.springframework.dao.DataAccessException;
 
 /**
  *
@@ -58,30 +57,25 @@ public class TrabajoGraduacionBean implements Serializable {
      */
     public void addTrabajoGraduacion(){
         try {
-            if(fechainiciotg.before(fechafintg)){
-                TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
-                //Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(getResponsabilidadBean().getIdDocente());
-                trabajograduacion.setIdresponsabilidad(null);
-                trabajograduacion.setTematg(tematg);
-                trabajograduacion.setDescripciontg(descripciontg);
-                trabajograduacion.setObservaciontg(observaciontg);
-                trabajograduacion.setEstadotg(estadotg);
-                trabajograduacion.setFechainiciotg(fechainiciotg);
-                trabajograduacion.setFechafintg(fechafintg);
-                trabajograduacion.setProrrogatg(false);
-                trabajograduacion.setAprobartg(true);
-                getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
-                addMessage("El Trabajo de Graduacion fue añadido correctamente");
-                reset();
-                this.setInsert(false);
-            }
-            else {
-               addMessage("No se pudo completar la insercion: la fecha de finalizacon debe ser mayor a la fecha de inicio"); 
-            }
+            TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
+            trabajograduacion.setIdresponsabilidad(null);
+            trabajograduacion.setTematg(tematg);
+            trabajograduacion.setDescripciontg(descripciontg);
+            trabajograduacion.setObservaciontg(observaciontg);
+            trabajograduacion.setEstadotg(estadotg);
+            trabajograduacion.setFechainiciotg(fechainiciotg);
+            trabajograduacion.setFechafintg(fechafintg);
+            trabajograduacion.setProrrogatg(prorrogatg);
+            trabajograduacion.setAprobartg(aprobargt);
+            getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
+            addMessage("El Trabajo de Graduacion fue añadido correctamente");
+            reset();
+            this.setInsert(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
     /**
      * Load Trabajo de Graduacion
      * @param trabajograduacion TrabajoGraduacion
@@ -117,21 +111,16 @@ public class TrabajoGraduacionBean implements Serializable {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            if(fechainiciotg.before(fechafintg)){
-                trabajograduacion.setTematg(getTematg());
-                trabajograduacion.setDescripciontg(getDescripciontg());
-                trabajograduacion.setObservaciontg(getObservaciontg());
-                trabajograduacion.setEstadotg(getEstadotg());
-                trabajograduacion.setFechainiciotg(getFechainiciotg());
-                trabajograduacion.setFechafintg(getFechafintg());
-                trabajograduacion.setProrrogatg(isProrrogatg());
-                trabajograduacion.setAprobartg(isAprobargt());
-                getTrabajoGraduacionService().updateTrabajoGraduacion(trabajograduacion);
-                addMessage("El trabajo de graduacion fue actualizado correctamente");
-            }
-            else {
-               addMessage("No se pudo completar la actualizacion: la fecha de finalizacon debe ser mayor a la fecha de inicio"); 
-            }
+            trabajograduacion.setTematg(getTematg());
+            trabajograduacion.setDescripciontg(getDescripciontg());
+            trabajograduacion.setObservaciontg(getObservaciontg());
+            trabajograduacion.setEstadotg(getEstadotg());
+            trabajograduacion.setFechainiciotg(getFechainiciotg());
+            trabajograduacion.setFechafintg(getFechafintg());
+            trabajograduacion.setProrrogatg(isProrrogatg());
+            trabajograduacion.setAprobartg(isAprobargt());
+            getTrabajoGraduacionService().updateTrabajoGraduacion(trabajograduacion);
+            addMessage("El trabajo de graduacion fue actualizado correctamente");
         } catch (Exception e) {
             e.printStackTrace();
         }
