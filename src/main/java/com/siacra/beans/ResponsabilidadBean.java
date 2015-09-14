@@ -67,11 +67,13 @@ public class ResponsabilidadBean implements Serializable {
     private int cdocente;
     private int idactividad;
     private int totalhoras;
+    private Long horasActuales;
     private String tipodetiempo;
     private List<SelectItem> opciones;    
     private String opcion;
     private boolean mostrar;
     private boolean insert;
+    private boolean sobrecarga;
     
     /************************************** Trabajo de Graduacion **************************************/
     
@@ -129,7 +131,7 @@ public class ResponsabilidadBean implements Serializable {
                     Actividad actividad = getActividadService().getActividadById(getIdactividad());
                     Docente docente = getDocenteService().getDocenteById(getIdDocente());
                     responsabilidad.setIdactividad(actividad);
-                    responsabilidad.setDocente(docente);
+                    responsabilidad.setIddocente(docente);
                     responsabilidad.setTotalhoras(getTotalhoras());
                     responsabilidad.setTipodetiempo(getTipodetiempo());
                     getResponsabilidadService().addResponsabilidad(responsabilidad);
@@ -197,7 +199,7 @@ public class ResponsabilidadBean implements Serializable {
     public void deleteResponsabilidad(){
         try {
             Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-            String eliminado = responsabilidad.getDocente().getUser().getNombres();
+            String eliminado = responsabilidad.getIddocente().getUser().getNombres();
             getResponsabilidadService().deleteResponsabilidad(responsabilidad);
             addMessage("La responsabilidad de "+eliminado+ "fue eliminada correctamente");
         } catch (Exception e) {
@@ -209,28 +211,42 @@ public class ResponsabilidadBean implements Serializable {
     public void showOpciones() {
         if(getIdactividad() != 0){
             Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            if(actividad.getIdtipoactividad().getTipoactividad().matches("(.*)Academica(.*)")){
+            if(actividad.getIdtipoactividad().getTipoactividad().matches("(.*)Academica(.*)"))
                 this.setMostrar(true);
-            }
-            else{
+            else
                 this.setMostrar(false);
-            }
         }
-        else{
+        else
             this.setMostrar(false);
-        }
     }
     
      public void refresh() {
         this.setResponsabilidadList(getResponsabilidadService().getResponsabilidadesByDocente(this.getCDocente()));
     }
     
+     public void showHorasActuales() {
+        try {
+            Long horas = getResponsabilidadService().getHorasActualesByDocente(this.getIdDocente());
+            this.setHorasActuales(horas);
+            Docente docente = getDocenteService().getDocenteById(getIdDocente());
+            if(this.getHorasActuales() > docente.getCategoria().getHorasObligatorias()){
+                RequestContext context = RequestContext.getCurrentInstance(); 
+                context.execute("PF('sobrecarga_docente').show();");
+            }
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+     
     public void reset() {
         this.totalhoras=0;
         this.idactividad=0;
         this.tipodetiempo="";
         this.opcion="";
         this.mostrar=false;
+        this.sobrecarga=false;
+        this.horasActuales=null;
     }
     
     /**
@@ -440,6 +456,20 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     /**
+     * @return the totalhoras
+     */
+    public Long getHorasActuales() {
+        return horasActuales;
+    }
+
+    /**
+     * @param totalhoras the totalhoras to set
+     */
+    public void setHorasActuales(Long horas) {
+        this.horasActuales = horas;
+    }
+    
+    /**
      * 
      * @return List Opciones 
      */
@@ -505,6 +535,20 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void setInsert(boolean insert) {
         this.insert = insert;
+    }
+    
+     /**
+     * @return 
+     */
+    public boolean getSobrecarga() {
+        return sobrecarga;
+    }
+
+    /**
+     * @param 
+     */
+    public void setSobrecarga(boolean sobrecarga) {
+        this.sobrecarga = sobrecarga;
     }
     
     public void addMessage(String mensaje) {

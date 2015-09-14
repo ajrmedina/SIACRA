@@ -78,10 +78,14 @@
                     <h:panelGroup layout="block2" rendered="#{responsabilidadBean.insert == true}">
                         <p:selectOneMenu id="docente" value="#{responsabilidadBean.idDocente}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
                             <f:selectItems value="#{responsabilidadBean.docenteList}" var="docente" itemValue="#{docente.idDocente}" itemLabel="#{docente.user.nombres} #{docente.user.apellidos}"/>
+                            <p:ajax event="change" update="horasAct" listener="#{responsabilidadBean.showHorasActuales()}" />
                         </p:selectOneMenu>
                         <p:tooltip id="forDocente" for="docente" value="Seleccione el docente" />
                     </h:panelGroup>
-
+                    
+                    <p:outputLabel for="horasAct" value="Numero de horas asignadas actualmente: " />
+                    <p:outputLabel id="horasAct" value="#{responsabilidadBean.horasActuales}" />
+                    
                     <p:outputLabel for="actividad" value="Actividad: " rendered="#{responsabilidadBean.insert == true}"/>
                     <p:selectOneMenu id="actividad" value="#{responsabilidadBean.idactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" rendered="#{responsabilidadBean.insert == true}">
                         <f:selectItem itemValue="0" itemLabel="Seleccione una actividad"  />
@@ -90,8 +94,9 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="tiempo" value="Tipo de Tiempo: " />
-                    <h:panelGroup layout="block2">
+                    <h:panelGroup id="tipoTiempo" layout="block2">
                         <p:selectOneMenu id="tiempo" value="#{responsabilidadBean.tipodetiempo}" effect="fade" required="true" >    
+                            <f:selectItem itemValue="Obligatorio" itemLabel="Tiempo Obligatorio" itemDisabled="#{responsabilidadBean.sobrecarga == true}"/>
                             <f:selectItem itemValue="Integral" itemLabel="Tiempo Integral"/>
                             <f:selectItem itemValue="Adicional" itemLabel="Tiempo Adicional"/>
                         </p:selectOneMenu>
@@ -144,9 +149,7 @@
                     </p:column>
                 </p:dataTable>
                 <br />
-                <!--
                 <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('tg_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
-                -->
             </h:form>
         </p:dialog>
         
@@ -173,9 +176,7 @@
                     </p:column>
                 </p:dataTable>
                 <br />
-                <!--
                 <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('proyecto_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
-                -->
             </h:form>
         </p:dialog>
         
@@ -226,11 +227,9 @@
                     <p:selectBooleanCheckbox value="#{responsabilidadBean.prorrogatg}" />
                     
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{responsabilidadBean.addTDG()}" update=":responsabilidadForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('new_tg').hide()" icon="fa fa-plus" />
-                    <!--
                     <p:commandButton id="cancel" value="Cancelar" update="newTG" process="@this" oncomplete="PF('new_tg').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
-                    </p:commandButton> 
-                    -->
+                    </p:commandButton>
                 </h:panelGrid>
             </h:form>
         </p:dialog>
@@ -279,11 +278,24 @@
                     </h:panelGroup>
                     
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{responsabilidadBean.addProyecto()}" update=":responsabilidadForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('new_proyecto').hide()" icon="fa fa-plus" />
-                    <!--
                     <p:commandButton id="cancel" value="Cancelar" update="newProyecto" process="@this" oncomplete="PF('new_proyecto').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
-                    </p:commandButton> 
-                    -->
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Sobrecargar Docente" id="dialogSobrecarga" widgetVar="sobrecarga_docente" modal="true" resizable="false" closable="false">
+            <h:form id="sobrecarga">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Este docente ya cumple con su tiempo obligatorio desea sobrecargarlo?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="yes" value="Si" update=":responsabilidadForm:tipoTiempo" oncomplete="PF('sobrecarga_docente').hide()" icon="fa fa-check" >
+                        <f:setPropertyActionListener target="#{responsabilidadBean.sobrecarga}" value="true" />
+                    </p:commandButton>
+                    <p:commandButton id="no" value="No" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('sobrecarga_docente').hide(); PF('dialog_responsabilidad').hide()" icon="fa fa-ban" >
+                        <f:setPropertyActionListener target="#{responsabilidadBean.sobrecarga}" value="false" />
+                    </p:commandButton>
                 </h:panelGrid>
             </h:form>
         </p:dialog>
