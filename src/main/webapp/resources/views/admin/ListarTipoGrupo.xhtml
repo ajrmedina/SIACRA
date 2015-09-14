@@ -1,0 +1,121 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Tipo grupo
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Tipos de grupos
+    </ui:define>
+                    
+    <ui:define name="content">
+        
+        <h:form id="list">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="tipogrupo" var="tipogrupo" value="#{tipogrupoBean.gruposList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipogruposTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header">                  
+                   
+                   <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateTipoGrupo" actionListener="#{tipogrupoBean.reset()}" oncomplete="PF('update_tipogrupo').show()"  value="Nuevo tipo de grupo" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{tipogrupoBean.insert}" value="true" />
+                    </p:commandButton>
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Busqueda de tipo de grupos" />
+                        <p:inputText id="globalFilter" onkeyup="PF('tipogruposTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                    </p:outputPanel>
+                    <div style="clear:both" />
+                </f:facet>
+                
+                <p:column style="width: 20%" headerText="Código tipo de grupo" filterBy="#{tipogrupo.tipoGrupo}" filterStyleClass="hide">                         
+                    <h:outputText value="#{tipogrupo.tipoGrupo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 50%" headerText="Nombre del tipo de grupo" filterBy="#{tipogrupo.nombreGrupo}" filterStyleClass="hide">                  
+                    <h:outputText value="#{tipogrupo.nombreGrupo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 10%" headerText="Habilitado" filterBy="#{tipogrupo.tgEstado}" filterStyleClass="hide">
+                    <h:outputText value="#{tipogrupo.tgEstado?'Habilitado':'Deshabilitado'}"/>
+                </p:column>
+                
+                <p:column style="width: 15%" headerText="Acciones">
+                    <p:growl id="messages" />
+                    <p:commandButton id="update_button" update=":dialogUpdateTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('update_tipogrupo').show()" icon="fa fa-edit" >
+                        <f:setPropertyActionListener target="#{tipogrupoBean.insert}" value="false" />
+                    </p:commandButton>
+                    <p:commandButton id="delete_button" update=":dialogDeleteTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('delete_tipogrupo').show()" icon="fa fa-times" />
+                    <p:commandButton id="locked" update=":dialogLockTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('lock_tipogrupo').show()" icon="fa fa-unlock-alt" rendered="#{tipogrupo.tgEstado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('unlock_tipogrupo').show()" icon="fa fa-unlock" rendered="#{tipogrupo.tgEstado == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Tipo de grupo" rendered="#{tipogrupo.tgEstado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Tipo de grupo" rendered="#{tipogrupo.tgEstado == false}" />
+                    
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        
+        <p:dialog header="#{tipogrupoBean.insert?'Nuevo tipo de grupo':'Actualizar tipo de grupo'}  " id="dialogUpdateTipoGrupo" widgetVar="update_tipogrupo" modal="true" resizable="false" closable="false">
+            <h:form id="update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                                      
+                    <p:outputLabel for="tipogrupo" value="Tipo grupo: " />
+                <p:inputText id="tipogrupo" value="#{tipogrupoBean.tipoGrupos}" required="true">
+                    <f:validateLength minimum="2" maximum="6" />
+                </p:inputText>
+                
+                <p:outputLabel for="nombregrupo" value="Nombres del tipo de grupo: " />
+                <p:inputText id="nombregrupo" value="#{tipogrupoBean.nombreGrupo}" required="true" >
+                    <f:validateLength maximum="25" minimum="5" />
+                </p:inputText>
+                    
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipogrupoBean.updateTipoGrupo()}" update=":list:tipogrupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-refresh" rendered="#{tipogrupoBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{tipogrupoBean.addTipoGrupo()}" update=":list:tipogrupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-plus" rendered="#{tipogrupoBean.insert == true}" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tipogrupo').hide()" icon="fa fa-ban">
+                      <p:resetInput target="update" />
+                      <f:setPropertyActionListener target="#{tipogrupoBean.insert}" value="false" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Eliminar Tipo de grupo  " id="dialogDeleteTipoGrupo" widgetVar="delete_tipogrupo" modal="true" resizable="false" closable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar el tipo de grupo  #{tipogrupoBean.tipoGrupos} - #{tipogrupoBean.nombreGrupo}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{tipogrupoBean.deleteTipoGrupo()}" update=":list:tipogrupo" oncomplete="PF('delete_tipogrupo').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_tipogrupo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        
+        <p:dialog header="Bloquear Tipo de grupo" id="dialogLockTipoGrupo" widgetVar="lock_tipogrupo" modal="true" resizable="false" closable="false">
+            <h:form id="lock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea bloquear el tipo de grupo  #{tipogrupoBean.tipoGrupos} - #{tipogrupoBean.nombreGrupo}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{tipogrupoBean.lockedTipoGrupo()}" update=":list:tipogrupo" oncomplete="PF('lock_tipogrupo').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_tipogrupo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Desbloquear Tipo de grupo" id="dialogUnlockTipoGrupo" widgetVar="unlock_tipogrupo" modal="true" resizable="false" closable="false">
+            <h:form id="unlock">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea desbloquear el tipo de grupo  #{tipogrupoBean.tipoGrupos} - #{tipogrupoBean.nombreGrupo}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{tipogrupoBean.unlockedTipoGrupo()}" update=":list:tipogrupo" oncomplete="PF('unlock_tipogrupo').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_tipogrupo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+    </ui:define>
+    
+</ui:composition>

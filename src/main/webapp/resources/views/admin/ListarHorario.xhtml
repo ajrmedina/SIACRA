@@ -20,7 +20,7 @@
             <p:dataTable id="horario" var="horario" value="#{horarioBean.horarioList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="horariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
-                   <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateHorario" actionListener="#{horarioBean.reset()}" oncomplete="PF('update_horario').show()"  value="Nueva Horario" icon="fa fa-plus">
+                   <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateHorario" actionListener="#{horarioBean.reset()}" oncomplete="PF('update_horario').show()"  value="Nuevo Horario" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{horarioBean.insert}" value="true" />
                     </p:commandButton>
                     <p:outputPanel style="float: left">
@@ -30,120 +30,136 @@
                     <div style="clear:both" />
                 </f:facet>
                 
-                <p:column style="width: 25%" headerText="Dia" filterBy="#{horario.dia1}" filterStyleClass="hide">                  
+                <p:column style="width: 15%" headerText="Dia" filterBy="#{horario.dia1}" filterStyleClass="hide">                  
                     <h:outputText value="#{horario.dia1}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 20%" headerText="Hora de inicio" filterBy="#{horario.hinicio1}" filterStyleClass="hide">                         
+                <p:column style="width: 10%" headerText="Hora de inicio" filterBy="#{horario.hinicio1}" filterStyleClass="hide">                         
                     <h:outputText value="#{horario.hinicio1}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 20%" headerText="Hora de fin" filterBy="#{horario.hfin1}" filterStyleClass="hide">                         
+                <p:column style="width: 10%" headerText="Hora de fin" filterBy="#{horario.hfin1}" filterStyleClass="hide">                         
                     <h:outputText value="#{horario.hfin1}" class="center-element"/>
                 </p:column>
-                <p:column style="width: 25%" headerText="Dia" filterBy="#{horario.dia2}" filterStyleClass="hide">                  
+                <p:column style="width: 15%" headerText="Dia" filterBy="#{horario.dia2}" filterStyleClass="hide">                  
                     <h:outputText value="#{horario.dia2}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 20%" headerText="Hora de inicio" filterBy="#{horario.hinicio2}" filterStyleClass="hide">                         
+                <p:column style="width: 10%" headerText="Hora de inicio" filterBy="#{horario.hinicio2}" filterStyleClass="hide">                         
                     <h:outputText value="#{horario.hinicio2}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 20%" headerText="Hora de fin" filterBy="#{horario.hfin2}" filterStyleClass="hide">                         
+                <p:column style="width: 10%" headerText="Hora de fin" filterBy="#{horario.hfin2}" filterStyleClass="hide">                         
                     <h:outputText value="#{horario.hfin2}" class="center-element"/>
                 </p:column>
-                <p:column style="width: 20%" headerText="Habilitado" filterBy="#{horario.hoEstado}" filterStyleClass="hide">
+                <p:column style="width: 10%" headerText="Habilitado" filterBy="#{horario.hoEstado}" filterStyleClass="hide">
                     <h:outputText value="#{horario.hoEstado?'Habilitado':'Deshabilitado'}"/>
                 </p:column>
                 
-                <p:column style="width: 10%" headerText="Acciones">
+                <p:column style="width: 15%" headerText="Acciones">
                     <p:growl id="messages" />
-                    <p:commandButton id="update_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('update_actividad').show()" icon="fa fa-edit" />
-                    <p:commandButton id="delete_button" update=":dialogDeleteActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('delete_actividad').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('lock_actividad').show()" icon="fa fa-unlock-alt" rendered="#{actividad.estadoactividad == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('unlock_actividad').show()" icon="fa fa-unlock" rendered="#{actividad.estadoactividad == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Actividad" rendered="#{actividad.estadoactividad == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Actividad" rendered="#{actividad.estadoactividad == false}" />
+                    <p:commandButton id="update_button" update=":dialogUpdateHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('update_horario').show()" icon="fa fa-edit" >
+                        <f:setPropertyActionListener target="#{horarioBean.insert}" value="false" />
+                    </p:commandButton>
+                    <p:commandButton id="delete_button" update=":dialogDeleteHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('delete_horario').show()" icon="fa fa-times" />
+                    <p:commandButton id="locked" update=":dialogLockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('lock_horario').show()" icon="fa fa-unlock-alt" rendered="#{horario.hoEstado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('unlock_horario').show()" icon="fa fa-unlock" rendered="#{horario.hoEstado == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Horario" rendered="#{horario.hoEstado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Horario" rendered="#{horario.hoEstado == false}" />
                     
                 </p:column>
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{actividadBean.insert?'Nueva actividad':'Actualizar actividad'}  " id="dialogUpdateActividad" widgetVar="update_actividad" modal="true" resizable="false" closable="false">
+        <p:dialog header="#{horarioBean.insert?'Nuevo horario':'Actualizar horario'}  " id="dialogUpdateHorario" widgetVar="update_horario" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                                       
                     <p:outputLabel for="escuela" value="Escuela: " />
                     <h:panelGroup layout="block1">
-                        <p:selectOneMenu id="escuela" value="#{actividadBean.idescuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{actividadBean.escuelaList}" var="escuela" itemValue="#{escuela.idescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                        <p:selectOneMenu id="escuela" value="#{horarioBean.idescuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItems value="#{horarioBean.escuelaList}" var="escuela" itemValue="#{escuela.idescuela}" itemLabel="#{escuela.nombreescuela}"/>
                         </p:selectOneMenu>
-                        <p:tooltip id="forEscuela" for="escuela" value="Seleccione la escuela que correspondera dicha actividad" />
+                        <p:tooltip id="forEscuela" for="escuela" value="Seleccione la escuela que correspondera dicho horario" />
                     </h:panelGroup>
-                
-                    <p:outputLabel for="tipoactividad" value="Tipo Actividad: " />
-                    <h:panelGroup layout="block2">
-                        <p:selectOneMenu id="tipoactividad" value="#{actividadBean.idtipoactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{actividadBean.tipoActividadList}" var="tipoactividad" itemValue="#{tipoactividad.idtipoactividad}" itemLabel="#{tipoactividad.tipoactividad}"/>
-                        </p:selectOneMenu>
-                        <p:tooltip id="forTipoActividad" for="tipoactividad" value="Seleccione el tipo de actividad" />
-                    </h:panelGroup>
-                
-                    <p:outputLabel for="nombreactividad" value="Nombre de actividad: " />
-                    <p:inputText id="nombreactividad" value="#{actividadBean.nombreactividad}" required="true" validatorMessage="Solo letras son permitidas.">
-                        <f:validateLength minimum="1" maximum="50" />
-                        <f:validateRegex pattern="[ a-zA-Z]+$" />
-                    </p:inputText>
-               
-                    <p:outputLabel for="descripcionactividad" value="Descripción de la actividad: " />
-                    <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="false" validatorMessage="Solo letras son permitidas.">
-                        <f:validateLength minimum="1" maximum="50" />
-                    </p:inputTextarea>
                     
-                    <p:outputLabel id="aprobada" value="Aprobar actividad? " />
-                    <p:selectBooleanCheckbox value="#{actividadBean.aprovaractividad}" />
+                    <p:outputLabel for="dia1" value="Dia :" />
+                    <p:selectOneMenu id="dia1" value="#{horarioBean.dia1}" required="true">
+                        <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
+                        <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
+                        <f:selectItem itemLabel="Martes" itemValue="Martes" />
+                        <f:selectItem itemLabel="Miercoles" itemValue="Miercoles" />
+                        <f:selectItem itemLabel="Jueves" itemValue="Jueves" />
+                        <f:selectItem itemLabel="Viernes" itemValue="Viernes" />
+                        <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
+                        <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="hinicio1" value="Hora de inicio :" />
+                    <p:calendar id="hinicio1" value="#{horarioBean.hinicio1}" pattern="HH:mm" timeOnly="true"  required="true" requiredMessage="Ingrese hora de inicio"/>
+
+                    <p:outputLabel for="hfin1" value="Hora de fin :" />
+                    <p:calendar id="hfin1" value="#{horarioBean.hfin1}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Ingrese hora de fin" />
    
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{actividadBean.updateActividad()}" update=":list:actividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-refresh" rendered="#{actividadBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{actividadBean.addActividad()}" update=":list:actividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-plus" rendered="#{actividadBean.insert == true}" />
-                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_actividad').hide()" icon="fa fa-ban">
+                    <p:outputLabel for="dia2" value="Dia :" />
+                    <p:selectOneMenu id="dia2" value="#{horarioBean.dia2}" >
+                        <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
+                        <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
+                        <f:selectItem itemLabel="Martes" itemValue="Martes" />
+                        <f:selectItem itemLabel="Miercoles" itemValue="Miercoles" />
+                        <f:selectItem itemLabel="Jueves" itemValue="Jueves" />
+                        <f:selectItem itemLabel="Viernes" itemValue="Viernes" />
+                        <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
+                        <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="hinicio2" value="Hora de inicio :" />
+                    <p:calendar id="hinicio2" value="#{horarioBean.hinicio2}" pattern="HH:mm" timeOnly="true" requiredMessage="Ingrese hora de inicio"/>
+
+                    <p:outputLabel for="hfin2" value="Hora de fin :" />
+                    <p:calendar id="hfin2" value="#{horarioBean.hfin2}" pattern="HH:mm" timeOnly="true" requiredMessage="Ingrese hora de fin" />
+                    
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" rendered="#{horarioBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{horarioBean.addHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-plus" rendered="#{horarioBean.insert == true}" />
+                    <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_horario').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
-                      <f:setPropertyActionListener target="#{actividadBean.insert}" value="false" />
+                      <f:setPropertyActionListener target="#{horarioBean.insert}" value="false" />
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Eliminar Actividad  " id="dialogDeleteActividad" widgetVar="delete_actividad" modal="true" resizable="false" closable="false">
+        <p:dialog header="Eliminar horario  " id="dialogDeleteHorario" widgetVar="delete_horario" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el Actividad de  #{actividadBean.nombreactividad}?" />
+                <h:outputText value="Seguro que desea eliminar el horario de  #{horarioBean.dia1} - #{horarioBean.dia2}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{actividadBean.deleteActividad()}" update=":list:actividad" oncomplete="PF('delete_actividad').hide()" icon="fa fa-trash-o" />
-                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_actividad').hide()" icon="fa fa-ban" />
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{horarioBean.deleteHorario()}" update=":list:horario" oncomplete="PF('delete_horario').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_horario').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>
         
         
-        <p:dialog header="Bloquear actividad" id="dialogLockActividad" widgetVar="lock_actividad" modal="true" resizable="false" closable="false">
+        <p:dialog header="Bloquear horario" id="dialogLockHorario" widgetVar="lock_horario" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear la actividad #{actividad.nombreactividad} ?" />
+                <h:outputText value="Seguro que desea bloquear el horario de #{horarioBean.dia1} - #{horarioBean.dia2} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{actividadBean.lockedActividad()}" update=":list:actividad" oncomplete="PF('lock_actividad').hide()" icon="fa fa-times" />
-                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_actividad').hide()" icon="fa fa-ban" />
+                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{horarioBean.lockedHorario()}" update=":list:horario" oncomplete="PF('lock_horario').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_horario').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Desbloquear Actividad" id="dialogUnlockActividad" widgetVar="unlock_actividad" modal="true" resizable="false" closable="false">
+        <p:dialog header="Desbloquear horario" id="dialogUnlockHorario" widgetVar="unlock_horario" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear la actividad #{actividadBean.nombreactividad} ?" />
+                <h:outputText value="Seguro que desea desbloquear el horario de #{horarioBean.dia1} - #{horarioBean.dia2} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{actividadBean.unlockedActividad()}" update=":list:actividad" oncomplete="PF('unlock_actividad').hide()" icon="fa fa-check" />
-                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_actividad').hide()" icon="fa fa-ban" />
+                    <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{horarioBean.unlockedHorario()}" update=":list:horario" oncomplete="PF('unlock_horario').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_horario').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

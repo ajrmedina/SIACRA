@@ -193,6 +193,7 @@ public class HorarioBean implements Serializable{
          this.setHinicio2(null);
          this.setDia2("");
          this.setIdescuela(null);
+         this.hoEstado = false;
     }
     
     //Invocamos metodos de agregacion y agregamos parametros obtenidos de la vista
@@ -217,6 +218,8 @@ public class HorarioBean implements Serializable{
             else{
                 getHorarioService().addHorario(horario);
                 addMessage("El horario fue creado exitosamente");
+                reset();
+                setInsert(false);
 //                addMessage("El horario con periodo :" + formato.format(getHinicio())+ " - "+formato.format(getHfin()) + " para el dia : " + getDia()+ " fue creado exitosamente");
             }
         }catch (DataAccessException e){
@@ -282,10 +285,10 @@ public class HorarioBean implements Serializable{
         
         try {
             Horario horario = getHorarioService().getHorarioById(getIdHorario());
-            //String horarioBloqueada = horario.getDia()+" "+horario.getHinicio()+" - "+horario.getHfin();
+            String horarioBloqueado = horario.getDia1()+": "+horario.getHinicio1()+" - "+horario.getHfin1() + " a " + horario.getDia2()+": "+horario.getHinicio2()+" - "+horario.getHfin2();
             horario.setHoEstado(false);
             getHorarioService().updateHorario(horario);
-            //addMessage("El horario " + horarioBloqueada + " fue inhabilitado correctamente");
+            addMessage("El horario " + horarioBloqueado + " fue inhabilitado correctamente");
             
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -300,10 +303,10 @@ public class HorarioBean implements Serializable{
         
         try {
             Horario horario = getHorarioService().getHorarioById(getIdHorario());
-            //String horarioBloqueada = horario.getDia()+" "+horario.getHinicio()+" - "+horario.getHfin();
+            String horarioBloqueado = horario.getDia1()+": "+horario.getHinicio1()+" - "+horario.getHfin1() + " a " + horario.getDia2()+": "+horario.getHinicio2()+" - "+horario.getHfin2();
             horario.setHoEstado(true);
             getHorarioService().updateHorario(horario);
-            //addMessage("El horario " + horarioBloqueada + " fue inhabilitado correctamente");
+            addMessage("El horario " + horarioBloqueado + " fue habilitado correctamente");
             
         } catch (DataAccessException e) {
             e.printStackTrace();
