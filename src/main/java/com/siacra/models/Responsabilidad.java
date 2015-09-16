@@ -6,13 +6,11 @@
 package com.siacra.models;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  *
@@ -34,32 +34,39 @@ public class Responsabilidad implements Serializable {
     @JoinColumn(name = "IDACTIVIDAD",nullable = false)
     @ManyToOne(optional = false)
     private Actividad idactividad;
-    @Basic(optional = false)
-    @NotNull
-    @JoinColumn(name = "IDDOCENTE", nullable = false)
-    @ManyToOne(optional = false)
-    private Docente iddocente;
+    
+    @ManyToOne
+    @JoinColumn(name="iddocente")
+    private Docente docente;
+    
+    @JoinColumn(name = "IDCICLO")
+    @ManyToOne
+    private Ciclo idciclo;
+    
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "IDRESPONSABILIDAD", nullable = false)
-    private Integer idresponsabilidad;
+    @GeneratedValue
+    @Column(name="idresponsabilidad", unique = true, nullable = false)
+    private int idresponsabilidad;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "TOTALHORAS", nullable = false)
     private int totalhoras;
-    @Size(max = 9)
-    @Column(name = "TIPODETIEMPO", length = 9)
+    @Size(max = 11)
+    @Column(name = "TIPODETIEMPO", length = 11)
     private String tipodetiempo;
     
-    @OneToMany(mappedBy = "idresponsabilidad")
-    private Collection<TrabajoGraduacion> tgCollection;
+    @OneToMany(mappedBy="responsabilidad")
+    @Cascade({CascadeType.DELETE})
+    private Set<TrabajoGraduacion> tg;
     
-    @OneToMany(mappedBy = "idresponsabilidad")
-    private Collection<Proyecto> proyectoCollection;
+    @OneToMany(mappedBy = "responsabilidad")
+    @Cascade({CascadeType.DELETE})
+    private Set<Proyecto> proyecto;
     
     @OneToMany(mappedBy="responsabilidad")
+    @Cascade({CascadeType.DELETE})
     private Set<AcademicaGrupo> academicaGrupo;
     
     
@@ -75,11 +82,11 @@ public class Responsabilidad implements Serializable {
         this.totalhoras = totalhoras;
     }
 
-    public Integer getIdresponsabilidad() {
+    public int getIdresponsabilidad() {
         return idresponsabilidad;
     }
 
-    public void setIdresponsabilidad(Integer idresponsabilidad) {
+    public void setIdresponsabilidad(int idresponsabilidad) {
         this.idresponsabilidad = idresponsabilidad;
     }
 
@@ -98,21 +105,21 @@ public class Responsabilidad implements Serializable {
     public void setTipodetiempo(String tipodetiempo) {
         this.tipodetiempo = tipodetiempo;
     }
-
-    public Collection<TrabajoGraduacion> getTrabajoGraduacionCollection() {
-        return tgCollection;
-    }
-
-    public void setTrabajoGraduacionCollection(Collection<TrabajoGraduacion> tgCollection) {
-        this.tgCollection = tgCollection;
+    
+    public Set<TrabajoGraduacion> getTrabajoGraduacion() {
+        return tg;
     }
     
-    public Collection<Proyecto> getProyectoCollection() {
-        return proyectoCollection;
+    public void setTrabajoGraduacion(Set<TrabajoGraduacion> tg) {
+        this.tg = tg;
+    }
+    
+    public Set<Proyecto> getProyecto() {
+        return proyecto;
     }
 
-    public void setProyectoCollection(Collection<Proyecto> proyectoCollection) {
-        this.proyectoCollection = proyectoCollection;
+    public void setProyecto(Set<Proyecto> proyecto) {
+        this.proyecto = proyecto;
     }
     
     public Set<AcademicaGrupo> getAcademicaGrupo() {
@@ -143,17 +150,30 @@ public class Responsabilidad implements Serializable {
     }
 
     /**
-     * @param iddocente the iddocente to set
+     * @param docente the docente to set
      */
-    public void setIddocente(Docente iddocente) {
-        this.iddocente = iddocente;
+     public Docente getDocente() {
+        return docente;
     }
-
+     
     /**
      * @return the iddocente
      */
-    public Docente getIddocente() {
-        return iddocente;
+    public void setDocente(Docente docente) {
+        this.docente = docente;
     }
     
+    /**
+     * @param idciclo the idciclo to set
+     */
+    public void setIdciclo(Ciclo idciclo) {
+        this.idciclo = idciclo;
+    }
+
+    /**
+     * @return the idciclo
+     */
+    public Ciclo getIdciclo() {
+        return idciclo;
+    }
 }

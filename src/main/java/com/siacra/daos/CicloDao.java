@@ -70,4 +70,9 @@ public class CicloDao {
         return list;
     }
     
+    public Ciclo getCicloActual(int year) {
+        Ciclo actual = (Ciclo) getSessionFactory().getCurrentSession().createQuery("FROM Ciclo WHERE anio=? ORDER BY ciclo DESC").setParameter(0, year).setMaxResults(1).uniqueResult();
+        return actual;
+    }
+    
 }

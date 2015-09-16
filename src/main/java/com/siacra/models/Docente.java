@@ -46,8 +46,8 @@ public class Docente implements Serializable {
     @JoinColumn(name="idcategoria")
     private Categoria categoria;
     
-    @OneToMany(mappedBy="iddocente")
-    private Set<Responsabilidad> responsabilidad;
+    /*@OneToMany(mappedBy="docente")
+    private Set<Responsabilidad> responsabilidad;*/
     
     /**
      * Get Id Docente
@@ -148,18 +148,18 @@ public class Docente implements Serializable {
      *
      * @return responsabilidad Set<Responsabilidad>
      */
-    public Set<Responsabilidad> getResponsabilidad() {
+    /*public Set<Responsabilidad> getResponsabilidad() {
         return responsabilidad;
-    }
+    }*/
     
     /**
      * Set Responsabilidad
      *
      * @param responsabilidad Set<Responsabilidad>
      */
-    public void setResponsabilidad(Set<Responsabilidad> responsabilidad) {
+    /*public void setResponsabilidad(Set<Responsabilidad> responsabilidad) {
         this.responsabilidad = responsabilidad;
-    }
+    }*/
     
 }
 

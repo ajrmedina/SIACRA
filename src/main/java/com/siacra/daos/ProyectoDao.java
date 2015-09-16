@@ -63,6 +63,16 @@ public class ProyectoDao {
         List list = getSessionFactory().getCurrentSession().createQuery("from Proyecto WHERE estadoproyecto!='Finalizado' AND idresponsabilidad IS NULL").list();
         return list;
     }
-          
     
+    public boolean getExistProyectoByResponsabilidad(int idresponsabilidad){         
+        List result = getSessionFactory().getCurrentSession()
+                .createQuery("FROM Proyecto WHERE idresponsabilidad=?").setParameter(0, idresponsabilidad).list();
+        return result.isEmpty();
+    }
+    
+    public Proyecto getProyectoByResponsabilidad(int idresponsabilidad){         
+        Proyecto result = (Proyecto) getSessionFactory().getCurrentSession()
+                .createQuery("FROM Proyecto WHERE idresponsabilidad=?").setParameter(0, idresponsabilidad).setMaxResults(1).uniqueResult();
+        return result;
+    }
 }

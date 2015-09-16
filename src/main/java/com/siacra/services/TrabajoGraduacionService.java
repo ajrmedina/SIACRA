@@ -87,4 +87,13 @@ public class TrabajoGraduacionService {
     public List<TrabajoGraduacion> getTrabajosGraduacionFinalizados() {
         return getTrabajoGraduacionDao().getTrabajosGraduacionFinalizados();
     }
+    
+    public boolean getExistTGByResponsabilidad(int id) {
+        return getTrabajoGraduacionDao().getExistTGByResponsabilidad(id);
+    }
+    
+    public TrabajoGraduacion getTrabajoGraduacionByResponsabilidad(int id) {
+        return getTrabajoGraduacionDao().getTrabajoGraduacionByResponsabilidad(id);
+    }
+    
 }
