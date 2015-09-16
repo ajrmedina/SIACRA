@@ -17,6 +17,9 @@
     <ui:define name="content">
         
         <h:form id="listar">
+            <!--
+                <f:event type="preRenderView" listener='' />
+            -->
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:growl id="messages" />  
             <h:panelGrid columns="2" cellpadding="5" class="center-element" style="margin-left: 60px ">
@@ -35,8 +38,10 @@
                     <p:outputPanel>
                         <h:outputText value="Busqueda de responsabilidades:" />
                         <p:inputText id="globalFilter" onkeyup="PF('resp_table').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
-                        <p:spacer width="600" height="10" />
-                        <p:commandButton id="insert_button" update=":dialogResponsabilidad" style="float: right" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('dialog_responsabilidad').show()"  value="Ingresar Responsabilidad" icon="fa fa-plus">
+                        <p:spacer width="600" height="10" rendered="#{responsabilidadBean.ciclo.ciEstado == true}" />
+                        <p:spacer width="400" height="10" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
+                        <h:outputText value="Ciclo Cerrado no se admiten modificaciones a la responsabilidad" style="color: red; float: right" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
+                        <p:commandButton id="insert_button" update=":dialogResponsabilidad" style="float: right" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('dialog_responsabilidad').show()"  value="Ingresar Responsabilidad" icon="fa fa-plus" rendered="#{responsabilidadBean.ciclo.ciEstado == true}">
                             <f:setPropertyActionListener target="#{responsabilidadBean.insert}" value="true" />
                         </p:commandButton>
                         <p:spacer width="10" />
@@ -63,7 +68,9 @@
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>
-                    <p:commandButton id="update_button" update=":dialogResponsabilidad" actionListener="#{responsabilidadBean.loadResponsabilidad(resp)}" oncomplete="PF('dialog_responsabilidad').show()" icon="fa fa-edit" />
+                    <p:commandButton id="update_button" update=":dialogResponsabilidad" actionListener="#{responsabilidadBean.loadResponsabilidad(resp)}" oncomplete="PF('dialog_responsabilidad').show()" icon="fa fa-edit" rendered="#{responsabilidadBean.ciclo.ciEstado == true}" />
+                    <p:commandButton id="delete_button" update=":dialogDeleteResponsabilidad" actionListener="#{responsabilidadBean.loadResponsabilidad(resp)}" oncomplete="PF('delete_responsabilidad').show()" icon="fa fa-times" />
+                    <h:outputText value="Ciclo Cerrado" style="color: red" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -77,6 +84,7 @@
                     <p:outputLabel for="docente" value="Docente: " rendered="#{responsabilidadBean.insert == true}"/>
                     <h:panelGroup layout="block2" rendered="#{responsabilidadBean.insert == true}">
                         <p:selectOneMenu id="docente" value="#{responsabilidadBean.idDocente}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItem itemValue="" itemLabel="Seleccione un docente"  />
                             <f:selectItems value="#{responsabilidadBean.docenteList}" var="docente" itemValue="#{docente.idDocente}" itemLabel="#{docente.user.nombres} #{docente.user.apellidos}"/>
                             <p:ajax event="change" update="horasAct" listener="#{responsabilidadBean.showHorasActuales()}" />
                         </p:selectOneMenu>
@@ -108,16 +116,16 @@
                         <f:validateDoubleRange minimum="1" maximum="99" />
                     </p:inputMask>
 
-                    <p:outputLabel for="opciones" value="Para actividades academicas *" rendered="#{responsabilidadBean.insert == true}" />
-                    <h:panelGrid id="opciones" columns="2" cellpadding="5" class="center-element" rendered="#{responsabilidadBean.insert == true}">
+                    <p:outputLabel for="opciones" value="Para actividades academicas *"  />
+                    <h:panelGrid id="opciones" columns="2" cellpadding="5" class="center-element" >
                         <p:outputLabel for="tipoacad" value="Vincular a: " rendered="#{responsabilidadBean.mostrar == true}" />
                         <p:multiSelectListbox id="tipoacad" value="#{responsabilidadBean.opcion}" effect="slide" showHeaders="false" rendered="#{responsabilidadBean.mostrar == true}">
                             <f:selectItems value="#{responsabilidadBean.opciones}" />
                         </p:multiSelectListbox>
                     </h:panelGrid>
                     
-                    <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.addResponsabilidad()}" update=":dialogTGExiste" icon="fa fa-plus" rendered="#{responsabilidadBean.insert == true}" />
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{responsabilidadBean.updateResponsabilidad()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialog_responsabilidad').hide()" icon="fa fa-refresh" rendered="#{responsabilidadBean.insert == false}" />
+                    <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.showDialog()}" update=":dialogTGExiste" icon="fa fa-plus" rendered="#{responsabilidadBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{responsabilidadBean.showDialog()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialog_responsabilidad').hide()" icon="fa fa-refresh" rendered="#{responsabilidadBean.insert == false}" />
                     <p:commandButton id="save_exit" value="Salir" update=":responsabilidadForm" process="@this" oncomplete="PF('dialog_responsabilidad').hide()" icon="fa fa-ban">
                       <p:resetInput target="responsabilidadForm" />
                       <f:setPropertyActionListener target="#{responsabilidadBean.insert}" value="false" />
@@ -145,7 +153,7 @@
                             <h:outputText value="Acciones" />
                         </f:facet>
                         <p:growl id="messages" />  
-                        <p:commandButton id="vincular" actionListener="#{responsabilidadBean.vincularTG(tdg)}" update=":responsabilidadForm" oncomplete="PF('tg_existe').hide()" icon="fa fa-external-link" />
+                        <p:commandButton id="vincular" actionListener="#{responsabilidadBean.vincularTG(tdg)}" update=":responsabilidadForm tge" oncomplete="PF('tg_existe').hide()" icon="fa fa-external-link" />
                     </p:column>
                 </p:dataTable>
                 <br />
@@ -172,7 +180,7 @@
                             <h:outputText value="Acciones" />
                         </f:facet>
                         <p:growl id="messages" />  
-                        <p:commandButton id="vincular" actionListener="#{responsabilidadBean.vincularProyecto(pry)}" update=":responsabilidadForm" oncomplete="PF('proyecto_existe').hide()" icon="fa fa-external-link" />
+                        <p:commandButton id="vincular" actionListener="#{responsabilidadBean.vincularProyecto(pry)}" update=":responsabilidadForm proyecto " oncomplete="PF('proyecto_existe').hide()" icon="fa fa-external-link" />
                     </p:column>
                 </p:dataTable>
                 <br />
@@ -296,6 +304,19 @@
                     <p:commandButton id="no" value="No" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('sobrecarga_docente').hide(); PF('dialog_responsabilidad').hide()" icon="fa fa-ban" >
                         <f:setPropertyActionListener target="#{responsabilidadBean.sobrecarga}" value="false" />
                     </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Eliminar Responsabilidad " id="dialogDeleteResponsabilidad" widgetVar="delete_responsabilidad" modal="true" resizable="false" closable="false">
+            <h:form id="delete">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Seguro que desea eliminar esta responsabilidad?" />
+                <br />
+                <h:outputText value="Advertencia: Se borrara cualquier Grupo, Trabajo de Graduacion o Proyecto Asociado" style="color: red" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{responsabilidadBean.deleteResponsabilidad()}" update=":listar:responsabilidadTable :listar:messages" oncomplete="PF('delete_responsabilidad').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_responsabilidad').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

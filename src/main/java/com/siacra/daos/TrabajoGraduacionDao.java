@@ -79,10 +79,29 @@ public class TrabajoGraduacionDao {
     /**
      * Get TrabajoGraduacion List
      *
-     * @return List - Lista TrabajoGraduacion
+     * @return List - Lista TrabajoGraduacion Finalizados
      */
     public List<TrabajoGraduacion> getTrabajosGraduacionFinalizados(){
         List list = getSessionFactory().getCurrentSession().createQuery("from TrabajoGraduacion WHERE estadotg!='Finalizado' AND idresponsabilidad IS NULL").list();
         return list;
     }
+    
+    /**
+     * Get Trabajo de Graduacion by Responsabilidad
+     * 
+     * @return TrabajoGraduacion
+     */
+    public boolean getExistTGByResponsabilidad(int idresponsabilidad){         
+        List result = getSessionFactory().getCurrentSession()
+                .createQuery("FROM TrabajoGraduacion WHERE idresponsabilidad=?").setParameter(0, idresponsabilidad).list();
+        return result.isEmpty();
+    }
+    
+    public TrabajoGraduacion getTrabajoGraduacionByResponsabilidad(int idresponsabilidad){         
+        TrabajoGraduacion result = (TrabajoGraduacion) getSessionFactory().getCurrentSession()
+                .createQuery("FROM TrabajoGraduacion WHERE idresponsabilidad=?").setParameter(0, idresponsabilidad).setMaxResults(1).uniqueResult();
+        return result;
+    }
+    
+    
 }

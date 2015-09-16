@@ -70,4 +70,8 @@ public class CicloService {
         return getCicloDao().getCiclosActivos();
     }
     
+    public Ciclo getCicloActual(int year) {
+        return getCicloDao().getCicloActual(year);
+    }
+    
 }

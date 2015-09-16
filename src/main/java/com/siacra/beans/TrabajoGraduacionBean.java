@@ -58,7 +58,7 @@ public class TrabajoGraduacionBean implements Serializable {
     public void addTrabajoGraduacion(){
         try {
             TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
-            trabajograduacion.setIdresponsabilidad(null);
+            trabajograduacion.setResponsabilidad(null);
             trabajograduacion.setTematg(tematg);
             trabajograduacion.setDescripciontg(descripciontg);
             trabajograduacion.setObservaciontg(observaciontg);
@@ -82,7 +82,7 @@ public class TrabajoGraduacionBean implements Serializable {
      */
     public void loadTrabajoGraduacion(TrabajoGraduacion trabajograduacion){
         try {
-            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(trabajograduacion.getIdresponsabilidad().getIdresponsabilidad());
+            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(trabajograduacion.getResponsabilidad().getIdresponsabilidad());
             setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -106,8 +106,8 @@ public class TrabajoGraduacionBean implements Serializable {
         try {
             TrabajoGraduacion trabajograduacion = getTrabajoGraduacionService().getTrabajoGraduacionById(this.getIdtrabajograduacion());
             try {
-                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(trabajograduacion.getIdresponsabilidad().getIdresponsabilidad());
-                trabajograduacion.setIdresponsabilidad(responsabilidad);
+                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(trabajograduacion.getResponsabilidad().getIdresponsabilidad());
+                trabajograduacion.setResponsabilidad(responsabilidad);
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }

@@ -28,7 +28,7 @@
                                 <br />
                                 Universidad de El Salvador <br />
                                 Facultad de Ingenier-a y Arquitectura <br/>
-                                <ui:insert name="school"> {{Nombre de la Escuela}} </ui:insert>
+                                <h:outputText value="#{identityBean.principal.escuela.nombreescuela}" />
                             </h3>
                         </div>
                         <div class="ui-grid-col-4">
@@ -76,11 +76,14 @@
                             <p:separator />
                             <p:menuitem value="Acuerdos" url="/resources/views/admin/ListarAcuerdo.xhtml" icon="fa fa-book" />
                             <p:separator />
-                            <p:menuitem value="Horario" url="/resources/views/admin/Horario/ListarHorario.xhtml" icon="fa fa-list" />
                             <p:menuitem value="Asignatura" url="/resources/views/admin/ListarAsignatura.xhtml" icon="fa fa-list" />
                             <p:menuitem value="Grupo" url="/resources/views/admin/ListarGrupo.xhtml" icon="fa fa-list" />
                             <p:separator />
                             <p:menuitem value="Permanencia" url="/resources/views/admin/ListarPermanencia.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Tipo Grupo" url="/resources/views/admin/ListarTipoGrupo.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Grupos" url="/resources/views/admin/ListarGrupo.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Horario" url="/resources/views/admin/ListarHorario.xhtml" icon="fa fa-list" />
+                            <p:menuitem value="Oferta" url="/resources/views/admin/ListarOferta.xhtml" icon="fa fa-list" />
                         </p:submenu>
                         <p:submenu label="Reportes" icon="fa fa-file-pdf-o">
                             <p:menuitem actionListener="#{docenteBean.docentesServicioProfesionalReport}"

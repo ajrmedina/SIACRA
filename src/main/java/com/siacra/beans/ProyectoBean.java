@@ -52,7 +52,7 @@ public class ProyectoBean implements Serializable{
     public void addProyecto(){
         try{
             Proyecto proyecto = new Proyecto();
-            proyecto.setIdresponsabilidad(null);
+            proyecto.setResponsabilidad(null);
             proyecto.setFechainicio(fechainicio);
             proyecto.setFechafin(fechafin);
             proyecto.setNombreproyecto(nombreproyecto);
@@ -82,7 +82,7 @@ public class ProyectoBean implements Serializable{
     
     public void loadProyecto(Proyecto proyecto){
         try{
-            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getIdresponsabilidad().getIdresponsabilidad());
+            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getResponsabilidad().getIdresponsabilidad());
             setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
         }catch (NullPointerException e) {
             e.printStackTrace();
@@ -102,8 +102,8 @@ public class ProyectoBean implements Serializable{
          try {
             Proyecto proyecto = getProyectoService().getProyectoById(this.getIdproyecto());
             try{
-                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getIdresponsabilidad().getIdresponsabilidad());
-                proyecto.setIdresponsabilidad(responsabilidad);
+                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(proyecto.getResponsabilidad().getIdresponsabilidad());
+                proyecto.setResponsabilidad(responsabilidad);
             }
              catch (NullPointerException e) {
                 e.printStackTrace();

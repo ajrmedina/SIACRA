@@ -196,10 +196,6 @@ public class Permanencia implements Serializable{
     public void setCiclo(Ciclo ciclo) {
         this.ciclo = ciclo;
     }
-
-    
-    
-   
     
     @Override
     public String toString() {

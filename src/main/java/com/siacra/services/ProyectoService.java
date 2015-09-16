@@ -58,4 +58,12 @@ public class ProyectoService {
         return getProyectoDao().getProyectosFinalizados();
     }
     
+    public boolean getExistProyectoByResponsabilidad(int id){
+        return getProyectoDao().getExistProyectoByResponsabilidad(id);
+    }
+    
+    public Proyecto getProyectoByResponsabilidad(int id){
+        return getProyectoDao().getProyectoByResponsabilidad(id);
+    }
+    
 }

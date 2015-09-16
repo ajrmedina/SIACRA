@@ -15,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -71,9 +69,9 @@ public class TrabajoGraduacion implements Serializable {
     @Size(max = 100)
     @Column(name = "OBSERVACIONTG", length = 100)
     private String observaciontg;
-    @JoinColumn(name = "IDRESPONSABILIDAD", referencedColumnName = "IDRESPONSABILIDAD", nullable = false)
-    @ManyToOne(optional = false)
-    private Responsabilidad idresponsabilidad;
+    @ManyToOne
+    @JoinColumn(name = "IDRESPONSABILIDAD")
+    private Responsabilidad responsabilidad;
 
     public TrabajoGraduacion() {
     }
@@ -164,12 +162,12 @@ public class TrabajoGraduacion implements Serializable {
         this.observaciontg = observaciontg;
     }
 
-    public Responsabilidad getIdresponsabilidad() {
-        return idresponsabilidad;
+    public Responsabilidad getResponsabilidad() {
+        return responsabilidad;
     }
 
-    public void setIdresponsabilidad(Responsabilidad idresponsabilidad) {
-        this.idresponsabilidad = idresponsabilidad;
+    public void setResponsabilidad(Responsabilidad responsabilidad) {
+        this.responsabilidad = responsabilidad;
     }
 
  

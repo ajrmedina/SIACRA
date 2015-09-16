@@ -50,7 +50,6 @@
                     
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('update_ciclo').show()" icon="fa fa-edit" />                                    
-                    <p:commandButton id="delete_button" update=":dialogDeleteCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('delete_ciclo').show()" icon="fa fa-times"/>
                     <p:commandButton id="locked" update=":dialogLockCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('lock_ciclo').show()" icon="fa fa-unlock-alt" rendered="#{ciclo.ciEstado == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('unlock_ciclo').show()" icon="fa fa-unlock" rendered="#{ciclo.ciEstado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Ciclo" rendered="#{ciclo.ciEstado == true}" />
