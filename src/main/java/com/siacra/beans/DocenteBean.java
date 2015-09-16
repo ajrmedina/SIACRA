@@ -480,26 +480,7 @@ public class DocenteBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
-    public void docentesServicioProfesionalReport(ActionEvent actionEvent) throws JRException, IOException{
-        ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();  
-    JRBeanCollectionDataSource beanCollectionDataSource=new JRBeanCollectionDataSource(docenteService.getDocentesSP(),false);
-    HashMap parameter = new HashMap();
-    parameter.put("LOGO", context.getRealPath("/WEB-INF/web-reports/logoues.gif"));
-    String fullPath = context.getRealPath("/WEB-INF/web-reports/DocentesServiciosProfesionales.jasper");   
-       File jasper = new File(fullPath);		
-		
-		byte[] bytes = JasperRunManager.runReportToPdf(jasper.getPath(),parameter, beanCollectionDataSource);
-		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-		response.setContentType("application/pdf");
-		response.setContentLength(bytes.length);
-		ServletOutputStream outStream = response.getOutputStream();
-		outStream.write(bytes, 0 , bytes.length);
-		outStream.flush();
-		outStream.close();
-			
-		FacesContext.getCurrentInstance().responseComplete();
-    
-    }
+   
 }
 
 
