@@ -85,11 +85,9 @@
                             <p:menuitem value="Horario" url="/resources/views/admin/ListarHorario.xhtml" icon="fa fa-list" />
                             <p:menuitem value="Oferta" url="/resources/views/admin/ListarOferta.xhtml" icon="fa fa-list" />
                         </p:submenu>
-                        <p:submenu label="Reportes" icon="fa fa-file-pdf-o">
-                            <p:menuitem actionListener="#{docenteBean.docentesServicioProfesionalReport}"
-                                        ajax="false"
-                                        target="_blank" 
-                                        value="Docentes S.P." icon="fa fa-file-o"/>
+                       <p:submenu label="Reportes" icon="fa fa-file-pdf-o">
+                            <p:menuitem value="Servicios Profesionales" url="resources/views/admin/ListarReportes.xhtml" icon="fa fa-file-o"/>    
+                       
                         </p:submenu>     
                         <ui:insert name="add-menu-items"> </ui:insert>
                         
