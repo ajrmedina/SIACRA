@@ -101,8 +101,8 @@
                         <p:ajax event="change" update="opciones" listener="#{responsabilidadBean.showOpciones()}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="tiempo" value="Tipo de Tiempo: " />
-                    <h:panelGroup id="tipoTiempo" layout="block2">
+                    <p:outputLabel for="tiempo" value="Tipo de Tiempo: " rendered="#{responsabilidadBean.insert == true}"/>
+                    <h:panelGroup id="tipoTiempo" layout="block2" rendered="#{responsabilidadBean.insert == true}">
                         <p:selectOneMenu id="tiempo" value="#{responsabilidadBean.tipodetiempo}" effect="fade" required="true" >    
                             <f:selectItem itemValue="Obligatorio" itemLabel="Tiempo Obligatorio" itemDisabled="#{responsabilidadBean.sobrecarga == true}"/>
                             <f:selectItem itemValue="Integral" itemLabel="Tiempo Integral"/>
@@ -124,11 +124,12 @@
                         </p:multiSelectListbox>
                     </h:panelGrid>
                     
-                    <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.showDialog()}" update=":dialogTGExiste" icon="fa fa-plus" rendered="#{responsabilidadBean.insert == true}" />
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{responsabilidadBean.showDialog()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialog_responsabilidad').hide()" icon="fa fa-refresh" rendered="#{responsabilidadBean.insert == false}" />
+                    <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.validateAddResponsabilidad()}" update="responsabilidadForm :tge_form:tge :proyecto_form:proyecto" icon="fa fa-plus" rendered="#{responsabilidadBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{responsabilidadBean.validateUpdateResponsabilidad()}" update=":listar:responsabilidadTable :listar:messages :tge_form:tge :proyecto_form:proyecto" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialog_responsabilidad').hide()" icon="fa fa-refresh" rendered="#{responsabilidadBean.insert == false}" />
                     <p:commandButton id="save_exit" value="Salir" update=":responsabilidadForm" process="@this" oncomplete="PF('dialog_responsabilidad').hide()" icon="fa fa-ban">
                       <p:resetInput target="responsabilidadForm" />
                       <f:setPropertyActionListener target="#{responsabilidadBean.insert}" value="false" />
+                      <f:setPropertyActionListener target="#{responsabilidadBean.mostrar}" value="false" />
                     </p:commandButton>
                 </h:panelGrid>
         </h:form>

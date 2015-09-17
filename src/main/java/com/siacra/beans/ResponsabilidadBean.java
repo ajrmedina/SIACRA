@@ -131,24 +131,16 @@ public class ResponsabilidadBean implements Serializable {
     public void addResponsabilidad(){
         try {
             Responsabilidad responsabilidad = new Responsabilidad();
-            if(getIdactividad() != 0){
-                if(this.getMostrar() && this.getOpcion() != null){
-                    Actividad actividad = getActividadService().getActividadById(getIdactividad());
-                    Docente docente = getDocenteService().getDocenteById(getIdDocente());
-                    responsabilidad.setIdactividad(actividad);
-                    responsabilidad.setDocente(docente);
-                    responsabilidad.setIdciclo(getCiclo());
-                    responsabilidad.setTotalhoras(getTotalhoras());
-                    responsabilidad.setTipodetiempo(getTipodetiempo());
-                    getResponsabilidadService().addResponsabilidad(responsabilidad);
-                    addMessage("La responsabilidad administrativa del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
-                    reset();
-                }
-                else
-                    addMessage("Seleccione el tipo de actividad academica");
-            }
-            else
-                addMessage("Seleccione una actividad valida");
+            Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            Docente docente = getDocenteService().getDocenteById(getIdDocente());
+            responsabilidad.setIdactividad(actividad);
+            responsabilidad.setDocente(docente);
+            responsabilidad.setIdciclo(getCiclo());
+            responsabilidad.setTotalhoras(getTotalhoras());
+            responsabilidad.setTipodetiempo(getTipodetiempo());
+            getResponsabilidadService().addResponsabilidad(responsabilidad);
+            addMessage("La responsabilidad administrativa del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
+            reset();
             
         } catch (Exception e) {
             reset();
@@ -156,6 +148,21 @@ public class ResponsabilidadBean implements Serializable {
         }
     }
     
+    public void validateAddResponsabilidad(){
+        if(getIdactividad() != 0){
+            if(this.getMostrar()){
+                if(this.getOpcion() != null){
+                    showDialog();
+                }
+                else
+                    addMessage("Seleccione el tipo de actividad academica");
+            }
+            else
+                addResponsabilidad();
+        }
+        else
+            addMessage("Seleccione una actividad valida");
+    }
     /**
      * Load Responsabilidad
      * Get and load the responsabilidad to update
@@ -163,19 +170,11 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void loadResponsabilidad(Responsabilidad responsabilidad){
         setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
-        if(!getTrabajoGraduacionService().getExistTGByResponsabilidad(getIdresponsabilidad()))
-            this.setTipoReg("TG");
-        if(!getProyectoService().getExistProyectoByResponsabilidad(getIdresponsabilidad()))
-            this.setTipoReg("Proyecto");
+        setTotalhoras(responsabilidad.getTotalhoras());
+        setTipodetiempo(responsabilidad.getTipodetiempo());
         Actividad actividad = getActividadService().getActividadById(responsabilidad.getIdactividad().getIdactividad());
         if(actividad.getIdtipoactividad().getTipoactividad().matches("(.*)Academica(.*)"))
             this.setMostrar(true);
-        //Actividad actividad = getActividadService().getActividadById(responsabilidad.getIdactividad().getIdactividad());
-        //Docente docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
-        //setIdactividad(actividad.getIdactividad());
-        //setIdDocente(docente.getIdDocente());
-        setTotalhoras(responsabilidad.getTotalhoras());
-        setTipodetiempo(responsabilidad.getTipodetiempo());
     }
     
     /**
@@ -185,28 +184,43 @@ public class ResponsabilidadBean implements Serializable {
     public void updateResponsabilidad(){
         try {
             Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-            //Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            //Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            //responsabilidad.setDocente(docente);
-            responsabilidad.setTipodetiempo(this.getTipodetiempo());
-            responsabilidad.setTotalhoras(this.getTotalhoras());
+            responsabilidad.setTipodetiempo(getTipodetiempo());
+            responsabilidad.setTotalhoras(getTotalhoras());
             getResponsabilidadService().updateResponsabilidad(responsabilidad);
-            if(getTipoReg().equals("TG")) {
-                TrabajoGraduacion tg = getTrabajoGraduacionService().getTrabajoGraduacionByResponsabilidad(getIdresponsabilidad());
-                //tg.setResponsabilidad(null);
-                tg.setResponsabilidad(null);
-                getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
-            }
-            if(getTipoReg().equals("Proyecto")) {
-                Proyecto proyecto = getProyectoService().getProyectoByResponsabilidad(getIdresponsabilidad());
-                //proyecto.setResponsabilidad(null);
-                proyecto.setResponsabilidad(null);
-                getProyectoService().updateProyecto(proyecto);
-            }
             addMessage("La Responsabilidad fue actualizada correctamente");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void validateUpdateResponsabilidad(){
+        if(getMostrar()){
+            if(this.getOpcion() != null){
+                //Validar donde existe el idResponsabilidad seteado
+                if(!getTrabajoGraduacionService().getExistTGByResponsabilidad(getIdresponsabilidad()))
+                    this.setTipoReg("TG");
+                if(!getProyectoService().getExistProyectoByResponsabilidad(getIdresponsabilidad()))
+                    this.setTipoReg("Proyecto");
+                //En donde exista setear el idResponsabilidad en NULL
+                if(getTipoReg().equals("TG")) {
+                    TrabajoGraduacion tg = getTrabajoGraduacionService().getTrabajoGraduacionByResponsabilidad(getIdresponsabilidad());
+                    //tg.setResponsabilidad(null);
+                    tg.setResponsabilidad(null);
+                    getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
+                }
+                if(getTipoReg().equals("Proyecto")) {
+                    Proyecto proyecto = getProyectoService().getProyectoByResponsabilidad(getIdresponsabilidad());
+                    //proyecto.setResponsabilidad(null);
+                    proyecto.setResponsabilidad(null);
+                    getProyectoService().updateProyecto(proyecto);
+                }
+                showDialog();
+            }
+            else
+                addMessage("Seleccione el tipo de actividad academica");
+        }
+        else
+           updateResponsabilidad(); 
     }
     
     /**

@@ -77,8 +77,8 @@
                     <p:outputLabel id="estado" value="Aprobado" />
                     <p:selectBooleanCheckbox value="#{docenteBean.aprobado}" required="true" />
 
-                    <p:outputLabel for="usuario" value="Usuario Asociado: " />
-                    <h:panelGroup layout="block">
+                    <p:outputLabel for="usuario" value="Usuario Asociado: " rendered="#{docenteBean.insert == true}"/>
+                    <h:panelGroup layout="block" rendered="#{docenteBean.insert == true}">
                         <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
                             <f:selectItems value="#{docenteBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false}"/>
                         </p:selectOneMenu>
