@@ -91,9 +91,6 @@
                         <p:tooltip id="forDocente" for="docente" value="Seleccione el docente" />
                     </h:panelGroup>
                     
-                    <p:outputLabel for="horasAct" value="Numero de horas asignadas actualmente: " />
-                    <p:outputLabel id="horasAct" value="#{responsabilidadBean.horasActuales}" />
-                    
                     <p:outputLabel for="actividad" value="Actividad: " rendered="#{responsabilidadBean.insert == true}"/>
                     <p:selectOneMenu id="actividad" value="#{responsabilidadBean.idactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" rendered="#{responsabilidadBean.insert == true}">
                         <f:selectItem itemValue="0" itemLabel="Seleccione una actividad"  />
@@ -102,7 +99,7 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="tiempo" value="Tipo de Tiempo: " />
-                    <h:panelGroup id="tipoTiempo" layout="block2">
+                    <h:panelGroup id="tipoTiempo" layout="block2" >
                         <p:selectOneMenu id="tiempo" value="#{responsabilidadBean.tipodetiempo}" effect="fade" required="true" >    
                             <f:selectItem itemValue="Obligatorio" itemLabel="Tiempo Obligatorio" itemDisabled="#{responsabilidadBean.sobrecarga == true}"/>
                             <f:selectItem itemValue="Integral" itemLabel="Tiempo Integral"/>
@@ -111,11 +108,14 @@
                         <p:tooltip id="forTiempo" for="tiempo" value="Seleccione el tipo de tiempo en que se realiza la actividad" />
                     </h:panelGroup>
 
-                    <p:outputLabel for="horast" value="Total de horas: " />
-                    <p:inputMask id="horast" value="#{responsabilidadBean.totalhoras}" mask="9?99" required="true" >
+                    <p:outputLabel for="horast" value="Total de horas: " rendered="#{responsabilidadBean.horasSobrecarga == false}"/>
+                    <p:inputMask id="horast" value="#{responsabilidadBean.totalhoras}" mask="9?99" required="true" rendered="#{responsabilidadBean.horasSobrecarga == false}">
                         <f:validateDoubleRange minimum="1" maximum="99" />
                     </p:inputMask>
-
+                    
+                    <p:outputLabel for="horasAct" value="Numero de horas obligatorias asignadas actualmente: " />
+                    <p:outputLabel id="horasAct" value="#{responsabilidadBean.horasActuales}" />
+                    
                     <p:outputLabel for="opciones" value="Para actividades academicas *"  />
                     <h:panelGrid id="opciones" columns="2" cellpadding="5" class="center-element" >
                         <p:outputLabel for="tipoacad" value="Vincular a: " rendered="#{responsabilidadBean.mostrar == true}" />
@@ -124,11 +124,15 @@
                         </p:multiSelectListbox>
                     </h:panelGrid>
                     
-                    <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.showDialog()}" update=":dialogTGExiste" icon="fa fa-plus" rendered="#{responsabilidadBean.insert == true}" />
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{responsabilidadBean.showDialog()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialog_responsabilidad').hide()" icon="fa fa-refresh" rendered="#{responsabilidadBean.insert == false}" />
+                    <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.validateAddResponsabilidad()}" update="responsabilidadForm :tge_form:tge :proyecto_form:proyecto" icon="fa fa-plus" rendered="#{responsabilidadBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{responsabilidadBean.validateUpdateResponsabilidad()}" update=":listar:responsabilidadTable :listar:messages :tge_form:tge :proyecto_form:proyecto" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialog_responsabilidad').hide()" icon="fa fa-refresh" rendered="#{responsabilidadBean.insert == false}" />
                     <p:commandButton id="save_exit" value="Salir" update=":responsabilidadForm" process="@this" oncomplete="PF('dialog_responsabilidad').hide()" icon="fa fa-ban">
                       <p:resetInput target="responsabilidadForm" />
                       <f:setPropertyActionListener target="#{responsabilidadBean.insert}" value="false" />
+                      <f:setPropertyActionListener target="#{responsabilidadBean.mostrar}" value="false" />
+                      <f:setPropertyActionListener target="#{responsabilidadBean.sobrecarga}" value="false" />
+                      <f:setPropertyActionListener target="#{responsabilidadBean.horasSobrecarga}" value="false" />
+                      <f:setPropertyActionListener target="#{responsabilidadBean.idDocente}" value="0" />
                     </p:commandButton>
                 </h:panelGrid>
         </h:form>
@@ -303,6 +307,7 @@
                     </p:commandButton>
                     <p:commandButton id="no" value="No" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('sobrecarga_docente').hide(); PF('dialog_responsabilidad').hide()" icon="fa fa-ban" >
                         <f:setPropertyActionListener target="#{responsabilidadBean.sobrecarga}" value="false" />
+                        <f:setPropertyActionListener target="#{responsabilidadBean.idDocente}" value="0" />
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>

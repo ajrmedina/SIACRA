@@ -77,8 +77,9 @@ public class ResponsabilidadBean implements Serializable {
     private boolean mostrar;                //Mostrar o no el menu de vincular 
     private boolean insert;
     private boolean sobrecarga;             //Si el docente esta sobrecargado
+    private boolean horasSobrecarga;        //Si se pueden modificar las horas de la responsabilidad
     private Ciclo cicloActual;
-    private String tipoReg;                    //Si existe el tipo de registro TG, Proyecto o Grupo
+    private String tipoReg;                 //Si existe el tipo de registro TG, Proyecto o Grupo
     
     /************************************** Trabajo de Graduacion **************************************/
     
@@ -131,24 +132,16 @@ public class ResponsabilidadBean implements Serializable {
     public void addResponsabilidad(){
         try {
             Responsabilidad responsabilidad = new Responsabilidad();
-            if(getIdactividad() != 0){
-                if(this.getMostrar() && this.getOpcion() != null){
-                    Actividad actividad = getActividadService().getActividadById(getIdactividad());
-                    Docente docente = getDocenteService().getDocenteById(getIdDocente());
-                    responsabilidad.setIdactividad(actividad);
-                    responsabilidad.setDocente(docente);
-                    responsabilidad.setIdciclo(getCiclo());
-                    responsabilidad.setTotalhoras(getTotalhoras());
-                    responsabilidad.setTipodetiempo(getTipodetiempo());
-                    getResponsabilidadService().addResponsabilidad(responsabilidad);
-                    addMessage("La responsabilidad administrativa del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
-                    reset();
-                }
-                else
-                    addMessage("Seleccione el tipo de actividad academica");
-            }
-            else
-                addMessage("Seleccione una actividad valida");
+            Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            Docente docente = getDocenteService().getDocenteById(getIdDocente());
+            responsabilidad.setIdactividad(actividad);
+            responsabilidad.setDocente(docente);
+            responsabilidad.setIdciclo(getCiclo());
+            responsabilidad.setTotalhoras(getTotalhoras());
+            responsabilidad.setTipodetiempo(getTipodetiempo());
+            getResponsabilidadService().addResponsabilidad(responsabilidad);
+            addMessage("La responsabilidad administrativa del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
+            reset();
             
         } catch (Exception e) {
             reset();
@@ -156,6 +149,21 @@ public class ResponsabilidadBean implements Serializable {
         }
     }
     
+    public void validateAddResponsabilidad(){
+        if(getIdactividad() != 0){
+            if(this.getMostrar()){
+                if(this.getOpcion() != null){
+                    showDialog();
+                }
+                else
+                    addMessage("Seleccione el tipo de actividad academica");
+            }
+            else
+                addResponsabilidad();
+        }
+        else
+            addMessage("Seleccione una actividad valida");
+    }
     /**
      * Load Responsabilidad
      * Get and load the responsabilidad to update
@@ -163,19 +171,21 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void loadResponsabilidad(Responsabilidad responsabilidad){
         setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
-        if(!getTrabajoGraduacionService().getExistTGByResponsabilidad(getIdresponsabilidad()))
-            this.setTipoReg("TG");
-        if(!getProyectoService().getExistProyectoByResponsabilidad(getIdresponsabilidad()))
-            this.setTipoReg("Proyecto");
+        setTotalhoras(responsabilidad.getTotalhoras());
+        setTipodetiempo(responsabilidad.getTipodetiempo());
+        setIdDocente(responsabilidad.getDocente().getIdDocente());
+        //Verificar si la actividad es academica para mostrar menu de vincular
         Actividad actividad = getActividadService().getActividadById(responsabilidad.getIdactividad().getIdactividad());
         if(actividad.getIdtipoactividad().getTipoactividad().matches("(.*)Academica(.*)"))
             this.setMostrar(true);
-        //Actividad actividad = getActividadService().getActividadById(responsabilidad.getIdactividad().getIdactividad());
-        //Docente docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
-        //setIdactividad(actividad.getIdactividad());
-        //setIdDocente(docente.getIdDocente());
-        setTotalhoras(responsabilidad.getTotalhoras());
-        setTipodetiempo(responsabilidad.getTipodetiempo());
+        //Verificar si hay sobrecarga de horas obligatorias para que modifique el tipo de tiempo y las horas
+        if(responsabilidad.getTipodetiempo().equals("Obligatorio")){
+            if(horasObligatoriasExcedidas()){
+               addMessage("Las horas obligatorias ya estan cumplidas, no pueden modificarse");
+               setSobrecarga(true);
+               setHorasSobrecarga(true);
+            }
+        }
     }
     
     /**
@@ -185,27 +195,59 @@ public class ResponsabilidadBean implements Serializable {
     public void updateResponsabilidad(){
         try {
             Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-            //Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            //Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            //responsabilidad.setDocente(docente);
-            responsabilidad.setTipodetiempo(this.getTipodetiempo());
-            responsabilidad.setTotalhoras(this.getTotalhoras());
+            responsabilidad.setTipodetiempo(getTipodetiempo());
+            responsabilidad.setTotalhoras(getTotalhoras());
             getResponsabilidadService().updateResponsabilidad(responsabilidad);
-            if(getTipoReg().equals("TG")) {
-                TrabajoGraduacion tg = getTrabajoGraduacionService().getTrabajoGraduacionByResponsabilidad(getIdresponsabilidad());
-                //tg.setResponsabilidad(null);
-                tg.setResponsabilidad(null);
-                getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
-            }
-            if(getTipoReg().equals("Proyecto")) {
-                Proyecto proyecto = getProyectoService().getProyectoByResponsabilidad(getIdresponsabilidad());
-                //proyecto.setResponsabilidad(null);
-                proyecto.setResponsabilidad(null);
-                getProyectoService().updateProyecto(proyecto);
-            }
             addMessage("La Responsabilidad fue actualizada correctamente");
+            setHorasSobrecarga(false);
+            setHorasActuales(null);
+            setIdDocente(0);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+    public void validateUpdateResponsabilidad(){
+        //Validar que el numero de horas ingresadas mas las existente no sobrepasen el limite permitido por la categoria
+        boolean continua = true; //Saber si sigue o se quiebra el flujo de ejecucion para actualizar
+        if(this.getTipodetiempo().equals("Obligatorio")){ 
+            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
+            Long horas = getResponsabilidadService().getHorasActualesByDocente(responsabilidad.getDocente().getIdDocente());
+            Docente docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
+            Long sumatoriaHoras = horas + getTotalhoras();
+            if(sumatoriaHoras > docente.getCategoria().getHorasObligatorias()){
+                addMessage("La Responsabilidad no se puede añadir debido a que el valor ingresado mas las horas ya asignadas exceden las horas obligatorias permitidas");
+                continua = false;
+            }
+        }
+        if(continua){
+            if(getMostrar()){
+                if(this.getOpcion() != null){
+                    //Validar donde existe el idResponsabilidad seteado
+                    if(!getTrabajoGraduacionService().getExistTGByResponsabilidad(getIdresponsabilidad()))
+                        this.setTipoReg("TG");
+                    if(!getProyectoService().getExistProyectoByResponsabilidad(getIdresponsabilidad()))
+                        this.setTipoReg("Proyecto");
+                    //En donde exista setear el idResponsabilidad en NULL
+                    if(getTipoReg().equals("TG")) {
+                        TrabajoGraduacion tg = getTrabajoGraduacionService().getTrabajoGraduacionByResponsabilidad(getIdresponsabilidad());
+                        //tg.setResponsabilidad(null);
+                        tg.setResponsabilidad(null);
+                        getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
+                    }
+                    if(getTipoReg().equals("Proyecto")) {
+                        Proyecto proyecto = getProyectoService().getProyectoByResponsabilidad(getIdresponsabilidad());
+                        //proyecto.setResponsabilidad(null);
+                        proyecto.setResponsabilidad(null);
+                        getProyectoService().updateProyecto(proyecto);
+                    }
+                    showDialog();
+                }
+                else
+                    addMessage("No se pudo modificar el registro, debe seleccionar el tipo de actividad academica");
+            }
+            else
+               updateResponsabilidad();
         }
     }
     
@@ -255,16 +297,26 @@ public class ResponsabilidadBean implements Serializable {
     
      public void showHorasActuales() {
         try {
-            Long horas = getResponsabilidadService().getHorasActualesByDocente(this.getIdDocente());
-            this.setHorasActuales(horas);
-            Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            if(this.getHorasActuales() > docente.getCategoria().getHorasObligatorias()){
+            if(horasObligatoriasExcedidas()){
                 RequestContext context = RequestContext.getCurrentInstance(); 
                 context.execute("PF('sobrecarga_docente').show();");
             }
         }
         catch (NullPointerException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public boolean horasObligatoriasExcedidas(){
+        Long horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente());
+        Docente docente = getDocenteService().getDocenteById(getIdDocente());
+        if(horas >= docente.getCategoria().getHorasObligatorias()){
+            this.setHorasActuales(horas);
+            return true;
+        }
+        else{
+            this.setHorasActuales(horas);
+            return false;
         }
     }
     
@@ -591,6 +643,20 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void setSobrecarga(boolean sobrecarga) {
         this.sobrecarga = sobrecarga;
+    }
+    
+    /**
+     * @return 
+     */
+    public boolean getHorasSobrecarga() {
+        return horasSobrecarga;
+    }
+
+    /**
+     * @param 
+     */
+    public void setHorasSobrecarga(boolean horasSobrecarga) {
+        this.horasSobrecarga = horasSobrecarga;
     }
     
     /**
