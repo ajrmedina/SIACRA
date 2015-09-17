@@ -40,8 +40,9 @@ public class IdentityBean {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String name = auth.getName();
             User user = getUserService().getUserLogin(name);
-            principal = getDocenteService().getDocenteByUser(user.getIdUsuario());
-            return principal;
+            if(!getDocenteService().existDocente(user.getIdUsuario())){
+                principal = getDocenteService().getDocenteByUser(user.getIdUsuario());
+            }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
