@@ -57,13 +57,17 @@ public class AsignaturaService {
     }
     
     //verificamos si el grupo ya esta registrado
-    public boolean getExistAsignatura(String codigoAsignatura,Integer cicloImpartir,Integer unidadesValorativas,String tipoAsignatura,String nombreAsignatura){
-        return getAsignaturaDao().getExistAsignatura(codigoAsignatura, cicloImpartir,unidadesValorativas,tipoAsignatura,nombreAsignatura);
+    public boolean getExistAsignatura(String codigoAsignatura,Integer cicloImpartir,Integer unidadesValorativas,String tipoAsignatura,String nombreAsignatura,Integer idEscuela){
+        return getAsignaturaDao().getExistAsignatura(codigoAsignatura, cicloImpartir,unidadesValorativas,tipoAsignatura,nombreAsignatura,idEscuela);
     }
     
     //Seleccionamos todos los tipos de grupos existentes
     public List<Asignatura> getAsignaturas() {
         return getAsignaturaDao().getAsignaturas();
+    }
+    
+    public List<Asignatura> getAsignaturasByEscuela(Integer idEscuela) {
+        return getAsignaturaDao().getAsignaturasByEscuela(idEscuela);
     }
     
 }
