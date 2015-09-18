@@ -150,19 +150,21 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public void validateAddResponsabilidad(){
-        if(getIdactividad() != 0){
-            if(this.getMostrar()){
-                if(this.getOpcion() != null){
-                    showDialog();
+        if(validateHorasObligatorias()){
+            if(getIdactividad() != 0){
+                if(this.getMostrar()){
+                    if(this.getOpcion() != null){
+                        showDialog();
+                    }
+                    else
+                        addResponsabilidad();
                 }
                 else
-                    addMessage("Seleccione el tipo de actividad academica");
+                    addResponsabilidad();
             }
             else
-                addResponsabilidad();
+                addMessage("Seleccione una actividad valida");
         }
-        else
-            addMessage("Seleccione una actividad valida");
     }
     /**
      * Load Responsabilidad
@@ -208,19 +210,7 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public void validateUpdateResponsabilidad(){
-        //Validar que el numero de horas ingresadas mas las existente no sobrepasen el limite permitido por la categoria
-        boolean continua = true; //Saber si sigue o se quiebra el flujo de ejecucion para actualizar
-        if(this.getTipodetiempo().equals("Obligatorio")){ 
-            Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-            Long horas = getResponsabilidadService().getHorasActualesByDocente(responsabilidad.getDocente().getIdDocente());
-            Docente docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
-            Long sumatoriaHoras = horas + getTotalhoras();
-            if(sumatoriaHoras > docente.getCategoria().getHorasObligatorias()){
-                addMessage("La Responsabilidad no se puede añadir debido a que el valor ingresado mas las horas ya asignadas exceden las horas obligatorias permitidas");
-                continua = false;
-            }
-        }
-        if(continua){
+        if(validateHorasObligatorias()){
             if(getMostrar()){
                 if(this.getOpcion() != null){
                     //Validar donde existe el idResponsabilidad seteado
@@ -244,7 +234,7 @@ public class ResponsabilidadBean implements Serializable {
                     showDialog();
                 }
                 else
-                    addMessage("No se pudo modificar el registro, debe seleccionar el tipo de actividad academica");
+                    updateResponsabilidad();
             }
             else
                updateResponsabilidad();
@@ -270,7 +260,7 @@ public class ResponsabilidadBean implements Serializable {
     public void showOpciones() {
         if(getIdactividad() != 0){
             Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            if(actividad.getIdtipoactividad().getTipoactividad().matches("(.*)Academica(.*)"))
+            if(actividad.getIdtipoactividad().getTipoactividad().toUpperCase().matches("(.*)ACADEMICA(.*)"))
                 this.setMostrar(true);
             else
                 this.setMostrar(false);
@@ -308,16 +298,50 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public boolean horasObligatoriasExcedidas(){
-        Long horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente());
-        Docente docente = getDocenteService().getDocenteById(getIdDocente());
-        if(horas >= docente.getCategoria().getHorasObligatorias()){
-            this.setHorasActuales(horas);
-            return true;
+        boolean valido = false;
+        try {
+            Long horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente());
+            Docente docente = getDocenteService().getDocenteById(getIdDocente());
+            if(horas >= docente.getCategoria().getHorasObligatorias()){
+                this.setHorasActuales(horas);
+                valido = true;
+            }
+            else{
+                this.setHorasActuales(horas);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        else{
-            this.setHorasActuales(horas);
-            return false;
+        return valido;
+    }
+    
+    public boolean validateHorasObligatorias(){
+        //Validar que el numero de horas ingresadas mas las existente no sobrepasen el limite permitido por la categoria
+        boolean continua = true; //Saber si sigue o se quiebra el flujo de ejecucion para actualizar
+        Long horas;
+        Responsabilidad responsabilidad ;
+        Docente docente;
+        if(this.getTipodetiempo().equals("Obligatorio")){
+            try {
+                if(isInsert()){
+                    horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente());
+                    docente = getDocenteService().getDocenteById(getIdDocente());
+                }
+                else {
+                    responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
+                    horas = getResponsabilidadService().getHorasActualesByDocente(responsabilidad.getDocente().getIdDocente());
+                    docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
+                }
+                Long sumatoriaHoras = horas + getTotalhoras();
+                if(sumatoriaHoras > docente.getCategoria().getHorasObligatorias()){
+                    addMessage("La Responsabilidad no se puede añadir debido a que el valor ingresado mas las horas ya asignadas exceden las horas obligatorias permitidas");
+                    continua = false;
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
+        return continua;
     }
     
     public void reset() {

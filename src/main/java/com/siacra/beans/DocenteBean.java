@@ -15,20 +15,10 @@ import com.siacra.services.CategoriaService;
 import com.siacra.services.UserService;
 import com.siacra.services.DocenteService;
 import com.siacra.services.EscuelaService;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.dao.DataAccessException;
 
 /**
