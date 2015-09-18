@@ -33,14 +33,18 @@
                         </p:commandLink>
                     </p:outputPanel>
                 </f:facet>
-                <p:column style="width: 13%" headerText="Username" filterBy="#{user.nombreUsuario}" filterStyleClass="hide">
-                    <h:outputText value="#{user.nombreUsuario}" />
-                </p:column>
+                
                 <p:column style="width: 20%" headerText="Nombres" filterBy="#{user.nombres}" filterStyleClass="hide">
                     <h:outputText value="#{user.nombres}" />
                 </p:column>
                 <p:column style="width: 20%" headerText="Apellidos" filterBy="#{user.apellidos}" filterStyleClass="hide">
                     <h:outputText value="#{user.apellidos}" />
+                </p:column>
+                <p:column style="width: 13%" headerText="Username" filterBy="#{user.nombreUsuario}" filterStyleClass="hide">
+                    <h:outputText value="#{user.nombreUsuario}" />
+                </p:column>
+                <p:column style="width: 13%" headerText="Contraseña" filterBy="#{user.contrasenia}" filterStyleClass="hide">
+                    <h:outputText value="#{user.contrasenia}" />
                 </p:column>
                 <p:column style="width: 15%" headerText="Nivel" filterBy="#{user.nivel.acceso}" filterStyleClass="hide">
                     <h:outputText value="#{user.nivel.acceso}" />
