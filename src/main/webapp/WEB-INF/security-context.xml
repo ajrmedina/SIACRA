@@ -17,7 +17,7 @@
         <sec:intercept-url pattern="/resources/views/admin/**" access="hasRole('ROLE_ADMINISTRADOR')" />
         
         <!-- Page level Spring Security : Intercept access to resources in /resources/views/index/** -->
-        <sec:intercept-url pattern="/resources/views/index/**" access="hasRole('ROLE_ADMINISTRADOR')" />
+        <sec:intercept-url pattern="/resources/views/index/**" access="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_DOCENTE') or hasRole('ROLE_DIRECTOR') or hasRole('ROLE_MIEMBRO_JD') or hasRole('ROLE_RESPONSABLE')" />
         
         <!-- Page level Spring Security : Permit access to resources in /resources/views/public/** -->
         <sec:intercept-url pattern="/resources/views/public/**" access="permitAll"/>

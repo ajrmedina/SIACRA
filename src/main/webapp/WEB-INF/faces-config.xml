@@ -37,6 +37,16 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+	<from-view-id>*</from-view-id>
+	<navigation-case>
+                <from-action>#{userBean.actualizarPassword}</from-action>
+		<from-outcome>correct</from-outcome>
+		<to-view-id>/resources/views/index/index.xhtml</to-view-id>
+		<redirect></redirect>
+	</navigation-case>
+    </navigation-rule>
+    
     <phase-listener>com.siacra.main.GlobalMessages</phase-listener>
     
 </faces-config>

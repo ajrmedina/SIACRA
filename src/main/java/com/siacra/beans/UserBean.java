@@ -11,12 +11,18 @@ import com.siacra.models.User;
 import com.siacra.services.UserService;
 import com.siacra.models.NivelAcceso;
 import com.siacra.services.NivelAccesoService;
+import java.io.IOException;
+import java.util.Random;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -41,6 +47,8 @@ public class UserBean implements Serializable {
     private List<User> usersList;
     private List<NivelAcceso> nivelesList;
     
+    private User user;
+    
     private int idUsuario;
     private String nombreUsuario;
     private String contrasenia;
@@ -50,6 +58,7 @@ public class UserBean implements Serializable {
     private boolean esDocente;
     private int nivel;
     private boolean insert;
+    private boolean sesion;
     
     /**
      * Add User
@@ -59,7 +68,7 @@ public class UserBean implements Serializable {
         try {
             User user = new User();
             user.setNombreUsuario(getNombreUsuario());
-            user.setContrasenia(getContrasenia());
+            user.setContrasenia(nombreUsuario);
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
             user.setEstadoUsuario(getEstadoUsuario());
@@ -104,7 +113,7 @@ public class UserBean implements Serializable {
             user.setNombreUsuario(getNombreUsuario());
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
-            user.setEstadoUsuario(getEstadoUsuario());
+            user.setEstadoUsuario(getEstadoUsuario());            
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
             getUserService().updateUser(user);
@@ -398,6 +407,32 @@ public class UserBean implements Serializable {
     public void setInsert(boolean insert) {
         this.insert = insert;
     }
+
+    public boolean getSesion() {
+        return sesion;
+    }
+
+    public void setSesion(boolean sesion) {
+        this.sesion = sesion;
+    }
+
+    public User getUser() {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String name = auth.getName();
+            user = getUserService().getUserLogin(name);             
+                                                 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+        
+    
     
     /**
      * Add Messages
@@ -409,6 +444,39 @@ public class UserBean implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+    
+    
+    
+     public void handleKeyEvent() {
+        //text = text.toUpperCase();
+        Random r = new Random();
+        int valorDado = r.nextInt(10);
+        
+        int cad1 = nombres.indexOf(" ");
+         int cad2 = apellidos.indexOf(" ");
+         nombreUsuario = (nombres.toLowerCase()).substring(0, cad1);  
+         nombreUsuario = nombreUsuario + (apellidos.toLowerCase()).substring(0, cad2) + valorDado; 
+        // nombreUsuario = nombreUsuario + valorDado;          
+    }  
+    
+     public String actualizarPassword() { //throws IOException{
+         try {
+            user.setContrasenia(user.getContrasenia());             
+            user.setSesion(true);           
+            getUserService().updateUser(user);            
+            addMessage("La contraseña fue actualizada correctamente");           
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+        /*
+        SecurityContextHolder.clearContext();
+        addMessage("Ha cerrado sesion en el SIACRA correctamente.");
+        return "loggedout";*/
+        return "correct";
+     }
+     
+    
 }
 
 
