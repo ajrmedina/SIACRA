@@ -7,48 +7,36 @@
     xmlns:pe="http://primefaces.org/ui/extensions">
 
     <ui:define name="title">
-      Reportes
+        Reportes
     </ui:define>
     
-        <ui:define name="title-view">
-       
+    <ui:define name="title-view">
         <h2 class="title"> Generar reportes </h2>
-        </ui:define>
+    </ui:define>
     
                     
     <ui:define name="content">
         <h:form id="list" style="margin-left: 40%">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                              
             <p:commandButton id="reporte_button" update=":generarReporte" 
                              oncomplete="PF('generar_reporte').show()" 
                              icon="fa fa-file-o" value="Docentes Servicios Profesionales"
                              style="font-size: large"
-                             />   
-                   
+                             />
         </h:form>
-        
-        
-  
         
         <p:dialog header="Seleccione la escuela" id="generarReporte" widgetVar="generar_reporte" modal="true" resizable="false" closable="false">
             <h:form id="codigoEscuela">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-               
                 <h:panelGrid columns="3" cellpadding="5" class="center-element" >
-                     <h:outputText value="Seleccionar escuela:" />
+                    <h:outputText value="Seleccionar escuela:" />
                     <p:selectOneMenu id="escuelaFilter" value="#{reporte.codigoEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" >
-                        <f:selectItem itemValue="0" itemLabel="Seleccione una escuela"  />
-                        
-                        <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela" 
-                                       itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombrecarrera}" binding="#{reporte.codigoEscuela}"/>
-                       
-                     </p:selectOneMenu>
-                     <br/>
-                    <p:commandButton  id="aceptar" value="Aceptar" actionListener="#{reporte.exportarServicioP}" 
-                                      oncomplete="PF('generar_reporte').hide()" icon="fa fa-check" ajax="false">
-                       
-                    </p:commandButton>
+                       <f:selectItem itemValue="0" itemLabel="Seleccione una escuela"  />
+                       <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela" 
+                                      itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombrecarrera}"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    <p:commandButton id="aceptar" value="Aceptar" actionListener="#{reporte.exportarServicioP('rServicioProfesional')}" ajax="false" oncomplete="PF('generar_reporte').hide()" icon="fa fa-check" /> 
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('generar_reporte').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
