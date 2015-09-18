@@ -53,7 +53,7 @@
             <nav>
                 <h:form class="pad-top-20">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <p:menubar styleClass="menu">  
+                    <p:menubar styleClass="menu" rendered="#{userBean.user.sesion == true}">  
                         
                         <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>                                                             
                        
