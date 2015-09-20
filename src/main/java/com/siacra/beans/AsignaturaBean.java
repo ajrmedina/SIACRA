@@ -183,6 +183,17 @@ public class AsignaturaBean implements Serializable{
        
     }
     
+//    public void reset() {
+//        this.idEscuela=null;
+//        this.codigoAsignatura="";
+//        this.nombreAsignatura="";
+//        this.cicloImpartir=null;
+//        this.unidadesValorativas=null;
+//        this.tipoAsignatura="";
+//        this.setEstadoAsignatura(false);
+//       
+//    }
+    
     //Invocamos metodos de agregacion y agregamos parametros obtenidos de la vista
     public void addAsignatura(){
         
@@ -237,7 +248,7 @@ public class AsignaturaBean implements Serializable{
     }
     
     //Eliminamos el tipo de grupo
-    public void deleteAsinatura(){
+    public void deleteAsignatura(){
         try{
             Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
             String asignaturaEliminada = asignatura.getCodigoAsignatura() + " - " + getNombreAsignatura();

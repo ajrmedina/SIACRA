@@ -57,8 +57,8 @@ public class GrupoService {
     }
     
     //verificamos si el grupo ya esta registrado
-    public boolean getExistGrupo(Integer cupo,Integer numeroGrupo){
-        return getGrupoDao().getExistGrupo(cupo, numeroGrupo);
+    public boolean getExistGrupo(Integer cupo,Integer numeroGrupo,Integer idHorario, Integer idAsignatura,Integer idTipoGrupo){
+        return getGrupoDao().getExistGrupo( cupo, numeroGrupo, idHorario,  idAsignatura, idTipoGrupo);
     }
     
     //Seleccionamos todos los tipos de grupos existentes
