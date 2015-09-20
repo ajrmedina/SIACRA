@@ -30,10 +30,10 @@ import net.sf.jasperreports.engine.JasperPrint;
  */
 @ManagedBean(name="reporte")
 @ViewScoped
-public class ReporteBean {
+public class ReporteBean{
     
     private String codigoEscuela;
-   
+    private boolean disabled=true;
     public Connection getConnection() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/siacra", "root", "123");
@@ -41,6 +41,7 @@ public class ReporteBean {
     }
     
     public void exportarServicioP(String nombre) throws JRException, ClassNotFoundException, SQLException, IOException{
+        
         ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();  
         String ubicacion = "/WEB-INF/web-reports/"+nombre+".jasper";
         String reporte = context.getRealPath(ubicacion);
@@ -59,8 +60,16 @@ public class ReporteBean {
             outStream.close();
 			
         FacesContext.getCurrentInstance().responseComplete();
+       
     }
-
+    
+    //Para habilitar o dehabilitar el boton aceptar donde generara el reporte
+    public void onSelected() {
+        this.disabled = this.codigoEscuela.length()==1;
+                    
+       
+}
+   
     /**
      * @return the codigoEscuela
      */
@@ -76,5 +85,20 @@ public class ReporteBean {
     }
    
    
-    
+  
+
+    /**
+     * @return the disabled
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    /**
+     * @param disabled the disabled to set
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
 }
