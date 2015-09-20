@@ -21,6 +21,7 @@
             <p:commandButton id="reporte_button" update=":generarReporte" 
                              oncomplete="PF('generar_reporte').show()" 
                              icon="fa fa-file-o" value="Docentes Servicios Profesionales"
+                             actionListener="#{reporte.identifyReport('ServiciosProfesionales')}"
                              style="font-size: large"
                              />
             <br />
@@ -32,7 +33,7 @@
         </h:form>
         
         <p:dialog header="Seleccione la escuela" id="generarReporte" widgetVar="generar_reporte" modal="true" resizable="false" closable="false">
-            <h:form id="codigoEscuela">
+            <h:form id="codigoEscuela" target="_blank">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="3" cellpadding="5" class="center-element" >
                     <h:outputText value="Seleccionar escuela:" />
@@ -43,7 +44,7 @@
                                       itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombrecarrera}"/>
                     </p:selectOneMenu>
                     <br/>
-                    <p:commandButton  disabled="#{reporte.disabled}" id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP('rServicioProfesional')}" ajax="false" oncomplete="PF('generar_reporte').hide()"  icon="fa fa-check" /> 
+                    <p:commandButton  disabled="#{reporte.disabled}" id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporte').hide()"  icon="fa fa-check" /> 
                     <p:commandButton  immediate="true" update=":generarReporte" id="cancel" value="Cancelar"  icon="fa fa-ban" >
                         <f:setPropertyActionListener target="#{reporte.disabled}" value="true" />
                          <p:resetInput target=":generarReporte" />
