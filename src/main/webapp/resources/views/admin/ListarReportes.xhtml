@@ -18,11 +18,19 @@
     <ui:define name="content">
         <h:form id="list" style="margin-left: 40%">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            
             <p:commandButton id="reporte_button" update=":generarReporte" 
-                             oncomplete="PF('generar_reporte').show()" 
+                             actionListener="#{reporte.identifyReport('ServiciosProfesionales')}" oncomplete="PF('generar_reporte').show()" 
                              icon="fa fa-file-o" value="Docentes Servicios Profesionales"
                              style="font-size: large"
                              />
+            <br />
+            <br />
+            <p:commandButton id="tgfinalizados_button" value="Trabajos de Graduacion finalizados" actionListener="#{reporte.identifyReport('TGFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-o" style="font-size: large" />
+            <br />
+            <br />
+            <p:commandButton id="proyectosfinalizados_button" value="Proyectos finalizados" actionListener="#{reporte.identifyReport('ProyectosFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-o" style="font-size: large" />
+            
         </h:form>
         
         <p:dialog header="Seleccione la escuela" id="generarReporte" widgetVar="generar_reporte" modal="true" resizable="false" closable="false">
@@ -31,13 +39,44 @@
                 <h:panelGrid columns="3" cellpadding="5" class="center-element" >
                     <h:outputText value="Seleccionar escuela:" />
                     <p:selectOneMenu id="escuelaFilter" value="#{reporte.codigoEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" >
-                       <f:selectItem itemValue="0" itemLabel="Seleccione una escuela"  />
-                       <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela" 
+                        <p:ajax event="change" process="@this" update="aceptar" listener="#{reporte.onSelected}" />
+                        <f:selectItem itemValue="0" itemLabel="Seleccione una escuela"  />
+                        <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela" 
                                       itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombrecarrera}"/>
                     </p:selectOneMenu>
                     <br/>
-                    <p:commandButton id="aceptar" value="Aceptar" actionListener="#{reporte.exportarServicioP('rServicioProfesional')}" ajax="false" oncomplete="PF('generar_reporte').hide()" icon="fa fa-check" /> 
-                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('generar_reporte').hide()" icon="fa fa-ban" />
+                    <p:commandButton  disabled="#{reporte.disabled}" id="aceptar" value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporte').hide()" icon="fa fa-check" /> 
+                    <p:commandButton  immediate="true" update=":generarReporte" id="cancel" value="Cancelar"  icon="fa fa-ban" >
+                        <f:setPropertyActionListener target="#{reporte.disabled}" value="true" />
+                        <p:resetInput target=":generarReporte" />
+                    </p:commandButton></h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Parametros del reporte" id="chooseYear" widgetVar="choose_year" modal="true" resizable="false" closable="false">
+            <h:form id="year" target="_blank">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p:growl id="messages" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element" >
+                    <p:outputLabel for="yearFilter" value="Seleccione un año de inicio: " />
+                    <p:selectOneMenu id="yearFilter" value="#{reporte.filterAnio}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <p:ajax event="change" process="@this" update="generate" listener="#{reporte.validateChooseYear()}" />
+                        <f:selectItem itemValue="0" itemLabel="Seleccione el año de inicio"  />
+                        <f:selectItems value="#{cicloBean.cicloList}" var="year" itemValue="#{year.anio}" itemLabel="#{year.anio}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="estadoFilter" value="Seleccione un estado: "/>
+                    <p:selectOneMenu id="estadoFilter" value="#{reporte.filterEstadoTGP}" effect="fade" required="true" >    
+                        <p:ajax event="change" process="@this" update="generate" listener="#{reporte.validateChooseYear()}" />
+                        <f:selectItem itemValue="0" itemLabel="Seleccione el estado"  />
+                        <f:selectItem itemValue="En desarrollo" itemLabel="En desarrollo"/>
+                        <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
+                    </p:selectOneMenu>
+                    <p:commandButton disabled="#{reporte.disabled}" id="generate" value="Generar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('choose_year').hide()" icon="fa fa-check"> 
+                        <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
+                    </p:commandButton>
+                    <p:commandButton immediate="true" id="exit" value="Salir" oncomplete="PF('choose_year').hide()" update=":chooseYear" icon="fa fa-ban" >
+                        <f:setPropertyActionListener target="#{reporte.disabled}" value="true" />
+                    </p:commandButton>
                 </h:panelGrid>
             </h:form>
         </p:dialog>
