@@ -53,7 +53,7 @@
             <nav>
                 <h:form class="pad-top-20">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <p:menubar styleClass="menu">  
+                    <p:menubar styleClass="menu" rendered="#{userBean.user.sesion == true}">  
                         
                         <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>                                                             
                        
@@ -86,7 +86,7 @@
                             <p:menuitem value="Oferta" url="/resources/views/admin/ListarOferta.xhtml" icon="fa fa-list" />
                         </p:submenu>
                        <p:submenu label="Reportes" icon="fa fa-file-pdf-o">
-                            <p:menuitem value="Servicios Profesionales" url="resources/views/admin/ListarReportes.xhtml" icon="fa fa-file-o"/>    
+                            <p:menuitem value="Servicios Profesionales" url="/resources/views/admin/ListarReportes.xhtml" icon="fa fa-file-o"/>    
                        
                         </p:submenu>     
                         <ui:insert name="add-menu-items"> </ui:insert>

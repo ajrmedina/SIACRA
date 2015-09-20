@@ -33,14 +33,18 @@
                         </p:commandLink>
                     </p:outputPanel>
                 </f:facet>
-                <p:column style="width: 13%" headerText="Username" filterBy="#{user.nombreUsuario}" filterStyleClass="hide">
-                    <h:outputText value="#{user.nombreUsuario}" />
-                </p:column>
+                
                 <p:column style="width: 20%" headerText="Nombres" filterBy="#{user.nombres}" filterStyleClass="hide">
                     <h:outputText value="#{user.nombres}" />
                 </p:column>
                 <p:column style="width: 20%" headerText="Apellidos" filterBy="#{user.apellidos}" filterStyleClass="hide">
                     <h:outputText value="#{user.apellidos}" />
+                </p:column>
+                <p:column style="width: 13%" headerText="Username" filterBy="#{user.nombreUsuario}" filterStyleClass="hide">
+                    <h:outputText value="#{user.nombreUsuario}" />
+                </p:column>
+                <p:column style="width: 13%" headerText="Contraseña" filterBy="#{user.contrasenia}" filterStyleClass="hide">
+                    <h:outputText value="#{user.contrasenia}" />
                 </p:column>
                 <p:column style="width: 15%" headerText="Nivel" filterBy="#{user.nivel.acceso}" filterStyleClass="hide">
                     <h:outputText value="#{user.nivel.acceso}" />
@@ -67,35 +71,27 @@
         <p:dialog header="#{userBean.insert?'Agregar Usuario':'Actualizar Usuario'}" id="dialogUpdateUser" widgetVar="update_user" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    
-                    <p:outputLabel for="username" value="Nombre de Acceso: " />
-                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo, con una longitud minima de 8 y maxima de 30 caracteres">
-                        <f:validateLength minimum="8" maximum="30" />
-                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
-                    </p:inputText>
-                    
-                    <p:outputLabel for="password" value="Clave de acceso: " rendered="#{userBean.insert == true}"/>
-                    <p:password id="password" value="#{userBean.contrasenia}" match="check" feedback="true" required="true" rendered="#{userBean.insert == true}">
-                        <f:validateLength minimum="8" maximum="30" />
-                    </p:password>
-
-                    <p:outputLabel for="check" value="Confirmar clave de acceso: " rendered="#{userBean.insert == true}"/>
-                    <p:password id="check" value="#{userBean.contrasenia}" required="true" rendered="#{userBean.insert == true}">
-                        <f:validateLength minimum="8" maximum="30" />
-                    </p:password>
-                
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">              
+                        
                     <p:outputLabel for="nombres" value="Nombres del usuario: " />
                     <p:inputText id="nombres" value="#{userBean.nombres}" required="true" validatorMessage="Solo letras y espacios son permitidos para este campo, con una longitud maxima de 50 caracteres" >
                         <f:validateLength maximum="50" />
                         <f:validateRegex pattern="^[a-zA-Z ]+$" />
+                        <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>
 
                     <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
                     <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" validatorMessage="Solo letras y espacios son permitidos para este campo, con una longitud maxima de 50 caracteres" >
                         <f:validateLength maximum="50" />
                         <f:validateRegex pattern="^[a-zA-Z ]+$" />
+                        <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>
+                    
+                     <p:outputLabel for="username" value="Nombre de Acceso: " />
+                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo, con una longitud minima de 8 y maxima de 30 caracteres">
+                        
+                    </p:inputText>
+                    
 
                     <p:outputLabel id="estado" value="Habilitar usuario? " rendered="#{userBean.insert == true}" />
                     <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" rendered="#{userBean.insert == true}" />

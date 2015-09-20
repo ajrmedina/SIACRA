@@ -48,6 +48,9 @@ public class User implements Serializable{
         @Column(name = "esdocente", nullable = false)
 	private boolean esDocente;
         
+        @Column(name = "sesion")
+	private boolean sesion;
+        
         @ManyToOne
         @JoinColumn(name="idnivelacceso")
 	private NivelAcceso nivel;
@@ -127,5 +130,18 @@ public class User implements Serializable{
         public void setDocente(Docente docente) {
             this.docente = docente;
         }
+
+        public boolean isSesion() {
+            return sesion;
+        }
+
+        public void setSesion(boolean sesion) {
+            this.sesion = sesion;
+        }
+
+    public boolean getSesion() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
  
+        
 }

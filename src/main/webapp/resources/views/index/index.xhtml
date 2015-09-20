@@ -3,7 +3,8 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui">    
+    
 
     <ui:define name="title">
        Inicio
@@ -13,7 +14,31 @@
         Bienvenido al SIACRA
     </ui:define>
     
-    <ui:define name="content">
+    <ui:define name="content"> 
+                
+        <h:form id="cambio" rendered="#{userBean.user.sesion == false}">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element">     
+
+                <p:outputLabel for="password" value="Clave de acceso: " />
+                <p:password id="password" value="#{userBean.user.contrasenia}" match="check" feedback="true" required="true" 
+                            validatorMessage="Debe tener una longitud mínima de 8 y una longitud maxima de 50 caracteres"
+                            requiredMessage="Campo Requerido">
+                    <f:validateLength minimum="8" maximum="30" />
+                </p:password>
+
+                <p:outputLabel for="check" value="Confirmar clave de acceso: " />
+                <p:password id="check" value="#{userBean.user.contrasenia}" required="true" 
+                            validatorMessage="Debe tener una longitud mínima de 8 y una longitud maxima de 50 caracteres"
+                            requiredMessage="Campo Requerido">
+                    <f:validateLength minimum="8" maximum="30" />                    
+                </p:password>               
+              
+                <p:commandButton id="save_insert" value="Actualizar" action="#{userBean.actualizarPassword}" icon="fa fa-plus" />
+
+            </h:panelGrid>            
+        </h:form>                                       
+                 
         <h:outputText value="Docente: #{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} pertenece a la Escuela: #{identityBean.principal.escuela.nombreescuela}" />
         
         <h:form> 
