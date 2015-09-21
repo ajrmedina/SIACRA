@@ -48,10 +48,11 @@ public class GrupoDao {
     }
     
  
-    public boolean getExistGrupo(Integer cupo,Integer numeroGrupo) {
+    public boolean getExistGrupo(Integer cupo,Integer numeroGrupo,Integer idHorario, Integer idAsignatura,Integer idTipoGrupo) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from Grupo where cupo=? and numeroGrupo=?")
-                                            .setParameter(0,cupo).setParameter(1, numeroGrupo).list();
+                                            .createQuery("from Grupo where cupo=? and numeroGrupo=? and idhorario=? and idasignatura=? and idtipogrupo=?")
+                                            .setParameter(0,cupo).setParameter(1, numeroGrupo).setParameter(2, idHorario)
+                                            .setParameter(3, idAsignatura).setParameter(4, idTipoGrupo).list();
         
         if(list.isEmpty()){
             return false;

@@ -171,15 +171,28 @@ public class AsignaturaBean implements Serializable{
     
     //reset a las variables
     public void reset() {           
-       this.setIdEscuela(Integer.parseInt(""));
+       this.setIdEscuela(null);
        this.setCodigoAsignatura("");
        this.setNombreAsignatura("");
-       this.setCicloImpartir(Integer.parseInt(""));
-       this.setUnidadesValorativas(Integer.parseInt(""));
+       this.setCicloImpartir(null);
+       this.setUnidadesValorativas(null);
        this.setTipoAsignatura("");
        this.setEstadoAsignatura(false);
+       this.setAprobarAsignatura(false);
+       this.setIdAsignatura(null);
        
     }
+    
+//    public void reset() {
+//        this.idEscuela=null;
+//        this.codigoAsignatura="";
+//        this.nombreAsignatura="";
+//        this.cicloImpartir=null;
+//        this.unidadesValorativas=null;
+//        this.tipoAsignatura="";
+//        this.setEstadoAsignatura(false);
+//       
+//    }
     
     //Invocamos metodos de agregacion y agregamos parametros obtenidos de la vista
     public void addAsignatura(){
@@ -196,8 +209,9 @@ public class AsignaturaBean implements Serializable{
             asignatura.setNombreAsignatura(nombreAsignatura);
 
             //Consultamos si el tipo grupo existe o no
-            if(getAsignaturaService().getExistAsignatura(getCodigoAsignatura(), getCicloImpartir(), getUnidadesValorativas(), getTipoAsignatura(), getNombreAsignatura() ) ){
-                addMessage("La asignatura :" + getNombreAsignatura() + " - " + getCodigoAsignatura() + " ya existe para el ciclo : " + getCicloImpartir());
+            if(getAsignaturaService().getExistAsignatura(getCodigoAsignatura(), getCicloImpartir(), getUnidadesValorativas(), getTipoAsignatura(), getNombreAsignatura(),getIdEscuela() ) )
+            {
+                addMessage("La asignatura :" + getNombreAsignatura() + " - " + getCodigoAsignatura() + " ya existe para la escuela : "+ asignatura.getEscuela().getNombreescuela() +" y el ciclo : " + getCicloImpartir());
             }
             else{
                 getAsignaturaService().addAsignatura(asignatura);
@@ -234,7 +248,7 @@ public class AsignaturaBean implements Serializable{
     }
     
     //Eliminamos el tipo de grupo
-    public void deleteAsinatura(){
+    public void deleteAsignatura(){
         try{
             Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
             String asignaturaEliminada = asignatura.getCodigoAsignatura() + " - " + getNombreAsignatura();

@@ -52,7 +52,7 @@ public class OfertaBean implements Serializable{
     private List<Ciclo> cicloList;
     private List<Grupo> grupoList;
     private List<Acuerdo> acuerdoList;
-    Integer insert;
+    boolean insert;
 
     public OfertaService getOfertaService() {
         return ofertaService;
@@ -126,11 +126,11 @@ public class OfertaBean implements Serializable{
         this.idAcuerdo = idAcuerdo;
     }
 
-    public Integer getInsert() {
+    public boolean isInsert() {
         return insert;
     }
 
-    public void setInsert(Integer insert) {
+    public void setInsert(boolean insert) {
         this.insert = insert;
     }
     
@@ -179,6 +179,14 @@ public class OfertaBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
+    public void reset(){
+        this.setIdAcuerdo(null);
+        this.setIdCiclo(null);
+        this.setIdGrupo(null);
+        this.setIdOferta(null);
+        this.setAprobarOferta(false);
+    }
+    
     public void addOferta(){
         
         try{
@@ -198,7 +206,7 @@ public class OfertaBean implements Serializable{
             else{
                 getOfertaService().addOferta(oferta);
                 addMessage("La oferta para el ciclo :" + c.getCiclo() + " asignatura : " + g.getAsignatura().getCodigoAsignatura() + " Acuerdo :" + a.getCodigoacuerdo() +" fue creada exitosamente");
-                setInsert(insert);
+//                setInsert(insert);
             }
         }catch (DataAccessException e){
             e.printStackTrace();

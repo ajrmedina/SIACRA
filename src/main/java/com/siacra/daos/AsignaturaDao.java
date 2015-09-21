@@ -48,11 +48,11 @@ public class AsignaturaDao {
         return (Asignatura)list.get(0);
     }
     
-    public boolean getExistAsignatura(String codigoAsignatura,Integer cicloImpartir,Integer unidadesValorativas,String tipoAsignatura,String nombreAsignatura) {
+    public boolean getExistAsignatura(String codigoAsignatura,Integer cicloImpartir,Integer unidadesValorativas,String tipoAsignatura,String nombreAsignatura, Integer idEscuela) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from Asignatura where codigoAsignatura=? and cicloImpartir=? and unidadesValorativas=? and tipoAsignatura=? and nombreAsignatura=?")
+                                            .createQuery("from Asignatura where codigoAsignatura=? and cicloImpartir=? and unidadesValorativas=? and tipoAsignatura=? and nombreAsignatura=? and idescuela=?")
                                             .setParameter(0, codigoAsignatura).setParameter(1, cicloImpartir).setParameter(2, unidadesValorativas)
-                                            .setParameter(3, tipoAsignatura).setParameter(4, nombreAsignatura).list();
+                                            .setParameter(3, tipoAsignatura).setParameter(4, nombreAsignatura).setParameter(5, idEscuela).list();
         
         if(list.isEmpty()){
             return false;
@@ -63,6 +63,12 @@ public class AsignaturaDao {
     
     public List<Asignatura> getAsignaturas() {
         List list = getSessionFactory().getCurrentSession().createQuery("from Asignatura").list();
+        return list;
+    }
+    
+    public List<Asignatura> getAsignaturasByEscuela(Integer idEscuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("from Asignatura where idescuela=?")
+                                                           .setParameter(1, idEscuela).list();
         return list;
     }
     
