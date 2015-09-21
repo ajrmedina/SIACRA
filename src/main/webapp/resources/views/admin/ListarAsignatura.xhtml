@@ -17,12 +17,17 @@
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="asignaturasTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable rowKey="#{asignaturaBean.cicloImpartir}" id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="asignaturasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.reset()}" oncomplete="PF('update_asignatura').show()"  value="Nueva Asignatura" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="true" />
                     </p:commandButton>
+                     <p:commandLink ajax="false" style="float: right">
+                            <p:graphicImage library="img" name="pdf.png"/>
+                            <f:setPropertyActionListener value="Asignaturas" target="#{exporter.title}" />
+                            <p:dataExporter type="pdf" target="asignatura" fileName="asignaturasPDF" preProcessor="#{exporter.preProcessPDF}"  />
+                        </p:commandLink>
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de asignaturas:" />
                         <p:inputText id="globalFilter" onkeyup="PF('asignaturasTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
@@ -30,32 +35,40 @@
                     <div style="clear:both" />
                 </f:facet>
                 
-                <p:column style="width: 18%" headerText="Escuela" filterBy="#{asignatura.escuela.nombreescuela}" filterStyleClass="hide">
+                <p:column style="width: 18%" headerText="Escuela" filterBy="#{asignatura.escuela.nombreescuela}" filterStyleClass="hide" exportable="false" >
                     <h:outputText value="#{asignatura.escuela.nombreescuela}"/>
                 </p:column>
-                <p:column style="width: 6%" headerText="Codigo" filterBy="#{asignatura.codigoAsignatura}" filterStyleClass="hide">
+                <p:column style="width: 6%" headerText="Codigo" filterBy="#{asignatura.codigoAsignatura}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.codigoAsignatura}"/>
                 </p:column>
-                <p:column style="width: 17%" headerText="Nombre" filterBy="#{asignatura.nombreAsignatura}" filterStyleClass="hide">
+                <p:column style="width: 17%" headerText="Nombre" filterBy="#{asignatura.nombreAsignatura}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.nombreAsignatura}"/>
                 </p:column>
-                <p:column style="width: 9%" headerText="Estado" filterBy="#{asignatura.estadoAsignatura}" filterStyleClass="hide">
+                <p:column style="width: 5%" headerText="Estado" filterBy="#{asignatura.estadoAsignatura}" filterStyleClass="hide" exportable="false">
                     <h:outputText value="#{asignatura.estadoAsignatura?'Habilitada':'Deshabilitada'}"/>
                 </p:column>
-                <p:column style="width: 11%" headerText="Aprobacion" filterBy="#{asignatura.aprobarasignatura}" filterStyleClass="hide">
+                <p:column style="width: 7%" headerText="Aprobacion" filterBy="#{asignatura.aprobarasignatura}" filterStyleClass="hide" exportable="false">
                     <h:outputText value="#{asignatura.aprobarasignatura?'Aprobada':'No aprobada'}"/>
                 </p:column>
-                <p:column style="width: 4%" headerText="Ciclo" filterBy="#{asignatura.cicloImpartir}" filterStyleClass="hide">
+                <p:column style="width: 10%"   filterMatchMode="equals" headerText="Ciclo" filterBy="#{asignatura.cicloImpartir}" filterStyleClass="hide" >
+                      <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('asignaturasTable').filter()">
+                            <f:converter converterId="javax.faces.Integer" />
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItem itemLabel="1" itemValue="1" />
+                            <f:selectItem itemLabel="2" itemValue="2" />
+                        </p:selectOneButton>
+                    </f:facet>
                     <h:outputText value="#{asignatura.cicloImpartir}"/>
                 </p:column>
-                <p:column style="width: 4%" headerText="UV" filterBy="#{asignatura.unidadesValorativas}" filterStyleClass="hide">
+                <p:column style="width: 2%" headerText="UV" filterBy="#{asignatura.unidadesValorativas}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.unidadesValorativas}"/>
                 </p:column>
-                <p:column style="width: 8%" headerText="Tipo" filterBy="#{asignatura.tipoAsignatura}" filterStyleClass="hide">
+                <p:column style="width: 8%" headerText="Tipo" filterBy="#{asignatura.tipoAsignatura}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.tipoAsignatura}"/>
                 </p:column>
                 
-                <p:column style="width: 10%" headerText="Acciones">
+                <p:column style="width: 10%" headerText="Acciones" exportable="false">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('update_asignatura').show()" icon="fa fa-edit" >
                         <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="false" />
