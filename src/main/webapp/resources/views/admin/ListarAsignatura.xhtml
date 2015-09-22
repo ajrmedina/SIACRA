@@ -38,7 +38,7 @@
                 <p:column style="width: 18%" headerText="Escuela" filterBy="#{asignatura.escuela.nombreescuela}" filterStyleClass="hide" exportable="false" >
                     <h:outputText value="#{asignatura.escuela.nombreescuela}"/>
                 </p:column>
-                <p:column style="width: 6%" headerText="Codigo" filterBy="#{asignatura.codigoAsignatura}" filterStyleClass="hide" >
+                <p:column style="width: 5%" headerText="Codigo" filterBy="#{asignatura.codigoAsignatura}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.codigoAsignatura}"/>
                 </p:column>
                 <p:column style="width: 17%" headerText="Nombre" filterBy="#{asignatura.nombreAsignatura}" filterStyleClass="hide" >
@@ -47,7 +47,7 @@
                 <p:column style="width: 5%" headerText="Estado" filterBy="#{asignatura.estadoAsignatura}" filterStyleClass="hide" exportable="false">
                     <h:outputText value="#{asignatura.estadoAsignatura?'Habilitada':'Deshabilitada'}"/>
                 </p:column>
-                <p:column style="width: 7%" headerText="Aprobacion" filterBy="#{asignatura.aprobarasignatura}" filterStyleClass="hide" exportable="false">
+                <p:column style="width: 6%" headerText="Aprobacion" filterBy="#{asignatura.aprobarasignatura}" filterStyleClass="hide" exportable="false">
                     <h:outputText value="#{asignatura.aprobarasignatura?'Aprobada':'No aprobada'}"/>
                 </p:column>
                 <p:column style="width: 10%"   filterMatchMode="equals" headerText="Ciclo" filterBy="#{asignatura.cicloImpartir}" filterStyleClass="hide" >
@@ -64,8 +64,8 @@
                 <p:column style="width: 2%" headerText="UV" filterBy="#{asignatura.unidadesValorativas}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.unidadesValorativas}"/>
                 </p:column>
-                <p:column style="width: 8%" headerText="Tipo" filterBy="#{asignatura.tipoAsignatura}" filterStyleClass="hide" >
-                    <h:outputText value="#{asignatura.tipoAsignatura}"/>
+                <p:column style="width: 6%" headerText="Tipo" filterBy="#{asignatura.tipoAsignatura}" filterStyleClass="hide" >
+                    <h:outputText value="#{asignatura.tipoAsignatura}"  />
                 </p:column>
                 
                 <p:column style="width: 10%" headerText="Acciones" exportable="false">
@@ -91,9 +91,9 @@
                     <p:outputLabel for="escuela" value="Escuela: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="escuela" value="#{asignaturaBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{asignaturaBean.escuelaList}" var="escuela" itemValue="#{escuela.idescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                            <f:selectItem  itemValue="#{identityBean.principal.escuela.idescuela}" itemLabel="#{identityBean.principal.escuela.nombreescuela}"/>
                         </p:selectOneMenu>
-                        <p:tooltip id="forEscuela" for="escuela" value="Seleccione la escuela a la que pertenece la asignatura" />
+                       
                     </h:panelGroup>
                     
                     <p:outputLabel for="codigoAsignatura" value="Codigo asignatura: " />

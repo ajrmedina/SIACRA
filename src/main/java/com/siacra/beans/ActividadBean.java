@@ -139,8 +139,8 @@ public class ActividadBean implements Serializable{
                 
                 actividad.setIdescuela(escuela);
                 actividad.setIdtipoactividad(tipoActividad);
-                actividad.setNombreactividad(actividad.getNombreactividad());
-                actividad.setDescripcionactividad(actividad.getDescripcionactividad());
+                actividad.setNombreactividad(getNombreactividad());
+                actividad.setDescripcionactividad(getDescripcionactividad());
                 getActividadService().updateActividad(actividad);
                 addMessage("La actividad "+actividad.getNombreactividad() + " Fue actualizada correctamente");
             } catch (Exception e) {
@@ -400,7 +400,7 @@ public class ActividadBean implements Serializable{
             String actividadBloqueada = actividad.getNombreactividad();
             actividad.setEstadoactividad(true);
             getActividadService().updateActividad(actividad);
-            addMessage("La actividad " + actividadBloqueada + " fue inhabilitada correctamente");
+            addMessage("La actividad " + actividadBloqueada + " fue habilitada correctamente");
             
         } catch (DataAccessException e) {
             e.printStackTrace();
