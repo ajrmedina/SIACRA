@@ -78,10 +78,10 @@
                                       
                     <p:outputLabel for="escuela" value="Escuela: " />
                     <h:panelGroup layout="block1">
-                        <p:selectOneMenu id="escuela" value="#{horarioBean.idescuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{horarioBean.escuelaList}" var="escuela" itemValue="#{escuela.idescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                        <p:selectOneMenu id="escuela" value="#{horarioBean.idescuela}" effect="fade"  required="true" >
+                            <f:selectItem  itemValue="#{identityBean.principal.escuela.idescuela}" itemLabel="#{identityBean.principal.escuela.nombreescuela}"/>
                         </p:selectOneMenu>
-                        <p:tooltip id="forEscuela" for="escuela" value="Seleccione la escuela que correspondera dicho horario" />
+                        
                     </h:panelGroup>
                     
                     <p:outputLabel for="dia1" value="Dia :" />

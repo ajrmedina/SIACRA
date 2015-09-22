@@ -302,7 +302,7 @@ public class AsignaturaBean implements Serializable{
             String asignaturaBloqueada = asignatura.getNombreAsignatura();
             asignatura.setEstadoAsignatura(true);
             getAsignaturaService().updateAsignatura(asignatura);
-            addMessage("La asignatura " + asignaturaBloqueada + " fue inhabilitada correctamente");
+            addMessage("La asignatura " + asignaturaBloqueada + " fue habilitada correctamente");
             
         } catch (DataAccessException e) {
             e.printStackTrace();
