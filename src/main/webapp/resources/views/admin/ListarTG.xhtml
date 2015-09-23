@@ -55,6 +55,14 @@
                 </p:column>
                 
                 <p:column style="width: 8%" headerText="Aprobacion" filterBy="#{tdg.aprobartg}" filterStyleClass="hide">                    
+                     <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('tgTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItem itemLabel="A" itemValue="true"  />
+                            <f:selectItem itemLabel="E" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
                     <h:outputText value="#{tdg.aprobartg?'Aprobado':'En Espera'}" />
                 </p:column>
                 

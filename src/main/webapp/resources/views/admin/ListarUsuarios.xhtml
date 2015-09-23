@@ -50,6 +50,14 @@
                     <h:outputText value="#{user.nivel.acceso}" />
                 </p:column>
                 <p:column style="width: 10%" headerText="Habilitado" filterBy="#{user.estadoUsuario}" filterStyleClass="hide">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('usuariosTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItem itemLabel="H" itemValue="true"  />
+                            <f:selectItem itemLabel="D" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
                     <h:outputText value="#{user.estadoUsuario?'Habilitado':'Deshabilitado'}" />
                 </p:column>
                 <p:column style="width: 8%" headerText="Es Docente" filterBy="#{user.esDocente}" filterStyleClass="hide">
