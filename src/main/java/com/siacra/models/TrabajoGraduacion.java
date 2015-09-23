@@ -72,7 +72,10 @@ public class TrabajoGraduacion implements Serializable {
     @ManyToOne
     @JoinColumn(name = "IDRESPONSABILIDAD")
     private Responsabilidad responsabilidad;
-
+    @ManyToOne
+    @JoinColumn(name="idescuela")
+    private Escuela escuela;
+     
     public TrabajoGraduacion() {
     }
 
@@ -170,7 +173,25 @@ public class TrabajoGraduacion implements Serializable {
         this.responsabilidad = responsabilidad;
     }
 
- 
+    /**
+     * Get Escuela
+     *
+     * @return escuela Escuela
+     */
+    
+    public Escuela getEscuela() {
+        return this.escuela;
+    }
+    
+    /**
+     * Set Escuela
+     *
+     * @param escuela Escuela
+     */
+    
+    public void setEscuela(Escuela escuela) {
+        this.escuela = escuela;
+    }
 
     @Override
     public String toString() {

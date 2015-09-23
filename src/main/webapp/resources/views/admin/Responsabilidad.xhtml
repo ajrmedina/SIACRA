@@ -27,7 +27,7 @@
                 <p:selectOneMenu id="docenteFilter" value="#{responsabilidadBean.CDocente}" effect="fade" filter="true" filterMatchMode="startsWith" >
                     <f:selectItem itemValue="0" itemLabel="Seleccione un docente"  />
                     <f:selectItems value="#{responsabilidadBean.docenteList}" var="docent" itemValue="#{docent.idDocente}" itemLabel="#{docent.user.nombres} #{docent.user.apellidos}"/>
-                    <p:ajax event="change" update="responsabilidadTable" process="@this" listener="#{responsabilidadBean.refresh()}" />
+                    <p:ajax event="change" update="responsabilidadTable" process="@this" listener="#{responsabilidadBean.refreshResponsabilidad()}" />
                 </p:selectOneMenu>
                 <p:tooltip id="forDocenteFilter" for="docenteFilter" value="Seleccione el docente del cual quiere verificar la responsabilidad" />
             </h:panelGrid>
@@ -189,6 +189,44 @@
                 </p:dataTable>
                 <br />
                 <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('proyecto_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Vincular a Grupos" id="dialogGrupoExiste" widgetVar="grupo_existe" modal="true" resizable="false" closable="false" width="700" height="450">
+            <center><h2 class="title">Vincular a un Grupo Existente</h2></center>
+            <h:form id="grupo_form">
+                <h:panelGrid columns="2" cellpadding="5" class="center-element" style="margin-left: 60px ">
+                    <p:outputLabel for="asignaturaFilter" value="Filtro por asignatura: " />
+                    <p:selectOneMenu id="asignaturaFilter" value="#{responsabilidadBean.idAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                        <f:selectItem itemValue="0" itemLabel="Seleccione una asignatura"  />
+                        <f:selectItems value="#{responsabilidadBean.asignaturaList}" var="asign" itemValue="#{asign.idAsignatura}" itemLabel="#{asign.nombreAsignatura}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip id="forAsignaturaFilter" for="asignaturaFilter" value="Selecciona la asignatura de la que desea ver los grupos" />
+                </h:panelGrid>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p:dataTable id="grupo" var="grp" value="#{responsabilidadBean.gruposList}" style="width: 90%" class="center-element" paginator="true" rows="10" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="grupo_table">                           
+                    <f:facet name="header" >
+                        <p:outputPanel>
+                            <h:outputText value="Busqueda de grupos:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('grupo_table').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column style="width: 20%" headerText="No. Grupo" filterBy="#{grp.numeroGrupo}" filterStyleClass="hide">                    
+                        <h:outputText value="#{grp.numeroGrupo}" class="center-element"/>
+                    </p:column>
+                    <p:column style="width: 30%" headerText="Tipo de Grupo" filterBy="#{grp.tipoGrupo}" filterStyleClass="hide">                    
+                        <h:outputText value="#{grp.tipoGrupo.tipoGrupo}" class="center-element"/>
+                    </p:column>
+                    <p:column style="width: 20%">
+                        <f:facet name="header">
+                            <h:outputText value="Acciones" />
+                        </f:facet>
+                        <p:growl id="messages" />  
+                        <p:commandButton id="vincular" actionListener="#{responsabilidadBean.vincularGrupo(grp)}" update=":responsabilidadForm grupo" oncomplete="PF('grupo_existe').hide()" icon="fa fa-external-link" />
+                    </p:column>
+                </p:dataTable>
+                <br />
+                <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('grupo_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
             </h:form>
         </p:dialog>
         

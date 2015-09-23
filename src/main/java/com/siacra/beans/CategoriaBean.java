@@ -65,7 +65,7 @@ public class CategoriaBean implements Serializable {
             categoria.setHorasObligatorias(getHorasObligatorias());
             categoria.setEscalafon(escalafon);
             categoria.setContrato(contrato);
-            categoria.setEstadoCategoria(true);
+            categoria.setEstadoCategoria(false);
             getCategoriaService().addCategoria(categoria);
             addMessage("La Categoria " + escalafon.getTipoescalafon() + " " + contrato.getTipocontrato() + " fue añadida correctamente");
             reset();

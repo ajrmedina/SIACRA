@@ -126,11 +126,17 @@ public class DocenteDao  {
      * @return List - Lista Docente con contrato servicio profesional
      */
     public List<Docente> getDocentesServiciosProfesionales(){
-    List list = getSessionFactory().getCurrentSession()
-                .createQuery("from Docente as doc where "
-                        + "doc.categoria.contrato.idcontrato=4")
-                .list();
-    return list;
+        List list = getSessionFactory().getCurrentSession()
+                    .createQuery("from Docente as doc where "
+                            + "doc.categoria.contrato.idcontrato=4")
+                    .list();
+        return list;
+    }
+    
+    public List<Docente> getDocentesByEscuela(Integer idEscuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("from Docente where idescuela=?")
+                                                           .setParameter(0, idEscuela).list();
+        return list;
     }
 }
 

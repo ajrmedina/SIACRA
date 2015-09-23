@@ -46,8 +46,14 @@ public class Escuela implements Serializable{
     @OneToMany(mappedBy="escuela")
     private Set<Asignatura> asignatura;
     
-    @OneToMany(mappedBy="idescuela")
+    @OneToMany(mappedBy="escuela")
     private Set<Actividad> actividad;
+    
+    @OneToMany(mappedBy="escuela")
+    private Set<TrabajoGraduacion> tg;
+    
+    @OneToMany(mappedBy="escuela")
+    private Set<Proyecto> proyecto;
     
     
     
@@ -117,6 +123,22 @@ public class Escuela implements Serializable{
 
     public void setActividad(Set<Actividad> actividad) {
         this.actividad = actividad;
+    }
+    
+    public Set<TrabajoGraduacion> getTrabajoGraduacion() {
+        return tg;
+    }
+
+    public void setTrabajoGraduacion(Set<TrabajoGraduacion> tg) {
+        this.tg = tg;
+    }
+    
+    public Set<Proyecto> getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(Set<Proyecto> proyecto) {
+        this.proyecto = proyecto;
     }
     
         

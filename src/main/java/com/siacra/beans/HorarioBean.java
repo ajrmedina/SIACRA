@@ -10,18 +10,16 @@ import com.siacra.models.Horario;
 import com.siacra.services.EscuelaService;
 import com.siacra.services.HorarioService;
 import java.io.Serializable;
-import java.text.Format;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
 
@@ -42,6 +40,11 @@ public class HorarioBean implements Serializable{
     private List<Horario> horarioList;
     private List<Horario> horarioEscuelaList;
     private List<Escuela> escuelaList;
+    
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+    
     //Format formato = new SimpleDateFormat("HH:mm");
     //SimpleDateFormat formato2 = new SimpleDateFormat("HH:mm");
     
@@ -64,7 +67,7 @@ public class HorarioBean implements Serializable{
     
     public List<Horario> getHorarioEscuelaList(Integer idescuela) {
         horarioEscuelaList = new ArrayList<>();
-        horarioEscuelaList.addAll(getHorarioService().getHorariosbyEscuela(idescuela));
+        horarioEscuelaList.addAll(getHorarioService().getHorariosbyEscuela(id_escuela));
         return horarioEscuelaList;
     }
 

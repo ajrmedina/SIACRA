@@ -83,7 +83,11 @@ public class ActividadService {
         return getActividadDao().getActividadById(id);
     }
 
-     public List<Actividad> getActividades() {
+    public List<Actividad> getActividades() {
         return getActividadDao().getActividades();
+    }
+     
+    public List<Actividad> getActividadesByEscuela(Integer idEscuela) {
+        return getActividadDao().getActividadesByEscuela(idEscuela);
     }
 }

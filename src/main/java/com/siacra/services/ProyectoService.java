@@ -54,8 +54,8 @@ public class ProyectoService {
         return getProyectoDao().getProyectos();
     }    
     
-    public List<Proyecto> getProyectosFinalizados(){
-        return getProyectoDao().getProyectosFinalizados();
+    public List<Proyecto> getProyectosNoFinalizados(){
+        return getProyectoDao().getProyectosNoFinalizados();
     }
     
     public boolean getExistProyectoByResponsabilidad(int id){
@@ -64,6 +64,14 @@ public class ProyectoService {
     
     public Proyecto getProyectoByResponsabilidad(int id){
         return getProyectoDao().getProyectoByResponsabilidad(id);
+    }
+    
+    public List<Proyecto> getProyectosByEscuela(int id){
+        return getProyectoDao().getProyectosbyEscuela(id);
+    }
+    
+    public List<Proyecto> getProyectosNoFinalizadosByEscuela(int id){
+        return getProyectoDao().getProyectosNoFinalizadosbyEscuela(id);
     }
     
 }

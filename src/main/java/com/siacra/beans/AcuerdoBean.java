@@ -52,7 +52,7 @@ public class AcuerdoBean implements Serializable{
             acuerdo.setCodigoacuerdo(getCodigoacuerdo());
             acuerdo.setFechaacuerdo(getFechaacuerdo());
             acuerdo.setNombreacuerdo(getNombreacuerdo());
-            acuerdo.setEstadoacuerdo(true);
+            acuerdo.setEstadoacuerdo(false);
           
             getAcuerdoService().addAcuerdo(acuerdo);
             //getEscuelaService().addEscuela(escuela);

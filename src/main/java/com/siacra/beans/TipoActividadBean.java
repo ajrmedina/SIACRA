@@ -44,7 +44,7 @@ public class TipoActividadBean implements Serializable {
         try {
             TipoActividad tipoactividad = new TipoActividad();
             tipoactividad.setTipoactividad(getTipoactividad());
-            tipoactividad.setTa_estado(true);
+            tipoactividad.setTa_estado(false);
             getTipoActividadService().addTipoActividad(tipoactividad);
             addMessage("El tipoactividad " + getTipoactividad()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";

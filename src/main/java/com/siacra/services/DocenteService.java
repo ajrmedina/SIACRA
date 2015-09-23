@@ -122,6 +122,10 @@ public class DocenteService {
      * @return DocenteDAO - Docentes servicio profesional
      */
     public List<Docente> getDocentesSP(){
-    return getDocenteDao().getDocentesServiciosProfesionales();
+        return getDocenteDao().getDocentesServiciosProfesionales();
+    }
+    
+    public List<Docente> getDocentesByEscuela(Integer idEscuela) {
+        return getDocenteDao().getDocentesByEscuela(idEscuela);
     }
 }

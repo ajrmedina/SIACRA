@@ -4,18 +4,22 @@
  * and open the template in the editor.
  */
 package com.siacra.beans;
+import com.siacra.models.Escuela;
 import com.siacra.models.Responsabilidad;
 import com.siacra.models.Proyecto;
+import com.siacra.services.EscuelaService;
 import com.siacra.services.ResponsabilidadService;
 import com.siacra.services.ProyectoService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
 
@@ -35,11 +39,19 @@ public class ProyectoBean implements Serializable{
     @ManagedProperty(value = "#{ResponsabilidadService}")
     private ResponsabilidadService responsabilidadService;
     
+    @ManagedProperty(value = "#{EscuelaService}")
+    private EscuelaService escuelaService;
+    
     private List<Proyecto> proyectoList; 
     private List<Responsabilidad> responsabilidadList; 
     
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+    
     private int idproyecto; 
     private int idresponsabilidad;
+    private int idescuela;
     private boolean aprobarproyecto; 
     private Date fechainicio; 
     private Date fechafin; 
@@ -52,7 +64,9 @@ public class ProyectoBean implements Serializable{
     public void addProyecto(){
         try{
             Proyecto proyecto = new Proyecto();
+            Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
             proyecto.setResponsabilidad(null);
+            proyecto.setEscuela(escuela);
             proyecto.setFechainicio(fechainicio);
             proyecto.setFechafin(fechafin);
             proyecto.setNombreproyecto(nombreproyecto);
@@ -61,9 +75,10 @@ public class ProyectoBean implements Serializable{
             proyecto.setAprobarproyecto(aprobarproyecto);
             proyecto.setEstadoproyecto(estadoproyecto); 
             getProyectoService().addProyecto(proyecto);
-            addMessage("El proyecto fue añadido correctamente");
             this.setInsert(false);
             reset();
+            addMessage("El proyecto fue añadido correctamente");
+            refreshProyectos();
         }
         catch (DataAccessException e) {
             e.printStackTrace();
@@ -86,7 +101,8 @@ public class ProyectoBean implements Serializable{
             setIdresponsabilidad(responsabilidad.getIdresponsabilidad());
         }catch (NullPointerException e) {
             e.printStackTrace();
-        }  
+        }
+        setIdEscuela(proyecto.getEscuela().getIdescuela());
         setIdproyecto(proyecto.getIdproyecto());
         setNombreproyecto(proyecto.getNombreproyecto());
         setObservacion(proyecto.getObservacion());
@@ -117,6 +133,7 @@ public class ProyectoBean implements Serializable{
             proyecto.setDescripcion(getDescripcion());
             getProyectoService().updateProyecto(proyecto);            
             addMessage("El proyecto fue actualizado correctamente");
+            refreshProyectos();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,12 +145,16 @@ public class ProyectoBean implements Serializable{
             proyecto.setEstadoproyecto("Finalizado");
             getProyectoService().updateProyecto(proyecto);
             addMessage("El estado del proyecto fue actualizado a finalizado correctamente");
+            refreshProyectos();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-
+    public void refreshProyectos() {
+        this.setProyectoList(getProyectoService().getProyectosByEscuela(id_escuela));
+    }
+    
     public ProyectoService getProyectoService() {
         return proyectoService;
     }
@@ -149,10 +170,24 @@ public class ProyectoBean implements Serializable{
     public void setResponsabilidadService(ResponsabilidadService responsabilidadService) {
         this.responsabilidadService = responsabilidadService;
     }
+    
+    /**
+     * @return the escuelaService
+     */
+    public EscuelaService getEscuelaService() {
+        return escuelaService;
+    }
 
+    /**
+     * @param escuelaService the escuelaService to set
+     */
+    public void setEscuelaService(EscuelaService escuelaService) {
+        this.escuelaService = escuelaService;
+    }
+    
     public List<Proyecto> getProyectoList() {
         proyectoList = new ArrayList<>();
-        proyectoList.addAll(getProyectoService().getProyectos());
+        proyectoList.addAll(getProyectoService().getProyectosByEscuela(id_escuela));
         return proyectoList;
     }
 
@@ -183,7 +218,21 @@ public class ProyectoBean implements Serializable{
     public void setIdresponsabilidad(int idresponsabilidad) {
         this.idresponsabilidad = idresponsabilidad;
     }
+    
+     /**
+     * @return the idescuela
+     */
+    public int getIdEscuela() {
+        return idescuela;
+    }
 
+    /**
+     * @param idescuela the idescuela to set
+     */
+    public void setIdEscuela(int idescuela) {
+        this.idescuela = idescuela;
+    }
+    
     public boolean isAprobarproyecto() {
         return aprobarproyecto;
     }

@@ -38,6 +38,10 @@ public class Proyecto implements Serializable{
     @JoinColumn(name = "IDRESPONSABILIDAD")
     private Responsabilidad responsabilidad;
     
+    @ManyToOne
+    @JoinColumn(name="idescuela")
+    private Escuela escuela;
+     
     @Column(name="aprobarproyecto", nullable = false)
     private boolean aprobarproyecto; 
     
@@ -134,6 +138,27 @@ public class Proyecto implements Serializable{
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    
+    /**
+     * Get Escuela
+     *
+     * @return escuela Escuela
+     */
+    
+    public Escuela getEscuela() {
+        return this.escuela;
+    }
+    
+    /**
+     * Set Escuela
+     *
+     * @param escuela Escuela
+     */
+    
+    public void setEscuela(Escuela escuela) {
+        this.escuela = escuela;
+    }
+    
     
     public Proyecto() {
     }
