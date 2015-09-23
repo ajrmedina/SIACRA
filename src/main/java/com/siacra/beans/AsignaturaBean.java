@@ -12,10 +12,12 @@ import com.siacra.services.EscuelaService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
 
@@ -35,6 +37,11 @@ public class AsignaturaBean implements Serializable{
     
     private List<Asignatura> asignaturaList;
     private List<Escuela> escuelaList;
+    
+    
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
     
     Integer idAsignatura;
     Integer idEscuela;
@@ -65,7 +72,7 @@ public class AsignaturaBean implements Serializable{
 
     public List<Asignatura> getAsignaturaList() {
         asignaturaList = new ArrayList<>();
-        asignaturaList.addAll(asignaturaService.getAsignaturas());
+        asignaturaList.addAll(asignaturaService.getAsignaturasByEscuela(id_escuela));
         return asignaturaList;
     }
 
@@ -215,9 +222,10 @@ public class AsignaturaBean implements Serializable{
             }
             else{
                 getAsignaturaService().addAsignatura(asignatura);
-                addMessage("La asignatura :" + getNombreAsignatura() + " - " + getCodigoAsignatura() + " fue creada exitosamente");
                 reset();
                 setInsert(false);
+                addMessage("La asignatura :" + getNombreAsignatura() + " - " + getCodigoAsignatura() + " fue creada exitosamente");
+                refreshAsignaturas();
             }
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -241,7 +249,7 @@ public class AsignaturaBean implements Serializable{
             
             getAsignaturaService().updateAsignatura(asignatura);
             addMessage("La asignatura :" + getNombreAsignatura() + " - " + getCodigoAsignatura() + " fue modificada exitosamente");
-            
+            refreshAsignaturas();
         }catch (DataAccessException e){
             e.printStackTrace();
         }
@@ -254,6 +262,7 @@ public class AsignaturaBean implements Serializable{
             String asignaturaEliminada = asignatura.getCodigoAsignatura() + " - " + getNombreAsignatura();
             getAsignaturaService().deleteAsignatura(asignatura);
             addMessage("La asignatura : " + asignaturaEliminada + " fue eliminada correctamente");
+            refreshAsignaturas();
         }catch (DataAccessException e){
             e.printStackTrace();
             addMessage("La asignatura no puede ser eliminada debido a que tiene registros relacionados");
@@ -285,7 +294,7 @@ public class AsignaturaBean implements Serializable{
             asignatura.setEstadoAsignatura(false);
             getAsignaturaService().updateAsignatura(asignatura);
             addMessage("La asignatura " + asignaturaBloqueada + " fue inhabilitada correctamente");
-            
+            refreshAsignaturas();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -303,9 +312,13 @@ public class AsignaturaBean implements Serializable{
             asignatura.setEstadoAsignatura(true);
             getAsignaturaService().updateAsignatura(asignatura);
             addMessage("La asignatura " + asignaturaBloqueada + " fue habilitada correctamente");
-            
+            refreshAsignaturas();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void refreshAsignaturas() {
+        this.setAsignaturaList(getAsignaturaService().getAsignaturasByEscuela(id_escuela));
     }
 }

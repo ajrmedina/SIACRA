@@ -46,7 +46,7 @@ public class ContratoBean implements Serializable {
         try {
             Contrato contrato = new Contrato();
             contrato.setTipocontrato(getTipocontrato());
-            contrato.setCo_estado(true);
+            contrato.setCo_estado(false);
             getContratoService().addContrato(contrato);
             
             addMessage("El contrato " + getTipocontrato()+ " fue añadido correctamente");

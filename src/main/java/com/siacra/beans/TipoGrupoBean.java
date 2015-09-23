@@ -116,7 +116,7 @@ public class TipoGrupoBean implements Serializable {
             //tipoGrupo.setIdTipoGrupo(idTipoGrupo);
             tipoGrupo.setTipoGrupo(tipoGrupos);
             tipoGrupo.setNombreGrupo(nombreGrupo);
-            tipoGrupo.setTgEstado(true);
+            tipoGrupo.setTgEstado(false);
 
             //Consultamos si el tipo grupo existe o no
             if(getTipoGrupoService().getExistTipoGrupo(getTipoGrupos(), getNombreGrupo()) ){

@@ -48,7 +48,7 @@ public class EscalafonBean implements Serializable{
         try {
             Escalafon escalafon = new Escalafon();
             escalafon.setTipoescalafon(getTipoescalafon());
-            escalafon.setEs_estado(true);
+            escalafon.setEs_estado(false);
             getEscalafonService().addEscalafon(escalafon);
             addMessage("El escalafon " + getTipoescalafon()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";

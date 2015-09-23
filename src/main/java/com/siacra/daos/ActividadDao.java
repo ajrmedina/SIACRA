@@ -76,4 +76,9 @@ public class ActividadDao {
         return list;
     }
     
+    public List<Actividad> getActividadesByEscuela(Integer idEscuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("from Actividad where idescuela=?")
+                                                           .setParameter(0, idEscuela).list();
+        return list;
+    }
 }

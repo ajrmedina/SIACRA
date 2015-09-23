@@ -15,9 +15,11 @@ import com.siacra.services.CategoriaService;
 import com.siacra.services.UserService;
 import com.siacra.services.DocenteService;
 import com.siacra.services.EscuelaService;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
 
@@ -52,6 +54,10 @@ public class DocenteBean implements Serializable {
     private List<Escuela> escuelaList;
     private List<Categoria> categoriasList;
     
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+    
     private int idDocente;
     private boolean aprobarDocente;
     private int idUser;
@@ -81,9 +87,10 @@ public class DocenteBean implements Serializable {
                         docente.setEscuela(escuela);
                         docente.setCategoria(categoria);
                         getDocenteService().addDocente(docente);
-                        addMessage("Docente: " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
                         reset();
                         setInsert(false);
+                        addMessage("Docente: " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
+                        refreshDocentes();
                     //return "ListarNivelesAcceso?faces-redirect=true";
                     }
                     else {
@@ -137,7 +144,7 @@ public class DocenteBean implements Serializable {
             docente.setCategoria(categoria);
             getDocenteService().updateDocente(docente);
             addMessage("Docente: " + user.getNombres() + " " + user.getApellidos() + " fue actualizado correctamente");
-            
+            refreshDocentes();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -155,6 +162,7 @@ public class DocenteBean implements Serializable {
             user.setEstadoUsuario(false);
             addMessage("Docente: " + docenteBloqueado + " fue inhabilitado correctamente");
             getUserService().updateUser(user);
+            refreshDocentes();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -172,6 +180,7 @@ public class DocenteBean implements Serializable {
             user.setEstadoUsuario(true);
             addMessage("Docente: " + docenteDesbloqueado + " fue habilitado correctamente");
             getUserService().updateUser(user);
+            refreshDocentes();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -189,7 +198,11 @@ public class DocenteBean implements Serializable {
        this.setNombres("");
        this.setApellidos("");
     }
-
+    
+    public void refreshDocentes() {
+        this.setDocentesList(getDocenteService().getDocentesByEscuela(id_escuela));
+    }
+    
     /**
      * Get User List
      *
@@ -219,7 +232,7 @@ public class DocenteBean implements Serializable {
      */
     public List<Docente> getDocentesList() {
         docentesList = new ArrayList<>();
-        docentesList.addAll(getDocenteService().getDocentes());
+        docentesList.addAll(getDocenteService().getDocentesByEscuela(id_escuela));
         return docentesList;
     }
     

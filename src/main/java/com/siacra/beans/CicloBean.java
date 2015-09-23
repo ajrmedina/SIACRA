@@ -125,7 +125,7 @@ public class CicloBean implements Serializable{
             Ciclo cicloN = new Ciclo();
             cicloN.setCiclo(getCiclo());
             cicloN.setAnio(getAnio());
-            cicloN.setCiEstado(true);
+            cicloN.setCiEstado(false);
             
             //Consultamos si el tipo grupo existe o no
             if(getCicloService().getExistCiclo(getCiclo(), getAnio()) ){

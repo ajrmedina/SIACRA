@@ -68,7 +68,7 @@ public class AsignaturaDao {
     
     public List<Asignatura> getAsignaturasByEscuela(Integer idEscuela) {
         List list = getSessionFactory().getCurrentSession().createQuery("from Asignatura where idescuela=?")
-                                                           .setParameter(1, idEscuela).list();
+                                                           .setParameter(0, idEscuela).list();
         return list;
     }
     

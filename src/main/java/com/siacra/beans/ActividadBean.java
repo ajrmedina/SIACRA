@@ -14,10 +14,12 @@ import com.siacra.services.TipoActividadService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -45,6 +47,10 @@ public class ActividadBean implements Serializable{
     private List<TipoActividad> tipoActividadList;
     private List<Escuela> escuelaList;
     
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+    
     private int idactividad;
     private boolean estadoactividad;
     private boolean aprovaractividad;
@@ -65,9 +71,9 @@ public class ActividadBean implements Serializable{
             Actividad actividad = new Actividad();
             TipoActividad tipoActividad = getTipoActividadService().getTipoActividadById(getIdtipoactividad());
             Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
-            actividad.setIdescuela(escuela);
+            actividad.setEscuela(escuela);
             actividad.setIdtipoactividad(tipoActividad);
-            actividad.setEstadoactividad(true);
+            actividad.setEstadoactividad(false);
             
             if(isAprovaractividad())
                 actividad.setAprobaractividad(true);
@@ -76,9 +82,10 @@ public class ActividadBean implements Serializable{
             actividad.setNombreactividad(getNombreactividad());
             actividad.setDescripcionactividad(getDescripcionactividad());
             getActividadService().addActividad(actividad);
-            addMessage("La actividad "+actividad.getNombreactividad() + " fue añadida correctamente");
             reset();
             setInsert(false);
+            addMessage("La actividad "+actividad.getNombreactividad() + " fue añadida correctamente");
+            refreshActividades();
         } catch (Exception e) {
             reset();
             e.printStackTrace();
@@ -99,7 +106,7 @@ public class ActividadBean implements Serializable{
         public void loadActividad(Actividad actividad){
             if(!isInsert()){
                 TipoActividad tipoActividad= getTipoActividadService().getTipoActividadById(actividad.getIdtipoactividad().getIdtipoactividad());
-                Escuela escuela = getEscuelaService().getEscuelaById(actividad.getIdescuela().getIdescuela());
+                Escuela escuela = getEscuelaService().getEscuelaById(actividad.getEscuela().getIdescuela());
                 setIdactividad(actividad.getIdactividad());
 
                 if(isEstadoactividad())   
@@ -137,12 +144,13 @@ public class ActividadBean implements Serializable{
                 else
                     actividad.setEstadoactividad(false);
                 
-                actividad.setIdescuela(escuela);
+                actividad.setEscuela(escuela);
                 actividad.setIdtipoactividad(tipoActividad);
                 actividad.setNombreactividad(getNombreactividad());
                 actividad.setDescripcionactividad(getDescripcionactividad());
                 getActividadService().updateActividad(actividad);
                 addMessage("La actividad "+actividad.getNombreactividad() + " Fue actualizada correctamente");
+                refreshActividades();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -157,6 +165,7 @@ public class ActividadBean implements Serializable{
                String eliminado = actividad.getNombreactividad();
                getActividadService().deleteActividad(actividad);
                addMessage("La actividad "+eliminado+ " fue eliminada correctamente");
+               refreshActividades();
            } catch (DataIntegrityViolationException e) {
                e.printStackTrace();
                addMessage("La actividad no puede ser eliminada, debido a que otros registros ocupan esta actividad");
@@ -171,6 +180,11 @@ public class ActividadBean implements Serializable{
         this.nombreactividad="";
         this.descripcionactividad="";
     }
+    
+    public void refreshActividades() {
+        this.setActividadList(getActividadService().getActividadesByEscuela(id_escuela));
+    }
+    
     /**
      * @return the actividadService
      */
@@ -217,9 +231,9 @@ public class ActividadBean implements Serializable{
      * @return the actividadList
      */
     public List<Actividad> getActividadList() {
-      actividadList=new ArrayList<>();
-      actividadList.addAll(getActividadService().getActividades());
-      return actividadList;
+        actividadList=new ArrayList<>();
+        actividadList.addAll(getActividadService().getActividadesByEscuela(id_escuela));
+        return actividadList;
     }
 
     /**

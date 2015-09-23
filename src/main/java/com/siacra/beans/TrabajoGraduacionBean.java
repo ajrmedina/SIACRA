@@ -5,18 +5,22 @@
  */
 package com.siacra.beans;
 
+import com.siacra.models.Escuela;
 import com.siacra.models.Responsabilidad;
 import com.siacra.models.TrabajoGraduacion;
+import com.siacra.services.EscuelaService;
 import com.siacra.services.ResponsabilidadService;
 import com.siacra.services.TrabajoGraduacionService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 /**
@@ -33,15 +37,19 @@ public class TrabajoGraduacionBean implements Serializable {
     private TrabajoGraduacionService trabajoGraduacionService;
     @ManagedProperty(value = "#{ResponsabilidadService}")
     private ResponsabilidadService responsabilidadService;
-    
-    @ManagedProperty(value="#{responsabilidadBean}")
-    private ResponsabilidadBean responsabilidadBean;
+    @ManagedProperty(value = "#{EscuelaService}")
+    private EscuelaService escuelaService;
     
     private List<TrabajoGraduacion> trabajoGraduacionList;
     private List<Responsabilidad> responsabilidadList;
     
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+    
     private int idtrabajograduacion;
     private int idresponsabilidad;
+    private int idescuela;
     private boolean prorrogatg;
     private boolean aprobargt;
     private Date fechainiciotg;
@@ -58,7 +66,9 @@ public class TrabajoGraduacionBean implements Serializable {
     public void addTrabajoGraduacion(){
         try {
             TrabajoGraduacion trabajograduacion = new TrabajoGraduacion();
+            Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
             trabajograduacion.setResponsabilidad(null);
+            trabajograduacion.setEscuela(escuela);
             trabajograduacion.setTematg(tematg);
             trabajograduacion.setDescripciontg(descripciontg);
             trabajograduacion.setObservaciontg(observaciontg);
@@ -68,9 +78,10 @@ public class TrabajoGraduacionBean implements Serializable {
             trabajograduacion.setProrrogatg(prorrogatg);
             trabajograduacion.setAprobartg(aprobargt);
             getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
-            addMessage("El Trabajo de Graduacion fue añadido correctamente");
             reset();
             this.setInsert(false);
+            addMessage("El Trabajo de Graduacion fue añadido correctamente");
+            refreshTGs();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,6 +98,7 @@ public class TrabajoGraduacionBean implements Serializable {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        setIdEscuela(trabajograduacion.getEscuela().getIdescuela());
         setIdtrabajograduacion(trabajograduacion.getIdtg());
         setTematg(trabajograduacion.getTematg());
         setDescripciontg(trabajograduacion.getDescripciontg());
@@ -121,6 +133,7 @@ public class TrabajoGraduacionBean implements Serializable {
             trabajograduacion.setAprobartg(isAprobargt());
             getTrabajoGraduacionService().updateTrabajoGraduacion(trabajograduacion);
             addMessage("El trabajo de graduacion fue actualizado correctamente");
+            refreshTGs();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,9 +145,14 @@ public class TrabajoGraduacionBean implements Serializable {
             trabajograduacion.setEstadotg("Finalizado");
             getTrabajoGraduacionService().updateTrabajoGraduacion(trabajograduacion);
             addMessage("El estado del trabajo de graduacion fue actualizado a finalizado correctamente");
+            refreshTGs();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void refreshTGs() {
+        this.setTrabajoGraduacionList(getTrabajoGraduacionService().getTrabajosGraduacionByEscuela(id_escuela));
     }
     
     public void reset(){
@@ -175,13 +193,27 @@ public class TrabajoGraduacionBean implements Serializable {
     public void setResponsabilidadService(ResponsabilidadService responsabilidadService) {
         this.responsabilidadService = responsabilidadService;
     }
+    
+    /**
+     * @return the escuelaService
+     */
+    public EscuelaService getEscuelaService() {
+        return escuelaService;
+    }
 
+    /**
+     * @param escuelaService the escuelaService to set
+     */
+    public void setEscuelaService(EscuelaService escuelaService) {
+        this.escuelaService = escuelaService;
+    }
+    
     /**
      * @return the trabajoGraduacionList
      */
     public List<TrabajoGraduacion> getTrabajoGraduacionList() {
         trabajoGraduacionList = new ArrayList<>();
-        trabajoGraduacionList.addAll(getTrabajoGraduacionService().getTrabajosGraduacion());
+        trabajoGraduacionList.addAll(getTrabajoGraduacionService().getTrabajosGraduacionByEscuela(id_escuela));
         return trabajoGraduacionList;
     }
 
@@ -233,7 +265,21 @@ public class TrabajoGraduacionBean implements Serializable {
     public void setIdresponsabilidad(int idresponsabilidad) {
         this.idresponsabilidad = idresponsabilidad;
     }
+    
+     /**
+     * @return the idescuela
+     */
+    public int getIdEscuela() {
+        return idescuela;
+    }
 
+    /**
+     * @param idescuela the idescuela to set
+     */
+    public void setIdEscuela(int idescuela) {
+        this.idescuela = idescuela;
+    }
+    
     /**
      * @return the prorrogatg
      */
@@ -344,15 +390,6 @@ public class TrabajoGraduacionBean implements Serializable {
      */
     public void setObservaciontg(String observaciontg) {
         this.observaciontg = observaciontg;
-    }
-    
-    
-    public ResponsabilidadBean getResponsabilidadBean() {
-        return this.responsabilidadBean;
-    }
-
-    public void setResponsabilidadBean(ResponsabilidadBean neededBean){
-        this.responsabilidadBean = neededBean;
     }
     
     public boolean getInsert() {

@@ -39,7 +39,7 @@ public class TrabajoGraduacionService {
         this.trabajoGraduacionDao = trabajoGraduacionDao;
     }
     
-     /**
+    /**
      * Add TrabajoGraduacion
      *
      * @param  actividad TrabajoGraduacion
@@ -84,8 +84,8 @@ public class TrabajoGraduacionService {
         return getTrabajoGraduacionDao().getTrabajosGraduacion();
     }
     
-    public List<TrabajoGraduacion> getTrabajosGraduacionFinalizados() {
-        return getTrabajoGraduacionDao().getTrabajosGraduacionFinalizados();
+    public List<TrabajoGraduacion> getTrabajosGraduacionNoFinalizados() {
+        return getTrabajoGraduacionDao().getTrabajosGraduacionNoFinalizados();
     }
     
     public boolean getExistTGByResponsabilidad(int id) {
@@ -95,5 +95,14 @@ public class TrabajoGraduacionService {
     public TrabajoGraduacion getTrabajoGraduacionByResponsabilidad(int id) {
         return getTrabajoGraduacionDao().getTrabajoGraduacionByResponsabilidad(id);
     }
+    
+    public List<TrabajoGraduacion> getTrabajosGraduacionByEscuela(int id) {
+        return getTrabajoGraduacionDao().getTrabajosGraduacionByEscuela(id);
+    }
+    
+    public List<TrabajoGraduacion> getTrabajosGraduacionNoFinalizadosByEscuela(int id) {
+        return getTrabajoGraduacionDao().getTrabajosGraduacionNoFinalizadosByEscuela(id);
+    }
+    
     
 }

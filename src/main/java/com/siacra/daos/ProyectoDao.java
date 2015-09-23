@@ -59,7 +59,7 @@ public class ProyectoDao {
         return list; 
     }
     
-    public List<Proyecto> getProyectosFinalizados(){
+    public List<Proyecto> getProyectosNoFinalizados(){
         List list = getSessionFactory().getCurrentSession().createQuery("from Proyecto WHERE estadoproyecto!='Finalizado' AND idresponsabilidad IS NULL").list();
         return list;
     }
@@ -74,5 +74,15 @@ public class ProyectoDao {
         Proyecto result = (Proyecto) getSessionFactory().getCurrentSession()
                 .createQuery("FROM Proyecto WHERE idresponsabilidad=?").setParameter(0, idresponsabilidad).setMaxResults(1).uniqueResult();
         return result;
+    }
+    
+    public List<Proyecto> getProyectosNoFinalizadosbyEscuela(Integer idescuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("from Proyecto where idescuela=? AND estadoproyecto!='Finalizado' AND idresponsabilidad IS NULL").setParameter(0, idescuela).list();
+        return list;
+    }
+    
+    public List<Proyecto> getProyectosbyEscuela(Integer idescuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("from Proyecto where idescuela=?").setParameter(0, idescuela).list();
+        return list;
     }
 }

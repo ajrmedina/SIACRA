@@ -48,9 +48,9 @@ public class Actividad implements Serializable {
     @Size(max = 50)
     @Column(name = "DESCRIPCIONACTIVIDAD", length = 50)
     private String descripcionactividad;
-    @JoinColumn(name = "IDESCUELA", referencedColumnName = "IDESCUELA", nullable = false)
-    @ManyToOne(optional = false)
-    private Escuela idescuela;
+    @ManyToOne
+    @JoinColumn(name="idescuela")
+    private Escuela escuela;
     @JoinColumn(name = "IDTIPOACTIVIDAD", referencedColumnName = "IDTIPOACTIVIDAD", nullable = false)
     @ManyToOne(optional = false)
     private TipoActividad idtipoactividad;
@@ -114,12 +114,12 @@ public class Actividad implements Serializable {
         this.descripcionactividad = descripcionactividad;
     }
 
-    public Escuela getIdescuela() {
-        return idescuela;
+    public Escuela getEscuela() {
+        return escuela;
     }
 
-    public void setIdescuela(Escuela idescuela) {
-        this.idescuela = idescuela;
+    public void setEscuela(Escuela escuela) {
+        this.escuela = escuela;
     }
 
     public TipoActividad getIdtipoactividad() {

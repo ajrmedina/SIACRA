@@ -4,10 +4,12 @@ import com.siacra.models.Docente;
 import com.siacra.models.User;
 import com.siacra.services.DocenteService;
 import com.siacra.services.UserService;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,6 +44,9 @@ public class IdentityBean {
             User user = getUserService().getUserLogin(name);
             if(!getDocenteService().existDocente(user.getIdUsuario())){
                 principal = getDocenteService().getDocenteByUser(user.getIdUsuario());
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                Map<String, Object> sessionMap = externalContext.getSessionMap();
+                sessionMap.put("sessionIdEscuela", principal.getEscuela().getIdescuela());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

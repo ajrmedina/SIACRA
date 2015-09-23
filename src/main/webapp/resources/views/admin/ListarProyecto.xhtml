@@ -77,6 +77,13 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     
+                    <p:outputLabel for="escuela" value="Escuela: " />
+                    <h:panelGroup layout="block1">
+                        <p:selectOneMenu id="escuela" value="#{proyectoBean.idEscuela}" effect="fade" required="true" >
+                            <f:selectItem   itemValue="#{identityBean.principal.escuela.idescuela}" itemLabel="#{identityBean.principal.escuela.nombreescuela}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                    
                     <p:outputLabel for="nombre" value="Nombre de Proyecto: " />
                     <p:inputText id="nombre" value="#{proyectoBean.nombreproyecto}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo">
                         <f:validateLength minimum="3" maximum="100" />
