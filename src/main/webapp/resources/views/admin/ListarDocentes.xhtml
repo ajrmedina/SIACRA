@@ -43,6 +43,14 @@
                     <h:outputText value="#{docente.user.estadoUsuario?'Habilitado':'Deshabilitado'}" />
                 </p:column>
                 <p:column style="width: 7%" exportable="false" headerText="Aprobado" filterBy="#{docente.aprobarDocente}" filterStyleClass="hide">
+                     <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('docentesTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItem itemLabel="A" itemValue="true"  />
+                            <f:selectItem itemLabel="N" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
                     <h:outputText value="#{docente.aprobarDocente?'Aprobado':'No Aprobado'}" />
                 </p:column>
                 <p:column style="width: 15%" headerText="Escalafon" filterBy="#{docente.categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
