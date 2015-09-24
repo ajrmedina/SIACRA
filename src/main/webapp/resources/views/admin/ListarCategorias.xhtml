@@ -64,7 +64,7 @@
                     <p:outputLabel for="escalafon" value="Escalafon: " />
                     <h:panelGroup layout="block">
                         <p:selectOneMenu id="escalafon" value="#{categoriaBean.idEscalafon}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{categoriaBean.escalafonesList}" var="escalafon" itemValue="#{escalafon.idescalafon}" itemLabel="#{escalafon.tipoescalafon}"/>
+                            <f:selectItems value="#{categoriaBean.escalafonesList}" var="escalafon" itemValue="#{escalafon.idescalafon}" itemLabel="#{escalafon.tipoescalafon}" itemDisabled="#{escalafon.es_estado == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forEscalafon" for="escalafon" value="Seleccione el escalafon para la nueva categoria" />
                     </h:panelGroup>
@@ -72,7 +72,7 @@
                     <p:outputLabel for="contrato" value="Contrato: " />
                     <h:panelGroup layout="block">
                         <p:selectOneMenu id="contrato" value="#{categoriaBean.idContrato}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{categoriaBean.contratosList}" var="contrato" itemValue="#{contrato.idcontrato}" itemLabel="#{contrato.tipocontrato}"/>
+                            <f:selectItems value="#{categoriaBean.contratosList}" var="contrato" itemValue="#{contrato.idcontrato}" itemLabel="#{contrato.tipocontrato}" itemDisabled="#{contrato.co_estado == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forContrato" for="contrato" value="Seleccione el contrato para la nueva categoria" />
                     </h:panelGroup>

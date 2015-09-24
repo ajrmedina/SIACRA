@@ -78,7 +78,7 @@
                     <p:outputLabel for="tipoactividad" value="Tipo Actividad: " />
                     <h:panelGroup layout="block2">
                         <p:selectOneMenu id="tipoactividad" value="#{actividadBean.idtipoactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{actividadBean.tipoActividadList}" var="tipoactividad" itemValue="#{tipoactividad.idtipoactividad}" itemLabel="#{tipoactividad.tipoactividad}"/>
+                            <f:selectItems value="#{actividadBean.tipoActividadList}" var="tipoactividad" itemValue="#{tipoactividad.idtipoactividad}" itemLabel="#{tipoactividad.tipoactividad}" itemDisabled="#{tipoactividad.ta_estado == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forTipoActividad" for="tipoactividad" value="Seleccione el tipo de actividad" />
                     </h:panelGroup>

@@ -26,7 +26,7 @@
                 <p:outputLabel for="docenteFilter" value="Filtro por docente: " />
                 <p:selectOneMenu id="docenteFilter" value="#{responsabilidadBean.CDocente}" effect="fade" filter="true" filterMatchMode="startsWith" >
                     <f:selectItem itemValue="0" itemLabel="Seleccione un docente"  />
-                    <f:selectItems value="#{responsabilidadBean.docenteList}" var="docent" itemValue="#{docent.idDocente}" itemLabel="#{docent.user.nombres} #{docent.user.apellidos}"/>
+                    <f:selectItems value="#{responsabilidadBean.docenteList}" var="docent" itemValue="#{docent.idDocente}" itemLabel="#{docent.user.nombres} #{docent.user.apellidos}" itemDisabled="#{docent.aprobarDocente == false || docent.user.estadoUsuario == false}"/>
                     <p:ajax event="change" update="responsabilidadTable" process="@this" listener="#{responsabilidadBean.refreshResponsabilidad()}" />
                 </p:selectOneMenu>
                 <p:tooltip id="forDocenteFilter" for="docenteFilter" value="Seleccione el docente del cual quiere verificar la responsabilidad" />
@@ -86,7 +86,7 @@
                     <h:panelGroup layout="block2" rendered="#{responsabilidadBean.insert == true}">
                         <p:selectOneMenu id="docente" value="#{responsabilidadBean.idDocente}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
                             <f:selectItem itemValue="" itemLabel="Seleccione un docente"  />
-                            <f:selectItems value="#{responsabilidadBean.docenteList}" var="docente" itemValue="#{docente.idDocente}" itemLabel="#{docente.user.nombres} #{docente.user.apellidos}"/>
+                            <f:selectItems value="#{responsabilidadBean.docenteList}" var="docente" itemValue="#{docente.idDocente}" itemLabel="#{docente.user.nombres} #{docente.user.apellidos}" itemDisabled="#{docente.aprobarDocente == false || docente.user.estadoUsuario == false}"/>
                             <p:ajax event="change" update="horasAct" listener="#{responsabilidadBean.showHorasActuales()}" />
                         </p:selectOneMenu>
                         <p:tooltip id="forDocente" for="docente" value="Seleccione el docente" />
@@ -95,7 +95,7 @@
                     <p:outputLabel for="actividad" value="Actividad: " rendered="#{responsabilidadBean.insert == true}"/>
                     <p:selectOneMenu id="actividad" value="#{responsabilidadBean.idactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" rendered="#{responsabilidadBean.insert == true}">
                         <f:selectItem itemValue="0" itemLabel="Seleccione una actividad"  />
-                        <f:selectItems value="#{responsabilidadBean.actividadList}" var="actividad" itemValue="#{actividad.idactividad}" itemLabel="#{actividad.nombreactividad}"/>
+                        <f:selectItems value="#{responsabilidadBean.actividadList}" var="actividad" itemValue="#{actividad.idactividad}" itemLabel="#{actividad.nombreactividad}" itemDisabled="#{actividad.aprobaractividad == false || actividad.estadoactividad == false}"/>
                         <p:ajax event="change" update="opciones" listener="#{responsabilidadBean.showOpciones()}" />
                     </p:selectOneMenu>
 
@@ -200,7 +200,7 @@
                     <p:outputLabel for="asignaturaFilter" value="Filtro por asignatura: " />
                     <p:selectOneMenu id="asignaturaFilter" value="#{responsabilidadBean.idAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" >
                         <f:selectItem itemValue="0" itemLabel="Seleccione una asignatura"  />
-                        <f:selectItems value="#{responsabilidadBean.asignaturaList}" var="asign" itemValue="#{asign.idAsignatura}" itemLabel="#{asign.nombreAsignatura}"/>
+                        <f:selectItems value="#{responsabilidadBean.asignaturaList}" var="asign" itemValue="#{asign.idAsignatura}" itemLabel="#{asign.nombreAsignatura}" itemDisabled="#{asign.aprobarasignatura == false || asign.estadoAsignatura == false}"/>
                     </p:selectOneMenu>
                     <p:tooltip id="forAsignaturaFilter" for="asignaturaFilter" value="Selecciona la asignatura de la que desea ver los grupos" />
                 </h:panelGrid>
