@@ -46,6 +46,7 @@ public class LoginBean {
 
     public String logout(){
         SecurityContextHolder.clearContext();
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         addMessage("Ha cerrado sesion en el SIACRA correctamente.");
         return "loggedout";
     }

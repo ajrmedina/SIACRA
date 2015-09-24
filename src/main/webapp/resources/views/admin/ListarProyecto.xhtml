@@ -54,7 +54,7 @@
                     <h:outputText value="#{proyecto.estadoproyecto}" />
                 </p:column>
                 
-                <p:column style="width: 8%" headerText="Aprobacion" filterBy="#{proyecto.aprobarproyecto}" filterStyleClass="hide">                    
+                <p:column style="width: 15%" headerText="Aprobacion" filterBy="#{proyecto.aprobarproyecto}" filterStyleClass="hide">                    
                      <f:facet name="filter">
                         <p:selectOneButton onchange="PF('proyectoTable').filter()">
                             <f:converter converterId="javax.faces.Boolean" />
@@ -75,7 +75,7 @@
                     <p:commandButton id="update_button" update=":dialogUpdateProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('update_proyecto').show()" icon="fa fa-edit" rendered="#{proyecto.estadoproyecto == 'En desarrollo'}" />
                     <p:commandButton id="change_status" update=":dialogChangeProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('change_proyecto').show()" icon="fa fa-refresh" rendered="#{proyecto.estadoproyecto == 'En desarrollo'}" />
                     <p:tooltip id="forChangeStatus" for="change_status" value="Dar por finalizado este proyecto"  />
-                    <h:outputText value="No es modificable" style="color: red" rendered="#{proyecto.estadoproyecto == 'Finalizado'}" />               
+                    <h:outputText value="No es modificable" style="color: crimson" rendered="#{proyecto.estadoproyecto == 'Finalizado'}" />               
                 </p:column>               
             </p:dataTable>
         </h:form>

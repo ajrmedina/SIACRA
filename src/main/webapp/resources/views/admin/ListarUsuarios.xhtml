@@ -63,7 +63,7 @@
                 <p:column style="width: 8%" headerText="Es Docente" filterBy="#{user.esDocente}" filterStyleClass="hide">
                     <h:outputText value="#{user.esDocente?'Si':'No'}" />
                 </p:column>
-                <p:column style="width: 10%" headerText="Acciones" exportable="false">
+                <p:column style="width: 12%" headerText="Acciones" exportable="false">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('update_user').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('delete_user').show()" icon="fa fa-times" />

@@ -56,6 +56,8 @@ public class Responsabilidad implements Serializable {
     @Size(max = 11)
     @Column(name = "TIPODETIEMPO", length = 11)
     private String tipodetiempo;
+    @Column(name = "APROBADA", nullable = false)
+    private boolean aprobada;
     
     @OneToMany(mappedBy="responsabilidad")
     @Cascade({CascadeType.DELETE})
@@ -69,7 +71,7 @@ public class Responsabilidad implements Serializable {
     @Cascade({CascadeType.DELETE})
     private Set<AcademicaGrupo> academicaGrupo;
     
-    
+
     public Responsabilidad() {
     }
 
@@ -104,6 +106,14 @@ public class Responsabilidad implements Serializable {
 
     public void setTipodetiempo(String tipodetiempo) {
         this.tipodetiempo = tipodetiempo;
+    }
+    
+    public boolean getAprobada() {
+        return aprobada;
+    }
+
+    public void setAprobada(boolean aprobada) {
+        this.aprobada = aprobada;
     }
     
     public Set<TrabajoGraduacion> getTrabajoGraduacion() {

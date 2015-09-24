@@ -16,7 +16,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 95%" class="center-element" paginator="true" rows="10" paginatorPosition="bottom" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 100%" class="center-element" paginator="true" rows="10" paginatorPosition="bottom" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header" >
                    <p:outputPanel>
                         <h:outputText value="Busqueda de docentes:" />
@@ -39,10 +39,18 @@
                 <p:column style="width: 20%" headerText="Apellidos" filterBy="#{docente.user.apellidos}" filterStyleClass="hide">
                     <h:outputText value="#{docente.user.apellidos}" />
                 </p:column>
-                <p:column style="width: 7%" exportable="false" headerText="Habilitado" filterBy="#{docente.user.estadoUsuario}" filterStyleClass="hide">
+                <p:column style="width: 14%" exportable="false" headerText="Habilitado" filterBy="#{docente.user.estadoUsuario}" filterStyleClass="hide">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('usuariosTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItem itemLabel="H" itemValue="true"  />
+                            <f:selectItem itemLabel="D" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
                     <h:outputText value="#{docente.user.estadoUsuario?'Habilitado':'Deshabilitado'}" />
                 </p:column>
-                <p:column style="width: 7%" exportable="false" headerText="Aprobado" filterBy="#{docente.aprobarDocente}" filterStyleClass="hide">
+                <p:column style="width: 14%" exportable="false" headerText="Aprobado" filterBy="#{docente.aprobarDocente}" filterStyleClass="hide">
                      <f:facet name="filter">
                         <p:selectOneButton onchange="PF('docentesTable').filter()">
                             <f:converter converterId="javax.faces.Boolean" />
@@ -53,13 +61,13 @@
                     </f:facet>
                     <h:outputText value="#{docente.aprobarDocente?'Aprobado':'No Aprobado'}" />
                 </p:column>
-                <p:column style="width: 15%" headerText="Escalafon" filterBy="#{docente.categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
+                <p:column style="width: 8%" headerText="Escalafon" filterBy="#{docente.categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
                     <h:outputText value="#{docente.categoria.escalafon.tipoescalafon}" />
                 </p:column>
                 <p:column style="width: 15%" headerText="Contrato" filterBy="#{docente.categoria.contrato.tipocontrato}" filterStyleClass="hide">
                     <h:outputText value="#{docente.categoria.contrato.tipocontrato}" />
                 </p:column>
-                <p:column style="width: 10%" exportable="false" headerText="Accciones">
+                <p:column style="width: 8%" exportable="false" headerText="Accciones">
                     
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('update_docente').show()" icon="fa fa-edit" />

@@ -101,4 +101,9 @@ public class ResponsabilidadService {
     public List<Responsabilidad> getResponsabilidades() {
         return getResponsabilidadDao().getResponsabilidades();
     }
+    
+    public void aprobarResponsabilidad(int id) {
+        getResponsabilidadDao().aprobarResponsabilidad(id);
+    }
+    
 }
