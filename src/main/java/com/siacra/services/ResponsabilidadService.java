@@ -90,8 +90,8 @@ public class ResponsabilidadService {
         return getResponsabilidadDao().getLastResponsabilidad(id);
     }
     
-    public List<Responsabilidad> getResponsabilidadesByDocente(int id) {
-        return getResponsabilidadDao().getResponsabilidadesByDocente(id);
+    public List<Responsabilidad> getResponsabilidadesByDocente(int idd, int idc) {
+        return getResponsabilidadDao().getResponsabilidadesByDocente(idd, idc);
     }
     
     public Long getHorasActualesByDocente(int id) {
@@ -102,8 +102,8 @@ public class ResponsabilidadService {
         return getResponsabilidadDao().getResponsabilidades();
     }
     
-    public void aprobarResponsabilidad(int id) {
-        getResponsabilidadDao().aprobarResponsabilidad(id);
+    public void aprobarResponsabilidad(int ide, int idc) {
+        getResponsabilidadDao().aprobarResponsabilidad(ide, idc);
     }
     
 }

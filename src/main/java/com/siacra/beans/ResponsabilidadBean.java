@@ -167,7 +167,7 @@ public class ResponsabilidadBean implements Serializable {
             responsabilidad.setAprobada(false);
             responsabilidad.setIdactividad(actividad);
             responsabilidad.setDocente(docente);
-            responsabilidad.setIdciclo(getCiclo());
+            responsabilidad.setCiclo(getCiclo());
             responsabilidad.setTotalhoras(getTotalhoras());
             responsabilidad.setTipodetiempo(getTipodetiempo());
             getResponsabilidadService().addResponsabilidad(responsabilidad);
@@ -315,7 +315,7 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public void refreshResponsabilidad() {
-        this.setResponsabilidadList(getResponsabilidadService().getResponsabilidadesByDocente(this.getCDocente()));
+        this.setResponsabilidadList(getResponsabilidadService().getResponsabilidadesByDocente(this.getCDocente(), this.getCiclo().getIdCiclo()));
     }
     
      public void showHorasActuales() {
@@ -378,8 +378,13 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public void aprobarResponsabilidad() {
-        getResponsabilidadService().aprobarResponsabilidad(getIdEscuela());
-        addMessage("Responsabilidad aprobada");
+        if(getCiclo().getCiEstado()) {
+            getResponsabilidadService().aprobarResponsabilidad(getIdEscuela(), getCiclo().getIdCiclo());
+            addMessage("Responsabilidad aprobada");
+        }
+        else {
+            addMessage("No puede aprobar la responsabilidad de un ciclo inactivo");
+        }
     }
     
     public void reset() {

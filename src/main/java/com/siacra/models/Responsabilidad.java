@@ -41,7 +41,7 @@ public class Responsabilidad implements Serializable {
     
     @JoinColumn(name = "IDCICLO")
     @ManyToOne
-    private Ciclo idciclo;
+    private Ciclo ciclo;
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -174,16 +174,16 @@ public class Responsabilidad implements Serializable {
     }
     
     /**
-     * @param idciclo the idciclo to set
-     */
-    public void setIdciclo(Ciclo idciclo) {
-        this.idciclo = idciclo;
-    }
-
-    /**
      * @return the idciclo
      */
-    public Ciclo getIdciclo() {
-        return idciclo;
+    public Ciclo getCiclo() {
+        return ciclo;
+    }
+    
+    /**
+     * @param idciclo the idciclo to set
+     */
+    public void setCiclo(Ciclo idciclo) {
+        this.ciclo = idciclo;
     }
 }
