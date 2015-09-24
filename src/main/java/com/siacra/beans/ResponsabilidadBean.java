@@ -85,7 +85,7 @@ public class ResponsabilidadBean implements Serializable {
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
     private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
-        
+    
     /***************************************** Responsabilidad *****************************************/
     
     public final int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -94,6 +94,7 @@ public class ResponsabilidadBean implements Serializable {
     private int cdocente;                   //Filtro Docente
     private int idactividad;
     private int idasignatura;
+    private int idescuela;                  //Para aprobar
     private int totalhoras;
     private Long horasActuales;             //Horas obligatorias asignadas
     private String tipodetiempo;
@@ -104,6 +105,7 @@ public class ResponsabilidadBean implements Serializable {
     private boolean sobrecarga;             //Si el docente esta sobrecargado
     private boolean horasSobrecarga;        //Si se pueden modificar las horas de la responsabilidad
     private Ciclo cicloActual;
+    private boolean ucb;
     
     /************************************** Trabajo de Graduacion **************************************/
     
@@ -127,25 +129,30 @@ public class ResponsabilidadBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        opciones = new ArrayList<SelectItem>();
-        SelectItemGroup proyectos = new SelectItemGroup("Proyectos");
-        SelectItemGroup tg = new SelectItemGroup("Trabajo de Graduacion");
+        opciones = new ArrayList<>();
+        Escuela escuela = getEscuelaService().getEscuelaById(id_escuela);
+        ucb = escuela.getCodigoescuela().toUpperCase().matches("(.*)UCB(.*)");
+        
         SelectItemGroup grupos = new SelectItemGroup("Grupos");
-         
-        SelectItem nuevop = new SelectItem("NP","Nuevo Proyecto");
-        SelectItem pexistente = new SelectItem("PE","Proyecto Existente");
+        SelectItem gexistente = new SelectItem("GE","Grupo Existente","");
+        grupos.setSelectItems(new SelectItem[]{gexistente}); 
         
-        SelectItem nuevotg = new SelectItem("NT","Nuevo TDG");
-        SelectItem tgexistente = new SelectItem("TE","TDG Existente");
+        if(!ucb) {
+            
+            SelectItemGroup proyectos = new SelectItemGroup("Proyectos");
+            SelectItem nuevop = new SelectItem("NP","Nuevo Proyecto");
+            SelectItem pexistente = new SelectItem("PE","Proyecto Existente");
+            proyectos.setSelectItems(new SelectItem[]{nuevop, pexistente});
+            
+            SelectItemGroup tg = new SelectItemGroup("Trabajo de Graduacion");
+            SelectItem nuevotg = new SelectItem("NT","Nuevo TDG");
+            SelectItem tgexistente = new SelectItem("TE","TDG Existente");
+            tg.setSelectItems(new SelectItem[]{nuevotg, tgexistente});
+            
+            opciones.add(proyectos);
+            opciones.add(tg);
+        }
         
-        SelectItem gexistente = new SelectItem("GE","Grupo Existente");
-        
-        proyectos.setSelectItems(new SelectItem[]{nuevop, pexistente});
-        tg.setSelectItems(new SelectItem[]{nuevotg, tgexistente});
-        grupos.setSelectItems(new SelectItem[]{gexistente});
-        
-        opciones.add(proyectos);
-        opciones.add(tg);
         opciones.add(grupos);
     }
     
@@ -157,6 +164,7 @@ public class ResponsabilidadBean implements Serializable {
             Responsabilidad responsabilidad = new Responsabilidad();
             Actividad actividad = getActividadService().getActividadById(getIdactividad());
             Docente docente = getDocenteService().getDocenteById(getIdDocente());
+            responsabilidad.setAprobada(false);
             responsabilidad.setIdactividad(actividad);
             responsabilidad.setDocente(docente);
             responsabilidad.setIdciclo(getCiclo());
@@ -369,6 +377,11 @@ public class ResponsabilidadBean implements Serializable {
         return continua;
     }
     
+    public void aprobarResponsabilidad() {
+        getResponsabilidadService().aprobarResponsabilidad(getIdEscuela());
+        addMessage("Responsabilidad aprobada");
+    }
+    
     public void reset() {
         this.totalhoras=0;
         this.idactividad=0;
@@ -377,11 +390,6 @@ public class ResponsabilidadBean implements Serializable {
         this.mostrar=false;
         this.sobrecarga=false;
         this.horasActuales=null;
-    }
-    
-    public void resetUpdate() {
-        this.iddocente=0;
-        this.opcion="";
     }
     
     /**
@@ -622,7 +630,7 @@ public class ResponsabilidadBean implements Serializable {
         this.iddocente = iddocente;
     }
     
-     /**
+    /**
      * @return the idasignatura
      */
     public int getIdAsignatura() {
@@ -634,6 +642,20 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void setIdAsignatura(int idasignatura) {
         this.idasignatura = idasignatura;
+    }
+    
+    /**
+     * @return the idescuela
+     */
+    public int getIdEscuela() {
+        return idescuela;
+    }
+
+    /**
+     * @param idescuela the idescuela to set
+     */
+    public void setIdEscuela(int idescuela) {
+        this.idescuela = idescuela;
     }
     
     /**

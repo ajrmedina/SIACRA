@@ -54,7 +54,7 @@
                     <h:outputText value="#{tdg.estadotg}" />
                 </p:column>
                 
-                <p:column style="width: 8%" headerText="Aprobacion" filterBy="#{tdg.aprobartg}" filterStyleClass="hide">                    
+                <p:column style="width: 12%" headerText="Aprobacion" filterBy="#{tdg.aprobartg}" filterStyleClass="hide">                    
                      <f:facet name="filter">
                         <p:selectOneButton onchange="PF('tgTable').filter()">
                             <f:converter converterId="javax.faces.Boolean" />
@@ -70,7 +70,7 @@
                     <h:outputText value="#{tdg.prorrogatg?'Si':'No'}" />
                 </p:column>
                 
-                <p:column style="width: 12%" exportable="false">
+                <p:column style="width: 8%" exportable="false">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
@@ -79,7 +79,7 @@
                     <p:commandButton id="update_button" update=":dialogUpdateTG" actionListener="#{trabajoGraduacionBean.loadTrabajoGraduacion(tdg)}" oncomplete="PF('update_tg').show()" icon="fa fa-edit" rendered="#{tdg.estadotg == 'En desarrollo'}"/>
                     <p:commandButton id="change_status" update=":dialogChangeTG" actionListener="#{trabajoGraduacionBean.loadTrabajoGraduacion(tdg)}" oncomplete="PF('change_tg').show()" icon="fa fa-refresh" rendered="#{tdg.estadotg == 'En desarrollo'}"/>
                     <p:tooltip id="forChangeStatus" for="change_status" value="Dar por finalizado este trabajo de graduacion"  />
-                    <h:outputText value="No es modificable" style="color: red" rendered="#{tdg.estadotg == 'Finalizado'}" />
+                    <h:outputText value="No es modificable" style="color: crimson" rendered="#{tdg.estadotg == 'Finalizado'}" />
                
                 </p:column>               
             </p:dataTable>

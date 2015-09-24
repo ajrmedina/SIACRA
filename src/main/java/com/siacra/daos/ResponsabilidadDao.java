@@ -107,4 +107,14 @@ public class ResponsabilidadDao {
         List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad").list();
         return list;
     }
+    
+    public void aprobarResponsabilidad(int id_escuela) {
+        try {
+            Query callSP = getSessionFactory().getCurrentSession().createSQLQuery("CALL sp_aprobarResponsabilidad(:idEscuela)").setParameter("idEscuela", id_escuela);
+            int result = callSP.executeUpdate();
+        }
+        catch (RuntimeException e) {
+            throw e;
+        }     
+    }
 }

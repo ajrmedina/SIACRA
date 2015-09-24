@@ -1,0 +1,61 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">    
+    
+
+    <ui:define name="title">
+       Aprobar Responsabilidad
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Aprobar Responsabilidad Academica de las Escuelas de la FIA
+    </ui:define>
+    
+    <ui:define name="content"> 
+        
+        <h:form id="aprobar"> 
+            <p:growl id="messages" showDetail="true" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+                <f:facet name="header">    
+                    Escuelas de la Facultad de Ingenieria y Arquitectura
+                </f:facet>                                 
+                
+                <p:column style="width:20%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
+                    <h:outputText value="#{escuela.codigoescuela}" />
+                </p:column>
+                
+                <p:column style="width:30%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
+                    <h:outputText value="#{escuela.nombreescuela}" />
+                </p:column>
+                
+                <p:column style="width: 25%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                                     
+                    <p:commandButton id="aprobar" value="Aprobar" actionListener="#{responsabilidadBean.setIdEscuela(escuela.idescuela)}" oncomplete="PF('aprobar_responsabilidad').show()" icon="fa fa-thumbs-o-up" />
+                
+                </p:column>               
+            </p:dataTable>
+            
+            <p:dialog header="Aprobar Responsabilidad" id="dialogAprobarResponsabilidad" widgetVar="aprobar_responsabilidad" modal="true" resizable="false" closable="false">
+                <h:form id="confirmar">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <h:outputText value="Seguro que desea aprobar la responsabilidad para esta escuela?" />
+                    <br />
+                    <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                        <p:commandButton id="aprobar" value="Aprobar" update=":aprobar :aprobar:messages" actionListener="#{responsabilidadBean.aprobarResponsabilidad()}" oncomplete="PF('aprobar_responsabilidad').hide()" icon="fa fa-check" />
+                        <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('aprobar_responsabilidad').hide()" icon="fa fa-ban" />
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+        </h:form>
+        
+    </ui:define>
+    
+</ui:composition>

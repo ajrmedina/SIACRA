@@ -17,7 +17,7 @@
         
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable rowKey="#{asignaturaBean.cicloImpartir}" id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="asignaturasTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable rowKey="#{asignaturaBean.cicloImpartir}" id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 100%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="asignaturasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.reset()}" oncomplete="PF('update_asignatura').show()"  value="Nueva Asignatura" icon="fa fa-plus">
@@ -44,14 +44,30 @@
                 <p:column style="width: 17%" headerText="Nombre" filterBy="#{asignatura.nombreAsignatura}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.nombreAsignatura}"/>
                 </p:column>
-                <p:column style="width: 5%" headerText="Estado" filterBy="#{asignatura.estadoAsignatura}" filterStyleClass="hide" exportable="false">
-                    <h:outputText value="#{asignatura.estadoAsignatura?'Habilitada':'Deshabilitada'}"/>
+                <p:column style="width: 10%" headerText="Estado" filterBy="#{asignatura.estadoAsignatura}" filterStyleClass="hide" exportable="false">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('asignaturasTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItem itemLabel="A" itemValue="true" />
+                            <f:selectItem itemLabel="I" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+                    <h:outputText value="#{asignatura.estadoAsignatura?'Activa':'Inactiva'}"/>
                 </p:column>
-                <p:column style="width: 6%" headerText="Aprobacion" filterBy="#{asignatura.aprobarasignatura}" filterStyleClass="hide" exportable="false">
-                    <h:outputText value="#{asignatura.aprobarasignatura?'Aprobada':'No aprobada'}"/>
+                <p:column style="width: 10%" headerText="Aprobada" filterBy="#{asignatura.aprobarasignatura}" filterStyleClass="hide" exportable="false">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('asignaturasTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItem itemLabel="S" itemValue="true" />
+                            <f:selectItem itemLabel="N" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+                    <h:outputText value="#{asignatura.aprobarasignatura?'Si':'No'}"/>
                 </p:column>
                 <p:column style="width: 10%"   filterMatchMode="equals" headerText="Ciclo" filterBy="#{asignatura.cicloImpartir}" filterStyleClass="hide" >
-                      <f:facet name="filter">
+                    <f:facet name="filter">
                         <p:selectOneButton onchange="PF('asignaturasTable').filter()">
                             <f:converter converterId="javax.faces.Integer" />
                             <f:selectItem itemLabel="Todos" itemValue="" />
@@ -61,10 +77,10 @@
                     </f:facet>
                     <h:outputText value="#{asignatura.cicloImpartir}"/>
                 </p:column>
-                <p:column style="width: 2%" headerText="UV" filterBy="#{asignatura.unidadesValorativas}" filterStyleClass="hide" >
+                <p:column style="width: 3%" headerText="UV" filterBy="#{asignatura.unidadesValorativas}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.unidadesValorativas}"/>
                 </p:column>
-                <p:column style="width: 6%" headerText="Tipo" filterBy="#{asignatura.tipoAsignatura}" filterStyleClass="hide" >
+                <p:column style="width: 7%" headerText="Tipo" filterBy="#{asignatura.tipoAsignatura}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.tipoAsignatura}"  />
                 </p:column>
                 

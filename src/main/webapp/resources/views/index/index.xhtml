@@ -17,6 +17,7 @@
     <ui:define name="content"> 
                 
         <h:form id="cambio" rendered="#{userBean.user.sesion == false}">
+            <p:growl id="messages"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element">     
 
@@ -34,17 +35,17 @@
                     <f:validateLength minimum="8" maximum="30" />                    
                 </p:password>               
               
-                <p:commandButton id="save_insert" value="Actualizar" action="#{userBean.actualizarPassword}" icon="fa fa-plus" />
+                <p:commandButton id="save_insert" value="Actualizar" action="#{userBean.actualizarPassword}" update="messages" icon="fa fa-plus" />
 
             </h:panelGrid>            
         </h:form>                                       
-                 
-        <h:outputText value="Docente: #{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} pertenece a la Escuela: #{identityBean.principal.escuela.nombreescuela}" />
         
-        <h:form> 
+        <h:form id="index"> 
             <p:growl id="messages" showDetail="true" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:outputText value="Docente: #{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} pertenece a la Escuela: #{identityBean.principal.escuela.nombreescuela}" rendered="#{userBean.user.sesion == true}" />
         </h:form>
+        
     </ui:define>
     
 </ui:composition>

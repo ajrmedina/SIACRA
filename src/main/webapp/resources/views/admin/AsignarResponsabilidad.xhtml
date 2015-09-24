@@ -40,7 +40,7 @@
                         <p:inputText id="globalFilter" onkeyup="PF('resp_table').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
                         <p:spacer width="600" height="10" rendered="#{responsabilidadBean.ciclo.ciEstado == true}" />
                         <p:spacer width="400" height="10" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
-                        <h:outputText value="Ciclo Cerrado no se admiten modificaciones a la responsabilidad" style="color: red; float: right" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
+                        <h:outputText value="Ciclo Cerrado: no se admiten modificaciones a la responsabilidad" style="color: whitesmoke; float: right" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
                         <p:commandButton id="insert_button" update=":dialogResponsabilidad" style="float: right" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('dialog_responsabilidad').show()"  value="Ingresar Responsabilidad" icon="fa fa-plus" rendered="#{responsabilidadBean.ciclo.ciEstado == true}">
                             <f:setPropertyActionListener target="#{responsabilidadBean.insert}" value="true" />
                         </p:commandButton>
@@ -68,15 +68,16 @@
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>
-                    <p:commandButton id="update_button" update=":dialogResponsabilidad" actionListener="#{responsabilidadBean.loadResponsabilidad(resp)}" oncomplete="PF('dialog_responsabilidad').show()" icon="fa fa-edit" rendered="#{responsabilidadBean.ciclo.ciEstado == true}" />
-                    <p:commandButton id="delete_button" update=":dialogDeleteResponsabilidad" actionListener="#{responsabilidadBean.loadResponsabilidad(resp)}" oncomplete="PF('delete_responsabilidad').show()" icon="fa fa-times" />
-                    <h:outputText value="Ciclo Cerrado" style="color: red" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
+                    <p:commandButton id="update_button" update=":dialogResponsabilidad" actionListener="#{responsabilidadBean.loadResponsabilidad(resp)}" oncomplete="PF('dialog_responsabilidad').show()" icon="fa fa-edit" rendered="#{responsabilidadBean.ciclo.ciEstado == true and resp.aprobada == false}" />
+                    <p:commandButton id="delete_button" update=":dialogDeleteResponsabilidad" actionListener="#{responsabilidadBean.loadResponsabilidad(resp)}" oncomplete="PF('delete_responsabilidad').show()" icon="fa fa-times" rendered="#{responsabilidadBean.ciclo.ciEstado == true and resp.aprobada == false}" />
+                    <h:outputText value="Ciclo Cerrado &lt;br/&gt;" style="color: crimson; font-size: 14px" escape="false" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
+                    <h:outputText value="Responsabilidad Aprobada" style="color: forestgreen; font-size: 14px" rendered="#{resp.aprobada == true}" />
                 </p:column>
             </p:dataTable>
         </h:form>
         
         <p:dialog header="#{responsabilidadBean.insert?'Ingresar Responsabilidad':'Modificar Responsabilidad'}" id="dialogResponsabilidad" widgetVar="dialog_responsabilidad" modal="true" resizable="false" closable="false">
-            <p:ajax event="close" update=":listar:responsabilidadTable" process="@this" listener="#{responsabilidadBean.refresh()}"/>
+            <p:ajax event="close" update=":listar:responsabilidadTable" process="@this" listener="#{responsabilidadBean.refreshResponsabilidad()}"/>
             <h:form id="responsabilidadForm">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <p:growl id="messages" />
