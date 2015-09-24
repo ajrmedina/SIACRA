@@ -333,7 +333,7 @@ public class ResponsabilidadBean implements Serializable {
     public boolean horasObligatoriasExcedidas(){
         boolean valido = false;
         try {
-            Long horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente());
+            Long horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente(), getCiclo().getIdCiclo());
             Docente docente = getDocenteService().getDocenteById(getIdDocente());
             if(horas >= docente.getCategoria().getHorasObligatorias()){
                 this.setHorasActuales(horas);
@@ -357,12 +357,12 @@ public class ResponsabilidadBean implements Serializable {
         if(this.getTipodetiempo().equals("Obligatorio")){
             try {
                 if(isInsert()){
-                    horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente());
+                    horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente(), getCiclo().getIdCiclo());
                     docente = getDocenteService().getDocenteById(getIdDocente());
                 }
                 else {
                     responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-                    horas = getResponsabilidadService().getHorasActualesByDocente(responsabilidad.getDocente().getIdDocente());
+                    horas = getResponsabilidadService().getHorasActualesByDocente(responsabilidad.getDocente().getIdDocente(), getCiclo().getIdCiclo());
                     docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
                 }
                 Long sumatoriaHoras = horas + getTotalhoras();

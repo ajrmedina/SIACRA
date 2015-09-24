@@ -94,8 +94,8 @@ public class ResponsabilidadDao {
      *
      * @return int Sumatoria de horas asignadas actualmente
      */
-    public Long getHorasActualesByDocente(int docente){
-        Query horas = getSessionFactory().getCurrentSession().createQuery("SELECT SUM(totalhoras) AS resultado FROM Responsabilidad WHERE iddocente=? AND tipodetiempo='Obligatorio'").setParameter(0, docente);
+    public Long getHorasActualesByDocente(int docente, int ciclo){
+        Query horas = getSessionFactory().getCurrentSession().createQuery("SELECT SUM(totalhoras) AS resultado FROM Responsabilidad WHERE iddocente=? AND idciclo=? AND tipodetiempo='Obligatorio'").setParameter(0, docente).setParameter(1, ciclo);
         return (Long) horas.uniqueResult();
     }
     
