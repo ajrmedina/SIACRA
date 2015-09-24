@@ -6,6 +6,7 @@
 package com.siacra.daos;
 
 import com.siacra.models.Responsabilidad;
+import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -83,8 +84,8 @@ public class ResponsabilidadDao {
      *
      * @return List - Lista Responsabilidad
      */
-    public List<Responsabilidad> getResponsabilidadesByDocente(int docente){
-        List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad WHERE iddocente=?").setParameter(0, docente).list();
+    public List<Responsabilidad> getResponsabilidadesByDocente(int docente, int ciclo){
+        List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad WHERE iddocente=? AND idciclo=?").setParameter(0, docente).setParameter(1, ciclo).list();
         return list;
     }
     
@@ -108,9 +109,9 @@ public class ResponsabilidadDao {
         return list;
     }
     
-    public void aprobarResponsabilidad(int id_escuela) {
+    public void aprobarResponsabilidad(int id_escuela, int id_ciclo) {
         try {
-            Query callSP = getSessionFactory().getCurrentSession().createSQLQuery("CALL sp_aprobarResponsabilidad(:idEscuela)").setParameter("idEscuela", id_escuela);
+            Query callSP = getSessionFactory().getCurrentSession().createSQLQuery("CALL sp_aprobarResponsabilidad(:idEscuela, :idCiclo)").setParameter("idEscuela", id_escuela).setParameter("idCiclo", id_ciclo);
             int result = callSP.executeUpdate();
         }
         catch (RuntimeException e) {

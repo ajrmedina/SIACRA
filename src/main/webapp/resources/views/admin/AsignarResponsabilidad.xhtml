@@ -254,13 +254,13 @@
                     
                     <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
                     <p:calendar id="fechaInicio" value="#{responsabilidadBean.fechainiciotg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                                locale="es" requiredMessage="Por favor, ingrese la fecha de inicio.">
                         <p:ajax event="dateSelect" update="fechaFin" />
                     </p:calendar>
                                      
                     <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
                     <p:calendar id="fechaFin" value="#{responsabilidadBean.fechafintg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">                        
+                                locale="es" requiredMessage="Por favor, ingrese la fecha de finalizacion.">                        
                         <f:attribute name="startDate" value="#{responsabilidadBean.fechainiciotg}" />
                         <f:validator validatorId="dateRangeValidator" />
                     </p:calendar>
@@ -308,13 +308,13 @@
                     
                     <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
                     <p:calendar id="fechaInicio" value="#{responsabilidadBean.fechainicioProyecto}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                                locale="es" requiredMessage="Por favor, ingrese la fecha de inicio.">
                         <p:ajax event="dateSelect" update="fechaFin" />
                     </p:calendar>
                                      
                     <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
                     <p:calendar id="fechaFin" value="#{responsabilidadBean.fechafinProyecto}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">
+                                locale="es" requiredMessage="Por favor, ingrese la fecha de finalizacion.">
                         <f:attribute name="startDate" value="#{responsabilidadBean.fechainicioProyecto}" />
                         <f:validator validatorId="dateRangeValidator" />
                     </p:calendar>

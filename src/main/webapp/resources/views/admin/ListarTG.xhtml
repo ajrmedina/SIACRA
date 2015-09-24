@@ -115,13 +115,13 @@
                     
                     <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
                     <p:calendar id="fechaInicio" value="#{trabajoGraduacionBean.fechainiciotg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de inicio.">
+                                locale="es" requiredMessage="Por favor, ingrese la fecha de inicio.">
                         <p:ajax event="dateSelect" update="fechaFin" />
                     </p:calendar>
                                      
                     <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
                     <p:calendar id="fechaFin" value="#{trabajoGraduacionBean.fechafintg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                requiredMessage="Por favor, ingrese la fecha de finalizacion.">
+                                locale="es" requiredMessage="Por favor, ingrese la fecha de finalizacion.">
                         <f:attribute name="startDate" value="#{trabajoGraduacionBean.fechainiciotg}" />
                         <f:validator validatorId="dateRangeValidator" />
                     </p:calendar>

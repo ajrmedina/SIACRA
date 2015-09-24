@@ -97,10 +97,10 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="hinicio1" value="Hora de inicio :" />
-                    <p:calendar id="hinicio1" value="#{horarioBean.hinicio1}" pattern="HH:mm" timeOnly="true"  required="true" requiredMessage="Ingrese hora de inicio"/>
+                    <p:calendar id="hinicio1" value="#{horarioBean.hinicio1}" pattern="HH:mm" timeOnly="true"  required="true" locale="es" requiredMessage="Ingrese hora de inicio"/>
 
                     <p:outputLabel for="hfin1" value="Hora de fin :" />
-                    <p:calendar id="hfin1" value="#{horarioBean.hfin1}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Ingrese hora de fin" />
+                    <p:calendar id="hfin1" value="#{horarioBean.hfin1}" pattern="HH:mm" timeOnly="true" required="true" locale="es" requiredMessage="Ingrese hora de fin" />
    
                     <p:outputLabel for="dia2" value="Dia :" />
                     <p:selectOneMenu id="dia2" value="#{horarioBean.dia2}" >

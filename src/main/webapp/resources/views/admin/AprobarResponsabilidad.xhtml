@@ -17,7 +17,7 @@
     <ui:define name="content"> 
         
         <h:form id="aprobar"> 
-            <p:growl id="messages" showDetail="true" />
+            <p:growl id="messages"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">    
