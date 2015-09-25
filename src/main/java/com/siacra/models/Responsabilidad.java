@@ -172,18 +172,15 @@ public class Responsabilidad implements Serializable {
     public void setDocente(Docente docente) {
         this.docente = docente;
     }
+
     
-    /**
-     * @return the idciclo
-     */
     public Ciclo getCiclo() {
         return ciclo;
     }
-    
-    /**
-     * @param idciclo the idciclo to set
-     */
-    public void setCiclo(Ciclo idciclo) {
-        this.ciclo = idciclo;
+
+    public void setCiclo(Ciclo ciclo) {
+        this.ciclo = ciclo;
     }
+    
+   
 }

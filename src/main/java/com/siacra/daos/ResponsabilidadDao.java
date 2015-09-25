@@ -118,4 +118,26 @@ public class ResponsabilidadDao {
             throw e;
         }     
     }
+    
+    //******************
+    public Long getHorasActualesByDocenteObligatorias(int docente){
+        Query horas = getSessionFactory().getCurrentSession().createQuery("SELECT SUM(totalhoras) AS resultado FROM Responsabilidad WHERE iddocente=? AND tipodetiempo='Obligatorio' and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente);
+        return (Long) horas.uniqueResult();
+    }
+       
+    
+    public Long getHorasActualesByDocenteAdicional(int docente){
+        Query horas = getSessionFactory().getCurrentSession().createQuery("SELECT SUM(totalhoras) AS resultado FROM Responsabilidad WHERE iddocente=? AND tipodetiempo='Adicional' and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente);
+        return (Long) horas.uniqueResult();
+    }
+    
+    public Long getHorasActualesByDocenteIntegral(int docente){
+        Query horas = getSessionFactory().getCurrentSession().createQuery("SELECT SUM(totalhoras) AS resultado FROM Responsabilidad WHERE iddocente=? AND tipodetiempo='Integral' and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente);
+        return (Long) horas.uniqueResult();
+    }
+    
+    public List<Responsabilidad> getResponsabilidadesByDocenteCiclo(int docente){
+        List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad WHERE iddocente=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente).list();
+        return list;
+    }
 }

@@ -106,4 +106,21 @@ public class ResponsabilidadService {
         getResponsabilidadDao().aprobarResponsabilidad(ide, idc);
     }
     
+    //**************
+     public List<Responsabilidad> getResponsabilidadesByDocenteCiclo(int id) {
+        return getResponsabilidadDao().getResponsabilidadesByDocenteCiclo(id);
+    }
+
+    public Long getHorasActualesByDocenteAdicional(int id) {
+        return getResponsabilidadDao().getHorasActualesByDocenteAdicional(id);
+    }
+    
+    public Long getHorasActualesByDocenteIntegral(int id) {
+        return getResponsabilidadDao().getHorasActualesByDocenteIntegral(id);
+    }
+    
+    public Long getHorasActualesByDocenteObligatorias(int id) {
+        return getResponsabilidadDao().getHorasActualesByDocenteObligatorias(id);
+    }  
+    
 }

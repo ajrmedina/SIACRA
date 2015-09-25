@@ -3,8 +3,9 @@ package com.siacra.beans;
 
 import com.siacra.models.Ciclo;
 import com.siacra.models.Permanencia;
-import com.siacra.beans.IdentityBean;
+
 import com.siacra.models.Docente;
+import com.siacra.models.Responsabilidad;
 import com.siacra.models.User;
 import com.siacra.services.CicloService;
 import java.io.Serializable;
@@ -15,10 +16,13 @@ import javax.faces.bean.ManagedProperty;
 import com.siacra.services.PermanenciaService;
 
 import com.siacra.services.DocenteService;
+import com.siacra.services.ResponsabilidadService;
 import com.siacra.services.UserService;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,19 +69,94 @@ public class PermanenciaBean implements Serializable {
     
     private Docente principal = null;  
     
+    private List<Responsabilidad> responsabilidades;
+    Long horasOb;
+    Long horasAd;
+    Long horasIn;
+    //Spring Docente Service is injected...
+    @ManagedProperty(value="#{ResponsabilidadService}")
+    private ResponsabilidadService responsabilidadService;
     
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    /**
+     * @return the sessionFactory
+     */
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    /**
+     * @param sessionFactory the sessionFactory to set
+     */
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+    
+    public List<Responsabilidad> getResponsabilidades() {
+         responsabilidades = new ArrayList<>();
+         responsabilidades.addAll(getResponsabilidadService().getResponsabilidadesByDocenteCiclo(principal.getIdDocente()));        
+        return responsabilidades;
+    }
+
+    public void setResponsabilidades(List<Responsabilidad> responsabilidades) {
+        this.responsabilidades = responsabilidades;
+    }
+
+    public ResponsabilidadService getResponsabilidadService() {
+        return responsabilidadService;
+    }
+
+    public void setResponsabilidadService(ResponsabilidadService responsabilidadService) {
+        this.responsabilidadService = responsabilidadService;
+    }
+    
+     public Long getHorasOb() {
+        horasOb = getResponsabilidadService().getHorasActualesByDocenteObligatorias(principal.getIdDocente());
+        return horasOb;
+    }
+
+    public void setHorasOb(Long horasOb) {
+        this.horasOb = horasOb;
+    }
+
+    public Long getHorasAd() {
+        horasAd = getResponsabilidadService().getHorasActualesByDocenteAdicional(principal.getIdDocente());
+        return horasAd;
+    }
+
+    public void setHorasAd(Long horasAd) {
+        this.horasAd = horasAd;
+    }
+
+    public Long getHorasIn() {
+        horasIn = getResponsabilidadService().getHorasActualesByDocenteIntegral(principal.getIdDocente());
+        return horasIn;
+    }
+
+    public void setHorasIn(Long horasIn) {
+        this.horasIn = horasIn;
+    }
+
+        
     /***** Get Logged username *****/ 
     public Docente getPrincipal(){
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String name = auth.getName();
             User user = getUserService().getUserLogin(name);
-            principal = getDocenteService().getDocenteByUser(user.getIdUsuario());
-            return principal;
+            if(!getDocenteService().existDocente(user.getIdUsuario())){
+                principal = getDocenteService().getDocenteByUser(user.getIdUsuario());
+            }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
         return principal;
+    }  
+    
+    public void setPrincipal(Docente docente){
+        this.principal = docente;
     }
     /**
      * Add Permanencia
@@ -389,7 +468,7 @@ public class PermanenciaBean implements Serializable {
 
     public List<Ciclo> getCicloList() {
         cicloList = new ArrayList<>();
-        cicloList.addAll(getCicloService().getCiclos());
+        cicloList.addAll(getCicloService().getCiclosActivos());
         return cicloList;
     }
 
