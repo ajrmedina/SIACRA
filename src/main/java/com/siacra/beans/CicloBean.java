@@ -205,9 +205,15 @@ public class CicloBean implements Serializable{
             Ciclo ciclo = getCicloService().getCicloById(getIdCiclo());
             String cicloBloqueado = ciclo.getCiclo(); 
             String anio = Integer.toString(ciclo.getAnio()); 
-            ciclo.setCiEstado(true);
-            addMessage("El ciclo " + cicloBloqueado + " del año " + anio + " fue habilitado correctamente");
-            getCicloService().updateCiclo(ciclo);                     
+            if(getCicloService().getCiclosActivos().isEmpty()){
+                ciclo.setCiEstado(true);
+                addMessage("El ciclo " + cicloBloqueado + " del año " + anio + " fue habilitado correctamente");
+                getCicloService().updateCiclo(ciclo);    
+            }
+            else {
+                 addMessage("No se puede habilitar el ciclo. Solo puede existir un ciclo activo");
+            }           
+                             
         } catch (DataAccessException e) {
             e.printStackTrace();
         }

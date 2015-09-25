@@ -16,7 +16,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 95%" class="center-element" paginator="true" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Busqueda de usuarios:" />
@@ -43,13 +43,13 @@
                 <p:column style="width: 13%" headerText="Username" filterBy="#{user.nombreUsuario}" filterStyleClass="hide">
                     <h:outputText value="#{user.nombreUsuario}" />
                 </p:column>
-                <p:column style="width: 13%" headerText="Contraseña" filterBy="#{user.contrasenia}" filterStyleClass="hide">
+                <!--<p:column style="width: 13%" headerText="Contraseña" filterBy="#{user.contrasenia}" filterStyleClass="hide">
                     <h:outputText value="#{user.contrasenia}" />
-                </p:column>
+                </p:column>-->
                 <p:column style="width: 15%" headerText="Nivel" filterBy="#{user.nivel.acceso}" filterStyleClass="hide">
                     <h:outputText value="#{user.nivel.acceso}" />
                 </p:column>
-                <p:column style="width: 10%" headerText="Habilitado" filterBy="#{user.estadoUsuario}" filterStyleClass="hide">
+                <p:column style="width: 10%" headerText="Estado" filterBy="#{user.estadoUsuario}" filterStyleClass="hide">
                     <f:facet name="filter">
                         <p:selectOneButton onchange="PF('usuariosTable').filter()">
                             <f:converter converterId="javax.faces.Boolean" />
@@ -100,6 +100,11 @@
                         
                     </p:inputText>
                     
+                     <p:outputLabel for="contrasenia" value="Clave de acceso: " rendered="#{userBean.insert == false}" />
+                    <p:inputText id="contrasenia" value="#{userBean.contrasenia}" required="true" 
+                                 validatorMessage="Solo letras y numeros son permitidos para este campo, con una longitud minima de 8 y maxima de 30 caracteres"
+                                 rendered="#{userBean.insert == false}">                        
+                    </p:inputText>
 
                     <p:outputLabel id="estado" value="Habilitar usuario? " rendered="#{userBean.insert == true}" />
                     <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" rendered="#{userBean.insert == true}" />

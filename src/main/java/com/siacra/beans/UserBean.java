@@ -75,7 +75,8 @@ public class UserBean implements Serializable {
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
             getUserService().addUser(user);
-            addMessage("El Usuario " + getNombreUsuario() + " fue añadido correctamente");
+            addMessage("Se ingresó el usuario correctamente");
+            addMessage("Nombre de Usuario: " + getNombreUsuario() + " Contraseña: " + getNombreUsuario()); 
             reset();
             setInsert(false);
             //return "ListarNivelesAcceso?faces-redirect=true";
@@ -96,6 +97,7 @@ public class UserBean implements Serializable {
         setIdUsuario(user.getIdUsuario());
         setNombreUsuario(user.getNombreUsuario());
         setNombres(user.getNombres());
+        setContrasenia(user.getContrasenia());
         setApellidos(user.getApellidos());
         setEstadoUsuario(user.getEstadoUsuario());
         setEsDocente(user.getEsDocente());
@@ -113,6 +115,7 @@ public class UserBean implements Serializable {
             user.setNombreUsuario(getNombreUsuario());
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
+            user.setContrasenia(getContrasenia());
             user.setEstadoUsuario(getEstadoUsuario());            
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
@@ -185,7 +188,7 @@ public class UserBean implements Serializable {
        this.setApellidos("");
        this.setNivel(0);
        this.setEstadoUsuario(false);
-       this.setEsDocente(false);
+       this.setEsDocente(false);       
     }
 
     /**
