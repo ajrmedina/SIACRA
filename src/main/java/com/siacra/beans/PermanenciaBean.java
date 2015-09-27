@@ -18,9 +18,22 @@ import com.siacra.services.PermanenciaService;
 import com.siacra.services.DocenteService;
 import com.siacra.services.ResponsabilidadService;
 import com.siacra.services.UserService;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -78,8 +91,8 @@ public class PermanenciaBean implements Serializable {
     private ResponsabilidadService responsabilidadService;
     
     @Autowired
-    private SessionFactory sessionFactory;
-
+    private SessionFactory sessionFactory;   
+    
     /**
      * @return the sessionFactory
      */
@@ -507,10 +520,8 @@ public class PermanenciaBean implements Serializable {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-    
-     
-    
-    
+       
+             
     /**
      * Add Messages
      * Add messages for the UI
@@ -521,6 +532,40 @@ public class PermanenciaBean implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+     
+     public Connection getConnection() throws SQLException, ClassNotFoundException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/siacra", "root", "123");
+        return conexion;
+    }
+    
+    public void exportarTiempoP(int idDoc) throws JRException, ClassNotFoundException, SQLException, IOException{     
+        //Obtener el contexto del servlet
+        ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();  
+        //Obtener la lista de parametros provenientes de la vista
+        //Map<String,String> viewparams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        //Ubicacion del reporte
+        String reporte = context.getRealPath("/WEB-INF/web-reports/permanencia.jasper");
+        //Parametros para el reporte
+        HashMap parameter = new HashMap();
+        parameter.put("LOGO", context.getRealPath("/WEB-INF/web-reports/logoues.gif"));
+        parameter.put("docente_IDDOCENTE", idDoc);
+       
+        //Generar el reporte
+        JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameter, getConnection());
+        byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.setContentType("application/pdf");
+            response.setContentLength(bytes.length);
+            ServletOutputStream outStream = response.getOutputStream();
+            outStream.write(bytes, 0 , bytes.length);
+            outStream.flush();
+            outStream.close();
+			
+        FacesContext.getCurrentInstance().responseComplete();
+        
+     }
+    
 }
 
 
