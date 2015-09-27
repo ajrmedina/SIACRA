@@ -1,0 +1,27 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="title">
+        Reportes de Docentes
+    </ui:define>
+    
+    <ui:define name="title-view">
+        <h2 class="title"> Generar reportes </h2>
+    </ui:define>
+    
+                    
+    <ui:define name="content">
+        <h:form id="list" style="margin-left: 40%">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:commandButton id="reporte_button" icon="fa fa-file-o" value="Tiempo de Permanencia Docente"
+                             actionListener="#{permanenciaBean.exportarTiempoP(permanenciaBean.principal.idDocente)}"
+                             style="font-size: large" ajax="false"/>
+        </h:form>       
+    </ui:define>
+    
+</ui:composition>
