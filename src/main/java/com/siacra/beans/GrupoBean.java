@@ -408,6 +408,7 @@ public class GrupoBean implements Serializable{
             grupo.setHorario(horarioService.getHorarioById(idHorario));
             grupo.setAsignatura(asignaturaService.getAsignaturaById(idAsignatura));
             grupo.setCupo(cupo);
+            grupo.setInscritos(inscritos);
             grupo.setNumeroGrupo(numeroGrupo);
             grupo.setAprobarGrupo(false);
             grupo.setGrEstado(true);
