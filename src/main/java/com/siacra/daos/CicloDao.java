@@ -71,8 +71,12 @@ public class CicloDao {
     }
     
     public Ciclo getCicloActual(int year) {
-        Ciclo actual = (Ciclo) getSessionFactory().getCurrentSession().createQuery("FROM Ciclo WHERE anio=? ORDER BY ciclo DESC").setParameter(0, year).setMaxResults(1).uniqueResult();
+        Ciclo actual = (Ciclo) getSessionFactory().getCurrentSession().createQuery("FROM Ciclo WHERE anio=? AND ci_estado=1").setParameter(0, year).setMaxResults(1).uniqueResult();
         return actual;
     }
     
+    public List<Ciclo> getAnios() {
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM Ciclo GROUP BY anio").list();
+        return list;
+    }
 }

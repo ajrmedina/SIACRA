@@ -106,6 +106,10 @@ public class ResponsabilidadBean implements Serializable {
     private boolean horasSobrecarga;        //Si se pueden modificar las horas de la responsabilidad
     private Ciclo cicloActual;
     private boolean ucb;
+    Long horasOb;
+    Long horasAd;
+    Long horasIn;
+    Long horasOP;
     
     /************************************** Trabajo de Graduacion **************************************/
     
@@ -315,7 +319,16 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public void refreshResponsabilidad() {
-        this.setResponsabilidadList(getResponsabilidadService().getResponsabilidadesByDocente(this.getCDocente(), this.getCiclo().getIdCiclo()));
+        Docente docente = getDocenteService().getDocenteById(getCDocente());
+        setResponsabilidadList(getResponsabilidadService().getResponsabilidadesByDocente(getCDocente(), getCiclo().getIdCiclo()));
+        setHorasOb(getResponsabilidadService().getHorasActualesByDocenteObligatorias(getCDocente()));
+        setHorasAd(getResponsabilidadService().getHorasActualesByDocenteAdicional(getCDocente()));
+        setHorasIn(getResponsabilidadService().getHorasActualesByDocenteIntegral(getCDocente()));
+        if(getHorasOb() != null)
+            setHorasOP(docente.getCategoria().getHorasObligatorias() - getHorasOb());
+        else
+            setHorasOP(Long.valueOf(docente.getCategoria().getHorasObligatorias()));
+        
     }
     
      public void showHorasActuales() {
@@ -335,12 +348,16 @@ public class ResponsabilidadBean implements Serializable {
         try {
             Long horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente(), getCiclo().getIdCiclo());
             Docente docente = getDocenteService().getDocenteById(getIdDocente());
-            if(horas >= docente.getCategoria().getHorasObligatorias()){
+            if(horas != null) {
+                if(horas >= docente.getCategoria().getHorasObligatorias()){
+                    valido = true;
+                }
                 this.setHorasActuales(horas);
-                valido = true;
+                this.setHorasOP(docente.getCategoria().getHorasObligatorias() - getHorasActuales());
             }
-            else{
-                this.setHorasActuales(horas);
+            else {
+                this.setHorasActuales(Long.valueOf(0));
+                this.setHorasOP(Long.valueOf(docente.getCategoria().getHorasObligatorias()));
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -814,6 +831,38 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void setCiclo(Ciclo ciclo) {
         this.cicloActual = ciclo;
+    }
+    
+    public Long getHorasOb() {
+        return horasOb;
+    }
+
+    public void setHorasOb(Long horasOb) {
+        this.horasOb = horasOb;
+    }
+
+    public Long getHorasAd() {
+        return horasAd;
+    }
+
+    public void setHorasAd(Long horasAd) {
+        this.horasAd = horasAd;
+    }
+
+    public Long getHorasIn() {
+        return horasIn;
+    }
+
+    public void setHorasIn(Long horasIn) {
+        this.horasIn = horasIn;
+    }
+    
+    public Long getHorasOP() {
+        return horasOP;
+    }
+
+    public void setHorasOP(Long horasOP) {
+        this.horasOP = horasOP;
     }
     
     public void addMessage(String mensaje) {

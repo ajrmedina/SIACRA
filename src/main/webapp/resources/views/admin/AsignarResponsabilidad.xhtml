@@ -43,6 +43,8 @@
                         <h:outputText value="Ciclo Cerrado: no se admiten modificaciones a la responsabilidad" style="color: whitesmoke; float: right" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
                         <p:commandButton id="insert_button" update=":dialogResponsabilidad" style="float: right" actionListener="#{responsabilidadBean.reset()}" oncomplete="PF('dialog_responsabilidad').show()"  value="Ingresar Responsabilidad" icon="fa fa-plus" rendered="#{responsabilidadBean.ciclo.ciEstado == true}">
                             <f:setPropertyActionListener target="#{responsabilidadBean.insert}" value="true" />
+                            <f:setPropertyActionListener target="#{responsabilidadBean.horasActuales}" value="0" />
+                            <f:setPropertyActionListener target="#{responsabilidadBean.horasOP}" value="0" />
                         </p:commandButton>
                         <p:spacer width="10" />
                         <p:commandLink ajax="false" style="float: right">
@@ -73,6 +75,24 @@
                     <h:outputText value="Ciclo Cerrado &lt;br/&gt;" style="color: crimson; font-size: 14px" escape="false" rendered="#{responsabilidadBean.ciclo.ciEstado == false}" />
                     <h:outputText value="Responsabilidad Aprobada" style="color: forestgreen; font-size: 14px" rendered="#{resp.aprobada == true}" />
                 </p:column>
+                <p:columnGroup type="footer">
+                    <p:row rendered="#{responsabilidadBean.horasOb!=null}">
+                        <p:column colspan="4" footerText="Total de horas tiempo obligatorio: " style="text-align:right" />
+                        <p:column footerText="#{responsabilidadBean.horasOb}" />                        
+                    </p:row>
+                    <p:row rendered="#{responsabilidadBean.horasOP!=null}">
+                        <p:column colspan="4" footerText="Total de horas tiempo obligatorio sin asignar: " style="text-align:right" />
+                        <p:column footerText="#{responsabilidadBean.horasOP}" />                        
+                    </p:row>
+                    <p:row rendered="#{responsabilidadBean.horasAd!=null}">
+                        <p:column colspan="4" footerText="Total de horas tiempo adicional: " style="text-align:right" />
+                        <p:column footerText="#{responsabilidadBean.horasAd}" />                        
+                    </p:row>
+                    <p:row rendered="#{responsabilidadBean.horasIn!=null}">
+                        <p:column colspan="4" footerText="Total de horas tiempo integral: " style="text-align:right" />
+                        <p:column footerText="#{responsabilidadBean.horasIn}" />                        
+                    </p:row>
+                </p:columnGroup> 
             </p:dataTable>
         </h:form>
         
@@ -87,7 +107,7 @@
                         <p:selectOneMenu id="docente" value="#{responsabilidadBean.idDocente}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
                             <f:selectItem itemValue="" itemLabel="Seleccione un docente"  />
                             <f:selectItems value="#{responsabilidadBean.docenteList}" var="docente" itemValue="#{docente.idDocente}" itemLabel="#{docente.user.nombres} #{docente.user.apellidos}" itemDisabled="#{docente.aprobarDocente == false || docente.user.estadoUsuario == false}"/>
-                            <p:ajax event="change" update="horasAct" listener="#{responsabilidadBean.showHorasActuales()}" />
+                            <p:ajax event="change" update="horasAct horasOP" listener="#{responsabilidadBean.showHorasActuales()}" />
                         </p:selectOneMenu>
                         <p:tooltip id="forDocente" for="docente" value="Seleccione el docente" />
                     </h:panelGroup>
@@ -115,7 +135,10 @@
                     </p:inputMask>
                     
                     <p:outputLabel for="horasAct" value="Numero de horas obligatorias asignadas actualmente: " />
-                    <p:outputLabel id="horasAct" value="#{responsabilidadBean.horasActuales}" />
+                    <p:outputLabel id="horasAct" value="#{responsabilidadBean.horasActuales}" style="color: crimson" />
+                    
+                    <p:outputLabel for="horasOP" value="Numero de horas obligatorias sin asignar: " />
+                    <p:outputLabel id="horasOP" value="#{responsabilidadBean.horasOP}" style="color: forestgreen" />
                     
                     <p:outputLabel for="opciones" value="Para actividades academicas *"  />
                     <h:panelGrid id="opciones" columns="2" cellpadding="5" class="center-element" >

@@ -34,6 +34,7 @@ public class CicloBean implements Serializable{
     boolean ciEstado;
     private List<Ciclo> cicloList;
     private List<Ciclo> cicloActivoList;
+    private List<Ciclo> aniosList;
     
     private boolean insert;
 
@@ -95,7 +96,17 @@ public class CicloBean implements Serializable{
     public void setCicloList(List<Ciclo> cicloList) {
         this.cicloList = cicloList;
     }
+    
+    public List<Ciclo> getAniosList() {
+        aniosList = new ArrayList<>();
+        aniosList.addAll(getCicloService().getAnios());
+        return aniosList;
+    }
 
+    public void setAniosList(List<Ciclo> aniosList) {
+        this.aniosList = aniosList;
+    }
+    
     public List<Ciclo> getCicloActivoList() {
         cicloList = new ArrayList<>();
         cicloList.addAll(getCicloService().getCiclosActivos());

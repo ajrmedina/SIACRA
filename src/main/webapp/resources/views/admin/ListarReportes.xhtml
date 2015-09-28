@@ -62,7 +62,7 @@
                     <p:selectOneMenu id="yearFilter" value="#{reporte.filterAnio}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
                         <p:ajax event="change" process="@this" update="generate" listener="#{reporte.validateChooseYear()}" />
                         <f:selectItem itemValue="0" itemLabel="Seleccione el año de inicio"  />
-                        <f:selectItems value="#{cicloBean.cicloList}" var="year" itemValue="#{year.anio}" itemLabel="#{year.anio}"/>
+                        <f:selectItems value="#{cicloBean.aniosList}" var="year" itemValue="#{year.anio}" itemLabel="#{year.anio}"/>
                     </p:selectOneMenu>
                     <p:outputLabel for="estadoFilter" value="Seleccione un estado: "/>
                     <p:selectOneMenu id="estadoFilter" value="#{reporte.filterEstadoTGP}" effect="fade" required="true" >    

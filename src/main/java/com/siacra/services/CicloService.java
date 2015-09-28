@@ -74,4 +74,7 @@ public class CicloService {
         return getCicloDao().getCicloActual(year);
     }
     
+    public List<Ciclo> getAnios() {
+        return getCicloDao().getAnios();   
+    }
 }
