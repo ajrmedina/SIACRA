@@ -32,6 +32,9 @@ public class Grupo implements Serializable{
     @Column(name="cupo", nullable = false)
     Integer cupo;
     
+    @Column(name="inscritos", nullable = false)
+    Integer inscritos;
+    
     @Column(name = "numerogrupo", nullable = false )
     Integer numeroGrupo;
     
@@ -75,6 +78,14 @@ public class Grupo implements Serializable{
         this.cupo = cupo;
     }
 
+    public Integer getInscritos() {
+        return inscritos;
+    }
+
+    public void setInscritos(Integer inscritos) {
+        this.inscritos = inscritos;
+    }
+   
     public int getNumeroGrupo() {
         return numeroGrupo;
     }
