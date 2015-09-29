@@ -39,6 +39,9 @@ public class ReporteBean implements Serializable{
     private String filterEstadoTGP;
     private String nombreReporte;
     private boolean disabled=true;
+    private String tiempoDoc; 
+    private int idEscuela;
+    private boolean estado;
     
     public Connection getConnection() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
@@ -71,6 +74,14 @@ public class ReporteBean implements Serializable{
                 parameter.put("anio", Integer.parseInt(getFilterAnio()));
                 parameter.put("estado", getFilterEstadoTGP());
                 break;
+            case "permanencia":
+                parameter.put("docente_IDDOCENTE", Integer.parseInt(viewparams.get("id_docente")));
+                break;
+            case "DocentesTiempo":
+                parameter.put("escuela_IDESCUELA", getIdEscuela());
+                parameter.put("responsabilidad_TIPODETIEMPO", getTiempoDoc());
+                break;
+                
         }
         //Generar el reporte
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameter, getConnection() );
@@ -92,7 +103,7 @@ public class ReporteBean implements Serializable{
         this.disabled = this.codigoEscuela.length()==1;
     }
     
-    public void identifyReport(String reporte){
+    public void identifyReport(String reporte) throws JRException, ClassNotFoundException, SQLException, IOException{
         switch (reporte){
             case "ServiciosProfesionales":
                 setNombreReporte("rServicioProfesional");
@@ -102,6 +113,13 @@ public class ReporteBean implements Serializable{
                 break;
             case "ProyectosFinalizados":
                 setNombreReporte("rptProyectosFinalizados");
+                break;
+            case "Permanencia":
+                setNombreReporte("permanencia");
+                exportarServicioP();
+                break;
+            case "DocentesTiempo":
+                setNombreReporte("DocentesTiempo");
                 break;
         }
     }
@@ -183,4 +201,31 @@ public class ReporteBean implements Serializable{
         this.filterEstadoTGP = filterEstadoTGP;
     }
 
+    public String getTiempoDoc() {
+        return tiempoDoc;
+    }
+
+    public void setTiempoDoc(String tiempoDoc) {
+        this.tiempoDoc = tiempoDoc;
+    }
+
+    public int getIdEscuela() {
+        return idEscuela;
+    }
+
+    public void setIdEscuela(int idEscuela) {
+        this.idEscuela = idEscuela;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    
+   
+    
 }
