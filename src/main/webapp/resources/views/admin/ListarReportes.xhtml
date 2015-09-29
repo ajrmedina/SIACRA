@@ -30,6 +30,9 @@
             <br />
             <br />
             <p:commandButton id="proyectosfinalizados_button" value="Proyectos finalizados" actionListener="#{reporte.identifyReport('ProyectosFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-o" style="font-size: large" />
+            <br />
+            <br />
+            <p:commandButton id="tiempoDoc_button" value="Docentes con Tiempo Adicional/Integral" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-o" style="font-size: large" />
         </h:form>
         
         <p:dialog header="Seleccione la escuela" id="generarReporte" widgetVar="generar_reporte" modal="true" resizable="false" closable="false">
@@ -76,6 +79,33 @@
                     </p:commandButton>
                     <p:commandButton immediate="true" id="exit" value="Salir" oncomplete="PF('choose_year').hide()" update=":chooseYear" icon="fa fa-ban" >
                         <f:setPropertyActionListener target="#{reporte.disabled}" value="true" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+       <p:dialog header="Seleccione la escuela" id="generarReporteDocentes" widgetVar="generar_reporteDoc" modal="true" resizable="false" closable="false">
+            <h:form id="codEscuela" target="_blank">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element" >
+                    <h:outputText value="Seleccionar escuela:" />
+                    <p:selectOneMenu   id="codEscuelaFilter" value="#{reporte.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                       <!-- <p:ajax event="change" process="@this" update="aceptar" />-->
+                        <f:selectItem itemValue="0" itemLabel="Seleccione una escuela"  />
+                        <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela" 
+                                       itemValue="#{escuela.idescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                    </p:selectOneMenu>                   
+                    <h:outputText value="Seleccionar el tiempo de docentes:" />
+                    <p:selectOneMenu   id="tiempoFilter" value="#{reporte.tiempoDoc}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                        <p:ajax event="change" process="@this" update="aceptar" />
+                        <f:selectItem itemValue="0" itemLabel="Seleccione un tiempo"  />
+                        <f:selectItem itemValue="Adicional" itemLabel="Adicional"/>
+                        <f:selectItem itemValue="Integral" itemLabel="Integral"/>
+                    </p:selectOneMenu>
+                    <p:commandButton  id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporteDoc').hide()"  icon="fa fa-check" /> 
+                    <p:commandButton  immediate="true" update=":generarReporteDocentes" id="cancel" value="Cancelar"  icon="fa fa-ban" >
+                        <f:setPropertyActionListener target="#{reporte.estado == true}" value="true" />
+                         <p:resetInput target=":generarReporteDocentes" />
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>

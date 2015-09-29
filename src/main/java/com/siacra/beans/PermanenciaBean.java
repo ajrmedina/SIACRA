@@ -532,7 +532,7 @@ public class PermanenciaBean implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-     
+     /*
      public Connection getConnection() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/siacra", "root", "123");
@@ -564,7 +564,7 @@ public class PermanenciaBean implements Serializable {
 			
         FacesContext.getCurrentInstance().responseComplete();
         
-     }
+     }*/
     
 }
 
