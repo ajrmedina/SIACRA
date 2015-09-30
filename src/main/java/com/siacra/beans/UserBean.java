@@ -11,14 +11,13 @@ import com.siacra.models.User;
 import com.siacra.services.UserService;
 import com.siacra.models.NivelAcceso;
 import com.siacra.services.NivelAccesoService;
-import java.io.IOException;
+import java.util.Map;
 import java.util.Random;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
@@ -26,7 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
- * Customer Managed Bean
+ * User Managed Bean
  *
  * @author SIACRA Development Team
  * @since 08-07-15
@@ -47,13 +46,17 @@ public class UserBean implements Serializable {
     private List<User> usersList;
     private List<NivelAcceso> nivelesList;
     
-    private User user;
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final String cod_escuela = (String) sessionMap.get("sessionCodEscuela");
     
+    private User user;
     private int idUsuario;
     private String nombreUsuario;
     private String contrasenia;
     private String nombres;
     private String apellidos;
+    private String escuela;
     private boolean estadoUsuario;
     private boolean esDocente;
     private int nivel;
@@ -71,6 +74,7 @@ public class UserBean implements Serializable {
             user.setContrasenia(nombreUsuario);
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
+            user.setEscuela(getEscuela());
             user.setEstadoUsuario(getEstadoUsuario());
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
@@ -198,7 +202,7 @@ public class UserBean implements Serializable {
      */
     public List<User> getUserList() {
         usersList = new ArrayList<>();
-        usersList.addAll(getUserService().getUsers());
+        usersList.addAll(getUserService().getUsersByEscuela(cod_escuela));
         return usersList;
     }
     
@@ -347,6 +351,14 @@ public class UserBean implements Serializable {
      */
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+    
+    public String getEscuela() {
+            return this.escuela;
+    }
+ 
+    public void setEscuela(String escuela) {
+            this.escuela = escuela;
     }
     
     /**

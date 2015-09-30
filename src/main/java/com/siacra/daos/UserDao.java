@@ -110,6 +110,10 @@ public class UserDao  {
         List list = getSessionFactory().getCurrentSession().createQuery("from  User").list();
         return list;
     }
-
+    
+    public List<User> getUsersByEscuela(String codigo) {
+        List list = getSessionFactory().getCurrentSession().createQuery("from  User where escuela=?").setParameter(0, codigo).list();
+        return list;
+    }
 }
 

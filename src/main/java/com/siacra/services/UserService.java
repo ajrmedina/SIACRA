@@ -87,6 +87,10 @@ public class UserService {
     public List<User> getUsers() {
         return getUserDao().getUsers();
     }
+    public List<User> getUsersByEscuela(String codigo) {
+        return getUserDao().getUsersByEscuela(codigo);
+    }
+    
 
     /**
      * Get User DAO
