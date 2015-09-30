@@ -28,6 +28,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class IdentityBean {
   
     private Docente principal = null; 
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
     
     //Spring User Service is injected...
     @ManagedProperty(value="#{UserService}")
@@ -42,12 +44,10 @@ public class IdentityBean {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String name = auth.getName();
             User user = getUserService().getUserLogin(name);
+            sessionMap.put("sessionCodEscuela", user.getEscuela());
             if(!getDocenteService().existDocente(user.getIdUsuario())){
                 principal = getDocenteService().getDocenteByUser(user.getIdUsuario());
-                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-                Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("sessionIdEscuela", principal.getEscuela().getIdescuela());
-                sessionMap.put("sessionCodEscuela", principal.getUser().getEscuela());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
