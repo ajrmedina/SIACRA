@@ -30,15 +30,19 @@
                     <div style="clear:both" />
                 </f:facet>
                 
-                <p:column style="width: 13%" headerText="Asignatura" filterBy="#{grupo.asignatura.nombreAsignatura}" filterStyleClass="hide">                         
+                <p:column style="width: 11%" headerText="Asignatura" filterBy="#{grupo.asignatura.nombreAsignatura}" filterStyleClass="hide">                         
                     <h:outputText value="#{grupo.asignatura.nombreAsignatura}" class="center-element"/>
                 </p:column>
-                <p:column style="width: 12%" headerText="Tipo de grupo" filterBy="#{grupo.tipoGrupo.nombreGrupo}" filterStyleClass="hide">                         
+                <p:column style="width: 10%" headerText="Tipo de grupo" filterBy="#{grupo.tipoGrupo.nombreGrupo}" filterStyleClass="hide">                         
                     <h:outputText value="#{grupo.tipoGrupo.nombreGrupo}" class="center-element"/>
                 </p:column>
                 
                 <p:column style="width: 5%" headerText="Numero" filterBy="#{grupo.numeroGrupo}" filterStyleClass="hide">                  
                     <h:outputText value="#{grupo.numeroGrupo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 5%" headerText="Oferta" filterBy="#{grupo.oferta}" filterStyleClass="hide">                  
+                    <h:outputText value="#{grupo.oferta.ciclo}-#{grupo.oferta.acuerdo}" class="center-element"/>
                 </p:column>
                 
                 <p:column style="width: 28%" headerText="Horario" filterBy="#{grupo.horario.dia1}" filterStyleClass="hide">                         
@@ -79,7 +83,15 @@
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                                      
+                           
+                    <p:outputLabel for="oferta" value="Oferta: " />
+                    <h:panelGroup layout="block1">
+                        <p:selectOneMenu id="oferta" value="#{grupoBean.idoferta}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItems value="#{grupoBean.ofertaList}" var="oferta" itemValue="#{oferta.idOferta}" itemLabel="ciclo : #{oferta.ciclo}- Acuerdo:#{oferta.acuerdo}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forOferta" for="oferta" value="Seleccione la oferta a la que pertenece el grupo" />
+                    </h:panelGroup>
+                    
                     <p:outputLabel for="asignatura" value="Asignatura: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="asignatura" value="#{grupoBean.idAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >

@@ -33,9 +33,11 @@
                 <p:column style="width: 5%" headerText="Ciclo" filterBy="#{oferta.ciclo.ciclo}" filterStyleClass="hide">                         
                     <h:outputText value="#{oferta.ciclo.ciclo}" class="center-element"/>
                 </p:column>
+                <!--
                 <p:column style="width: 14%" headerText="Grupo" filterBy="#{oferta.grupo.numeroGrupo}" filterStyleClass="hide">                         
                     <h:outputText value="#{oferta.grupo.numeroGrupo}-#{oferta.grupo.asignatura.nombreAsignatura}" class="center-element"/>
                 </p:column>
+                -->
                 
                 <p:column style="width: 31%" headerText="Acuerdo" filterBy="#{oferta.acuerdo.nombreacuerdo}" filterStyleClass="hide">                  
                     <h:outputText value="#{oferta.acuerdo.nombreacuerdo}" class="center-element"/>
@@ -74,6 +76,7 @@
                         <p:tooltip id="forCiclo" for="ciclo" value="Seleccioneel ciclo al que pertenece el oferta" />
                     </h:panelGroup>
                     
+                    <!--
                     <p:outputLabel for="grupo" value="Grupo: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="grupo" value="#{ofertaBean.idGrupo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
@@ -81,6 +84,7 @@
                         </p:selectOneMenu>
                         <p:tooltip id="forGrupo" for="grupo" value="Seleccione el grupo al que pertenece la oferta" />
                     </h:panelGroup>
+                    -->
                     
                     <p:outputLabel for="acuerdo" value="Acuerdo: " />
                     <h:panelGroup layout="block1">

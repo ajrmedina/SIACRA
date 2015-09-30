@@ -8,10 +8,12 @@ package com.siacra.beans;
 import com.siacra.models.Asignatura;
 import com.siacra.models.Grupo;
 import com.siacra.models.Horario;
+import com.siacra.models.Oferta;
 import com.siacra.models.TipoGrupo;
 import com.siacra.services.AsignaturaService;
 import com.siacra.services.GrupoService;
 import com.siacra.services.HorarioService;
+import com.siacra.services.OfertaService;
 import com.siacra.services.TipoGrupoService;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,15 +45,20 @@ public class GrupoBean implements Serializable{
     @ManagedProperty(value="#{AsignaturaService}")
     private AsignaturaService asignaturaService;
     
+    @ManagedProperty(value="#{OfertaService}")
+    private OfertaService ofertaService;
+    
     private List<Grupo> gruposList;
     private List<TipoGrupo> tipoGrupoList;
     private List<Horario> horarioList;
     private List<Asignatura> asignaturaList;
+    private List<Oferta> ofertaList;
     
     private Integer idGrupo;
     private Integer idTipoGrupo;
     private Integer idHorario;
     private Integer idAsignatura;
+    private Integer idoferta;
     private Integer cupo;
     private Integer inscritos;
     private Integer numeroGrupo;
@@ -182,6 +189,32 @@ public class GrupoBean implements Serializable{
 
     public void setIdGrupoFusion(Integer idGrupoFusion) {
         this.idGrupoFusion = idGrupoFusion;
+    }
+
+    public OfertaService getOfertaService() {
+        return ofertaService;
+    }
+
+    public void setOfertaService(OfertaService ofertaService) {
+        this.ofertaService = ofertaService;
+    }
+
+    public List<Oferta> getOfertaList() {
+        ofertaList = new ArrayList<>();
+        ofertaList.addAll(ofertaService.getOfertas());
+        return ofertaList;
+    }
+
+    public void setOfertaList(List<Oferta> ofertaList) {
+        this.ofertaList = ofertaList;
+    }
+
+    public Integer getIdoferta() {
+        return idoferta;
+    }
+
+    public void setIdoferta(Integer idoferta) {
+        this.idoferta = idoferta;
     }
 
     public Integer getIdTipoGrupoFusion() {
@@ -407,6 +440,7 @@ public class GrupoBean implements Serializable{
             grupo.setTipoGrupo(tipoGrupoService.getTipoGrupoById(idTipoGrupo));
             grupo.setHorario(horarioService.getHorarioById(idHorario));
             grupo.setAsignatura(asignaturaService.getAsignaturaById(idAsignatura));
+            grupo.setOferta(ofertaService.getOfertaById(idoferta));
             grupo.setCupo(cupo);
             grupo.setInscritos(inscritos);
             grupo.setNumeroGrupo(numeroGrupo);
@@ -433,6 +467,7 @@ public class GrupoBean implements Serializable{
             grupo.setTipoGrupo(tipoGrupoService.getTipoGrupoById(getIdTipoGrupo()));
             grupo.setAsignatura(asignaturaService.getAsignaturaById(getIdAsignatura()));
             grupo.setHorario(horarioService.getHorarioById(getIdHorario()));
+            grupo.setOferta(ofertaService.getOfertaById(getIdoferta()));
             grupo.setCupo(getCupo());
             grupo.setNumeroGrupo(getNumeroGrupo());
             //grupo.setAprobarGrupo(getAprobarGrupo());
@@ -463,6 +498,7 @@ public class GrupoBean implements Serializable{
         setIdTipoGrupo(grupo.getTipoGrupo().getIdTipoGrupo());
         setIdAsignatura(grupo.getAsignatura().getIdAsignatura());
         setIdHorario(grupo.getHorario().getIdhorario());
+        setIdoferta(grupo.getOferta().getIdOferta());
         setCupo(grupo.getCupo());
         setNumeroGrupo(grupo.getNumeroGrupo());
         setAprobarGrupo(grupo.getAprobarGrupo());
@@ -473,6 +509,7 @@ public class GrupoBean implements Serializable{
         this.setIdGrupo(null);
         this.setIdTipoGrupo(null);
         this.setIdAsignatura(null);
+        this.setIdoferta(null);
         this.setIdHorario(null);
         this.setCupo(null);
         this.setNumeroGrupo(null);

@@ -48,8 +48,12 @@ public class Grupo implements Serializable{
     @JoinColumn(name="idtipogrupo")
     private TipoGrupo tipoGrupo;
     
-    @OneToMany(mappedBy="grupo")
-    private Set<Oferta> oferta;
+    @ManyToOne
+    @JoinColumn(name="idoferta")
+    private Oferta oferta;
+    
+//    @OneToMany(mappedBy="grupo")
+//    private Set<Oferta> oferta;
     
     @OneToMany(mappedBy="grupo")
     private Set<AcademicaGrupo> academicaGrupo;
@@ -72,6 +76,14 @@ public class Grupo implements Serializable{
 
     public int getCupo() {
         return cupo;
+    }
+
+    public Oferta getOferta() {
+        return oferta;
+    }
+
+    public void setOferta(Oferta oferta) {
+        this.oferta = oferta;
     }
 
     public void setCupo(Integer cupo) {
@@ -109,13 +121,13 @@ public class Grupo implements Serializable{
         this.tipoGrupo = tipoGrupo;
     }
     
-    public Set<Oferta> getOferta() {
-        return oferta;
-    }
-
-    public void setOferta(Set<Oferta> oferta) {
-        this.oferta = oferta;
-    } 
+//    public Set<Oferta> getOferta() {
+//        return oferta;
+//    }
+//
+//    public void setOferta(Set<Oferta> oferta) {
+//        this.oferta = oferta;
+//    } 
 
     public boolean getGrEstado() {
         return grEstado;
