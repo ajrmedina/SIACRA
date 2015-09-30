@@ -13,12 +13,14 @@ import com.siacra.services.UserService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 
 import javax.faces.context.FacesContext;
 
@@ -44,8 +46,11 @@ public class MensajeBean implements Serializable{
     private int idusuario;
     private String remitente;
     private String mensaje;
-    private int id_escuela;
     private int enviara;
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+     private int id_escuela= (Integer) sessionMap.get("sessionIdEscuela");
+
     /**
      * Add Mensaje
      */
@@ -64,7 +69,7 @@ public class MensajeBean implements Serializable{
     }
     
     public void reset(){
-    this.mensaje="";
+    setMensaje("");
     
     }
     /**
@@ -188,6 +193,13 @@ public class MensajeBean implements Serializable{
     public List<Docente> getUsuariosByEscuela(){
     
         return getMensajeService().getDocentes();
+    }
+    /**
+     * Get responsables de cada escuela
+     * @return 
+     */
+    public List<Docente> getResponsables(){
+    return getMensajeService().getResponsable(id_escuela);
     }
        /**
      * Add Messages

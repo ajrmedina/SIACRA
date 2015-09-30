@@ -75,14 +75,14 @@
            
         </p:dialog>
        
-        <p:dialog  header="Enviar Mensaje" id="dialogMensajeJD" widgetVar="enviar_directores" modal="true" resizable="false" closable="false">
+        <p:dialog  header="Enviar mensaje a director de escuela" id="dialogMensajeJD" widgetVar="enviar_directores" modal="true" resizable="false" closable="false">
                 <h:form id="enviarMensaje">
                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                      <h:panelGrid columns="2" cellpadding="5" class="center-element">
                          <h:outputText value="Enviar a:"/>
                          
                          <p:selectOneMenu  panelStyleClass="hideDisabled"  requiredMessage="Se requiere un usuario" id="Usuario" value="#{mensajeBean.idusuario}" required="true">
-                             
+                             <f:selectItem itemValue="Seleccione un director de escuela"/>
                              <f:selectItems   value="#{mensajeBean.usuariosByEscuela}" 
                                               var="usuarios" itemValue="#{usuarios.user.idUsuario}"
                                               itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela}"
@@ -107,7 +107,7 @@
                      <h:panelGrid columns="2" cellpadding="5" class="center-element">
                          <h:outputText value="Enviar a:"/>
                          <p:selectOneMenu panelStyleClass="hideDisabled"  requiredMessage="Se requiere un usuario" id="Usuario" value="#{mensajeBean.idusuario}" required="true">
-                            
+                             <f:selectItem itemLabel="Seleccionar miembro de Junta Directiva"/>
                              <f:selectItems   value="#{mensajeBean.usuariosByEscuela}" 
                                               var="usuarios" itemValue="#{usuarios.user.idUsuario}"
                                               itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela}"
@@ -132,11 +132,11 @@
                      <h:panelGrid columns="2" cellpadding="5" class="center-element">
                          <h:outputText value="Enviar a:"/>
                          <p:selectOneMenu panelStyleClass="hideDisabled"  requiredMessage="Se requiere un usuario" id="Usuario" value="#{mensajeBean.idusuario}" required="true">
-                            
-                             <f:selectItems   value="#{mensajeBean.usuariosByEscuela}" 
+                             <f:selectItem itemLabel="Seleccione el responsable"/>
+                             <f:selectItems   value="#{mensajeBean.responsables}" 
                                               var="usuarios" itemValue="#{usuarios.user.idUsuario}"
-                                              itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela}"
-                                              itemDisabled="#{(usuarios.user.nivel.id !=2 and usuarios.escuela.idescuela!=identityBean.principal.escuela.idescuela or usuarios.user.idUsuario==identityBean.principal.user.idUsuario)  }"
+                                              itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela} "
+                                              itemDisabled="#{usuarios.user.nivel.id !=2 }"
                                              
                                               />
                          </p:selectOneMenu>
@@ -157,11 +157,11 @@
                      <h:panelGrid columns="2" cellpadding="5" class="center-element">
                          <h:outputText value="Enviar a:"/>
                          <p:selectOneMenu panelStyleClass="hideDisabled"  requiredMessage="Se requiere un usuario" id="Usuario" value="#{mensajeBean.idusuario}" required="true">
-                            
-                             <f:selectItems   value="#{mensajeBean.usuariosByEscuela}" 
+                             <f:selectItem itemLabel="Seleccione el director"/>
+                             <f:selectItems   value="#{mensajeBean.responsables}" 
                                               var="usuarios" itemValue="#{usuarios.user.idUsuario}"
                                               itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela}"
-                                              itemDisabled="#{(usuarios.user.nivel.id !=3 or usuarios.escuela.idescuela!=identityBean.principal.escuela.idescuela )  }"
+                                              itemDisabled="#{(usuarios.user.nivel.id !=3 )  }"
                                              
                                               />
                          </p:selectOneMenu>

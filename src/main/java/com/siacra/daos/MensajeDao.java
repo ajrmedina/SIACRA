@@ -81,6 +81,12 @@ public class MensajeDao {
     
     return list;
     }
+    
+    public List<Docente> getDocentesEscuela(int escuela){
+    List list = getSessionFactory().getCurrentSession().createQuery("from Docente where aprobarDocente=true and escuela ="+escuela).list();
+    
+    return list;
+    }
     public List<Mensaje> getMensajesByIdUsuario(Integer idUsuario) {
         List list = getSessionFactory().getCurrentSession().createQuery("from Mensaje where idusuario=?")
                                                            .setParameter(0, idUsuario).list();
