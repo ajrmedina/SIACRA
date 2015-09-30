@@ -20,8 +20,13 @@
             <p:growl id="messages"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+                
                 <f:facet name="header">    
-                    Escuelas de la Facultad de Ingenieria y Arquitectura
+                    Escuelas de la Facultad de Ingenieria y Arquitectura 
+                    <p:spacer width="750" height="20" />
+                        <p:commandButton style="float: right" id="insert_button" update=":realizarObservaciones" oncomplete="PF('realizar_observaciones').show()"  value="Enviar observacion" icon="fa fa-inbox" actionListener="#{mensajeBean.setId_escuela(escuela.idescuela)}">
+                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} -#{identityBean.principal.user.nivel.acceso}"/>
+                        </p:commandButton>
                 </f:facet>                                 
                 
                 <p:column style="width:20%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
@@ -38,7 +43,7 @@
                     </f:facet>   
                                      
                     <p:commandButton id="aprobar" value="Aprobar" actionListener="#{responsabilidadBean.setIdEscuela(escuela.idescuela)}" oncomplete="PF('aprobar_responsabilidad').show()" icon="fa fa-thumbs-o-up" />
-                
+                    
                 </p:column>               
             </p:dataTable>
             
@@ -53,9 +58,31 @@
                     </h:panelGrid>
                 </h:form>
             </p:dialog>
-            
+                                  
         </h:form>
-        
+         <p:dialog  header="Enviar observaciones" id="realizarObservaciones" widgetVar="realizar_observaciones" modal="true" resizable="false" closable="false">
+                <h:form id="formObservacion">
+                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                     <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                         <h:outputText value="Enviar a:"/>
+                         <p:selectOneMenu panelStyleClass="hideDisabled"  requiredMessage="Se requiere un usuario" id="Usuario" value="#{mensajeBean.idusuario}" required="true">
+                            
+                             <f:selectItems   value="#{mensajeBean.usuariosByEscuela}" 
+                                              var="usuarios" itemValue="#{usuarios.user.idUsuario}"
+                                              itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela}"
+                                              itemDisabled="#{usuarios.user.nivel.id !=3 }" 
+                                              />
+                         </p:selectOneMenu>
+                         <h:outputText value="Observaciones"/>
+                         <p:inputTextarea id="mesanje" required="true" value="#{mensajeBean.mensaje}" cols="100" maxlength="500" counter="count" requiredMessage="Se requiere un mensaje"/>
+                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('realizar_observaciones').hide()"  update=":aprobar:messages">
+                             
+                         </p:commandButton>
+                         <p:commandButton value="Cancelar" icon="fa fa-times" oncomplete="PF('realizar_observaciones').hide()" actionListener="#{mensajeBean.reset()}"/>
+                     </h:panelGrid>
+                     <h:outputLabel id="count" /><h:outputLabel value=" Letras restantes"/>
+                </h:form>
+            </p:dialog>
     </ui:define>
     
 </ui:composition>

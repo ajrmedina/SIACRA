@@ -86,9 +86,14 @@
                             <p:menuitem value="Permanencia" url="/resources/views/admin/ListarPermanencia.xhtml" icon="fa fa-calendar" />
                         </p:submenu>
                        <p:submenu label="Reportes" icon="fa fa-file-pdf-o">
-                            <p:menuitem value="Servicios Profesionales" url="/resources/views/admin/ListarReportes.xhtml" icon="fa fa-file-o"/>    
+                            <p:menuitem value="Generar reporte/s" url="/resources/views/admin/ListarReportes.xhtml" icon="fa fa-file-o"/>    
                        
                         </p:submenu>
+                        <sec:authorize ifAnyGranted="ROLE_DIRECTOR,ROLE_RESPONSABLE,ROLE_MIEMBRO_JD,ROLE_ADMINISTRADOR"> 
+                        <p:menuitem value="#{mensajeBean.getNumeroMensajes(identityBean.principal.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/admin/ListarMensajes.xhtml" icon="fa fa-inbox" >
+                            
+                        </p:menuitem>
+                        </sec:authorize>    
                         <p:menuitem value="Reportes Docentes" url="/resources/views/admin/ReportesDocente.xhtml" icon="fa fa-file-o"/>
                         
                         <ui:insert name="add-menu-items"> </ui:insert>
