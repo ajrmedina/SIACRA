@@ -50,3 +50,7 @@ ul.ui-menu-child {
     display:none;
     visibility:hidden;
 }
+
+.ui-selectonemenu-panel.hideDisabled .ui-selectonemenu-item.ui-state-disabled{
+    display: none;
+}
