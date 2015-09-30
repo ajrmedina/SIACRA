@@ -57,6 +57,7 @@ public class DocenteBean implements Serializable {
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
     private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+    private final String cod_escuela = (String) sessionMap.get("sessionCodEscuela");
     
     private int idDocente;
     private boolean aprobarDocente;
@@ -77,7 +78,7 @@ public class DocenteBean implements Serializable {
             User user = getUserService().getUserById(getIdUser());
             if(getDocenteService().existDocente(user.getIdUsuario())) {
                 Docente docente = new Docente();
-                Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
+                Escuela escuela = getEscuelaService().getEscuelaByCodigo(user.getEscuela());
                 Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
                 if ( user.getEstadoUsuario()) {
                     if ( user.getEsDocente()){
@@ -210,7 +211,7 @@ public class DocenteBean implements Serializable {
      */
     public List<User> getUserList() {
         usersList = new ArrayList<>();
-        usersList.addAll(getUserService().getUsers());
+        usersList.addAll(getUserService().getUsersByEscuela(cod_escuela));
         return usersList;
     }
     

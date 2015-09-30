@@ -47,6 +47,7 @@ public class IdentityBean {
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("sessionIdEscuela", principal.getEscuela().getIdescuela());
+                sessionMap.put("sessionCodEscuela", principal.getUser().getEscuela());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

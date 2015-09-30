@@ -71,7 +71,10 @@ public class EscuelaService {
         return getEscuelaDao().getEscuelaById(id);
     }
                                                              
-
+    public Escuela getEscuelaByCodigo(String codigo){
+        return getEscuelaDao().getEscuelaByCodigo(codigo);
+    }
+    
     /**
      * Get Escuela List
      *

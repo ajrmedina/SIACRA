@@ -109,14 +109,6 @@
                         <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoria del docente" />
                     </h:panelGroup>
                     
-                    <p:outputLabel for="escuela" value="Escuela del Docente: " />
-                    <h:panelGroup layout="block">
-                        <p:selectOneMenu id="escuela" value="#{docenteBean.idEscuela}" effect="fade" required="true">
-                            <f:selectItem   itemValue="#{identityBean.principal.escuela.idescuela}" itemLabel="#{identityBean.principal.escuela.nombreescuela}"/>
-                        </p:selectOneMenu>
-                       
-                    </h:panelGroup>
-                    
                     <p:commandButton id="save_insert" value="Agregar" actionListener="#{docenteBean.addDocente()}" update=":list:docentes" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-plus" rendered="#{docenteBean.insert == true}" />
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{docenteBean.updateDocente()}" update=":list:docentes" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-refresh" rendered="#{docenteBean.insert == false}"/>
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_docente').hide()" icon="fa fa-ban">

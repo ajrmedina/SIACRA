@@ -42,6 +42,9 @@ public class User implements Serializable{
         @Column(name = "apellidos", nullable = false, length = 50)
         private String apellidos;
         
+        @Column(name = "escuela", nullable = false, length = 50)
+        private String escuela;
+        
         @Column(name = "estadousuario", nullable = false)
 	private boolean estadoUsuario;
         
@@ -97,6 +100,14 @@ public class User implements Serializable{
  
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
+	}
+        
+        public String getEscuela() {
+		return this.escuela;
+	}
+ 
+	public void setEscuela(String escuela) {
+		this.escuela = escuela;
 	}
         
 	public boolean getEstadoUsuario() {

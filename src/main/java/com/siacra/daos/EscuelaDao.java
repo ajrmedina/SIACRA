@@ -65,7 +65,12 @@ public class EscuelaDao {
                 .createQuery("from Escuela where idescuela=?").setParameter(0, id).list();
         return (Escuela)list.get(0);
     }
-        
+    
+    public Escuela getEscuelaByCodigo(String codigo){         
+        List list = getSessionFactory().getCurrentSession()
+                .createQuery("from Escuela where codigoescuela=?").setParameter(0, codigo).list();
+        return (Escuela)list.get(0);
+    }
 
     /**
      * Get Escuela List

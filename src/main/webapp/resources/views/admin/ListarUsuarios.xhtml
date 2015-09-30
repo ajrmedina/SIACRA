@@ -80,14 +80,22 @@
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">              
-                        
+                    
+                    <p:outputLabel for="escuela" value="Escuela del Docente: " rendered="#{userBean.insert == true}"/>
+                    <h:panelGroup layout="block" rendered="#{userBean.insert == true}">
+                        <p:selectOneMenu id="escuela" value="#{userBean.escuela}" effect="fade" required="true">
+                            <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela"  itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                            <f:selectItem itemValue="0" itemLabel="Ninguna"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                    
                     <p:outputLabel for="nombres" value="Nombres del usuario: " />
                     <p:inputText id="nombres" value="#{userBean.nombres}" required="true" validatorMessage="Solo letras y espacios son permitidos para este campo, con una longitud maxima de 50 caracteres" >
                         <f:validateLength maximum="50" />
                         <f:validateRegex pattern="^[a-zA-Z ]+$" />
                         <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>
-
+                    
                     <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
                     <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" validatorMessage="Solo letras y espacios son permitidos para este campo, con una longitud maxima de 50 caracteres" >
                         <f:validateLength maximum="50" />
@@ -95,17 +103,11 @@
                         <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>
                     
-                     <p:outputLabel for="username" value="Nombre de Acceso: " />
+                    <p:outputLabel for="username" value="Nombre de Acceso: " />
                     <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo, con una longitud minima de 8 y maxima de 30 caracteres">
                         
                     </p:inputText>
                     
-                     <p:outputLabel for="contrasenia" value="Clave de acceso: " rendered="#{userBean.insert == false}" />
-                    <p:inputText id="contrasenia" value="#{userBean.contrasenia}" required="true" 
-                                 validatorMessage="Solo letras y numeros son permitidos para este campo, con una longitud minima de 8 y maxima de 30 caracteres"
-                                 rendered="#{userBean.insert == false}">                        
-                    </p:inputText>
-
                     <p:outputLabel id="estado" value="Habilitar usuario? " rendered="#{userBean.insert == true}" />
                     <p:selectBooleanCheckbox value="#{userBean.estadoUsuario}" rendered="#{userBean.insert == true}" />
 
