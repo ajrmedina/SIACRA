@@ -91,4 +91,8 @@ public class MensajeService {
     
     return getMensajeDao().getDocentes();
     }
+    
+    public List<Docente> getResponsable(int escuela){
+    return getMensajeDao().getDocentesEscuela(escuela);
+    }
 }

@@ -89,7 +89,7 @@
                             <p:menuitem value="Generar reporte/s" url="/resources/views/admin/ListarReportes.xhtml" icon="fa fa-file-o"/>    
                        
                         </p:submenu>
-                        <sec:authorize ifAnyGranted="ROLE_DIRECTOR,ROLE_RESPONSABLE,ROLE_MIEMBRO_JD,ROLE_ADMINISTRADOR"> 
+                        <sec:authorize ifAnyGranted="ROLE_DIRECTOR,ROLE_RESPONSABLE,ROLE_MIEMBRO_JD"> 
                         <p:menuitem value="#{mensajeBean.getNumeroMensajes(identityBean.principal.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/admin/ListarMensajes.xhtml" icon="fa fa-inbox" >
                             
                         </p:menuitem>
