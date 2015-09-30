@@ -465,17 +465,23 @@ public class UserBean implements Serializable {
     
     
     
-     public void handleKeyEvent() {
-        //text = text.toUpperCase();
+      public void handleKeyEvent() {              
+        
+        int cad1 = nombres.indexOf(" ");
+        int cad2 = apellidos.indexOf(" ");
+        
+            nombreUsuario = (nombres.toLowerCase()).substring(0, cad1).replaceAll("á", "a").replaceAll("é","e").replaceAll("í","i").replaceAll("ó","o").replaceAll("ú","u");         
+            nombreUsuario = nombreUsuario + (apellidos.toLowerCase()).substring(0, cad2).replaceAll("á", "a").replaceAll("é","e").replaceAll("í","i").replaceAll("ó","o").replaceAll("ú","u");
+            nombreUsuario = nombreUsuario + numeroAleatorio();
+               
+    }  
+     
+     public int numeroAleatorio(){
         Random r = new Random();
         int valorDado = r.nextInt(10);
         
-        int cad1 = nombres.indexOf(" ");
-         int cad2 = apellidos.indexOf(" ");
-         nombreUsuario = (nombres.toLowerCase()).substring(0, cad1);  
-         nombreUsuario = nombreUsuario + (apellidos.toLowerCase()).substring(0, cad2) + valorDado; 
-        // nombreUsuario = nombreUsuario + valorDado;          
-    }  
+        return valorDado;
+     }
     
      public String actualizarPassword() { //throws IOException{
          try {

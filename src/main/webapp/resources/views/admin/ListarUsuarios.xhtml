@@ -90,22 +90,30 @@
                     </h:panelGroup>
                     
                     <p:outputLabel for="nombres" value="Nombres del usuario: " />
-                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" validatorMessage="Solo letras y espacios son permitidos para este campo, con una longitud maxima de 50 caracteres" >
-                        <f:validateLength maximum="50" />
-                        <f:validateRegex pattern="^[a-zA-Z ]+$" />
+                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" validatorMessage="Solo letras y espacios son permitidos para el campo 'Nombres de usuario', con una longitud maxima de 50 caracteres" >
+                        <f:validateLength maximum="50" />                        
+                        <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />                        
                         <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
-                    </p:inputText>
+                    </p:inputText>                    
                     
                     <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
-                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" validatorMessage="Solo letras y espacios son permitidos para este campo, con una longitud maxima de 50 caracteres" >
+                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" validatorMessage="Solo letras y espacios son permitidos para el campo 'Apellidos de usuario', con una longitud maxima de 50 caracteres" >
                         <f:validateLength maximum="50" />
-                        <f:validateRegex pattern="^[a-zA-Z ]+$" />
+                        <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />
                         <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>
                     
-                    <p:outputLabel for="username" value="Nombre de Acceso: " />
-                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo, con una longitud minima de 8 y maxima de 30 caracteres">
-                        
+                    <p:outputLabel for="username" value="Nombre de Acceso: " />                     
+                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Nombre de Acceso', con una longitud minima de 8 y maxima de 30 caracteres">
+                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_ ]+$" />
+                        <f:validateLength maximum="30" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="contrasenia" value="Clave de acceso: " rendered="#{userBean.insert == false}" />
+                    <p:inputText id="contrasenia" value="#{userBean.contrasenia}" required="true" 
+                                 validatorMessage="La clave de acceso debe tener una longitud mínima de 8 y máxima de 30 caracteres"
+                                 rendered="#{userBean.insert == false}">                                               
+                        <f:validateLength maximum="30" />
                     </p:inputText>
                     
                     <p:outputLabel id="estado" value="Habilitar usuario? " rendered="#{userBean.insert == true}" />
