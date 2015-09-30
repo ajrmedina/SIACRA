@@ -74,7 +74,10 @@ public class UserBean implements Serializable {
             user.setContrasenia(nombreUsuario);
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
-            user.setEscuela(getEscuela());
+            if(getEscuela().equals(String.valueOf(0)))
+                user.setEscuela(null);
+            else
+                user.setEscuela(getEscuela());
             user.setEstadoUsuario(getEstadoUsuario());
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));

@@ -85,6 +85,7 @@
                     <h:panelGroup layout="block" rendered="#{userBean.insert == true}">
                         <p:selectOneMenu id="escuela" value="#{userBean.escuela}" effect="fade" required="true">
                             <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela"  itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                            <f:selectItem itemValue="0" itemLabel="Ninguna"/>
                         </p:selectOneMenu>
                     </h:panelGroup>
                     
