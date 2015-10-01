@@ -60,14 +60,10 @@ public class OfertaService {
         return getOfertaDao().getOfertasByCiclo(id);
     }
     
-    
-    public boolean getExistOferta(Integer idCiclo,Integer idAcuerdo){
-        return getOfertaDao().getExistOferta( idCiclo, idAcuerdo);
+    //verificamos si el grupo ya esta registrado
+    public boolean getExistOferta(Integer idCiclo,Integer idGrupo,Integer idAcuerdo){
+        return getOfertaDao().getExistOferta( idCiclo, idGrupo, idAcuerdo);
     }
-    
-//    public boolean getExistOferta(Integer idCiclo,Integer idGrupo,Integer idAcuerdo){
-//        return getOfertaDao().getExistOferta( idCiclo, idGrupo, idAcuerdo);
-//    }
     
     //Seleccionamos todos los tipos de grupos existentes
     public List<Oferta> getOfertas() {

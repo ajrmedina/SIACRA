@@ -53,10 +53,10 @@ public class OfertaDao {
         return list;
     }
     
-    public boolean getExistOferta(Integer idCiclo,Integer idAcuerdo) {
+    public boolean getExistOferta(Integer idCiclo,Integer idGrupo,Integer idAcuerdo) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from Oferta where idCiclo=? and idAcuerdo=? ")
-                                            .setParameter(0, idCiclo).setParameter(1, idAcuerdo).list();
+                                            .createQuery("from Oferta where idCiclo=? and idGrupo=? and idAcuerdo=? ")
+                                            .setParameter(0, idCiclo).setParameter(1, idGrupo).setParameter(2, idAcuerdo).list();
         
         if(list.isEmpty()){
             return false;
@@ -64,18 +64,6 @@ public class OfertaDao {
             return true;
         }
     }
-    
-//    public boolean getExistOferta(Integer idCiclo,Integer idGrupo,Integer idAcuerdo) {
-//        List list = getSessionFactory().getCurrentSession()
-//                                            .createQuery("from Oferta where idCiclo=? and idGrupo=? and idAcuerdo=? ")
-//                                            .setParameter(0, idCiclo).setParameter(1, idGrupo).setParameter(2, idAcuerdo).list();
-//        
-//        if(list.isEmpty()){
-//            return false;
-//        }else{
-//            return true;
-//        }
-//    }
     
     public List<Oferta> getOfertas() {
         List list = getSessionFactory().getCurrentSession().createQuery("from Oferta").list();

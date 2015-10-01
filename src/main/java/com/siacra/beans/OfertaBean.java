@@ -37,8 +37,8 @@ public class OfertaBean implements Serializable{
     @ManagedProperty(value="#{CicloService}")
     private CicloService cicloService;
     
-//    @ManagedProperty(value="#{GrupoService}")
-//    private GrupoService grupoService;
+    @ManagedProperty(value="#{GrupoService}")
+    private GrupoService grupoService;
     
     @ManagedProperty(value="#{AcuerdoService}")
     private AcuerdoService acuerdoService;
@@ -46,11 +46,11 @@ public class OfertaBean implements Serializable{
     Integer idOferta;
     boolean aprobarOferta;
     Integer idCiclo;
-//    Integer idGrupo;
+    Integer idGrupo;
     Integer idAcuerdo;
     private List<Oferta> ofertaList;
     private List<Ciclo> cicloList;
-//    private List<Grupo> grupoList;
+    private List<Grupo> grupoList;
     private List<Acuerdo> acuerdoList;
     boolean insert;
 
@@ -70,13 +70,13 @@ public class OfertaBean implements Serializable{
         this.cicloService = cicloService;
     }
 
-//    public GrupoService getGrupoService() {
-//        return grupoService;
-//    }
-//
-//    public void setGrupoService(GrupoService grupoService) {
-//        this.grupoService = grupoService;
-//    }
+    public GrupoService getGrupoService() {
+        return grupoService;
+    }
+
+    public void setGrupoService(GrupoService grupoService) {
+        this.grupoService = grupoService;
+    }
 
     public AcuerdoService getAcuerdoService() {
         return acuerdoService;
@@ -110,13 +110,13 @@ public class OfertaBean implements Serializable{
         this.idCiclo = idCiclo;
     }
 
-//    public Integer getIdGrupo() {
-//        return idGrupo;
-//    }
-//
-//    public void setIdGrupo(Integer idGrupo) {
-//        this.idGrupo = idGrupo;
-//    }
+    public Integer getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(Integer idGrupo) {
+        this.idGrupo = idGrupo;
+    }
 
     public Integer getIdAcuerdo() {
         return idAcuerdo;
@@ -154,15 +154,15 @@ public class OfertaBean implements Serializable{
         this.cicloList = cicloList;
     }
 
-//    public List<Grupo> getGrupoList() {
-//        grupoList = new ArrayList<>();
-//        grupoList.addAll(getGrupoService().getGrupos());
-//        return grupoList;
-//    }
-//
-//    public void setGrupoList(List<Grupo> grupoList) {
-//        this.grupoList = grupoList;
-//    }
+    public List<Grupo> getGrupoList() {
+        grupoList = new ArrayList<>();
+        grupoList.addAll(getGrupoService().getGrupos());
+        return grupoList;
+    }
+
+    public void setGrupoList(List<Grupo> grupoList) {
+        this.grupoList = grupoList;
+    }
 
     public List<Acuerdo> getAcuerdoList() {
         acuerdoList = new ArrayList<>();
@@ -182,7 +182,7 @@ public class OfertaBean implements Serializable{
     public void reset(){
         this.setIdAcuerdo(null);
         this.setIdCiclo(null);
-//        this.setIdGrupo(null);
+        this.setIdGrupo(null);
         this.setIdOferta(null);
         this.setAprobarOferta(false);
     }
@@ -191,21 +191,21 @@ public class OfertaBean implements Serializable{
         
         try{
             Ciclo c = cicloService.getCicloById(idCiclo);
-//            Grupo g = grupoService.getGrupoById(idGrupo);
+            Grupo g = grupoService.getGrupoById(idGrupo);
             Acuerdo a = acuerdoService.getAcuerdoById(idAcuerdo);
             
             Oferta oferta = new Oferta();
             oferta.setCiclo(c);
-//            oferta.setGrupo(g);
+            oferta.setGrupo(g);
             oferta.setAcuerdo(a);
             oferta.setAprobarOferta(false);
 
-            if(getOfertaService().getExistOferta(getIdCiclo(), getIdAcuerdo()) ){
-                addMessage("La oferta para el ciclo :" + c.getCiclo() +" Acuerdo :" + a.getCodigoacuerdo() +" ya existe");
+            if(getOfertaService().getExistOferta(getIdCiclo(), getIdGrupo(), getIdAcuerdo()) ){
+                addMessage("La oferta para el ciclo :" + c.getCiclo() + " asignatura : " + g.getAsignatura().getCodigoAsignatura() + " Acuerdo :" + a.getCodigoacuerdo() +" ya existe");
             }
             else{
                 getOfertaService().addOferta(oferta);
-                addMessage("La oferta para el ciclo :" + c.getCiclo() + " Acuerdo :" + a.getCodigoacuerdo() +" fue creada exitosamente");
+                addMessage("La oferta para el ciclo :" + c.getCiclo() + " asignatura : " + g.getAsignatura().getCodigoAsignatura() + " Acuerdo :" + a.getCodigoacuerdo() +" fue creada exitosamente");
 //                setInsert(insert);
             }
         }catch (DataAccessException e){
@@ -219,7 +219,7 @@ public class OfertaBean implements Serializable{
             Oferta oferta = getOfertaService().getOfertaById(getIdOferta());
             oferta.setAcuerdo(acuerdoService.getAcuerdoById(getIdAcuerdo()));
             oferta.setCiclo(cicloService.getCicloById(getIdCiclo()));
-//            oferta.setGrupo(grupoService.getGrupoById(getIdGrupo()));
+            oferta.setGrupo(grupoService.getGrupoById(getIdGrupo()));
             
             getOfertaService().updateOferta(oferta);
             addMessage("La oferta fue actualizada exitosamente");
@@ -248,7 +248,7 @@ public class OfertaBean implements Serializable{
             setIdOferta(oferta.getIdOferta());
             setIdAcuerdo(oferta.getAcuerdo().getIdacuerdo());
             setIdCiclo(oferta.getCiclo().getIdCiclo());
-//            setIdGrupo(oferta.getGrupo().getIdGrupo());
+            setIdGrupo(oferta.getGrupo().getIdGrupo());
             setAprobarOferta(false);
                                   
         } catch (DataAccessException e) {

@@ -6,14 +6,12 @@
 package com.siacra.models;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -33,14 +31,9 @@ public class Oferta implements Serializable{
     @JoinColumn(name="idacuerdo")
     private Acuerdo acuerdo;
     
-    
-    @OneToMany(mappedBy="oferta")
-    private Set<Grupo> grupo;
-    
-    
-//    @ManyToOne
-//    @JoinColumn(name="idgrupo")
-//    private Grupo grupo;
+    @ManyToOne
+    @JoinColumn(name="idgrupo")
+    private Grupo grupo;
     
     @ManyToOne
     @JoinColumn(name="idciclo")
@@ -51,14 +44,6 @@ public class Oferta implements Serializable{
 
     public Integer getIdOferta() {
         return idOferta;
-    }
-
-    public Set<Grupo> getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Set<Grupo> grupo) {
-        this.grupo = grupo;
     }
 
     public void setIdOferta(Integer idOferta) {
@@ -74,13 +59,13 @@ public class Oferta implements Serializable{
     }
 
 
-//    public Grupo getGrupo() {
-//        return grupo;
-//    }
-//
-//    public void setGrupo(Grupo grupo) {
-//        this.grupo = grupo;
-//    }
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
 
     public Ciclo getCiclo() {
         return ciclo;
