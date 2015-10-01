@@ -30,10 +30,10 @@
                     <div style="clear:both" />
                 </f:facet>
                 
-                <p:column style="width: 14%" headerText="Asignatura" filterBy="#{grupo.asignatura.nombreAsignatura}" filterStyleClass="hide">                         
+                <p:column style="width: 11%" headerText="Asignatura" filterBy="#{grupo.asignatura.nombreAsignatura}" filterStyleClass="hide">                         
                     <h:outputText value="#{grupo.asignatura.nombreAsignatura}" class="center-element"/>
                 </p:column>
-                <p:column style="width: 13%" headerText="Tipo de grupo" filterBy="#{grupo.tipoGrupo.nombreGrupo}" filterStyleClass="hide">                         
+                <p:column style="width: 10%" headerText="Tipo de grupo" filterBy="#{grupo.tipoGrupo.nombreGrupo}" filterStyleClass="hide">                         
                     <h:outputText value="#{grupo.tipoGrupo.nombreGrupo}" class="center-element"/>
                 </p:column>
                 
@@ -41,28 +41,39 @@
                     <h:outputText value="#{grupo.numeroGrupo}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 30%" headerText="Horario" filterBy="#{grupo.horario.dia1}" filterStyleClass="hide">                         
+                <p:column style="width: 5%" headerText="Oferta" filterBy="#{grupo.oferta}" filterStyleClass="hide">                  
+                    <h:outputText value="#{grupo.oferta.ciclo}-#{grupo.oferta.acuerdo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 28%" headerText="Horario" filterBy="#{grupo.horario.dia1}" filterStyleClass="hide">                         
                     <h:outputText value="#{grupo.horario.dia1}-#{grupo.horario.hinicio1},#{grupo.horario.hfin1} / #{grupo.horario.dia2}-#{grupo.horario.hinicio2},#{grupo.horario.hfin2}" class="center-element"/>
                 </p:column>              
                 
                 <p:column style="width: 5%" headerText="Cupos" filterBy="#{grupo.cupo}" filterStyleClass="hide">                  
                     <h:outputText value="#{grupo.cupo}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 5%" headerText="Inscritos" filterBy="#{grupo.inscritos}" filterStyleClass="hide">                  
+                    <h:outputText value="#{grupo.inscritos}" class="center-element"/>
                 </p:column>  
                 
                 <p:column style="width: 8%" headerText="Estado" filterBy="#{grupo.grEstado}" filterStyleClass="hide">
                     <h:outputText value="#{grupo.grEstado?'Habilitado':'Deshabilitado'}"/>
                 </p:column>
                 
-                <p:column style="width: 9%" headerText="Acciones">
+                <p:column style="width: 12%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('update_grupo').show()" icon="fa fa-edit" >
                         <f:setPropertyActionListener target="#{grupoBean.insert}" value="false" />
                     </p:commandButton>
-                    <p:commandButton id="delete_button" update=":dialogDeleteGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('delete_grupo').show()" icon="fa fa-times" />
+                    <!--
+                    <p:commandButton id="delete_button" update=":dialogDeleteGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('delete_grupo').show()" icon="fa fa-times" /> 
+                    -->
                     <p:commandButton id="locked" update=":dialogLockGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('lock_grupo').show()" icon="fa fa-unlock-alt" rendered="#{grupo.grEstado == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('unlock_grupo').show()" icon="fa fa-unlock" rendered="#{grupo.grEstado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Grupo" rendered="#{grupo.grEstado == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Grupo" rendered="#{grupo.grEstado == false}" />
+                    <p:commandButton id="delete_button" update=":dialogMergeGrupo" actionListener="#{grupoBean.loadGrupoMerge(grupo)}" oncomplete="PF('merge_grupo').show()" icon="fa fa-times" />
                     
                 </p:column>
             </p:dataTable>
@@ -72,7 +83,15 @@
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                                      
+                           
+                    <p:outputLabel for="oferta" value="Oferta: " />
+                    <h:panelGroup layout="block1">
+                        <p:selectOneMenu id="oferta" value="#{grupoBean.idoferta}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItems value="#{grupoBean.ofertaList}" var="oferta" itemValue="#{oferta.idOferta}" itemLabel="ciclo : #{oferta.ciclo}- Acuerdo:#{oferta.acuerdo}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forOferta" for="oferta" value="Seleccione la oferta a la que pertenece el grupo" />
+                    </h:panelGroup>
+                    
                     <p:outputLabel for="asignatura" value="Asignatura: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="asignatura" value="#{grupoBean.idAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
@@ -106,6 +125,11 @@
                     <p:inputText id="cupo" value="#{grupoBean.cupo}" required="true">
                         <!-- <f:validateLength minimum="5" maximum="6" /> -->
                     </p:inputText>
+                    
+                    <p:outputLabel for="inscritos" value="Alumnos inscritos : " />
+                    <p:inputText id="inscritos" value="#{grupoBean.inscritos}" required="true">
+                        <!-- <f:validateLength minimum="5" maximum="6" /> -->
+                    </p:inputText>
                 
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:grupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" rendered="#{grupoBean.insert == false}" />
@@ -125,6 +149,20 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{grupoBean.deleteGrupo()}" update=":list:grupo" oncomplete="PF('delete_grupo').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_grupo').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        
+        <p:dialog header="Unir grupos" id="dialogMergeGrupo" widgetVar="merge_grupo" modal="true" resizable="false" closable="false">
+            <h:form id="merge">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Grupo seleccionado para unirse  #{grupoBean.numeroGrupo}?" rendered="#{grupoBean.merge1 == false}"/>
+                <h:outputText value="Grupo seleccionado para unirse  #{grupoBean.numeroGrupoFusion}?" rendered="#{grupoBean.merge1 == true}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="continuar" value="Continuar" update=":list:grupo" oncomplete="PF('merge_grupo').hide()" icon="fa fa-trash-o" rendered="#{grupoBean.merge2 == false}"/>
+                    <p:commandButton id="save_merge" value="Unir grupos" actionListener="#{grupoBean.mergeGrupos()}" update=":list:grupo" oncomplete="PF('merge_grupo').hide()" icon="fa fa-trash-o" rendered="#{grupoBean.merge2 == true}"/>
+                    <p:commandButton id="cancel" value="Cancelar" actionListener="#{grupoBean.cancelGrupoMerge()}" oncomplete="PF('merge_grupo').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>
