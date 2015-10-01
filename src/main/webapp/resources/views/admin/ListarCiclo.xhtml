@@ -11,7 +11,7 @@
     
        
     <ui:define name="title-view">
-        Ciclos Académicos de la Facultad de Ingenieria y Arquitectura
+        Ciclos Académicos de la Facultad de Ingeniería y Arquitectura
     </ui:define>
                     
     <ui:define name="content">
@@ -50,8 +50,8 @@
                     
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('update_ciclo').show()" icon="fa fa-edit" />                                    
-                    <p:commandButton id="locked" update=":dialogLockCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('lock_ciclo').show()" icon="fa fa-unlock-alt" rendered="#{ciclo.ciEstado == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('unlock_ciclo').show()" icon="fa fa-unlock" rendered="#{ciclo.ciEstado == false}" />
+                    <p:commandButton id="locked" update=":dialogLockCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('lock_ciclo').show()" icon="fa fa-unlock" rendered="#{ciclo.ciEstado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('unlock_ciclo').show()" icon="fa fa-unlock-alt" rendered="#{ciclo.ciEstado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Ciclo" rendered="#{ciclo.ciEstado == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Ciclo" rendered="#{ciclo.ciEstado == false}" />
                 </p:column>               
@@ -64,18 +64,16 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
                                  
-                    <p:outputLabel for="ciclo" value="Ciclo Académico:" />
-                    <p:inputText id="ciclo" value="#{cicloBean.ciclo}" 
-                             requiredMessage="Por favor, ingrese el ciclo."
-                             validatorMessage="Máximo 3 caracteres">
-                        <f:validateLength maximum="3" />
-                        <f:validateRequired />                        
+                    <p:outputLabel for="ciclo" value="Ciclo académico:" />
+                    <p:inputText id="ciclo" value="#{cicloBean.ciclo}" required="true" requiredMessage="Por favor, ingrese el ciclo."
+                             validatorMessage="Solo se admiten letras en el campo 'Ciclo académico'." onkeyup="if(this.value.length>2){this.value=this.value.substring(0,2);}">
+                        <f:validateRegex pattern="^[a-zA-Záéíóú-. ]+$" />                                               
                     </p:inputText>
                         
                     <p:outputLabel for="anio" value="Año: " />
-                    <p:inputText id="anio" value="#{cicloBean.anio}" 
-                                 requiredMessage="Por favor, ingrese el ciclo." >                          
-                        <f:validateRequired /> 
+                    <p:inputText id="anio" value="#{cicloBean.anio}" required="true" requiredMessage="Por favor, ingrese el año." 
+                                 validatorMessage="Solo se admiten número en el campo 'Año'." onkeyup="if(this.value.length>4){this.value=this.value.substring(0,4);}">                          
+                        <f:validateRegex pattern="^[0-9]+$" /> 
                     </p:inputText>                    
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{cicloBean.updateCiclo()}" update=":list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-refresh" rendered="#{cicloBean.insert == false}"/>

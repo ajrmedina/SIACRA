@@ -75,7 +75,7 @@
                     </p:inputText>
                     
                      <p:outputLabel for="nombreCarrera" value="Nombre de la carrera: " />
-                     <p:inputText id="nombreCarrera" value="#{escuelaBean.nombrecarrera}" 
+                     <p:inputText id="nombreCarrera" value="#{escuelaBean.nombrecarrera}" required="true"
                              requiredMessage="Por favor, ingrese el nombre." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}"
                              validatorMessage="Solo letras y espacios son permitidos en el campo 'Nombre de la carrera'." size="45">
                         <f:validateRegex pattern="^[a-zA-Záéíóú. ]+$" />                        

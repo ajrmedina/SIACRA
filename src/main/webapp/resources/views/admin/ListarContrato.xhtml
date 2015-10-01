@@ -34,14 +34,14 @@
                     <h:outputText value="#{contrato.tipocontrato}" />
                 </p:column>
                 <p:column style="width: 12%" headerText="Estado" filterBy="#{contrato.co_estado}" filterStyleClass="hide">
-                    <h:outputText value="#{contrato.co_estado ? 'Activo':'Inactivo'}"/>
+                    <h:outputText value="#{contrato.co_estado ? 'Habilitado':'Deshabilitado'}"/>
                 </p:column>
                 <p:column style="width: 10%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('update_contrato').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('delete_contrato').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('lock_contrato').show()" icon="fa fa-unlock-alt" rendered="#{contrato.co_estado== true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('unlock_contrato').show()" icon="fa fa-unlock" rendered="#{contrato.co_estado == false}" />
+                    <p:commandButton id="locked" update=":dialogLockContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('lock_contrato').show()" icon="fa fa-unlock" rendered="#{contrato.co_estado== true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockContrato" actionListener="#{contratoBean.loadContrato(contrato)}" oncomplete="PF('unlock_contrato').show()" icon="fa fa-unlock-alt" rendered="#{contrato.co_estado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Contrato" rendered="#{contrato.co_estado == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Contrato" rendered="#{contrato.co_estado == false}" />
                     
@@ -54,13 +54,14 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                    
-                    <p:outputLabel for="nombre" value="Nombre del contrato : " />
-                    <p:inputText id="nombre" value="#{contratoBean.tipocontrato}" validatorMessage="Solo debe contener letras">
-                        <f:validateLength minimum="2" maximum="25" />
-                        <f:validateRegex pattern="[ a-zA-Z]+$" /> 
+                    <p:outputLabel for="nombre" value="Tipo de contratación : " />
+                    <p:inputText id="nombre" value="#{contratoBean.tipocontrato}" required="true" requiredMessage="Por favor, ingrese el tipo de contratación."
+                                 validatorMessage="Solo letras son permitidas en el campo 'Tipo de contrato'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
+                        <f:validateRegex pattern="[ a-zA-Záéíóú]+$" /> 
                     </p:inputText>
-                    <p:outputLabel id="estado" value="Estado"/>
-                    <p:selectBooleanCheckbox value="#{contratoBean.co_estado}"/>
+                   <!-- <p:outputLabel id="estado" value="Habilitar estado?" rendered="#{contratoBean.insert == true}"/>
+                    <p:selectBooleanCheckbox value="#{contratoBean.co_estado}" rendered="#{contratoBean.insert == true}"/>-->
+                    
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" rendered="#{contratoBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{contratoBean.addContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-plus" rendered="#{contratoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_contrato').hide()" icon="fa fa-ban">

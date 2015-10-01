@@ -87,25 +87,27 @@
                     
                     <p:outputLabel for="escuela" value="Escuela: " />
                     <h:panelGroup layout="block1">
-                        <p:selectOneMenu id="escuela" value="#{proyectoBean.idEscuela}" effect="fade" required="true" >
+                        <p:selectOneMenu id="escuela" value="#{proyectoBean.idEscuela}" effect="fade" required="true" requiredMessage="Por favor, seleccione una escuela." >
                             <f:selectItem   itemValue="#{identityBean.principal.escuela.idescuela}" itemLabel="#{identityBean.principal.escuela.nombreescuela}" />
                         </p:selectOneMenu>
                     </h:panelGroup>
                     
                     <p:outputLabel for="nombre" value="Nombre de Proyecto: " />
-                    <p:inputText id="nombre" value="#{proyectoBean.nombreproyecto}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para este campo">
-                        <f:validateLength minimum="3" maximum="100" />
-                        <f:validateRegex pattern="^[a-zA-Z0-9 -_]+$" />
+                    <p:inputText id="nombre" value="#{proyectoBean.nombreproyecto}" required="true" requiredMessage="Por favor, ingrese el nombre del proyecto."
+                                 validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Nombre de proyecto'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}">                        
+                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -_.]+$" />
                     </p:inputText>
                     
                     <p:outputLabel for="descripcion" value="Descripción: " />
-                    <p:inputTextarea id="descripcion" value="#{proyectoBean.descripcion}" required="true">
-                        <f:validateLength minimum="3" maximum="150" />
+                    <p:inputTextarea id="descripcion" value="#{proyectoBean.descripcion}" required="true"
+                                     validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Descripción'." onkeyup="if(this.value.length>150){this.value=this.value.substring(0,150);}">
+                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -_.]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel for="observacion" value="Observaciones: " />
-                    <p:inputTextarea id="observacion" value="#{proyectoBean.observacion}" required="true">
-                        <f:validateLength minimum="3" maximum="100" />
+                    <p:inputTextarea id="observacion" value="#{proyectoBean.observacion}" required="true"
+                                     validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Observación'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}">
+                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -_.]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
@@ -123,7 +125,7 @@
                     
                     <p:outputLabel for="estado" value="Estado actual: " rendered="#{proyectoBean.insert == true}"/>
                     <h:panelGroup layout="block2" rendered="#{proyectoBean.insert == true}">
-                        <p:selectOneMenu id="estado" value="#{proyectoBean.estadoproyecto}" effect="fade" required="true" >    
+                        <p:selectOneMenu id="estado" value="#{proyectoBean.estadoproyecto}" effect="fade" required="true" requiredMessage="Por favor, seleccione el estado del proyecto.">    
                             <f:selectItem itemValue="En desarrollo" itemLabel="En desarrollo"/>
                             <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
                         </p:selectOneMenu>
