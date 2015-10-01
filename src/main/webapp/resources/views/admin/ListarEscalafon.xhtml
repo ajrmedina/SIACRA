@@ -40,8 +40,8 @@
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('update_escalafon').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('delete_escalafon').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('lock_escalafon').show()" icon="fa fa-unlock-alt" rendered="#{escalafon.es_estado == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('unlock_escalafon').show()" icon="fa fa-unlock" rendered="#{escalafon.es_estado == false}" />
+                    <p:commandButton id="locked" update=":dialogLockEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('lock_escalafon').show()" icon="fa fa-unlock" rendered="#{escalafon.es_estado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockEscalafon" actionListener="#{escalafonBean.loadEscalafon(escalafon)}" oncomplete="PF('unlock_escalafon').show()" icon="fa fa-unlock-alt" rendered="#{escalafon.es_estado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Escalafon" rendered="#{escalafon.es_estado == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Escalafon" rendered="#{escalafon.es_estado== false}" />
                     
@@ -54,10 +54,10 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     
-                    <p:outputLabel for="tipoEscalafon" value="Tipo escalafon: " />
-                    <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}" validatorMessage="Solo debe contener letras">
-                        <f:validateLength minimum="2" maximum="30" />
-                        <f:validateRegex pattern="[ a-zA-Z]+$" />
+                    <p:outputLabel for="tipoEscalafon" value="Tipo escalafón: " />
+                    <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}" required="true" requiredMessage="Por favor, ingrese un tipo de escalafón."
+                                 validatorMessage="Solo letras y espacios son permitidos en el campo 'Tipo escalafón'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
+                        <f:validateRegex pattern="[ a-zA-Záéíóú]+$" />
                     </p:inputText>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{escalafonBean.updateEscalafon()}" update=":list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-refresh" rendered="#{escalafonBean.insert == false}"/>

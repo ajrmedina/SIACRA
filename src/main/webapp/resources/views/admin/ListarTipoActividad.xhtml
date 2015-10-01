@@ -39,8 +39,8 @@
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('update_tipoactividad').show()" icon="fa fa-edit" />
                   <p:commandButton id="delete_button" update=":dialogDeleteTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('delete_tipoactividad').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('lock_tipoactividad').show()" icon="fa fa-unlock-alt" rendered="#{tipoactividad.ta_estado == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('unlock_tipoactividad').show()" icon="fa fa-unlock" rendered="#{tipoactividad.ta_estado == false}" />
+                    <p:commandButton id="locked" update=":dialogLockTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('lock_tipoactividad').show()" icon="fa fa-unlock" rendered="#{tipoactividad.ta_estado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('unlock_tipoactividad').show()" icon="fa fa-unlock-alt" rendered="#{tipoactividad.ta_estado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar TipoActividad" rendered="#{tipoActividadBean.ta_estado == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar TipoActividad" rendered="#{tipoActividadBean.ta_estado== false}" />
                     
@@ -53,10 +53,10 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                    
-                    <p:outputLabel for="nombre" value="Nombre del tipo de actividad : " />
-                    <p:inputText id="nombre" value="#{tipoActividadBean.tipoactividad}" validatorMessage="Solo debe contener letras">
-                        <f:validateLength minimum="2" maximum="25" />
-                        <f:validateRegex pattern="[ a-zA-Z]+$" />
+                    <p:outputLabel for="nombre" value="Tipo de actividad : " />
+                    <p:inputText id="nombre" value="#{tipoActividadBean.tipoactividad}" required="true" requiredMessage="Por favor, ingrese el tipo de actividad." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}"
+                                 validatorMessage="Solo letras son permitidas en el campo 'Tipo de actividad'.">                       
+                        <f:validateRegex pattern="[ a-zA-Záéíóú]+$" />
                     </p:inputText>
                   
                     

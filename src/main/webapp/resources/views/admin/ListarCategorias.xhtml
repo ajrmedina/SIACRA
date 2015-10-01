@@ -17,7 +17,7 @@
     <ui:define name="content">
         <h:form id="list">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="categoria" var="categoria" value="#{categoriaBean.categoriasList}" style="width: 85%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="categoriasTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="categoria" var="categoria" value="#{categoriaBean.categoriasList}" style="width: 85%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" widgetVar="categoriasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" style="float: right" value="Nueva Categoria" update=":dialogUpdateCategoria" actionListener="#{categoriaBean.reset()}" oncomplete="PF('update_categoria').show()" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{categoriaBean.insert}" value="true" />
@@ -42,13 +42,12 @@
                 <p:column style="width: 10%" headerText="Habilitada" filterBy="#{categoria.estadoCategoria}" filterStyleClass="hide">
                     <h:outputText value="#{categoria.estadoCategoria?'Habilitada':'Deshabilitada'}" />
                 </p:column>
-                <p:column style="width: 10%" headerText="Accciones">
-                    
+                <p:column style="width: 10%" headerText="Accciones">                    
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('update_categoria').show()" icon="fa fa-edit" />                                    
                     <p:commandButton id="delete_button" update=":dialogDeleteCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('delete_categoria').show()" icon="fa fa-times"/>
-                    <p:commandButton id="locked" update=":dialogLockCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('lock_categoria').show()" icon="fa fa-unlock-alt" rendered="#{categoria.estadoCategoria == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('unlock_categoria').show()" icon="fa fa-unlock" rendered="#{categoria.estadoCategoria == false}" />
+                    <p:commandButton id="locked" update=":dialogLockCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('lock_categoria').show()" icon="fa fa-unlock" rendered="#{categoria.estadoCategoria == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('unlock_categoria').show()" icon="fa fa-unlock-alt" rendered="#{categoria.estadoCategoria == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Categoria" rendered="#{categoria.estadoCategoria == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Categoria" rendered="#{categoria.estadoCategoria == false}" />
                     
@@ -61,24 +60,24 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
                     
-                    <p:outputLabel for="escalafon" value="Escalafon: " />
+                    <p:outputLabel for="escalafon" value="Tipo de escalafón: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="escalafon" value="#{categoriaBean.idEscalafon}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <p:selectOneMenu id="escalafon" value="#{categoriaBean.idEscalafon}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el escalafón.">
                             <f:selectItems value="#{categoriaBean.escalafonesList}" var="escalafon" itemValue="#{escalafon.idescalafon}" itemLabel="#{escalafon.tipoescalafon}" itemDisabled="#{escalafon.es_estado == false}"/>
                         </p:selectOneMenu>
-                        <p:tooltip id="forEscalafon" for="escalafon" value="Seleccione el escalafon para la nueva categoria" />
+                        <p:tooltip id="forEscalafon" for="escalafon" value="Seleccione el escalafón para la nueva categoría" />
                     </h:panelGroup>
 
-                    <p:outputLabel for="contrato" value="Contrato: " />
+                    <p:outputLabel for="contrato" value="Tipo de contrato: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="contrato" value="#{categoriaBean.idContrato}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <p:selectOneMenu id="contrato" value="#{categoriaBean.idContrato}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el tipo de contrato.">
                             <f:selectItems value="#{categoriaBean.contratosList}" var="contrato" itemValue="#{contrato.idcontrato}" itemLabel="#{contrato.tipocontrato}" itemDisabled="#{contrato.co_estado == false}"/>
                         </p:selectOneMenu>
-                        <p:tooltip id="forContrato" for="contrato" value="Seleccione el contrato para la nueva categoria" />
+                        <p:tooltip id="forContrato" for="contrato" value="Seleccione el contrato para la nueva categoría" />
                     </h:panelGroup>
 
-                    <p:outputLabel for="horas" value="Horas obligatorias para la categoria: " />
-                    <p:inputMask id="horas" value="#{categoriaBean.horasObligatorias}" mask="9?99" required="true" >
+                    <p:outputLabel for="horas" value="Horas obligatorias para la categoría: " />
+                    <p:inputMask id="horas" value="#{categoriaBean.horasObligatorias}" mask="9?99" required="true" requiredMessage="Por favor, ingrese las horas obligatorias para la categoría.">
                         <f:validateDoubleRange minimum="1" maximum="99" />
                     </p:inputMask>
                         

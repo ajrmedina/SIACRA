@@ -168,22 +168,21 @@
                                                   
                     <p:outputLabel for="ciclo" value="Ciclo en curso: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="ciclo" value="#{permanenciaBean.idCiclo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                        <p:selectOneMenu id="ciclo" value="#{permanenciaBean.idCiclo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el ciclo.">
                             <f:selectItems value="#{permanenciaBean.cicloList}" var="ciclo" itemValue="#{ciclo.idCiclo}" itemLabel="#{ciclo.ciclo} #{ciclo.anio}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forCiclo" for="ciclo" value="Seleccione el ciclo actual" />
                     </h:panelGroup>
                                    
                     <p:outputLabel for="descripcion" value="Descripción: " />
-                    <p:inputTextarea id="descripcion" value="#{permanenciaBean.descripcion}" 
-                             requiredMessage="Por favor, ingrese la descripción."
-                             validatorMessage="Máximo 50 caracteres" >                        
-                        <f:validateRequired />
+                    <p:inputTextarea id="descripcion" value="#{permanenciaBean.descripcion}" required="true" requiredMessage="Por favor, ingrese la descripción del tiempo de permanencia."
+                             validatorMessage="Solo letras son admitidas en el campo 'Descripción'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                        
+                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9- ]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel for="dia" value="Día: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="dia" value="#{permanenciaBean.dia}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                        <p:selectOneMenu id="dia" value="#{permanenciaBean.dia}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el día.">
                             <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
                             <f:selectItem itemLabel="Martes" itemValue="Martes" />
                             <f:selectItem itemLabel="Miercoles" itemValue="Miercoles" />
@@ -202,10 +201,10 @@
                     </p:inputText>-->
                     
                     <p:outputLabel for="horainicio" value="Hora de Inicio:" />
-                    <p:inputMask id="horainicio" value="#{permanenciaBean.horaInicio}" mask="99:99" required="true"/>
+                    <p:inputMask id="horainicio" value="#{permanenciaBean.horaInicio}" mask="99:99" required="true" requiredMessage="Por favor, seleccione la hora de inicio."/>
                     
                     <p:outputLabel for="horafin" value="Hora de Finalización:" />
-                    <p:inputMask id="horafin" value="#{permanenciaBean.horaFin}" mask="99:99" required="true"/>
+                    <p:inputMask id="horafin" value="#{permanenciaBean.horaFin}" mask="99:99" required="true" requiredMessage="Por favor, seleccione la hora de finalización."/>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{permanenciaBean.updatePermanencia()}" update=":list:permanencia" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{permanenciaBean.addPermanencia()}" update=":list:permanencia" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == true}" />
