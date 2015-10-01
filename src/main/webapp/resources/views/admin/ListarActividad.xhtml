@@ -53,8 +53,8 @@
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('update_actividad').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('delete_actividad').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('lock_actividad').show()" icon="fa fa-unlock-alt" rendered="#{actividad.estadoactividad == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('unlock_actividad').show()" icon="fa fa-unlock" rendered="#{actividad.estadoactividad == false}" />
+                    <p:commandButton id="locked" update=":dialogLockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('lock_actividad').show()" icon="fa fa-unlock" rendered="#{actividad.estadoactividad == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('unlock_actividad').show()" icon="fa fa-unlock-alt" rendered="#{actividad.estadoactividad == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Actividad" rendered="#{actividad.estadoactividad == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Actividad" rendered="#{actividad.estadoactividad == false}" />
                     
@@ -69,7 +69,7 @@
                                       
                     <p:outputLabel for="escuela" value="Escuela: " />
                     <h:panelGroup layout="block1">
-                        <p:selectOneMenu  id="escuela" value="#{actividadBean.idescuela}" effect="fade" required="true" >
+                        <p:selectOneMenu  id="escuela" value="#{actividadBean.idescuela}" effect="fade" required="true" requiredMessage="Por favor, seleccione una Escuela." >
                             <f:selectItem   itemValue="#{identityBean.principal.escuela.idescuela}" itemLabel="#{identityBean.principal.escuela.nombreescuela}" />
                         </p:selectOneMenu>
                        
@@ -77,21 +77,22 @@
                 
                     <p:outputLabel for="tipoactividad" value="Tipo Actividad: " />
                     <h:panelGroup layout="block2">
-                        <p:selectOneMenu id="tipoactividad" value="#{actividadBean.idtipoactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <p:selectOneMenu id="tipoactividad" value="#{actividadBean.idtipoactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el tipo de actividad." >
                             <f:selectItems value="#{actividadBean.tipoActividadList}" var="tipoactividad" itemValue="#{tipoactividad.idtipoactividad}" itemLabel="#{tipoactividad.tipoactividad}" itemDisabled="#{tipoactividad.ta_estado == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forTipoActividad" for="tipoactividad" value="Seleccione el tipo de actividad" />
                     </h:panelGroup>
                 
                     <p:outputLabel for="nombreactividad" value="Nombre de actividad: " />
-                    <p:inputText id="nombreactividad" value="#{actividadBean.nombreactividad}" required="true" validatorMessage="Solo letras son permitidas.">
-                        <f:validateLength minimum="1" maximum="50" />
-                        <f:validateRegex pattern="[ a-zA-Z]+$" />
+                    <p:inputText id="nombreactividad" value="#{actividadBean.nombreactividad}" required="true" requiredMessage="Por favor, ingrese el nombre de la actividad."
+                                 validatorMessage="No se permiten caracteres especiales en el campo 'Nombre de actividad'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                        
+                        <f:validateRegex pattern="[ a-zA-Záéíóú.-()/0-9]+$" />
                     </p:inputText>
                
-                    <p:outputLabel for="descripcionactividad" value="Descripción de la actividad: " />
-                    <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="false" validatorMessage="Solo letras son permitidas.">
-                       <!-- <f:validateLength minimum="1" maximum="50" />-->
+                    <p:outputLabel for="descripcionactividad" value="Descripción de actividad: " />
+                    <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="false" 
+                                     validatorMessage="No se permiten caracteres especiales en el campo 'Descripción de actividad'" onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                       
+                       <f:validateRegex pattern="[ a-zA-Záéíóú.-()/0-9]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel id="aprobada" value="Aprobar actividad? " />

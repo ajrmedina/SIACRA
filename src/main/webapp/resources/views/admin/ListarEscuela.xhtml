@@ -60,28 +60,25 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
                                  
-                    <p:outputLabel for="codEscuela" value="Codigo de Escuela: " />
-                    <p:inputText id="codEscuela" value="#{escuelaBean.codigoescuela}" 
-                             requiredMessage="Por favor, ingrese el código."
-                             validatorMessage="Máximo 6 caracteres">
-                        <f:validateLength maximum="6" />
-                        <f:validateRequired />
+                    <p:outputLabel for="codEscuela" value="Código de Escuela: " />
+                    <p:inputText id="codEscuela" value="#{escuelaBean.codigoescuela}" required="true"
+                             requiredMessage="Por favor, ingrese el código de Escuela." onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}"
+                             validatorMessage="Solo letras, espacios y guiones son permitidos en el campo 'Código de Escuela'.">
+                        <f:validateRegex pattern="^[a-zA-Z -_]+$" />                        
                     </p:inputText>
                         
-                    <p:outputLabel for="nombreEscuela" value="Nombre de la Escuela: " />
-                    <p:inputText id="nombreEscuela" value="#{escuelaBean.nombreescuela}" 
-                             requiredMessage="Por favor, ingrese el nombre."
-                             validatorMessage="Máximo 50 caracteres" size="45">
-                        <f:validateLength maximum="50"/>
-                        <f:validateRequired />
+                    <p:outputLabel for="nombreEscuela" value="Nombre de Escuela: " />
+                    <p:inputText id="nombreEscuela" value="#{escuelaBean.nombreescuela}" required="true"
+                             requiredMessage="Por favor, ingrese el nombre de la Escuela." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}"
+                             validatorMessage="Solo letras y espacios son permitidos en el campo 'Nombre de Escuela'." size="45">
+                        <f:validateRegex pattern="^[a-zA-Záéíóú. ]+$" />                        
                     </p:inputText>
                     
-                     <p:outputLabel for="nombreCarrera" value="Nombre de la Carrera: " />
+                     <p:outputLabel for="nombreCarrera" value="Nombre de la carrera: " />
                      <p:inputText id="nombreCarrera" value="#{escuelaBean.nombrecarrera}" 
-                             requiredMessage="Por favor, ingrese el nombre."
-                             validatorMessage="Máximo 50 caracteres" size="45">
-                        <f:validateLength maximum="50"/>
-                        <f:validateRequired />
+                             requiredMessage="Por favor, ingrese el nombre." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}"
+                             validatorMessage="Solo letras y espacios son permitidos en el campo 'Nombre de la carrera'." size="45">
+                        <f:validateRegex pattern="^[a-zA-Záéíóú. ]+$" />                        
                     </p:inputText>
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{escuelaBean.updateEscuela()}" update=":list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-refresh" rendered="#{escuelaBean.insert == false}" />
