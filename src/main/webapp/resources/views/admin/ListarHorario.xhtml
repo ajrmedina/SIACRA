@@ -62,8 +62,8 @@
                         <f:setPropertyActionListener target="#{horarioBean.insert}" value="false" />
                     </p:commandButton>
                     <p:commandButton id="delete_button" update=":dialogDeleteHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('delete_horario').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('lock_horario').show()" icon="fa fa-unlock-alt" rendered="#{horario.hoEstado == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('unlock_horario').show()" icon="fa fa-unlock" rendered="#{horario.hoEstado == false}" />
+                    <p:commandButton id="locked" update=":dialogLockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('lock_horario').show()" icon="fa fa-unlock" rendered="#{horario.hoEstado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('unlock_horario').show()" icon="fa fa-unlock-alt" rendered="#{horario.hoEstado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Horario" rendered="#{horario.hoEstado == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Horario" rendered="#{horario.hoEstado == false}" />
                     
@@ -78,14 +78,14 @@
                                       
                     <p:outputLabel for="escuela" value="Escuela: " />
                     <h:panelGroup layout="block1">
-                        <p:selectOneMenu id="escuela" value="#{horarioBean.idescuela}" effect="fade"  required="true" >
+                        <p:selectOneMenu id="escuela" value="#{horarioBean.idescuela}" effect="fade" required="true" requiredMessage="Por favor, seleccione una Escuela.">
                             <f:selectItem  itemValue="#{identityBean.principal.escuela.idescuela}" itemLabel="#{identityBean.principal.escuela.nombreescuela}"/>
                         </p:selectOneMenu>
                         
                     </h:panelGroup>
                     
                     <p:outputLabel for="dia1" value="Dia :" />
-                    <p:selectOneMenu id="dia1" value="#{horarioBean.dia1}" required="true">
+                    <p:selectOneMenu id="dia1" value="#{horarioBean.dia1}" required="true" requiredMessage="Por favor, seleccione el día de la actividad.">
                         <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
                         <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
                         <f:selectItem itemLabel="Martes" itemValue="Martes" />
@@ -97,13 +97,15 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="hinicio1" value="Hora de inicio :" />
-                    <p:calendar id="hinicio1" value="#{horarioBean.hinicio1}" pattern="HH:mm" timeOnly="true"  required="true" locale="es" requiredMessage="Ingrese hora de inicio"/>
+                    <p:calendar id="hinicio1" value="#{horarioBean.hinicio1}" pattern="HH:mm" timeOnly="true"  required="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"
+                                locale="es" requiredMessage="Por favor, ingrese la hora de inicio de la actividad."/>
 
                     <p:outputLabel for="hfin1" value="Hora de fin :" />
-                    <p:calendar id="hfin1" value="#{horarioBean.hfin1}" pattern="HH:mm" timeOnly="true" required="true" locale="es" requiredMessage="Ingrese hora de fin" />
+                    <p:calendar id="hfin1" value="#{horarioBean.hfin1}" pattern="HH:mm" timeOnly="true" required="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"
+                                locale="es" requiredMessage="Por favor, ingrese la hora de finalización de la actividad." />
    
                     <p:outputLabel for="dia2" value="Dia :" />
-                    <p:selectOneMenu id="dia2" value="#{horarioBean.dia2}" >
+                    <p:selectOneMenu id="dia2" value="#{horarioBean.dia2}">
                         <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
                         <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
                         <f:selectItem itemLabel="Martes" itemValue="Martes" />
@@ -115,10 +117,12 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="hinicio2" value="Hora de inicio :" />
-                    <p:calendar id="hinicio2" value="#{horarioBean.hinicio2}" pattern="HH:mm" timeOnly="true" requiredMessage="Ingrese hora de inicio"/>
+                    <p:calendar id="hinicio2" value="#{horarioBean.hinicio2}" pattern="HH:mm" locale="es" 
+                                timeOnly="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"/>
 
                     <p:outputLabel for="hfin2" value="Hora de fin :" />
-                    <p:calendar id="hfin2" value="#{horarioBean.hfin2}" pattern="HH:mm" timeOnly="true" requiredMessage="Ingrese hora de fin" />
+                    <p:calendar id="hfin2" value="#{horarioBean.hfin2}" pattern="HH:mm" timeOnly="true" 
+                                locale="es" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}" />
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" rendered="#{horarioBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{horarioBean.addHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-plus" rendered="#{horarioBean.insert == true}" />

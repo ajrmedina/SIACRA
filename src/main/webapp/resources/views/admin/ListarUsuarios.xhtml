@@ -67,8 +67,8 @@
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('update_user').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('delete_user').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('lock_user').show()" icon="fa fa-unlock-alt" rendered="#{user.estadoUsuario == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('unlock_user').show()" icon="fa fa-unlock" rendered="#{user.estadoUsuario == false}" />
+                    <p:commandButton id="locked" update=":dialogLockUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('lock_user').show()" icon="fa fa-unlock" rendered="#{user.estadoUsuario == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockUser" actionListener="#{userBean.loadUser(user)}" oncomplete="PF('unlock_user').show()" icon="fa fa-unlock-alt" rendered="#{user.estadoUsuario == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Usuario" rendered="#{user.estadoUsuario == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Usuario" rendered="#{user.estadoUsuario == false}" />
                     
@@ -83,37 +83,36 @@
                     
                     <p:outputLabel for="escuela" value="Escuela del Docente: " rendered="#{userBean.insert == true}"/>
                     <h:panelGroup layout="block" rendered="#{userBean.insert == true}">
-                        <p:selectOneMenu id="escuela" value="#{userBean.escuela}" effect="fade" required="true">
-                            <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela"  itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombreescuela}"/>
+                        <p:selectOneMenu id="escuela" value="#{userBean.escuela}" effect="fade" required="true" requiredMessage="Por favor, seleccione una Escuela">
                             <f:selectItem itemValue="0" itemLabel="Ninguna"/>
+                            <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela"  itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombreescuela}"/>                           
                         </p:selectOneMenu>
                     </h:panelGroup>
                     
                     <p:outputLabel for="nombres" value="Nombres del usuario: " />
-                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" validatorMessage="Solo letras y espacios son permitidos para el campo 'Nombres de usuario', con una longitud maxima de 50 caracteres" >
-                        <f:validateLength maximum="50" />                        
+                    <p:inputText id="nombres" value="#{userBean.nombres}" required="true" requiredMessage="Por favor, ingrese los nombres del usuario."
+                                 validatorMessage="Solo letras y espacios son permitidos para el campo 'Nombres de usuario'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}" >                           
                         <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />                        
                         <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>                    
                     
                     <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
-                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" validatorMessage="Solo letras y espacios son permitidos para el campo 'Apellidos de usuario', con una longitud maxima de 50 caracteres" >
-                        <f:validateLength maximum="50" />
+                    <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" requiredMessage="Por favor, ingrese los apellidos del usuario."
+                                 validatorMessage="Solo letras y espacios son permitidos para el campo 'Apellidos de usuario'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}" >                       
                         <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />
                         <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>
                     
                     <p:outputLabel for="username" value="Nombre de Acceso: " />                     
-                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true" validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Nombre de Acceso', con una longitud minima de 8 y maxima de 30 caracteres">
-                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_ ]+$" />
-                        <f:validateLength maximum="30" />
+                    <p:inputText id="username" value="#{userBean.nombreUsuario}" required="true" requiredMessage="Por favor, ingrese el nombre de acceso."
+                                 validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Nombre de Acceso'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">
+                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_ ]+$" />                        
                     </p:inputText>
                     
                     <p:outputLabel for="contrasenia" value="Clave de acceso: " rendered="#{userBean.insert == false}" />
-                    <p:inputText id="contrasenia" value="#{userBean.contrasenia}" required="true" 
-                                 validatorMessage="La clave de acceso debe tener una longitud mínima de 8 y máxima de 30 caracteres"
-                                 rendered="#{userBean.insert == false}">                                               
-                        <f:validateLength maximum="30" />
+                    <p:inputText id="contrasenia" value="#{userBean.contrasenia}" required="true" requiredMessage="Por favor, ingrese una contraseña para el usuario."
+                                 onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}"
+                                 rendered="#{userBean.insert == false}">                        
                     </p:inputText>
                     
                     <p:outputLabel id="estado" value="Habilitar usuario? " rendered="#{userBean.insert == true}" />
@@ -124,7 +123,7 @@
 
                     <p:outputLabel for="acceso" value="Nivel de Acceso: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el nivel de acceso del usuario.">
                             <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}" itemDisabled="#{nivel.estadoAcceso == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forNivel" for="acceso" value="Seleccione el nivel de acceso para el usuario" />

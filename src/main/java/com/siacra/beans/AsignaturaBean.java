@@ -53,6 +53,7 @@ public class AsignaturaBean implements Serializable{
     String tipoAsignatura;
     String nombreAsignatura;
     private boolean insert;
+    int cuenta;
 
     public AsignaturaService getAsignaturaService() {
         return asignaturaService;
@@ -321,4 +322,7 @@ public class AsignaturaBean implements Serializable{
     public void refreshAsignaturas() {
         this.setAsignaturaList(getAsignaturaService().getAsignaturasByEscuela(id_escuela));
     }
+               
+        
+    
 }

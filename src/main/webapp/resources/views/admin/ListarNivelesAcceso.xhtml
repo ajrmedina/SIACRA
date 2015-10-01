@@ -37,8 +37,8 @@
                 <p:column style="width: 8%" headerText="Acciones">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('update_nivel').show()" icon="fa fa-edit" />
-                    <p:commandButton id="locked" update=":dialogLockAcceso" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('lock_acceso').show()" icon="fa fa-unlock-alt" rendered="#{nivel.estadoAcceso == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockAcceso" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('unlock_acceso').show()" icon="fa fa-unlock" rendered="#{nivel.estadoAcceso == false}" />
+                    <p:commandButton id="locked" update=":dialogLockAcceso" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('lock_acceso').show()" icon="fa fa-unlock" rendered="#{nivel.estadoAcceso == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockAcceso" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('unlock_acceso').show()" icon="fa fa-unlock-alt" rendered="#{nivel.estadoAcceso == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Nivel de Acceso" rendered="#{nivel.estadoAcceso == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Nivel de Acceso" rendered="#{nivel.estadoAcceso == false}" />
                     
@@ -51,8 +51,8 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:outputLabel for="nombreAcceso" value="Nombre del Acceso: " />
-                    <p:inputText id="nombreAcceso" value="#{nivelAccesoBean.acceso}" validatorMessage="Solo letras, espacios y guiones son permitidos para este campo, con una longitud minima de 2 y maxima de 25 caracteres">
-                        <f:validateLength minimum="2" maximum="25" />
+                    <p:inputText id="nombreAcceso" value="#{nivelAccesoBean.acceso}" required="true" requiredMessage="Por favor, ingrese el nombre de acceso."
+                                 validatorMessage="Solo letras, espacios y guiones son permitidos para el campo 'Nombre de Acceso'." onkeyup="if(this.value.length>25){this.value=this.value.substring(0,25);}">                        
                         <f:validateRegex pattern="^[a-zA-Z -_]+$" />
                     </p:inputText>
 

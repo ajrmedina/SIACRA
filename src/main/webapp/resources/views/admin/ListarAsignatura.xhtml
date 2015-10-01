@@ -90,8 +90,8 @@
                         <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="false" />
                     </p:commandButton>
                     <p:commandButton id="delete_button" update=":dialogDeleteAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('delete_asignatura').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('lock_asignatura').show()" icon="fa fa-unlock-alt" rendered="#{asignatura.estadoAsignatura == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('unlock_asignatura').show()" icon="fa fa-unlock" rendered="#{asignatura.estadoAsignatura == false}" />
+                    <p:commandButton id="locked" update=":dialogLockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('lock_asignatura').show()" icon="fa fa-unlock" rendered="#{asignatura.estadoAsignatura == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('unlock_asignatura').show()" icon="fa fa-unlock-alt" rendered="#{asignatura.estadoAsignatura == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Asignatura" rendered="#{asignatura.estadoAsignatura == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Asignatura" rendered="#{asignatura.estadoAsignatura == false}" />
                     
@@ -106,39 +106,44 @@
                                       
                     <p:outputLabel for="escuela" value="Escuela: " />
                     <h:panelGroup layout="block1">
-                        <p:selectOneMenu id="escuela" value="#{asignaturaBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <p:selectOneMenu id="escuela" value="#{asignaturaBean.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione una escuela">
                             <f:selectItem  itemValue="#{identityBean.principal.escuela.idescuela}" itemLabel="#{identityBean.principal.escuela.nombreescuela}"/>
                         </p:selectOneMenu>
                        
                     </h:panelGroup>
                     
-                    <p:outputLabel for="codigoAsignatura" value="Codigo asignatura: " />
-                    <p:inputText id="codigoAsignatura" value="#{asignaturaBean.codigoAsignatura}" required="true">
-                        <f:validateLength minimum="5" maximum="6" />
+                    <p:outputLabel for="codigoAsignatura" value="Codigo de asignatura: " />
+                    <p:inputText id="codigoAsignatura" value="#{asignaturaBean.codigoAsignatura}" required="true" requiredMessage="Por favor, ingrese el código de la asignatura."
+                                 validatorMessage="Solo letras y número son permitidos en el campo 'Código de asignatura'." onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}">                        
+                        <f:validateRegex pattern="[ a-zA-Z0-9-]+$" />
+                        
                     </p:inputText>
                 
                     <p:outputLabel for="nombreAsignatura" value="Nombre de la asignatura: " />
-                    <p:inputText id="nombreAsignatura" value="#{asignaturaBean.nombreAsignatura}" required="true" >
-                        <f:validateLength maximum="50" minimum="5" />
+                    <p:inputText id="nombreAsignatura" value="#{asignaturaBean.nombreAsignatura}" required="true" requiredMessage="Por favor, ingrese el nombre de la asignatura."
+                                 validatorMessage="Solo se admiten letras en el campo 'Nombre de asignatura'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                        
+                        <f:validateRegex pattern="[ a-zA-Záéíóú.]+$" />
                     </p:inputText>
                 
                     <p:outputLabel for="ciclo" value="Ciclo :" />
-                    <p:selectOneMenu id="ciclo" value="#{asignaturaBean.cicloImpartir}" required="true">
-                        <f:selectItem itemLabel="" itemValue="Seleccionar ciclo" />
+                    <p:selectOneMenu id="ciclo" value="#{asignaturaBean.cicloImpartir}" required="true" requiredMessage="Por favor, seleccione el ciclo a impartir">
+                        <f:selectItem itemLabel="" itemValue="Seleccione el ciclo" />
                         <f:selectItem itemLabel="1" itemValue="1" />
                         <f:selectItem itemLabel="2" itemValue="2" />
                     </p:selectOneMenu>
                 
                     <p:outputLabel for="valorativas" value="Unidades valorativas : " />
-                    <p:inputText id="valorativas" value="#{asignaturaBean.unidadesValorativas}" required="true" >
-                        <f:validateLength maximum="2" minimum="1" />
+                    <p:inputText id="valorativas" value="#{asignaturaBean.unidadesValorativas}" required="true" requiredMessage="Por favor, ingrese las unidades valorativas."
+                                 onkeyup="if(this.value.length>2){this.value=this.value.substring(0,2);}"
+                                 validatorMessage="Solo se admiten números en el campo 'Unidades valorativas'">
+                        <f:validateRegex pattern="[0-9]+$" />
                     </p:inputText>
                 
                     <p:outputLabel for="tipoAsignatura" value="Tipo de la asignatura :" />
-                    <p:selectOneMenu id="tipoAsignatura" value="#{asignaturaBean.tipoAsignatura}" required="true">
-                        <f:selectItem itemLabel="" itemValue="Seleccionar tipo de asignatura" />
+                    <p:selectOneMenu id="tipoAsignatura" value="#{asignaturaBean.tipoAsignatura}" required="true" requiredMessage="Por favor, seleccione el tipo de asignatura">
+                        <f:selectItem itemLabel="" itemValue="Seleccione el tipo de asignatura" />
                         <f:selectItem itemLabel="Obligatoria" itemValue="Obligatoria" />
-                        <f:selectItem itemLabel="Electiva" itemValue="Electiva" />
+                        <f:selectItem itemLabel="Electiva" itemValue="Electiva" />                        
                     </p:selectOneMenu>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == false}" />
