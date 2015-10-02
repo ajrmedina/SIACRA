@@ -16,6 +16,7 @@
     <ui:define name="content">
         
         <h:form id="list">
+            <p:growl id="message"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="mensaje" var="mensaje" value="#{mensajeBean.getMensajeList(identityBean.principal.user.idUsuario)}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="mensajesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header"  >
@@ -91,7 +92,7 @@
                          </p:selectOneMenu>
                          <h:outputText value="Observaciones"/>
                          <p:inputTextarea id="mesanje" required="true" value="#{mensajeBean.mensaje}" cols="100" maxlength="500" counter="count" requiredMessage="Se requiere un mensaje"/>
-                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_directores').hide()"  update=":list:mensaje">
+                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_directores').hide()"  update=":list:message">
                              
                          </p:commandButton>
                          <p:commandButton value="Cancelar" icon="fa fa-times" oncomplete="PF('enviar_directores').hide()" actionListener="#{mensajeBean.reset()}"/>
@@ -117,7 +118,7 @@
                          </p:selectOneMenu>
                          <h:outputText value="Mensaje"/>
                          <p:inputTextarea id="mesanje" required="true" value="#{mensajeBean.mensaje}" cols="100" maxlength="500" counter="count" requiredMessage="Se requiere un mensaje"/>
-                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_JD_RES').hide()"  update=":list:mensaje">
+                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_JD_RES').hide()"  update=":list:message">
                              
                          </p:commandButton>
                          <p:commandButton value="Cancelar" icon="fa fa-times" oncomplete="PF('enviar_JD_RES').hide()" actionListener="#{mensajeBean.reset()}"/>
@@ -142,7 +143,7 @@
                          </p:selectOneMenu>
                          <h:outputText value="Mensaje"/>
                          <p:inputTextarea id="mesanje" required="true" value="#{mensajeBean.mensaje}" cols="100" maxlength="500" counter="count" requiredMessage="Se requiere un mensaje"/>
-                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_RES').hide()"  update=":list:mensaje">
+                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_RES').hide()"  update=":list:message">
                              
                          </p:commandButton>
                          <p:commandButton value="Cancelar" icon="fa fa-times" oncomplete="PF('enviar_RES').hide()" actionListener="#{mensajeBean.reset()}"/>
@@ -167,7 +168,7 @@
                          </p:selectOneMenu>
                          <h:outputText value="Mensaje"/>
                          <p:inputTextarea id="mesanje" required="true" value="#{mensajeBean.mensaje}" cols="100" maxlength="500" counter="count" requiredMessage="Se requiere un mensaje"/>
-                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_DIR').hide()"  update=":list:mensaje">
+                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{mensajeBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_DIR').hide()"  update=":list:message">
                              
                          </p:commandButton>
                          <p:commandButton value="Cancelar" icon="fa fa-times" oncomplete="PF('enviar_DIR').hide()" actionListener="#{mensajeBean.reset()}"/>
