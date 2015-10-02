@@ -49,10 +49,7 @@ public class DocenteBean implements Serializable {
     @ManagedProperty(value="#{CategoriaService}")
     private CategoriaService categoriaService;
      
-    private List<User> usersList;
     private List<Docente> docentesList;
-    private List<Escuela> escuelaList;
-    private List<Categoria> categoriasList;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -205,28 +202,6 @@ public class DocenteBean implements Serializable {
     }
     
     /**
-     * Get User List
-     *
-     * @return List - User List
-     */
-    public List<User> getUserList() {
-        usersList = new ArrayList<>();
-        usersList.addAll(getUserService().getUsersByEscuela(cod_escuela));
-        return usersList;
-    }
-    
-    /**
-     * Get Escuela List
-     *
-     * @return List - Escuela List
-     */
-    public List<Escuela> getEscuelaList() {
-        escuelaList = new ArrayList<>();
-        escuelaList.addAll(getEscuelaService().getEscuelas());
-        return escuelaList;
-    }
-    
-    /**
      * Get Docente List
      *
      * @return List - Docente List
@@ -244,26 +219,6 @@ public class DocenteBean implements Serializable {
      */
     public void setDocentesList(List<Docente> docentesList) {
         this.docentesList = docentesList;
-    }
-    
-    /**
-     * Get Categoria List
-     *
-     * @return List - Categoria List
-     */
-    public List<Categoria> getCategoriasList() {
-        categoriasList = new ArrayList<>();
-        categoriasList.addAll(getCategoriaService().getCategorias());
-        return categoriasList;
-    }
-    
-    /**
-     * Set Categoria List
-     *
-     * @param categoriasList List - Categoria List
-     */
-    public void setCategoriasList(List<Categoria> categoriasList) {
-        this.categoriasList = categoriasList;
     }
     
     /**

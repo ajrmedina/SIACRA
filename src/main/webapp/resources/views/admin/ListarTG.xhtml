@@ -144,8 +144,8 @@
                     <p:outputLabel id="aprobado" value="Aprobar Trabajo de Graduacion? " />
                     <p:selectBooleanCheckbox value="#{trabajoGraduacionBean.aprobargt}" />
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{trabajoGraduacionBean.updateTrabajoGraduacion()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tg').hide()" icon="fa fa-refresh" rendered="#{trabajoGraduacionBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{trabajoGraduacionBean.addTrabajoGraduacion()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tg').hide()" icon="fa fa-plus" rendered="#{trabajoGraduacionBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{trabajoGraduacionBean.updateTrabajoGraduacion()}" update=":list:message :list:tg" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tg').hide()" icon="fa fa-refresh" rendered="#{trabajoGraduacionBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{trabajoGraduacionBean.addTrabajoGraduacion()}" update=":list:message :list:tg" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tg').hide()" icon="fa fa-plus" rendered="#{trabajoGraduacionBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tg').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{trabajoGraduacionBean.insert}" value="false" />

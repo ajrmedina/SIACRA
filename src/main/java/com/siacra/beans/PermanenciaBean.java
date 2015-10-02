@@ -68,7 +68,6 @@ public class PermanenciaBean implements Serializable {
     private UserService userService;
     
     private List<Permanencia> permanenciasList;
-    private List<Docente> docentesList;
     private List<Ciclo> cicloList; 
     
     private int idPermanencia;
@@ -278,16 +277,6 @@ public class PermanenciaBean implements Serializable {
        this.setHoraFin("");
        this.setDia("");      
        
-    }
-    /**
-     * Get Docentees List
-     *
-     * @return List - Docente List
-     */
-    public List<Docente> getDocentesList() {
-        docentesList = new ArrayList<>();
-        docentesList.addAll(getDocenteService().getDocentes());
-        return docentesList;
     }
     
     /**

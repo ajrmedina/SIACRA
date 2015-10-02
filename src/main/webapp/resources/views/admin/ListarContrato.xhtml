@@ -62,8 +62,8 @@
                    <!-- <p:outputLabel id="estado" value="Habilitar estado?" rendered="#{contratoBean.insert == true}"/>
                     <p:selectBooleanCheckbox value="#{contratoBean.co_estado}" rendered="#{contratoBean.insert == true}"/>-->
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" rendered="#{contratoBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{contratoBean.addContrato()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-plus" rendered="#{contratoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:messages :list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" rendered="#{contratoBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{contratoBean.addContrato()}" update=":list:messages :list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-plus" rendered="#{contratoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_contrato').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{escalafonBean.insert}" value="false" />

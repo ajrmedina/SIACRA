@@ -18,6 +18,17 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <h:panelGrid columns="2" cellpadding="5" class="center-element" style="margin-left: 40px ">
+                <p:outputLabel for="asignaturaFilter" value="Filtro por asignatura: " />
+                <p:selectOneMenu id="asignaturaFilter" value="#{grupoBean.FAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                    <f:selectItem itemValue="0" itemLabel="Seleccione una asignatura"  />
+                    <f:selectItems value="#{asignaturaBean.asignaturaList}" var="asign" itemValue="#{asign.idAsignatura}" itemLabel="#{asign.nombreAsignatura}" itemDisabled="#{asign.aprobarasignatura == false || asign.estadoAsignatura == false}"/>
+                    <p:ajax event="change" update="grupo" process="@this" listener="#{grupoBean.refreshGrupos()}" />
+                </p:selectOneMenu>
+                <p:tooltip id="forAsignaturaFilter" for="asignaturaFilter" value="Selecciona la asignatura de la que desea ver los grupos" />
+            </h:panelGrid>
+            <br />
+            <br />
             <p:dataTable id="grupo" var="grupo" value="#{grupoBean.gruposList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="gruposTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
@@ -43,7 +54,7 @@
                 </p:column>
                 
                 <p:column style="width: 5%" headerText="Oferta" filterBy="#{grupo.oferta}" filterStyleClass="hide">                  
-                    <h:outputText value="#{grupo.oferta.ciclo}-#{grupo.oferta.acuerdo}" class="center-element"/>
+                    <h:outputText value="#{grupo.oferta.ciclo.ciclo}-#{grupo.oferta.acuerdo.nombreacuerdo}" class="center-element"/>
                 </p:column>
                 
                 <p:column style="width: 28%" headerText="Horario" filterBy="#{grupo.horario.dia1}" filterStyleClass="hide">                         
@@ -88,7 +99,7 @@
                     <p:outputLabel for="oferta" value="Oferta: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="oferta" value="#{grupoBean.idoferta}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{grupoBean.ofertaList}" var="oferta" itemValue="#{oferta.idOferta}" itemLabel="ciclo : #{oferta.ciclo}- Acuerdo:#{oferta.acuerdo}"/>
+                            <f:selectItems value="#{ofertaBean.ofertaList}" var="oferta" itemValue="#{oferta.idOferta}" itemLabel="Ciclo: #{oferta.ciclo.ciclo} - Acuerdo: #{oferta.acuerdo.nombreacuerdo}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forOferta" for="oferta" value="Seleccione la oferta a la que pertenece el grupo" />
                     </h:panelGroup>
@@ -96,7 +107,7 @@
                     <p:outputLabel for="asignatura" value="Asignatura: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="asignatura" value="#{grupoBean.idAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{grupoBean.asignaturaList}" var="asignatura" itemValue="#{asignatura.idAsignatura}" itemLabel="#{asignatura.nombreAsignatura}"/>
+                            <f:selectItems value="#{asignaturaBean.asignaturaList}" var="asignatura" itemValue="#{asignatura.idAsignatura}" itemLabel="#{asignatura.nombreAsignatura}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forAsignatura" for="asignatura" value="Seleccione la asignatura a la que pertenece el grupo" />
                     </h:panelGroup>
@@ -104,12 +115,12 @@
                     <p:outputLabel for="tipoGrupo" value="Tipo de grupo: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="tipoGrupo" value="#{grupoBean.idTipoGrupo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{grupoBean.tipoGrupoList}" var="tipoGrupo" itemValue="#{tipoGrupo.idTipoGrupo}" itemLabel="#{tipoGrupo.nombreGrupo}"/>
+                            <f:selectItems value="#{tipogrupoBean.gruposList}" var="tipoGrupo" itemValue="#{tipoGrupo.idTipoGrupo}" itemLabel="#{tipoGrupo.nombreGrupo}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forTipoGrupo" for="tipoGrupo" value="Seleccione el tipo de grupo" />
                     </h:panelGroup>
                     
-                    <p:outputLabel for="numero" value="numero: " />
+                    <p:outputLabel for="numero" value="Numero de Grupo: " />
                     <p:inputText id="numero" value="#{grupoBean.numeroGrupo}" required="true">
                         <!-- <f:validateLength minimum="5" maximum="6" /> -->
                     </p:inputText>
@@ -117,7 +128,7 @@
                     <p:outputLabel for="horario" value="Horario: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="horario" value="#{grupoBean.idHorario}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{grupoBean.horarioList}" var="horario" itemValue="#{horario.idhorario}" itemLabel="#{horario.dia1} : #{horario.hinicio1}-#{horario.hfin1} / #{horario.dia2} : #{horario.hinicio2}-#{horario.hfin2}"/>
+                            <f:selectItems value="#{horarioBean.horarioList}" var="horario" itemValue="#{horario.idhorario}" itemLabel="#{horario.dia1} : #{horario.hinicio1}-#{horario.hfin1} / #{horario.dia2} : #{horario.hinicio2}-#{horario.hfin2}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forHorario" for="horario" value="Seleccione el horario" />
                     </h:panelGroup>
@@ -133,8 +144,8 @@
                     </p:inputText>
                 
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" rendered="#{grupoBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{grupoBean.addGrupo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-plus" rendered="#{grupoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:messages :list:grupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" rendered="#{grupoBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{grupoBean.addGrupo()}" update=":list:messages :list:grupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-plus" rendered="#{grupoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_grupo').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{grupoBean.insert}" value="false" />

@@ -137,8 +137,8 @@
                     <p:outputLabel id="aprobado" value="Aprobar Proyecto? " />
                     <p:selectBooleanCheckbox value="#{proyectoBean.aprobarproyecto}" />
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{proyectoBean.updateProyecto()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-refresh" rendered="#{proyectoBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{proyectoBean.addProyecto()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-plus" rendered="#{proyectoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{proyectoBean.updateProyecto()}" update=":list:message :list:proyectos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-refresh" rendered="#{proyectoBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{proyectoBean.addProyecto()}" update=":list:message :list:proyectos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-plus" rendered="#{proyectoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_proyecto').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{proyectoBean.insert}" value="false" />

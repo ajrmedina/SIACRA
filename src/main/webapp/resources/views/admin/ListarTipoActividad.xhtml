@@ -61,8 +61,8 @@
                     </p:inputText>
                   
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipoActividadBean.updateTipoActividad()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-refresh"  rendered="#{tipoActividadBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{tipoActividadBean.addTipoActividad()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-plus" rendered="#{tipoActividadBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipoActividadBean.updateTipoActividad()}" update=":list:messages :list:tipoactividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-refresh"  rendered="#{tipoActividadBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{tipoActividadBean.addTipoActividad()}" update=":list:messages :list:tipoactividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipoactividad').hide()" icon="fa fa-plus" rendered="#{tipoActividadBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tipoactividad').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{tipoActividadBean.insert}" value="false" />

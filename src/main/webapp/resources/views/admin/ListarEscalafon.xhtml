@@ -61,8 +61,8 @@
                         <f:validateRegex pattern="[a-zA-Záéíóú ]+$" />
                     </p:inputText>
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{escalafonBean.updateEscalafon()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-refresh" rendered="#{escalafonBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{escalafonBean.addEscalafon()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-plus" rendered="#{escalafonBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{escalafonBean.updateEscalafon()}" update=":list:messages :list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-refresh" rendered="#{escalafonBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{escalafonBean.addEscalafon()}" update=":list:messages :list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-plus" rendered="#{escalafonBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_escalafon').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{escalafonBean.insert}" value="false" />
