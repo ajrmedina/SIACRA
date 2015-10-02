@@ -16,6 +16,7 @@
                     
     <ui:define name="content">
         <h:form id="list">
+            <p:growl id="message"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="categoria" var="categoria" value="#{categoriaBean.categoriasList}" style="width: 85%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" widgetVar="categoriasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
@@ -81,8 +82,8 @@
                         <f:validateDoubleRange minimum="1" maximum="99" />
                     </p:inputMask>
                         
-                    <p:commandButton id="save_insert" value="Agregar" actionListener="#{categoriaBean.addCategoria()}" update=":list:categoria" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-plus" rendered="#{categoriaBean.insert == true}"/>
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{categoriaBean.updateCategoria()}" update=":list:categoria" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-refresh" rendered="#{categoriaBean.insert == false}"/>
+                    <p:commandButton id="save_insert" value="Agregar" actionListener="#{categoriaBean.addCategoria()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-plus" rendered="#{categoriaBean.insert == true}"/>
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{categoriaBean.updateCategoria()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-refresh" rendered="#{categoriaBean.insert == false}"/>
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_categoria').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{categoriaBean.insert}" value="false" />

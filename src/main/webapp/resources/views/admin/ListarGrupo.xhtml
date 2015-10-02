@@ -16,6 +16,7 @@
     <ui:define name="content">
         
         <h:form id="list">
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="grupo" var="grupo" value="#{grupoBean.gruposList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="gruposTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
@@ -132,8 +133,8 @@
                     </p:inputText>
                 
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:grupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" rendered="#{grupoBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{grupoBean.addGrupo()}" update=":list:grupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-plus" rendered="#{grupoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{grupoBean.updateGrupo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-refresh" rendered="#{grupoBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{grupoBean.addGrupo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_grupo').hide()" icon="fa fa-plus" rendered="#{grupoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_grupo').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{grupoBean.insert}" value="false" />

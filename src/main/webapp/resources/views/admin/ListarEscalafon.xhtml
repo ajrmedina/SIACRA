@@ -16,6 +16,7 @@
     <ui:define name="content">
         
         <h:form id="list">
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="escalafonTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
@@ -56,12 +57,12 @@
                     
                     <p:outputLabel for="tipoEscalafon" value="Tipo escalafón: " />
                     <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}" required="true" requiredMessage="Por favor, ingrese un tipo de escalafón."
-                                 validatorMessage="Solo letras y espacios son permitidos en el campo 'Tipo escalafón'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
-                        <f:validateRegex pattern="[ a-zA-Záéíóú]+$" />
+                                 validatorMessage="Solo letras son permitidos en el campo 'Tipo escalafón'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
+                        <f:validateRegex pattern="[a-zA-Záéíóú ]+$" />
                     </p:inputText>
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{escalafonBean.updateEscalafon()}" update=":list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-refresh" rendered="#{escalafonBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{escalafonBean.addEscalafon()}" update=":list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-plus" rendered="#{escalafonBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{escalafonBean.updateEscalafon()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-refresh" rendered="#{escalafonBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{escalafonBean.addEscalafon()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-plus" rendered="#{escalafonBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_escalafon').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{escalafonBean.insert}" value="false" />

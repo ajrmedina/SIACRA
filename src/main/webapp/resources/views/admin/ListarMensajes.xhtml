@@ -15,7 +15,7 @@
                     
     <ui:define name="content">
         
-        <h:form id="list">
+        <h:form id="list">            
             <p:growl id="message"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="mensaje" var="mensaje" value="#{mensajeBean.getMensajeList(identityBean.principal.user.idUsuario)}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="mensajesTable" emptyMessage="No hay registros en base al criterio proporcionado">

@@ -13,9 +13,9 @@
         Tipos de Contratos de la Universidad de El Salvador 
     </ui:define>
                     
-    <ui:define name="content">
-        
+    <ui:define name="content">        
         <h:form id="list">
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="contrato" var="contrato" value="#{contratoBean.contratoList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="contratosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
@@ -57,13 +57,13 @@
                     <p:outputLabel for="nombre" value="Tipo de contratación : " />
                     <p:inputText id="nombre" value="#{contratoBean.tipocontrato}" required="true" requiredMessage="Por favor, ingrese el tipo de contratación."
                                  validatorMessage="Solo letras son permitidas en el campo 'Tipo de contrato'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
-                        <f:validateRegex pattern="[ a-zA-Záéíóú]+$" /> 
+                        <f:validateRegex pattern="[a-zA-Záéíóú ]+$" /> 
                     </p:inputText>
                    <!-- <p:outputLabel id="estado" value="Habilitar estado?" rendered="#{contratoBean.insert == true}"/>
                     <p:selectBooleanCheckbox value="#{contratoBean.co_estado}" rendered="#{contratoBean.insert == true}"/>-->
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" rendered="#{contratoBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{contratoBean.addContrato()}" update=":list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-plus" rendered="#{contratoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" rendered="#{contratoBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{contratoBean.addContrato()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-plus" rendered="#{contratoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_contrato').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{escalafonBean.insert}" value="false" />

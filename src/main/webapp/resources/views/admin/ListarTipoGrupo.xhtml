@@ -16,6 +16,7 @@
     <ui:define name="content">
         
         <h:form id="list">
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="tipogrupo" var="tipogrupo" value="#{tipogrupoBean.gruposList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipogruposTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
@@ -64,18 +65,18 @@
                                       
                     <p:outputLabel for="tipogrupo" value="Código de grupo: " />
                     <p:inputText id="tipogrupo" value="#{tipogrupoBean.tipoGrupos}" required="true" requiredMessage="Por favor, ingrese el código de grupo."
-                                 validatorMessage="Solo letras, espacios y guiones son permitidos en el campo 'Código de grupo'." onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}">
-                    <f:validateRegex pattern="^[a-zA-Záéíóú-_. ]+$" />
+                                 validatorMessage="Solo letras y guiones son permitidos en el campo 'Código de grupo'." onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}">
+                    <f:validateRegex pattern="^[a-zA-Záéíóú-_]+$" />
                 </p:inputText>
                 
                 <p:outputLabel for="nombregrupo" value="Tipo de grupo: " />
                 <p:inputText id="nombregrupo" value="#{tipogrupoBean.nombreGrupo}" required="true" requiredMessage="Por favor, ingrese el nombre del tipo de grupo." 
-                             onkeyup="if(this.value.length>25){this.value=this.value.substring(0,25);}" validatorMessage="No se admiten caracteres especiales en el campo 'Tipo de grupo'.">
-                    <f:validateRegex pattern="^[a-zA-Záéíóú-. ]+$" />
+                             onkeyup="if(this.value.length>25){this.value=this.value.substring(0,25);}" validatorMessage="Solo letras son permitidos en el campo 'Tipo de grupo'.">
+                    <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />
                 </p:inputText>
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipogrupoBean.updateTipoGrupo()}" update=":list:tipogrupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-refresh" rendered="#{tipogrupoBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{tipogrupoBean.addTipoGrupo()}" update=":list:tipogrupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-plus" rendered="#{tipogrupoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipogrupoBean.updateTipoGrupo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-refresh" rendered="#{tipogrupoBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{tipogrupoBean.addTipoGrupo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-plus" rendered="#{tipogrupoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tipogrupo').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{tipogrupoBean.insert}" value="false" />

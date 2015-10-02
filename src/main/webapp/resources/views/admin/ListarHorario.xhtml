@@ -16,6 +16,7 @@
     <ui:define name="content">
         
         <h:form id="list">
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="horario" var="horario" value="#{horarioBean.horarioList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="horariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
@@ -124,8 +125,8 @@
                     <p:calendar id="hfin2" value="#{horarioBean.hfin2}" pattern="HH:mm" timeOnly="true" 
                                 locale="es" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}" />
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" rendered="#{horarioBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{horarioBean.addHorario()}" update=":list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-plus" rendered="#{horarioBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" rendered="#{horarioBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{horarioBean.addHorario()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-plus" rendered="#{horarioBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_horario').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{horarioBean.insert}" value="false" />

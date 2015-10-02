@@ -16,6 +16,7 @@
     <ui:define name="content">
         
         <h:form id="list">
+            <p:growl id="message"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable rowKey="#{asignaturaBean.cicloImpartir}" id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 100%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="asignaturasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
@@ -114,15 +115,15 @@
                     
                     <p:outputLabel for="codigoAsignatura" value="Codigo de asignatura: " />
                     <p:inputText id="codigoAsignatura" value="#{asignaturaBean.codigoAsignatura}" required="true" requiredMessage="Por favor, ingrese el código de la asignatura."
-                                 validatorMessage="Solo letras y número son permitidos en el campo 'Código de asignatura'." onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}">                        
-                        <f:validateRegex pattern="[ a-zA-Z0-9-]+$" />
+                                 validatorMessage="Solo letras y números son permitidos en el campo 'Código de asignatura'." onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}">                        
+                        <f:validateRegex pattern="[a-zA-Z0-9]+$" />
                         
                     </p:inputText>
                 
                     <p:outputLabel for="nombreAsignatura" value="Nombre de la asignatura: " />
                     <p:inputText id="nombreAsignatura" value="#{asignaturaBean.nombreAsignatura}" required="true" requiredMessage="Por favor, ingrese el nombre de la asignatura."
                                  validatorMessage="Solo se admiten letras en el campo 'Nombre de asignatura'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                        
-                        <f:validateRegex pattern="[ a-zA-Záéíóú.]+$" />
+                        <f:validateRegex pattern="[a-zA-Záéíóú. ]+$" />
                     </p:inputText>
                 
                     <p:outputLabel for="ciclo" value="Ciclo :" />
@@ -146,8 +147,8 @@
                         <f:selectItem itemLabel="Electiva" itemValue="Electiva" />                        
                     </p:selectOneMenu>
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{asignaturaBean.addAsignatura()}" update=":list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-plus" rendered="#{asignaturaBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{asignaturaBean.addAsignatura()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-plus" rendered="#{asignaturaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_asignatura').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="false" />

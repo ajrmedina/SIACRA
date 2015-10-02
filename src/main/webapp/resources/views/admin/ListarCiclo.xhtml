@@ -15,7 +15,7 @@
     </ui:define>
                     
     <ui:define name="content">
-        <h:form id="list">
+        <h:form id="list">            
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="ciclo" var="ciclo" value="#{cicloBean.cicloList}" style="width: 50%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="cicloTable" emptyMessage="No hay registros en base al criterio proporcionado" >
@@ -65,19 +65,19 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
                                  
                     <p:outputLabel for="ciclo" value="Ciclo académico:" />
-                    <p:inputText id="ciclo" value="#{cicloBean.ciclo}" required="true" requiredMessage="Por favor, ingrese el ciclo."
+                    <p:inputText id="ciclo" value="#{cicloBean.ciclo}" required="true" requiredMessage="Por favor, ingrese el ciclo." size="5"
                              validatorMessage="Solo se admiten letras en el campo 'Ciclo académico'." onkeyup="if(this.value.length>2){this.value=this.value.substring(0,2);}">
-                        <f:validateRegex pattern="^[a-zA-Záéíóú-. ]+$" />                                               
+                        <f:validateRegex pattern="^[a-zA-Z]+$" />                                               
                     </p:inputText>
                         
                     <p:outputLabel for="anio" value="Año: " />
-                    <p:inputText id="anio" value="#{cicloBean.anio}" required="true" requiredMessage="Por favor, ingrese el año." 
+                    <p:inputText id="anio" value="#{cicloBean.anio}" required="true" requiredMessage="Por favor, ingrese el año." size="7"
                                  validatorMessage="Solo se admiten número en el campo 'Año'." onkeyup="if(this.value.length>4){this.value=this.value.substring(0,4);}">                          
                         <f:validateRegex pattern="^[0-9]+$" /> 
                     </p:inputText>                    
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{cicloBean.updateCiclo()}" update=":list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-refresh" rendered="#{cicloBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{cicloBean.addCiclo()}" update=":list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-plus" rendered="#{cicloBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{cicloBean.updateCiclo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-refresh" rendered="#{cicloBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{cicloBean.addCiclo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-plus" rendered="#{cicloBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_ciclo').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{cicloBean.insert}" value="false" />
