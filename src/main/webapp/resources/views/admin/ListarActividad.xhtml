@@ -16,6 +16,7 @@
     <ui:define name="content">
         
         <h:form id="list">
+            <p:growl id="message"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="actividad" var="actividad" value="#{actividadBean.actividadList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="actividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header" >
@@ -85,21 +86,21 @@
                 
                     <p:outputLabel for="nombreactividad" value="Nombre de actividad: " />
                     <p:inputText id="nombreactividad" value="#{actividadBean.nombreactividad}" required="true" requiredMessage="Por favor, ingrese el nombre de la actividad."
-                                 validatorMessage="No se permiten caracteres especiales en el campo 'Nombre de actividad'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                        
-                        <f:validateRegex pattern="[ a-zA-Záéíóú.-()/0-9]+$" />
+                                 validatorMessage="Solo se admiten letras y números en el campo 'Nombre de actividad'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                        
+                        <f:validateRegex pattern="[a-zA-Záéíóú0-9. ]+$" />
                     </p:inputText>
                
                     <p:outputLabel for="descripcionactividad" value="Descripción de actividad: " />
-                    <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="false" 
-                                     validatorMessage="No se permiten caracteres especiales en el campo 'Descripción de actividad'" onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                       
-                       <f:validateRegex pattern="[ a-zA-Záéíóú.-()/0-9]+$" />
+                    <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}"  
+                                     validatorMessage="Solo se admiten letras y números en el campo 'Descripción de actividad'" onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                       
+                       <f:validateRegex pattern="[a-zA-Záéíóú0-9. ]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel id="aprobada" value="Aprobar actividad? " />
                     <p:selectBooleanCheckbox value="#{actividadBean.aprovaractividad}" />
    
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{actividadBean.updateActividad()}" update=":list:actividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-refresh" rendered="#{actividadBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{actividadBean.addActividad()}" update=":list:actividad" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-plus" rendered="#{actividadBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{actividadBean.updateActividad()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-refresh" rendered="#{actividadBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{actividadBean.addActividad()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_actividad').hide()" icon="fa fa-plus" rendered="#{actividadBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_actividad').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{actividadBean.insert}" value="false" />

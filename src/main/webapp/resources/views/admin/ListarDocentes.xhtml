@@ -15,6 +15,7 @@
                     
     <ui:define name="content">
         <h:form id="list">
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="docentes" var="docente" value="#{docenteBean.docentesList}" style="width: 100%" class="center-element" paginator="true" rows="10" paginatorPosition="bottom" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header" >
@@ -109,8 +110,8 @@
                         <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoria del docente" />
                     </h:panelGroup>
                     
-                    <p:commandButton id="save_insert" value="Agregar" actionListener="#{docenteBean.addDocente()}" update=":list:docentes" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-plus" rendered="#{docenteBean.insert == true}" />
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{docenteBean.updateDocente()}" update=":list:docentes" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-refresh" rendered="#{docenteBean.insert == false}"/>
+                    <p:commandButton id="save_insert" value="Agregar" actionListener="#{docenteBean.addDocente()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-plus" rendered="#{docenteBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{docenteBean.updateDocente()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_docente').hide()" icon="fa fa-refresh" rendered="#{docenteBean.insert == false}"/>
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_docente').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{docenteBean.insert}" value="false" />
