@@ -41,7 +41,6 @@ public class TrabajoGraduacionBean implements Serializable {
     private EscuelaService escuelaService;
     
     private List<TrabajoGraduacion> trabajoGraduacionList;
-    private List<Responsabilidad> responsabilidadList;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -222,20 +221,6 @@ public class TrabajoGraduacionBean implements Serializable {
      */
     public void setTrabajoGraduacionList(List<TrabajoGraduacion> trabajoGraduacionList) {
         this.trabajoGraduacionList = trabajoGraduacionList;
-    }
-
-    /**
-     * @return the responsabilidadList
-     */
-    public List<Responsabilidad> getResponsabilidadList() {
-        return responsabilidadList;
-    }
-
-    /**
-     * @param responsabilidadList the responsabilidadList to set
-     */
-    public void setResponsabilidadList(List<Responsabilidad> responsabilidadList) {
-        this.responsabilidadList = responsabilidadList;
     }
 
     /**

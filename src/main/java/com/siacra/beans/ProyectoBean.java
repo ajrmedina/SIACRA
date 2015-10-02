@@ -42,8 +42,7 @@ public class ProyectoBean implements Serializable{
     @ManagedProperty(value = "#{EscuelaService}")
     private EscuelaService escuelaService;
     
-    private List<Proyecto> proyectoList; 
-    private List<Responsabilidad> responsabilidadList; 
+    private List<Proyecto> proyectoList;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -194,15 +193,7 @@ public class ProyectoBean implements Serializable{
     public void setProyectoList(List<Proyecto> proyectoList) {
         this.proyectoList = proyectoList;
     }
-
-    public List<Responsabilidad> getResponsabilidadList() {
-        return responsabilidadList;
-    }
-
-    public void setResponsabilidadList(List<Responsabilidad> responsabilidadList) {
-        this.responsabilidadList = responsabilidadList;
-    }
-
+    
     public int getIdproyecto() {
         return idproyecto;
     }

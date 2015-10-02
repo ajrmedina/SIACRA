@@ -75,12 +75,9 @@ public class ResponsabilidadBean implements Serializable {
     private EscuelaService escuelaService;
     
     private List<Responsabilidad> responsabilidadList;
-    private List<Actividad> actividadList;
-    private List<Docente> docenteList;
     private List<TrabajoGraduacion> trabajoGraduacionList;
     private List<Proyecto> proyectoList;
     private List<Grupo> gruposList;
-    private List<Asignatura> asignaturaList;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -394,6 +391,10 @@ public class ResponsabilidadBean implements Serializable {
         return continua;
     }
     
+    public void refreshGrupos() {
+        setGruposList(getGrupoService().getGruposByAsignatura(getIdAsignatura()));
+    }
+    
     public void aprobarResponsabilidad() {
         if(getCiclo().getCiEstado()) {
             getResponsabilidadService().aprobarResponsabilidad(getIdEscuela(), getCiclo().getIdCiclo());
@@ -533,38 +534,6 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     /**
-     * @return the actividadList
-     */
-    public List<Actividad> getActividadList() {
-        actividadList = new ArrayList<>();
-        actividadList.addAll(getActividadService().getActividades());
-        return actividadList;
-    }
-    
-    /**
-     * @param actividadList the actividadList to set
-     */
-    public void setActividadList(List<Actividad> actividadList) {
-        this.actividadList = actividadList;
-    }
-    
-    /**
-     * @return the docenteList
-     */
-    public List<Docente> getDocenteList() {
-        docenteList = new ArrayList<>();
-        docenteList.addAll(getDocenteService().getDocentesByEscuela(id_escuela));
-        return docenteList;
-    }
-
-    /**
-     * @param docenteList the docenteList to set
-     */
-    public void setDocenteList(List<Docente> docenteList) {
-        this.docenteList = docenteList;
-    }
-    
-    /**
      * @return the trabajoGraduacionList
      */
     public List<TrabajoGraduacion> getTrabajoGraduacionList() {
@@ -591,23 +560,11 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public List<Grupo> getGruposList() {
-        gruposList = new ArrayList<>();
-        gruposList.addAll(getGrupoService().getGrupos());
         return gruposList;
     }
 
     public void setGruposList(List<Grupo> gruposList) {
         this.gruposList = gruposList;
-    }
-    
-    public List<Asignatura> getAsignaturaList() {
-        asignaturaList = new ArrayList<>();
-        asignaturaList.addAll(getAsignaturaService().getAsignaturasByEscuela(id_escuela));
-        return asignaturaList;
-    }
-    
-    public void setAsignaturaList(List<Asignatura> asignaturaList) {
-        this.asignaturaList = asignaturaList;
     }
     
     /**
@@ -1136,27 +1093,21 @@ public class ResponsabilidadBean implements Serializable {
     
     public void vincularGrupo(Grupo grp){
         try {
+            Responsabilidad responsabilidad;
             if(isInsert()){
                 addResponsabilidad();
-                Responsabilidad responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
-                Grupo grupo = getGrupoService().getGrupoById(grp.getIdGrupo());
-                AcademicaGrupo ag = new AcademicaGrupo();
-                ag.setGrupo(grupo);
-                ag.setResponsabilidad(responsabilidad);
-                getAcademicaGrupoService().addAcademicaGrupo(ag);
-                addMessage("El grupo fue vinculado correctamente a la responsabilidad");
-                //reset();
+                responsabilidad = getResponsabilidadService().getLastResponsabilidad(this.getIdDocente());
             }
             else {
                 updateResponsabilidad();
-                Responsabilidad responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
-                Grupo grupo = getGrupoService().getGrupoById(grp.getIdGrupo());
-                AcademicaGrupo ag = new AcademicaGrupo();
-                ag.setGrupo(grupo);
-                ag.setResponsabilidad(responsabilidad);
-                getAcademicaGrupoService().addAcademicaGrupo(ag);
+                responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
             }
-            
+            Grupo grupo = getGrupoService().getGrupoById(grp.getIdGrupo());
+            AcademicaGrupo ag = new AcademicaGrupo();
+            ag.setGrupo(grupo);
+            ag.setResponsabilidad(responsabilidad);
+            getAcademicaGrupoService().addAcademicaGrupo(ag);
+            addMessage("El grupo fue vinculado correctamente a la responsabilidad");
         } catch (Exception e) {
             e.printStackTrace();
         }

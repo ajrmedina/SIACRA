@@ -88,8 +88,8 @@
                         <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />                                                                    
                     </p:inputText>
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{acuerdoBean.updateAcuerdo()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-refresh" rendered="#{acuerdoBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{acuerdoBean.addAcuerdo()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-plus" rendered="#{acuerdoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{acuerdoBean.updateAcuerdo()}" update=":list:message :list:acuerdo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-refresh" rendered="#{acuerdoBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{acuerdoBean.addAcuerdo()}" update=":list:message :list:acuerdo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-plus" rendered="#{acuerdoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_acuerdo').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{acuerdoBean.insert}" value="false" />

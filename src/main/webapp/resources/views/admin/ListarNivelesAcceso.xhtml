@@ -57,8 +57,8 @@
                         <f:validateRegex pattern="^[a-zA-Z -_]+$" />
                     </p:inputText>
 
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{nivelAccesoBean.addAcceso()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-plus" rendered="#{nivelAccesoBean.insert == true}" />
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{nivelAccesoBean.updateAcceso()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-refresh" rendered="#{nivelAccesoBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{nivelAccesoBean.addAcceso()}" update=":list:messages :list:nivel" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-plus" rendered="#{nivelAccesoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{nivelAccesoBean.updateAcceso()}" update=":list:messages :list:nivel" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-refresh" rendered="#{nivelAccesoBean.insert == false}"/>
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_nivel').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{nivelAccesoBean.insert}" value="false" />

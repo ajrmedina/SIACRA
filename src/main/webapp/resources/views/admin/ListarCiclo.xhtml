@@ -76,8 +76,8 @@
                         <f:validateRegex pattern="^[0-9]+$" /> 
                     </p:inputText>                    
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{cicloBean.updateCiclo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-refresh" rendered="#{cicloBean.insert == false}"/>
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{cicloBean.addCiclo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-plus" rendered="#{cicloBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{cicloBean.updateCiclo()}" update=":list:messages :list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-refresh" rendered="#{cicloBean.insert == false}"/>
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{cicloBean.addCiclo()}" update=":list:messages :list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-plus" rendered="#{cicloBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_ciclo').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{cicloBean.insert}" value="false" />

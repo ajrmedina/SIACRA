@@ -66,4 +66,9 @@ public class GrupoDao {
         List list = getSessionFactory().getCurrentSession().createQuery("from Grupo").list();
         return list;
     }
+    
+    public List<Grupo> getGruposByAsignatura(int id) {
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM Grupo WHERE idasignatura=?").setParameter(0, id).list();
+        return list;
+    }
 }

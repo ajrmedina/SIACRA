@@ -16,6 +16,7 @@
                     
     <ui:define name="content">
         <h:form id="list">
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                      
             <p:panelGrid style="margin-top:20px" class="center-element">
@@ -206,8 +207,8 @@
                     <p:outputLabel for="horafin" value="Hora de Finalización:" />
                     <p:inputMask id="horafin" value="#{permanenciaBean.horaFin}" mask="99:99" required="true" requiredMessage="Por favor, seleccione la hora de finalización."/>
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{permanenciaBean.updatePermanencia()}" update=":list:permanencia" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{permanenciaBean.addPermanencia()}" update=":list:permanencia" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{permanenciaBean.updatePermanencia()}" update=":list:permanencia :list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{permanenciaBean.addPermanencia()}" update=":list:permanencia :list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_permanencia').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{permanenciaBean.insert}" value="false" />

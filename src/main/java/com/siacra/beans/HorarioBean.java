@@ -38,8 +38,6 @@ public class HorarioBean implements Serializable{
     private EscuelaService escuelaService;
     
     private List<Horario> horarioList;
-    private List<Horario> horarioEscuelaList;
-    private List<Escuela> escuelaList;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -61,20 +59,8 @@ public class HorarioBean implements Serializable{
 
     public List<Horario> getHorarioList() {
         horarioList = new ArrayList<>();
-        horarioList.addAll(getHorarioService().getHorarios());
+        horarioList.addAll(getHorarioService().getHorariosbyEscuela(id_escuela));
         return horarioList;
-    }
-    
-    public List<Horario> getHorarioEscuelaList(Integer idescuela) {
-        horarioEscuelaList = new ArrayList<>();
-        horarioEscuelaList.addAll(getHorarioService().getHorariosbyEscuela(id_escuela));
-        return horarioEscuelaList;
-    }
-
-    public List<Escuela> getEscuelaList() {
-        escuelaList = new ArrayList<>();
-        escuelaList.addAll(getEscuelaService().getEscuelas());
-        return escuelaList;
     }
     
     public EscuelaService getEscuelaService() {

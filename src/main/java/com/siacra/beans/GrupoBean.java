@@ -5,18 +5,14 @@
  */
 package com.siacra.beans;
 
-import com.siacra.models.Asignatura;
+
 import com.siacra.models.Grupo;
-import com.siacra.models.Horario;
-import com.siacra.models.Oferta;
-import com.siacra.models.TipoGrupo;
 import com.siacra.services.AsignaturaService;
 import com.siacra.services.GrupoService;
 import com.siacra.services.HorarioService;
 import com.siacra.services.OfertaService;
 import com.siacra.services.TipoGrupoService;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -49,15 +45,12 @@ public class GrupoBean implements Serializable{
     private OfertaService ofertaService;
     
     private List<Grupo> gruposList;
-    private List<TipoGrupo> tipoGrupoList;
-    private List<Horario> horarioList;
-    private List<Asignatura> asignaturaList;
-    private List<Oferta> ofertaList;
     
     private Integer idGrupo;
     private Integer idTipoGrupo;
     private Integer idHorario;
     private Integer idAsignatura;
+    private Integer fAsignatura;
     private Integer idoferta;
     private Integer cupo;
     private Integer inscritos;
@@ -199,16 +192,6 @@ public class GrupoBean implements Serializable{
         this.ofertaService = ofertaService;
     }
 
-    public List<Oferta> getOfertaList() {
-        ofertaList = new ArrayList<>();
-        ofertaList.addAll(ofertaService.getOfertas());
-        return ofertaList;
-    }
-
-    public void setOfertaList(List<Oferta> ofertaList) {
-        this.ofertaList = ofertaList;
-    }
-
     public Integer getIdoferta() {
         return idoferta;
     }
@@ -309,26 +292,6 @@ public class GrupoBean implements Serializable{
         this.asignaturaService = asignaturaService;
     }
 
-    public List<Horario> getHorarioList() {
-        horarioList = new ArrayList<>();
-        horarioList.addAll(horarioService.getHorarios());
-        return horarioList;
-    }
-
-    public void setHorarioList(List<Horario> horarioList) {
-        this.horarioList = horarioList;
-    }
-
-    public List<Asignatura> getAsignaturaList() {
-        asignaturaList = new ArrayList<>();
-        asignaturaList.addAll(asignaturaService.getAsignaturas());
-        return asignaturaList;
-    }
-
-    public void setAsignaturaList(List<Asignatura> asignaturaList) {
-        this.asignaturaList = asignaturaList;
-    }
-
     public Integer getIdHorario() {
         return idHorario;
     }
@@ -345,10 +308,15 @@ public class GrupoBean implements Serializable{
         this.idAsignatura = idAsignatura;
     }
     
+    public Integer getFAsignatura() {
+        return fAsignatura;
+    }
 
+    public void setFAsignatura(Integer fAsignatura) {
+        this.fAsignatura = fAsignatura;
+    }
+    
     public List<Grupo> getGruposList() {
-        gruposList = new ArrayList<>();
-        gruposList.addAll(getGrupoService().getGrupos());
         return gruposList;
     }
 
@@ -362,16 +330,6 @@ public class GrupoBean implements Serializable{
 
     public void setTipoGrupoService(TipoGrupoService tipoGrupoService) {
         this.tipoGrupoService = tipoGrupoService;
-    }
-
-    public List<TipoGrupo> getTipoGrupoList() {
-        tipoGrupoList = new ArrayList<>();
-        tipoGrupoList.addAll(getTipoGrupoService().getTipoGrupos());
-        return tipoGrupoList;
-    }
-
-    public void setTipoGrupoList(List<TipoGrupo> tipoGrupoList) {
-        this.tipoGrupoList = tipoGrupoList;
     }
 
     public Integer getIdGrupo() {
@@ -453,6 +411,7 @@ public class GrupoBean implements Serializable{
             else{
                 getGrupoService().addGrupo(grupo);
                 addMessage("El Grupo fue creado exitosamente");
+                refreshGrupos();
             }
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -473,7 +432,7 @@ public class GrupoBean implements Serializable{
             //grupo.setAprobarGrupo(getAprobarGrupo());
             getGrupoService().updateGrupo(grupo);
             addMessage("El grupo fue actualizado exitosamente");
-            
+            refreshGrupos();
         }catch (DataAccessException e){
             e.printStackTrace();
         }
@@ -486,6 +445,7 @@ public class GrupoBean implements Serializable{
             Integer grupoEliminado = grupo.getNumeroGrupo();
             getGrupoService().deleteGrupo(grupo);
             addMessage("El grupo "+ getNumeroGrupo()+" fue eliminado correctamente");
+            refreshGrupos();
         }catch (DataAccessException e){
             e.printStackTrace();
             addMessage("El grupo no puede ser eliminado debido a que tiene registros relacionados");
@@ -503,6 +463,7 @@ public class GrupoBean implements Serializable{
         setNumeroGrupo(grupo.getNumeroGrupo());
         setAprobarGrupo(grupo.getAprobarGrupo());
         setGrEstado(grupo.getGrEstado());
+        setInscritos(grupo.getInscritos());
     }
     
     public void reset(){
@@ -525,7 +486,7 @@ public class GrupoBean implements Serializable{
             grupo.setGrEstado(false);
             getGrupoService().updateGrupo(grupo);
             addMessage("El grupo " + bloqueado + " fue inhabilitado correctamente");
-            
+            refreshGrupos();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -543,10 +504,13 @@ public class GrupoBean implements Serializable{
             grupo.setGrEstado(true);
             getGrupoService().updateGrupo(grupo);
             addMessage("El grupo " + bloqueado + " fue habilitado correctamente");
-            
+            refreshGrupos();
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
     }
     
+    public void refreshGrupos(){
+        setGruposList(getGrupoService().getGruposByAsignatura(getFAsignatura()));
+    }
 }

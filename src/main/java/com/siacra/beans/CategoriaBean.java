@@ -42,8 +42,6 @@ public class CategoriaBean implements Serializable {
     private ContratoService contratoService;
      
     private List<Categoria> categoriasList;
-    private List<Escalafon> escalafonesList;
-    private List<Contrato> contratosList;
     
     private int idCategoria;
     private int idEscalafon;
@@ -178,28 +176,6 @@ public class CategoriaBean implements Serializable {
        this.setIdContrato(0);
        this.setIdEscalafon(0);
        this.setHorasObligatorias(0);
-    }
-
-    /**
-     * Get Escalafones List
-     *
-     * @return List - Escalafon List
-     */
-    public List<Escalafon> getEscalafonesList() {
-        escalafonesList = new ArrayList<>();
-        escalafonesList.addAll(getEscalafonService().getEscalafones());
-        return escalafonesList;
-    }
-    
-    /**
-     * Get Contratos List
-     *
-     * @return List - Contrato List
-     */
-    public List<Contrato> getContratosList() {
-        contratosList = new ArrayList<>();
-        contratosList.addAll(getContratoService().getContratos());
-        return contratosList;
     }
     
     /**

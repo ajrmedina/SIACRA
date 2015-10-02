@@ -14,7 +14,8 @@
     </ui:define>
                     
     <ui:define name="content">
-        <h:form id="list">            
+        <h:form id="list">
+            <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">
@@ -124,13 +125,13 @@
                     <p:outputLabel for="acceso" value="Nivel de Acceso: " />
                     <h:panelGroup layout="block">
                         <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el nivel de acceso del usuario.">
-                            <f:selectItems value="#{userBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}" itemDisabled="#{nivel.estadoAcceso == false}"/>
+                            <f:selectItems value="#{nivelAccesoBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}" itemDisabled="#{nivel.estadoAcceso == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forNivel" for="acceso" value="Seleccione el nivel de acceso para el usuario" />
                     </h:panelGroup>
                     
-                    <p:commandButton id="save_insert" value="Agregar" actionListener="#{userBean.addUser()}" update=":list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_user').hide()" icon="fa fa-plus" rendered="#{userBean.insert == true}"/>
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{userBean.updateUser()}" update=":list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_user').hide()" icon="fa fa-refresh" rendered="#{userBean.insert == false}" />
+                    <p:commandButton id="save_insert" value="Agregar" actionListener="#{userBean.addUser()}" update=":list:messages :list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_user').hide()" icon="fa fa-plus" rendered="#{userBean.insert == true}"/>
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{userBean.updateUser()}" update=":list:messages :list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_user').hide()" icon="fa fa-refresh" rendered="#{userBean.insert == false}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_user').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{userBean.insert}" value="false" />

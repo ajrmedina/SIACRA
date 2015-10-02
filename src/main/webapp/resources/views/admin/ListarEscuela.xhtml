@@ -82,8 +82,8 @@
                         <f:validateRegex pattern="^[a-zA-Záéíóú. ]+$" />                        
                     </p:inputText>
 
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{escuelaBean.updateEscuela()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-refresh" rendered="#{escuelaBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{escuelaBean.addEscuela()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-plus" rendered="#{escuelaBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{escuelaBean.updateEscuela()}" update=":list:messages :list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-refresh" rendered="#{escuelaBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{escuelaBean.addEscuela()}" update=":list:messages :list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-plus" rendered="#{escuelaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_escuela').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{escuelaBean.insert}" value="false" />

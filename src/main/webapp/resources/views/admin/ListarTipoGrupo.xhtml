@@ -66,7 +66,7 @@
                     <p:outputLabel for="tipogrupo" value="Código de grupo: " />
                     <p:inputText id="tipogrupo" value="#{tipogrupoBean.tipoGrupos}" required="true" requiredMessage="Por favor, ingrese el código de grupo."
                                  validatorMessage="Solo letras y guiones son permitidos en el campo 'Código de grupo'." onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}">
-                    <f:validateRegex pattern="^[a-zA-Záéíóú-_]+$" />
+                    <f:validateRegex pattern="^[a-zA-Z-_]+$" />
                 </p:inputText>
                 
                 <p:outputLabel for="nombregrupo" value="Tipo de grupo: " />
@@ -75,8 +75,8 @@
                     <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />
                 </p:inputText>
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipogrupoBean.updateTipoGrupo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-refresh" rendered="#{tipogrupoBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{tipogrupoBean.addTipoGrupo()}" update=":list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-plus" rendered="#{tipogrupoBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{tipogrupoBean.updateTipoGrupo()}" update=":list:messages :list:tipogrupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-refresh" rendered="#{tipogrupoBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{tipogrupoBean.addTipoGrupo()}" update=":list:messages :list:tipogrupo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tipogrupo').hide()" icon="fa fa-plus" rendered="#{tipogrupoBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tipogrupo').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{tipogrupoBean.insert}" value="false" />

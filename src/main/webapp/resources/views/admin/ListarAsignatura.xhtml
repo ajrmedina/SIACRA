@@ -147,8 +147,8 @@
                         <f:selectItem itemLabel="Electiva" itemValue="Electiva" />                        
                     </p:selectOneMenu>
                     
-                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == false}" />
-                    <p:commandButton id="save_new" value="Agregar" actionListener="#{asignaturaBean.addAsignatura()}" update=":list:message" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-plus" rendered="#{asignaturaBean.insert == true}" />
+                    <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:message :list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == false}" />
+                    <p:commandButton id="save_new" value="Agregar" actionListener="#{asignaturaBean.addAsignatura()}" update=":list:message :list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-plus" rendered="#{asignaturaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_asignatura').hide()" icon="fa fa-ban">
                       <p:resetInput target="update" />
                       <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="false" />

@@ -44,7 +44,6 @@ public class UserBean implements Serializable {
     private NivelAccesoService nivelAccesoService;
     
     private List<User> usersList;
-    private List<NivelAcceso> nivelesList;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -207,17 +206,6 @@ public class UserBean implements Serializable {
         usersList = new ArrayList<>();
         usersList.addAll(getUserService().getUsersByEscuela(cod_escuela));
         return usersList;
-    }
-    
-    /**
-     * Get NivelAcceso List
-     *
-     * @return List - NivelAcceso List
-     */
-    public List<NivelAcceso> getNivelAccesoList() {
-        nivelesList = new ArrayList<>();
-        nivelesList.addAll(getNivelAccesoService().getNivelesAcceso());
-        return nivelesList;
     }
     
     /**
