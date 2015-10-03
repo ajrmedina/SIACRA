@@ -16,7 +16,7 @@
     
                     
     <ui:define name="content">
-        <h:form id="list" style="margin-left: 40%">
+        <h:form id="list" style="margin-left: 40%" target="_blank">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:commandButton id="reporte_button" update=":generarReporte" 
                              oncomplete="PF('generar_reporte').show()" 
@@ -33,6 +33,11 @@
             <br />
             <br />
             <p:commandButton id="tiempoDoc_button" value="Docentes con Tiempo Adicional/Integral" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-o" style="font-size: large" />
+            <br />
+            <br />
+            <p:commandButton id="inscritos_button" value="Alumnos incritos por materia" actionListener="#{reporte.identifyReport('InscritosPorMateria')}" style="font-size: large" icon="fa fa-file-o" ajax="false">
+                <f:param value="#{identityBean.principal.escuela.idescuela}" name="idEscuela" />
+            </p:commandButton>
         </h:form>
         
         <p:dialog header="Seleccione la escuela" id="generarReporte" widgetVar="generar_reporte" modal="true" resizable="false" closable="false">
