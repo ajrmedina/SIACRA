@@ -11,38 +11,35 @@
     </ui:define>
     
     <ui:define name="title-view">
-        <h2 class="title"> Generar reportes </h2>
+        <h2 class="title"> Generar Reportes </h2>
     </ui:define>
     
                     
     <ui:define name="content">
-        <h:form id="list" style="margin-left: 40%" target="_blank">
+        <h:form id="list" style="margin-left: 30%" target="_blank">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:commandButton id="reporte_button" update=":generarReporte" 
-                             oncomplete="PF('generar_reporte').show()" 
-                             icon="fa fa-file-o" value="Docentes Servicios Profesionales"
-                             actionListener="#{reporte.identifyReport('ServiciosProfesionales')}"
-                             style="font-size: large"
-                             />
-            <br />
-            <br />
-            <p:commandButton id="tgfinalizados_button" value="Trabajos de Graduacion finalizados" actionListener="#{reporte.identifyReport('TGFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-o" style="font-size: large" />
-            <br />
-            <br />
-            <p:commandButton id="proyectosfinalizados_button" value="Proyectos finalizados" actionListener="#{reporte.identifyReport('ProyectosFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-o" style="font-size: large" />
-            <br />
-            <br />
-            <p:commandButton id="tiempoDoc_button" value="Docentes con Tiempo Adicional/Integral" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-o" style="font-size: large" />
-            <br />
-            <br />
-            <p:commandButton id="inscritos_button" value="Alumnos incritos por materia" actionListener="#{reporte.identifyReport('InscritosPorMateria')}" style="font-size: large" icon="fa fa-file-o" ajax="false">
-                <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
-            </p:commandButton>
-            <br />
-            <br />
-            <p:commandButton id="grupos_noasignados" value="Grupos de asignaturas no asignados" actionListener="#{reporte.identifyReport('GruposNoAsignados')}" style="font-size: large" icon="fa fa-file-o" ajax="false">
-                <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
-            </p:commandButton>
+            
+            <p:tieredMenu style="width:450px">
+                <p:submenu label="Reportes sobre Asignaturas" icon="fa fa-book" class="font-m">
+                    <p:menuitem value="Inscritos en cada Asignatura" actionListener="#{reporte.identifyReport('InscritosPorMateria')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
+                        <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
+                    </p:menuitem>
+                </p:submenu>
+                <p:submenu label="Reportes sobre Grupos" icon="fa fa-group" class="font-m">
+                    <p:menuitem value="Grupos no asignados" actionListener="#{reporte.identifyReport('GruposNoAsignados')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
+                        <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
+                    </p:menuitem>
+                </p:submenu>
+                <p:submenu label="Reportes sobre Docentes" icon="fa fa-user" class="font-m">
+                    <p:menuitem value="Servicios Profesionales" actionListener="#{reporte.identifyReport('ServiciosProfesionales')}" update=":generarReporte" oncomplete="PF('generar_reporte').show()" icon="fa fa-file-pdf-o" class="font-s" />
+                    <p:menuitem value="Tiempo Adicional/Integral" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-pdf-o" class="font-s" />
+                </p:submenu>
+                <p:submenu label="Reportes sobre Trabajos de Graduacion y Proyectos" icon="fa fa-clipboard" class="font-m">
+                    <p:menuitem value="Trabajos de Graduacion" actionListener="#{reporte.identifyReport('TGFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-pdf-o" class="font-s" />
+                    <p:menuitem value="Proyectos" actionListener="#{reporte.identifyReport('ProyectosFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-pdf-o" class="font-s" />
+                </p:submenu>
+            </p:tieredMenu>
+            
         </h:form>
         
         <p:dialog header="Seleccione la escuela" id="generarReporte" widgetVar="generar_reporte" modal="true" resizable="false" closable="false">
