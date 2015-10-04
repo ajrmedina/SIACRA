@@ -42,7 +42,7 @@ body {
 
 ul.ui-menu-child {
     white-space: nowrap;
-    width: 175px !important;
+    width: 225px !important;
 }
         
 /*Hide Filters*/
@@ -53,4 +53,12 @@ ul.ui-menu-child {
 
 .ui-selectonemenu-panel.hideDisabled .ui-selectonemenu-item.ui-state-disabled{
     display: none;
+}
+
+.font-s{
+    font-size: small;
+}
+
+.font-m{
+    font-size: medium;
 }
