@@ -38,6 +38,11 @@
             <p:commandButton id="inscritos_button" value="Alumnos incritos por materia" actionListener="#{reporte.identifyReport('InscritosPorMateria')}" style="font-size: large" icon="fa fa-file-o" ajax="false">
                 <f:param value="#{identityBean.principal.escuela.idescuela}" name="idEscuela" />
             </p:commandButton>
+            <br />
+            <br />
+            <p:commandButton id="grupos_noasignados" value="Grupos de asignaturas no asignados" actionListener="#{reporte.identifyReport('GruposNoAsignados')}" style="font-size: large" icon="fa fa-file-o" ajax="false">
+                <f:param value="#{identityBean.principal.escuela.idescuela}" name="idEscuela" />
+            </p:commandButton>
         </h:form>
         
         <p:dialog header="Seleccione la escuela" id="generarReporte" widgetVar="generar_reporte" modal="true" resizable="false" closable="false">
