@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -24,7 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  */
 @ManagedBean(name="identityBean")
-@ViewScoped
+@RequestScoped
 public class IdentityBean {
   
     private Docente principal = null; 

@@ -36,12 +36,12 @@
             <br />
             <br />
             <p:commandButton id="inscritos_button" value="Alumnos incritos por materia" actionListener="#{reporte.identifyReport('InscritosPorMateria')}" style="font-size: large" icon="fa fa-file-o" ajax="false">
-                <f:param value="#{identityBean.principal.escuela.idescuela}" name="idEscuela" />
+                <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
             </p:commandButton>
             <br />
             <br />
             <p:commandButton id="grupos_noasignados" value="Grupos de asignaturas no asignados" actionListener="#{reporte.identifyReport('GruposNoAsignados')}" style="font-size: large" icon="fa fa-file-o" ajax="false">
-                <f:param value="#{identityBean.principal.escuela.idescuela}" name="idEscuela" />
+                <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
             </p:commandButton>
         </h:form>
         
@@ -94,7 +94,7 @@
             </h:form>
         </p:dialog>
         
-       <p:dialog header="Seleccione la escuela" id="generarReporteDocentes" widgetVar="generar_reporteDoc" modal="true" resizable="false" closable="false">
+       <p:dialog header="Parametros del reporte" id="generarReporteDocentes" widgetVar="generar_reporteDoc" modal="true" resizable="false" closable="false">
             <h:form id="codEscuela" target="_blank">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element" >
@@ -113,9 +113,9 @@
                         <f:selectItem itemValue="Integral" itemLabel="Integral"/>
                     </p:selectOneMenu>
                     <p:commandButton  id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporteDoc').hide()"  icon="fa fa-check" /> 
-                    <p:commandButton  immediate="true" update=":generarReporteDocentes" id="cancel" value="Cancelar"  icon="fa fa-ban" >
+                    <p:commandButton  immediate="true" update=":generarReporteDocentes" id="exit" value="Salir" oncomplete="PF('generar_reporteDoc').hide()" icon="fa fa-ban" >
                         <f:setPropertyActionListener target="#{reporte.estado == true}" value="true" />
-                         <p:resetInput target=":generarReporteDocentes" />
+                        <p:resetInput target=":generarReporteDocentes" />
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>
