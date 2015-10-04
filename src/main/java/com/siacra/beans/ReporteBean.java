@@ -82,10 +82,10 @@ public class ReporteBean implements Serializable{
                 parameter.put("responsabilidad_TIPODETIEMPO", getTiempoDoc());
                 break;
             case "rptInscritosPorMateria":
-                parameter.put("id_escuela", Integer.parseInt(viewparams.get("idEscuela")));
+                parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
                 break;
             case "rptGruposNoAsignados":
-                parameter.put("id_escuela",Integer.parseInt(viewparams.get("idEscuela")));
+                parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
                 break;
                 
         }
