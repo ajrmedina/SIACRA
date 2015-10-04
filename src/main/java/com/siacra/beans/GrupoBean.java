@@ -5,15 +5,20 @@
  */
 package com.siacra.beans;
 
-
+import com.siacra.models.Asignatura;
 import com.siacra.models.Grupo;
+import com.siacra.models.Horario;
+import com.siacra.models.Oferta;
+import com.siacra.models.TipoGrupo;
 import com.siacra.services.AsignaturaService;
 import com.siacra.services.GrupoService;
 import com.siacra.services.HorarioService;
 import com.siacra.services.OfertaService;
 import com.siacra.services.TipoGrupoService;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -27,7 +32,8 @@ import org.springframework.dao.DataAccessException;
  */
 @ManagedBean(name="grupoBean")
 @ViewScoped
-public class GrupoBean implements Serializable{
+public class GrupoBean implements Serializable
+{
     
     @ManagedProperty(value="#{GrupoService}")
     private GrupoService grupoService;
@@ -45,12 +51,15 @@ public class GrupoBean implements Serializable{
     private OfertaService ofertaService;
     
     private List<Grupo> gruposList;
+    private List<TipoGrupo> tipoGrupoList;
+    private List<Horario> horarioList;
+    private List<Asignatura> asignaturaList;
+    private List<Oferta> ofertaList;
     
     private Integer idGrupo;
     private Integer idTipoGrupo;
     private Integer idHorario;
     private Integer idAsignatura;
-    private Integer fAsignatura;
     private Integer idoferta;
     private Integer cupo;
     private Integer inscritos;
@@ -59,20 +68,25 @@ public class GrupoBean implements Serializable{
     private boolean grEstado;
     private boolean insert;
     
+    private Grupo grupo1;
+    private Grupo grupo2;
+    private boolean grupo1yes;
+    private boolean grupo2yes;
+    private boolean mergeOk;
     
     /***********************************************/
-    private Integer idGrupoFusion;
-    private Integer idTipoGrupoFusion;
-    private Integer idHorarioFusion;
-    private Integer idAsignaturaFusion;
-    private Integer cupoFusion;
-    private Integer inscritosFusion;
-    private Integer numeroGrupoFusion;
-    private boolean aprobarGrupoFusion;
-    private boolean grEstadoFusion;
-    
-    private boolean merge1=false;
-    private boolean merge2=false;
+//    private Integer idGrupoFusion;
+//    private Integer idTipoGrupoFusion;
+//    private Integer idHorarioFusion;
+//    private Integer idAsignaturaFusion;
+//    private Integer cupoFusion;
+//    private Integer inscritosFusion;
+//    private Integer numeroGrupoFusion;
+//    private boolean aprobarGrupoFusion;
+//    private boolean grEstadoFusion;
+//    
+//    private boolean merge1=false;
+//    private boolean merge2=false;
 
 //    private Integer grupoIdfusion1;
 //    private Integer grupoInscritosFusion1;
@@ -81,20 +95,61 @@ public class GrupoBean implements Serializable{
 //    private Integer grupoInscritosFusion2;
 //    private Integer grupoCuposFusion2;
     
+    public void selectGrupo1(Grupo grupo)
+    {
+        setGrupo1(grupo);
+        setGrupo1yes(true);
+        addMessage("El grupo : "+grupo.getNumeroGrupo()+" ha sido seleccionado");
+        
+        if(isGrupo1yes() && isGrupo2yes())
+        {
+            setMergeOk(true);
+        }
+        
+        
+    }
+    
+    public void selectGrupo2(Grupo grupo)
+    {
+        setGrupo2(grupo);
+        setGrupo2yes(true);
+        addMessage("El grupo : "+grupo.getNumeroGrupo()+" ha sido seleccionado");
+        
+        if(isGrupo1yes() && isGrupo2yes())
+        {
+            setMergeOk(true);
+        }
+        
+    }
     
     public void mergeGrupos(){
         
-        setMerge1(false);
-        setMerge2(false);
-        
+//        addMessage("Grupo1 :" + getGrupo1().getIdGrupo() +" Grupo 2 : " + getGrupo2().getIdGrupo());
+//        setMerge1(false);
+//        setMerge2(false);
+//        
         try{
-              if( (getInscritos() + getInscritosFusion()) <= getCupoFusion() )
+              if( (getGrupo2().getInscritos() + getGrupo1().getInscritos()) <= getGrupo2().getCupo())
               {
-                  setInscritosFusion( (getInscritos() + getInscritosFusion()) );
+                    Grupo merge = new Grupo();
+                    merge.setIdGrupo(getGrupo2().getIdGrupo());
+                    merge.setHorario(getGrupo2().getHorario());
+                    merge.setAsignatura(getGrupo2().getAsignatura());
+                    merge.setTipoGrupo(getGrupo2().getTipoGrupo());
+                    merge.setOferta(getGrupo2().getOferta());
+                    merge.setCupo(getGrupo2().getCupo());
+                    merge.setNumeroGrupo(getGrupo2().getNumeroGrupo());
+                    merge.setInscritos(getGrupo1().getInscritos()+getGrupo2().getInscritos());
+                    merge.setAprobarGrupo(getGrupo2().getAprobarGrupo());
+                    merge.setGrEstado(getGrupo2().getGrEstado());
+                    //grupo.setAprobarGrupo(getAprobarGrupo());
+                    getGrupoService().updateGrupo(merge);
+                    getGrupoService().deleteGrupo(getGrupo1());
+                    addMessage("Los grupos fueron unidos exitosamente");
               }
               else
               {
-                  addMessage("Error NO se unieron los grupos. La cantidad de inscritos en el grupo "+getNumeroGrupo() +" supera los cupos disponibles en el grupo " + getNumeroGrupoFusion());
+                  addMessage("Error NO se unieron los grupos. La cantidad de inscritos en el grupo "+getGrupo1().getInscritos()+" supera los cupos disponibles en el grupo " + getGrupo2().getNumeroGrupo());
               }
               
         }catch (DataAccessException e){
@@ -104,46 +159,86 @@ public class GrupoBean implements Serializable{
     
     public void cancelGrupoMerge()
     {
-        setMerge1(false);
-        setMerge2(false);
+        setGrupo1yes(false);
+        setGrupo2yes(false);
     }
     
-    public void loadGrupoMerge(Grupo grupo) {
-        
-        if(merge1 == false)
-        {
-            setIdGrupo(grupo.getIdGrupo());
-            setIdTipoGrupo(grupo.getTipoGrupo().getIdTipoGrupo());
-            setIdAsignatura(grupo.getAsignatura().getIdAsignatura());
-            setIdHorario(grupo.getHorario().getIdhorario());
-            setCupo(grupo.getCupo());
-            setNumeroGrupo(grupo.getNumeroGrupo());
-            setAprobarGrupo(grupo.getAprobarGrupo());
-            setGrEstado(grupo.getGrEstado());
-            
-            addMessage("El Grupo "+ getNumeroGrupo() +" fue seleccionado para unirse con otro grupo. Por favor seleccione el grupo destino");
-            
-            setMerge1(true);  
-        }
-        else if ( merge1 == true && merge2 == false )
-        {
-            setIdGrupoFusion(grupo.getIdGrupo());
-            setIdTipoGrupoFusion(grupo.getTipoGrupo().getIdTipoGrupo());
-            setIdAsignaturaFusion(grupo.getAsignatura().getIdAsignatura());
-            setIdHorarioFusion(grupo.getHorario().getIdhorario());
-            setCupoFusion(grupo.getCupo());
-            setNumeroGrupoFusion(grupo.getNumeroGrupo());
-            setAprobarGrupoFusion(grupo.getAprobarGrupo());
-            setGrEstadoFusion(grupo.getGrEstado());
-            
-            setMerge2(true);
-            
-            addMessage("Grupos a unir: Grupo "+ getNumeroGrupo() +" --> con el grupo " + getNumeroGrupoFusion() );
-            
-        }
-        
+//    public void loadGrupoMerge(Grupo grupo) {
+//        
+//        if(merge1 == false)
+//        {
+//            setIdGrupo(grupo.getIdGrupo());
+//            setIdTipoGrupo(grupo.getTipoGrupo().getIdTipoGrupo());
+//            setIdAsignatura(grupo.getAsignatura().getIdAsignatura());
+//            setIdHorario(grupo.getHorario().getIdhorario());
+//            setCupo(grupo.getCupo());
+//            setNumeroGrupo(grupo.getNumeroGrupo());
+//            setAprobarGrupo(grupo.getAprobarGrupo());
+//            setGrEstado(grupo.getGrEstado());
+//            
+//            addMessage("El Grupo "+ getNumeroGrupo() +" fue seleccionado para unirse con otro grupo. Por favor seleccione el grupo destino");
+//            
+//            setMerge1(true);  
+//        }
+//        else if ( merge1 == true && merge2 == false )
+//        {
+//            setIdGrupoFusion(grupo.getIdGrupo());
+//            setIdTipoGrupoFusion(grupo.getTipoGrupo().getIdTipoGrupo());
+//            setIdAsignaturaFusion(grupo.getAsignatura().getIdAsignatura());
+//            setIdHorarioFusion(grupo.getHorario().getIdhorario());
+//            setCupoFusion(grupo.getCupo());
+//            setNumeroGrupoFusion(grupo.getNumeroGrupo());
+//            setAprobarGrupoFusion(grupo.getAprobarGrupo());
+//            setGrEstadoFusion(grupo.getGrEstado());
+//            
+//            setMerge2(true);
+//            
+//            addMessage("Grupos a unir: Grupo "+ getNumeroGrupo() +" --> con el grupo " + getNumeroGrupoFusion() );
+//            
+//        }
+//        
+//    }
+
+    public boolean isMergeOk() {
+        return mergeOk;
     }
 
+    public void setMergeOk(boolean mergeOk) {
+        this.mergeOk = mergeOk;
+    }
+    
+    public Grupo getGrupo1() {
+        return grupo1;
+    }
+
+    public void setGrupo1(Grupo grupo1) {
+        this.grupo1 = grupo1;
+    }
+
+    public Grupo getGrupo2() {
+        return grupo2;
+    }
+
+    public void setGrupo2(Grupo grupo2) {
+        this.grupo2 = grupo2;
+    }
+
+    public boolean isGrupo1yes() {
+        return grupo1yes;
+    }
+
+    public void setGrupo1yes(boolean grupo1yes) {
+        this.grupo1yes = grupo1yes;
+    }
+
+    public boolean isGrupo2yes() {
+        return grupo2yes;
+    }
+
+    public void setGrupo2yes(boolean grupo2yes) {
+        this.grupo2yes = grupo2yes;
+    }
+    
     public Integer getInscritos() {
         return inscritos;
     }
@@ -152,37 +247,37 @@ public class GrupoBean implements Serializable{
         this.inscritos = inscritos;
     }
 
-    public Integer getInscritosFusion() {
-        return inscritosFusion;
-    }
-
-    public void setInscritosFusion(Integer inscritosFusion) {
-        this.inscritosFusion = inscritosFusion;
-    }
-    
-    public boolean isMerge1() {
-        return merge1;
-    }
-
-    public void setMerge1(boolean merge1) {
-        this.merge1 = merge1;
-    }
-
-    public boolean isMerge2() {
-        return merge2;
-    }
-
-    public void setMerge2(boolean merge2) {
-        this.merge2 = merge2;
-    }
-
-    public Integer getIdGrupoFusion() {
-        return idGrupoFusion;
-    }
-
-    public void setIdGrupoFusion(Integer idGrupoFusion) {
-        this.idGrupoFusion = idGrupoFusion;
-    }
+//    public Integer getInscritosFusion() {
+//        return inscritosFusion;
+//    }
+//
+//    public void setInscritosFusion(Integer inscritosFusion) {
+//        this.inscritosFusion = inscritosFusion;
+//    }
+//    
+//    public boolean isMerge1() {
+//        return merge1;
+//    }
+//
+//    public void setMerge1(boolean merge1) {
+//        this.merge1 = merge1;
+//    }
+//
+//    public boolean isMerge2() {
+//        return merge2;
+//    }
+//
+//    public void setMerge2(boolean merge2) {
+//        this.merge2 = merge2;
+//    }
+//
+//    public Integer getIdGrupoFusion() {
+//        return idGrupoFusion;
+//    }
+//
+//    public void setIdGrupoFusion(Integer idGrupoFusion) {
+//        this.idGrupoFusion = idGrupoFusion;
+//    }
 
     public OfertaService getOfertaService() {
         return ofertaService;
@@ -190,6 +285,16 @@ public class GrupoBean implements Serializable{
 
     public void setOfertaService(OfertaService ofertaService) {
         this.ofertaService = ofertaService;
+    }
+
+    public List<Oferta> getOfertaList() {
+        ofertaList = new ArrayList<>();
+        ofertaList.addAll(ofertaService.getOfertas());
+        return ofertaList;
+    }
+
+    public void setOfertaList(List<Oferta> ofertaList) {
+        this.ofertaList = ofertaList;
     }
 
     public Integer getIdoferta() {
@@ -200,61 +305,61 @@ public class GrupoBean implements Serializable{
         this.idoferta = idoferta;
     }
 
-    public Integer getIdTipoGrupoFusion() {
-        return idTipoGrupoFusion;
-    }
-
-    public void setIdTipoGrupoFusion(Integer idTipoGrupoFusion) {
-        this.idTipoGrupoFusion = idTipoGrupoFusion;
-    }
-
-    public Integer getIdHorarioFusion() {
-        return idHorarioFusion;
-    }
-
-    public void setIdHorarioFusion(Integer idHorarioFusion) {
-        this.idHorarioFusion = idHorarioFusion;
-    }
-
-    public Integer getIdAsignaturaFusion() {
-        return idAsignaturaFusion;
-    }
-
-    public void setIdAsignaturaFusion(Integer idAsignaturaFusion) {
-        this.idAsignaturaFusion = idAsignaturaFusion;
-    }
-
-    public Integer getCupoFusion() {
-        return cupoFusion;
-    }
-
-    public void setCupoFusion(Integer cupoFusion) {
-        this.cupoFusion = cupoFusion;
-    }
-
-    public Integer getNumeroGrupoFusion() {
-        return numeroGrupoFusion;
-    }
-
-    public void setNumeroGrupoFusion(Integer numeroGrupoFusion) {
-        this.numeroGrupoFusion = numeroGrupoFusion;
-    }
-
-    public boolean isAprobarGrupoFusion() {
-        return aprobarGrupoFusion;
-    }
-
-    public void setAprobarGrupoFusion(boolean aprobarGrupoFusion) {
-        this.aprobarGrupoFusion = aprobarGrupoFusion;
-    }
-
-    public boolean isGrEstadoFusion() {
-        return grEstadoFusion;
-    }
-
-    public void setGrEstadoFusion(boolean grEstadoFusion) {
-        this.grEstadoFusion = grEstadoFusion;
-    }
+//    public Integer getIdTipoGrupoFusion() {
+//        return idTipoGrupoFusion;
+//    }
+//
+//    public void setIdTipoGrupoFusion(Integer idTipoGrupoFusion) {
+//        this.idTipoGrupoFusion = idTipoGrupoFusion;
+//    }
+//
+//    public Integer getIdHorarioFusion() {
+//        return idHorarioFusion;
+//    }
+//
+//    public void setIdHorarioFusion(Integer idHorarioFusion) {
+//        this.idHorarioFusion = idHorarioFusion;
+//    }
+//
+//    public Integer getIdAsignaturaFusion() {
+//        return idAsignaturaFusion;
+//    }
+//
+//    public void setIdAsignaturaFusion(Integer idAsignaturaFusion) {
+//        this.idAsignaturaFusion = idAsignaturaFusion;
+//    }
+//
+//    public Integer getCupoFusion() {
+//        return cupoFusion;
+//    }
+//
+//    public void setCupoFusion(Integer cupoFusion) {
+//        this.cupoFusion = cupoFusion;
+//    }
+//
+//    public Integer getNumeroGrupoFusion() {
+//        return numeroGrupoFusion;
+//    }
+//
+//    public void setNumeroGrupoFusion(Integer numeroGrupoFusion) {
+//        this.numeroGrupoFusion = numeroGrupoFusion;
+//    }
+//
+//    public boolean isAprobarGrupoFusion() {
+//        return aprobarGrupoFusion;
+//    }
+//
+//    public void setAprobarGrupoFusion(boolean aprobarGrupoFusion) {
+//        this.aprobarGrupoFusion = aprobarGrupoFusion;
+//    }
+//
+//    public boolean isGrEstadoFusion() {
+//        return grEstadoFusion;
+//    }
+//
+//    public void setGrEstadoFusion(boolean grEstadoFusion) {
+//        this.grEstadoFusion = grEstadoFusion;
+//    }
     
     /***********************************************/
     
@@ -292,6 +397,26 @@ public class GrupoBean implements Serializable{
         this.asignaturaService = asignaturaService;
     }
 
+    public List<Horario> getHorarioList() {
+        horarioList = new ArrayList<>();
+        horarioList.addAll(horarioService.getHorarios());
+        return horarioList;
+    }
+
+    public void setHorarioList(List<Horario> horarioList) {
+        this.horarioList = horarioList;
+    }
+
+    public List<Asignatura> getAsignaturaList() {
+        asignaturaList = new ArrayList<>();
+        asignaturaList.addAll(asignaturaService.getAsignaturas());
+        return asignaturaList;
+    }
+
+    public void setAsignaturaList(List<Asignatura> asignaturaList) {
+        this.asignaturaList = asignaturaList;
+    }
+
     public Integer getIdHorario() {
         return idHorario;
     }
@@ -308,15 +433,15 @@ public class GrupoBean implements Serializable{
         this.idAsignatura = idAsignatura;
     }
     
-    public Integer getFAsignatura() {
-        return fAsignatura;
+    @PostConstruct
+    public void init() {
+        gruposList = new ArrayList<>();
+        gruposList.addAll(getGrupoService().getGrupos());
     }
 
-    public void setFAsignatura(Integer fAsignatura) {
-        this.fAsignatura = fAsignatura;
-    }
-    
     public List<Grupo> getGruposList() {
+        gruposList = new ArrayList<>();
+        gruposList.addAll(getGrupoService().getGrupos());
         return gruposList;
     }
 
@@ -330,6 +455,16 @@ public class GrupoBean implements Serializable{
 
     public void setTipoGrupoService(TipoGrupoService tipoGrupoService) {
         this.tipoGrupoService = tipoGrupoService;
+    }
+
+    public List<TipoGrupo> getTipoGrupoList() {
+        tipoGrupoList = new ArrayList<>();
+        tipoGrupoList.addAll(getTipoGrupoService().getTipoGrupos());
+        return tipoGrupoList;
+    }
+
+    public void setTipoGrupoList(List<TipoGrupo> tipoGrupoList) {
+        this.tipoGrupoList = tipoGrupoList;
     }
 
     public Integer getIdGrupo() {
@@ -411,7 +546,6 @@ public class GrupoBean implements Serializable{
             else{
                 getGrupoService().addGrupo(grupo);
                 addMessage("El Grupo fue creado exitosamente");
-                refreshGrupos();
             }
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -432,7 +566,7 @@ public class GrupoBean implements Serializable{
             //grupo.setAprobarGrupo(getAprobarGrupo());
             getGrupoService().updateGrupo(grupo);
             addMessage("El grupo fue actualizado exitosamente");
-            refreshGrupos();
+            
         }catch (DataAccessException e){
             e.printStackTrace();
         }
@@ -445,7 +579,6 @@ public class GrupoBean implements Serializable{
             Integer grupoEliminado = grupo.getNumeroGrupo();
             getGrupoService().deleteGrupo(grupo);
             addMessage("El grupo "+ getNumeroGrupo()+" fue eliminado correctamente");
-            refreshGrupos();
         }catch (DataAccessException e){
             e.printStackTrace();
             addMessage("El grupo no puede ser eliminado debido a que tiene registros relacionados");
@@ -463,7 +596,6 @@ public class GrupoBean implements Serializable{
         setNumeroGrupo(grupo.getNumeroGrupo());
         setAprobarGrupo(grupo.getAprobarGrupo());
         setGrEstado(grupo.getGrEstado());
-        setInscritos(grupo.getInscritos());
     }
     
     public void reset(){
@@ -486,7 +618,7 @@ public class GrupoBean implements Serializable{
             grupo.setGrEstado(false);
             getGrupoService().updateGrupo(grupo);
             addMessage("El grupo " + bloqueado + " fue inhabilitado correctamente");
-            refreshGrupos();
+            
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
@@ -504,13 +636,10 @@ public class GrupoBean implements Serializable{
             grupo.setGrEstado(true);
             getGrupoService().updateGrupo(grupo);
             addMessage("El grupo " + bloqueado + " fue habilitado correctamente");
-            refreshGrupos();
+            
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
     }
     
-    public void refreshGrupos(){
-        setGruposList(getGrupoService().getGruposByAsignatura(getFAsignatura()));
-    }
 }
