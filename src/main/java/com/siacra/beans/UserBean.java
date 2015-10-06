@@ -44,6 +44,7 @@ public class UserBean implements Serializable {
     private NivelAccesoService nivelAccesoService;
     
     private List<User> usersList;
+    private List<User> userListAll;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -61,6 +62,7 @@ public class UserBean implements Serializable {
     private int nivel;
     private boolean insert;
     private boolean sesion;
+    private String codigoEscuela;
     
     /**
      * Add User
@@ -205,6 +207,7 @@ public class UserBean implements Serializable {
     public List<User> getUserList() {
         usersList = new ArrayList<>();
         usersList.addAll(getUserService().getUsersByEscuela(cod_escuela));
+        
         return usersList;
     }
     
@@ -216,6 +219,25 @@ public class UserBean implements Serializable {
     public void setUserList(List<User> userList) {
         this.usersList = userList;
     }
+
+    
+    public List<User> getUserListAll() {
+        userListAll = new ArrayList<>();
+        userListAll.addAll(getUserService().getUsers());
+        return userListAll;
+    }   
+    
+    public void setUserListAll(List<User> userListAll) {
+        this.userListAll = userListAll;
+    }
+    /*
+      public List<User> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(List<User> usersList) {
+        this.usersList = usersList;
+    }*/
     
     /**
      * Get User Service
@@ -486,6 +508,19 @@ public class UserBean implements Serializable {
         addMessage("Ha cerrado sesion en el SIACRA correctamente.");
         return "loggedout";*/
         return "correct";
+     }
+
+    public String getCodigoEscuela() {
+        return codigoEscuela;
+    }
+
+    public void setCodigoEscuela(String codigoEscuela) {
+        this.codigoEscuela = codigoEscuela;
+    }
+        
+     
+     public void refreshUser(){
+         setUserList(getUserService().getUsersByEscuela(getCodigoEscuela()));
      }
      
     

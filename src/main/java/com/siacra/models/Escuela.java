@@ -72,7 +72,7 @@ public class Escuela implements Serializable{
     public void setCodigoescuela(String codigoescuela) {
         this.codigoescuela = codigoescuela;
     }
-    
+
     public String getNombreescuela() {
         return nombreescuela;
     }
@@ -88,7 +88,7 @@ public class Escuela implements Serializable{
     public void setNombrecarrera(String nombrecarrera) {
         this.nombrecarrera = nombrecarrera;
     }
-    
+        
         
      /**
      * Get Docente
