@@ -25,7 +25,7 @@
                     Escuelas de la Facultad de Ingenieria y Arquitectura 
                     <p:spacer width="750" height="20" />
                         <p:commandButton style="float: right" id="insert_button" update=":realizarObservaciones" oncomplete="PF('realizar_observaciones').show()"  value="Enviar observacion" icon="fa fa-inbox" actionListener="#{mensajeBean.setId_escuela(escuela.idescuela)}">
-                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} -#{identityBean.principal.user.nivel.acceso}"/>
+                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.user.nombres} #{identityBean.user.apellidos} - #{identityBean.user.nivel.acceso}"/>
                         </p:commandButton>
                 </f:facet>                                 
                 

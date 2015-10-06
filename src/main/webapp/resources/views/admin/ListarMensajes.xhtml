@@ -18,7 +18,7 @@
         <h:form id="list">            
             <p:growl id="message"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="mensaje" var="mensaje" value="#{mensajeBean.getMensajeList(identityBean.principal.user.idUsuario)}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="mensajesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="mensaje" var="mensaje" value="#{mensajeBean.getMensajeList(identityBean.user.idUsuario)}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="mensajesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header"  >
                     
                    <p:outputPanel>
@@ -26,19 +26,19 @@
                         <p:inputText id="globalFilter" onkeyup="PF('mensajesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
                         
                          <p:spacer width="750" height="20" />
-                         <p:commandButton rendered="#{identityBean.principal.user.nivel.id == 4}" style="float: right" id="insert_button" update=":dialogMensajeJD" oncomplete="PF('enviar_directores').show()"  value="Enviar mensaje" icon="fa fa-inbox" >
-                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} -#{identityBean.principal.user.nivel.acceso}"/>
+                         <p:commandButton rendered="#{identityBean.user.nivel.id == 4}" style="float: right" id="insert_button" update=":dialogMensajeJD" oncomplete="PF('enviar_directores').show()"  value="Enviar mensaje" icon="fa fa-inbox" >
+                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.user.nombres} #{identityBean.user.apellidos} - #{identityBean.user.nivel.acceso}"/>
                         </p:commandButton>
                          <p:spacer width="20" />
-                         <p:commandButton rendered="#{identityBean.principal.user.nivel.id == 3}" style="float: right" id="insert_button2" update=":dialogMensajeDIR" oncomplete="PF('enviar_JD_RES').show()"  value="Enviar mensaje Junta Directiva" icon="fa fa-inbox" >
-                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} -#{identityBean.principal.user.nivel.acceso}"/>
+                         <p:commandButton rendered="#{identityBean.user.nivel.id == 3}" style="float: right" id="insert_button2" update=":dialogMensajeDIR" oncomplete="PF('enviar_JD_RES').show()"  value="Enviar mensaje Junta Directiva" icon="fa fa-inbox" >
+                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.user.nombres} #{identityBean.user.apellidos} - #{identityBean.user.nivel.acceso}"/>
                          </p:commandButton>
                          <p:spacer width="20" />
-                          <p:commandButton rendered="#{identityBean.principal.user.nivel.id == 3}" style="float: right; " id="insert_button3" update=":dialogMensajeRES" oncomplete="PF('enviar_RES').show()"  value="Enviar mensaje Responsable" icon="fa fa-inbox" >
-                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} -#{identityBean.principal.user.nivel.acceso}"/>
+                          <p:commandButton rendered="#{identityBean.user.nivel.id == 3}" style="float: right; " id="insert_button3" update=":dialogMensajeRES" oncomplete="PF('enviar_RES').show()"  value="Enviar mensaje Responsable" icon="fa fa-inbox" >
+                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.user.nombres} #{identityBean.user.apellidos} - #{identityBean.user.nivel.acceso}"/>
                          </p:commandButton>
-                         <p:commandButton rendered="#{identityBean.principal.user.nivel.id == 2}" style="float: right; " id="insert_button4" update=":dialogMensaje" oncomplete="PF('enviar_DIR').show()"  value="Enviar mensaje director" icon="fa fa-inbox" >
-                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} -#{identityBean.principal.user.nivel.acceso}"/>
+                         <p:commandButton rendered="#{identityBean.user.nivel.id == 2}" style="float: right; " id="insert_button4" update=":dialogMensaje" oncomplete="PF('enviar_DIR').show()"  value="Enviar mensaje director" icon="fa fa-inbox" >
+                             <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.user.nombres} #{identityBean.user.apellidos} - #{identityBean.user.nivel.acceso}"/>
                          </p:commandButton>
                         
                         
