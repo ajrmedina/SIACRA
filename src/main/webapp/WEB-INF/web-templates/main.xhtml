@@ -111,7 +111,8 @@
                         
                         <ui:insert name="add-menu-items"> </ui:insert>
                         <sec:authorize ifAnyGranted="ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_MIEMBRO_JD"> 
-                            <p:menuitem value="#{mensajeBean.getNumeroMensajes(identityBean.principal.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/admin/ListarMensajes.xhtml" icon="fa fa-inbox" />
+                            <p:menuitem value="#{auxiliarBean.getNumeroMensajes(identityBean.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/admin/ListarMensajes.xhtml" icon="fa fa-inbox" rendered="#{identityBean.user.esDocente==true}"/>
+                            <p:menuitem value="#{auxiliarBean.getNumeroMensajes(identityBean.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/admin/ListarMensajes2.xhtml" icon="fa fa-inbox" rendered="#{identityBean.user.esDocente==false}"/>
                         </sec:authorize>
                         <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
  

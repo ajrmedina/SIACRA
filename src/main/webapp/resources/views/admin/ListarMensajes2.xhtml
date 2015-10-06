@@ -1,0 +1,96 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Mensaje
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Mensajes
+    </ui:define>
+                    
+    <ui:define name="content">
+        
+        <h:form id="list">            
+            <p:growl id="message"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="mensaje" var="mensaje" value="#{auxiliarBean.getMensajeList(identityBean.user.idUsuario)}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="mensajesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+                <f:facet name="header"  >
+                    
+                   <p:outputPanel>
+                        <h:outputText value="Busqueda de mensajes:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('mensajesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        
+                         <p:spacer width="750" height="20" />
+                         <p:commandButton rendered="#{identityBean.user.nivel.id == 4}" style="float: right" id="insert_button" update=":dialogMensajeJD" oncomplete="PF('enviar_directores').show()"  value="Enviar mensaje" icon="fa fa-inbox" >
+                             <f:setPropertyActionListener target="#{auxiliarBean.remitente}" value="#{identityBean.user.nombres} #{identityBean.user.apellidos} - #{identityBean.user.nivel.acceso}"/>
+                        </p:commandButton>
+                        
+                        
+                   </p:outputPanel>
+                </f:facet>
+                <p:column style="width: 30%" headerText="Remitente" filterBy="#{mensaje.remitente}" filterStyleClass="hide" >
+                    <h:outputText value="#{mensaje.remitente}"/>
+                </p:column>
+                <p:column style="width: 70%" headerText="Mensaje"  filterBy="#{mensaje.mensaje}" filterStyleClass="hide">
+                    <h:outputText value="#{mensaje.mensaje}"/>
+                </p:column>
+               
+                <p:column style="width: 10%" headerText="Acciones" exportable="false">
+                    <p:growl id="messages" />
+                    <p:commandButton id="delete_button" icon="fa fa-times" oncomplete="PF('delete_mensaje').show()" >
+                        <f:setPropertyActionListener target="#{auxiliarBean.idmensaje}" value="#{mensaje.idmensaje}"/>
+                       
+                    </p:commandButton>
+                    
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        
+        <p:dialog id="deletemensaje" header="Eliminar Mensaje" widgetVar="delete_mensaje" modal="true" closable="false" resizable="false">
+           
+                <h:form id="deleteMensaje">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <h:outputText value="Seguro que desea eliminar el mensaje" />
+                    <br />
+                    <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                        <p:commandButton id="aceptar" value="Eliminar" update=":list:mensaje" actionListener="#{auxiliarBean.deleteMensaje()}" oncomplete="PF('delete_mensaje').hide()" icon="fa fa-trash" />
+                        <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_mensaje').hide()" icon="fa fa-ban" />
+                    </h:panelGrid>
+                </h:form>
+           
+        </p:dialog>
+       
+        <p:dialog  header="Enviar mensaje a director de escuela" id="dialogMensajeJD" widgetVar="enviar_directores" modal="true" resizable="false" closable="false">
+                <h:form id="enviarMensaje">
+                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                     <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                         <h:outputText value="Enviar a:"/>
+                         
+                         <p:selectOneMenu  panelStyleClass="hideDisabled"  requiredMessage="Se requiere un usuario" id="Usuario" value="#{auxiliarBean.idusuario}" required="true">
+                             <f:selectItem itemLabel="Seleccione un director de escuela " />
+                             <f:selectItems   value="#{auxiliarBean.usuariosByEscuela}" 
+                                              var="usuarios" itemValue="#{usuarios.user.idUsuario}"
+                                              itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela}"
+                                              itemDisabled="#{usuarios.user.nivel.id !=3 }" 
+                                              />
+                         </p:selectOneMenu>
+                         <h:outputText value="Observaciones"/>
+                         <p:inputTextarea id="mesanje" required="true" value="#{auxiliarBean.mensaje}" cols="100" maxlength="500" counter="count" requiredMessage="Se requiere un mensaje"/>
+                         <p:commandButton  value="Enviar" icon="fa fa-inbox" actionListener="#{auxiliarBean.addMensaje()}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('enviar_directores').hide()"  update=":list:message">
+                             
+                         </p:commandButton>
+                         <p:commandButton value="Cancelar" icon="fa fa-times" oncomplete="PF('enviar_directores').hide()" actionListener="#{auxiliarBean.reset()}"/>
+                     </h:panelGrid>
+                     <h:outputLabel id="count" /><h:outputLabel value=" Letras restantes"/>
+                </h:form>
+            </p:dialog>
+        
+        
+    </ui:define>
+    
+</ui:composition>
