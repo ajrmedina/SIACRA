@@ -14,10 +14,19 @@
     </ui:define>
                     
     <ui:define name="content">
-        <h:form id="list">
+        <h:form id="list">             
             <p:growl id="messages" />
+          <!--  <h:panelGrid columns="2" cellpadding="5" class="center-element" style="margin-left: 60px " rendered="#{userBean.user.nivel.acceso == 'Administrador'}">
+                <p:outputLabel for="escuelaFilter" value="Filtro por Escuela: " />
+                <p:selectOneMenu id="escuelaFilter" value="#{userBean.codigoEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                    <f:selectItem itemValue="0" itemLabel="Seleccione una Escuela"  />
+                    <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela" itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombrecarrera}"/>
+                    <p:ajax event="change" update="usuarios" process="@this" listener="#{userBean.refreshUser()}" />
+                </p:selectOneMenu>
+                <p:tooltip id="forEscuelaFilter" for="escuelaFilter" value="Seleccione la Escuela a la que quiere consultar sus usuarios" />
+            </h:panelGrid>-->
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="usuarios" var="user" value="#{userBean.userList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="usuarios" var="user" value="#{userBean.user.nivel.acceso == 'Administrador' ? userBean.userListAll: userBean.userList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" widgetVar="usuariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Busqueda de usuarios:" />
@@ -43,6 +52,9 @@
                 </p:column>
                 <p:column style="width: 13%" headerText="Username" filterBy="#{user.nombreUsuario}" filterStyleClass="hide">
                     <h:outputText value="#{user.nombreUsuario}" />
+                </p:column>
+                <p:column style="width: 13%" headerText="Código de Escuela" filterBy="#{user.escuela}" filterStyleClass="hide" rendered="#{userBean.user.nivel.acceso == 'Administrador'}">
+                    <h:outputText value="#{user.escuela}" />
                 </p:column>
                 <!--<p:column style="width: 13%" headerText="Contraseña" filterBy="#{user.contrasenia}" filterStyleClass="hide">
                     <h:outputText value="#{user.contrasenia}" />
