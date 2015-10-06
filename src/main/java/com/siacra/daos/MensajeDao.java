@@ -7,6 +7,7 @@ package com.siacra.daos;
 
 import com.siacra.models.Docente;
 import com.siacra.models.Mensaje;
+import com.siacra.models.User;
 import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,11 @@ public class MensajeDao {
     List list = getSessionFactory().getCurrentSession().createQuery("from Docente "
             + "where aprobarDocente=true").list();
     
+    return list;
+    }
+    public List<User> getMiembrosJD(){
+    List list = getSessionFactory().getCurrentSession().createQuery("from User where "
+            + "nivel = 4 and estadoUsuario = true").list();
     return list;
     }
     

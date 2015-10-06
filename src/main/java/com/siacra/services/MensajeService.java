@@ -8,6 +8,7 @@ package com.siacra.services;
 import com.siacra.daos.MensajeDao;
 import com.siacra.models.Docente;
 import com.siacra.models.Mensaje;
+import com.siacra.models.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,7 +92,9 @@ public class MensajeService {
     
     return getMensajeDao().getDocentes();
     }
-    
+    public List<User> getMiembrosJD(){
+    return getMensajeDao().getMiembrosJD();
+    }
     public List<Docente> getResponsable(int escuela){
     return getMensajeDao().getDocentesEscuela(escuela);
     }

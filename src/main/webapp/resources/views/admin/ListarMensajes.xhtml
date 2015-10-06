@@ -109,11 +109,10 @@
                          <h:outputText value="Enviar a:"/>
                          <p:selectOneMenu panelStyleClass="hideDisabled"  requiredMessage="Se requiere un usuario" id="Usuario" value="#{mensajeBean.idusuario}" required="true">
                              <f:selectItem itemLabel="Seleccionar miembro de Junta Directiva"/>
-                             <f:selectItems   value="#{mensajeBean.usuariosByEscuela}" 
-                                              var="usuarios" itemValue="#{usuarios.user.idUsuario}"
-                                              itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela}"
-                                              itemDisabled="#{(usuarios.user.nivel.id !=4)  }"
-                                             
+                             <f:selectItems   value="#{mensajeBean.usuarios}" 
+                                              var="usuarios" itemValue="#{usuarios.idUsuario}"
+                                              itemLabel="#{usuarios.nombres} #{usuarios.apellidos}- #{usuarios.nivel.acceso} "
+                                                                                     
                                               />
                          </p:selectOneMenu>
                          <h:outputText value="Mensaje"/>

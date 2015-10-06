@@ -13,49 +13,35 @@ import com.siacra.services.UserService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-
 import javax.faces.context.FacesContext;
-
 
 /**
  *
  * @author ivpa
  */
-@ManagedBean(name="mensajeBean")
+@ManagedBean(name="auxiliarBean")
 @ViewScoped
-public class MensajeBean implements Serializable{
-    
-    @ManagedProperty(value="#{MensajeService}")
+public class AuxiliarBean implements Serializable{
+      @ManagedProperty(value="#{MensajeService}")
     private MensajeService mensajeService;
-    
-    @ManagedProperty(value="#{UserService}")
+     @ManagedProperty(value="#{UserService}")
     private UserService userService;
-    
+  
     private List<Mensaje> mensajeList;
-    private List<User> userList;
+    private List<User> userList;  
     
     private int idmensaje;
     private int idusuario;
     private String remitente;
     private String mensaje;
-    private int enviara;
-    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
-     private int id_escuela= (Integer) sessionMap.get("sessionIdEscuela");
-
-    /**
-     * Add Mensaje
-     */
+   
     
-    public void addMensaje(){
+    
+     public void addMensaje(){
         Mensaje mensaje1 = new Mensaje();
         User usuario = getUserService().getUserById(getIdusuario());
         mensaje1.setIdusuario(usuario);
@@ -79,6 +65,29 @@ public class MensajeBean implements Serializable{
         getMensajeService().deleteMensaje(getMensajeService().getMensajeById(getIdmensaje()));
         addMessage("El mensaje fue eliminado con exito");
     }
+/**
+     * Get usuarios correspondientes a la escuela seleccionada
+     * @return 
+     */
+    
+    public List<Docente> getUsuariosByEscuela(){
+    
+        return getMensajeService().getDocentes();
+    }
+    /**
+     * @param idusurario2
+     * @return the mensajeList
+     */
+    
+    public List<Mensaje> getMensajeList(int idusurario2) {
+        mensajeList = new ArrayList<>();
+        mensajeList.addAll(getMensajeService().getMensajes(idusurario2));
+        return mensajeList;
+    }
+    
+     public int getNumeroMensajes(int idusuario){
+    return getMensajeList(idusuario).size();
+    }
 
     /**
      * @return the mensajeService
@@ -92,6 +101,20 @@ public class MensajeBean implements Serializable{
      */
     public void setMensajeService(MensajeService mensajeService) {
         this.mensajeService = mensajeService;
+    }
+
+    /**
+     * @return the mensajeList
+     */
+    public List<Mensaje> getMensajeList() {
+        return mensajeList;
+    }
+
+    /**
+     * @param mensajeList the mensajeList to set
+     */
+    public void setMensajeList(List<Mensaje> mensajeList) {
+        this.mensajeList = mensajeList;
     }
 
     /**
@@ -109,23 +132,6 @@ public class MensajeBean implements Serializable{
     }
 
     /**
-     * @param idusurario2
-     * @return the mensajeList
-     */
-    public List<Mensaje> getMensajeList(int idusurario2) {
-        mensajeList = new ArrayList<>();
-        mensajeList.addAll(getMensajeService().getMensajes(idusurario2));
-        return mensajeList;
-    }
-
-    /**
-     * @param mensajeList the mensajeList to set
-     */
-    public void setMensajeList(List<Mensaje> mensajeList) {
-        this.mensajeList = mensajeList;
-    }
-
-    /**
      * @return the userList
      */
     public List<User> getUserList() {
@@ -137,6 +143,20 @@ public class MensajeBean implements Serializable{
      */
     public void setUserList(List<User> userList) {
         this.userList = userList;
+    }
+
+    /**
+     * @return the idmensaje
+     */
+    public int getIdmensaje() {
+        return idmensaje;
+    }
+
+    /**
+     * @param idmensaje the idmensaje to set
+     */
+    public void setIdmensaje(int idmensaje) {
+        this.idmensaje = idmensaje;
     }
 
     /**
@@ -174,41 +194,9 @@ public class MensajeBean implements Serializable{
         return mensaje;
     }
 
-    /**
-     * @param mensaje the mensaje to set
-     */
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
+  
     
-    public int getNumeroMensajes(int idusuario){
-    return getMensajeList(idusuario).size();
-    }
-    
-    /**
-     * Get usuarios correspondientes a la escuela seleccionada
-     * @return 
-     */
-    
-    public List<Docente> getUsuariosByEscuela(){
-    
-        return getMensajeService().getDocentes();
-    }
-    
-    /**
-     * Get usuarios JD
-     */
-    public List<User> getUsuarios(){
-        return getMensajeService().getMiembrosJD();
-    }
-    /**
-     * Get responsables de cada escuela
-     * @return 
-     */
-    public List<Docente> getResponsables(){
-    return getMensajeService().getResponsable(id_escuela);
-    }
-       /**
+         /**
      * Add Messages
      * Add messages for the UI
      * 
@@ -220,53 +208,10 @@ public class MensajeBean implements Serializable{
     }
 
     /**
-     * @return the idmensaje
+     * @param mensaje the mensaje to set
      */
-    public int getIdmensaje() {
-        return idmensaje;
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 
-    /**
-     * @param idmensaje the idmensaje to set
-     */
-    public void setIdmensaje(int idmensaje) {
-        this.idmensaje = idmensaje;
-    }
-
-    /**
-     * @return the id_escuela
-     */
-    public int getId_escuela() {
-        return id_escuela;
-    }
-
-    /**
-     * @param id_escuela the id_escuela to set
-     */
-    public void setId_escuela(int id_escuela) {
-        this.id_escuela = id_escuela;
-  
-        
-    }
-
-    /**
-     * @return the enviara
-     */
-    public int getEnviara() {
-        return enviara;
-    }
-
-    /**
-     * @param enviara the enviara to set
-     */
-    public void setEnviara(int enviara) {
-        this.enviara = enviara;
-    }
-
-   
-
-
-  
-   
-    
 }
