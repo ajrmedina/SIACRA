@@ -5,11 +5,9 @@ import com.siacra.models.User;
 import com.siacra.services.DocenteService;
 import com.siacra.services.UserService;
 import java.util.Map;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.security.core.Authentication;
@@ -28,7 +26,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @RequestScoped
 public class IdentityBean {
   
-    private Docente principal = null; 
+    private Docente principal = null;
+    private User user = null;
+    private boolean isDocente;
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
     
@@ -39,25 +39,45 @@ public class IdentityBean {
     @ManagedProperty(value="#{DocenteService}")
     private DocenteService docenteService;
     
-    /***** Get Logged username *****/ 
+    public User getUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        user = getUserService().getUserLogin(name);
+        sessionMap.put("sessionCodEscuela", user.getEscuela());
+        return user;
+    }
+    
+    public void setUser(User user){
+        this.user = user;
+    }
+    
     public Docente getPrincipal(){
         try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String name = auth.getName();
-            User user = getUserService().getUserLogin(name);
-            sessionMap.put("sessionCodEscuela", user.getEscuela());
-            if(!getDocenteService().existDocente(user.getIdUsuario())){
-                principal = getDocenteService().getDocenteByUser(user.getIdUsuario());
+            User usuario = getUser();
+            if(!getDocenteService().existDocente(usuario.getIdUsuario())){
+                principal = getDocenteService().getDocenteByUser(usuario.getIdUsuario());
                 sessionMap.put("sessionIdEscuela", principal.getEscuela().getIdescuela());
+                setIsDocente(true);
             }
+            else
+                setIsDocente(false);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
         return principal;
     }
     
+    
     public void setPrincipal(Docente docente){
         this.principal = docente;
+    }
+    
+    public boolean isDocente(){
+        return isDocente;
+    }
+    
+    public void setIsDocente(boolean isdocente){
+        this.isDocente = isdocente;
     }
     
     /**
@@ -95,15 +115,4 @@ public class IdentityBean {
     public void setDocenteService(DocenteService docenteService) {
         this.docenteService = docenteService;
     }
-    
-    /**
-     * Add Messages
-     *
-     * Add messages for the UI
-     */
-    public void addMessage(String mensaje) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-    
 }
