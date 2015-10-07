@@ -71,10 +71,10 @@
                     </p:inputText>
                         
                     <p:outputLabel for="anio" value="Año: " />
-                    <p:inputText id="anio" value="#{cicloBean.anio}" required="true" requiredMessage="Por favor, ingrese el año." size="7"
-                                 validatorMessage="Solo se admiten número en el campo 'Año'." onkeyup="if(this.value.length>4){this.value=this.value.substring(0,4);}">                          
-                        <f:validateRegex pattern="^[0-9]+$" /> 
-                    </p:inputText>                    
+                    <p:inputMask id="anio" value="#{cicloBean.anio}" required="true" requiredMessage="Por favor, ingrese el año." size="7" mask="99?99"
+                                 validatorMessage="Solo se admiten número en el campo 'Año'." >                          
+                        <f:validateDoubleRange minimum="1" maximum="9999" /> 
+                    </p:inputMask>                   
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{cicloBean.updateCiclo()}" update=":list:messages :list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-refresh" rendered="#{cicloBean.insert == false}"/>
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{cicloBean.addCiclo()}" update=":list:messages :list:ciclo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_ciclo').hide()" icon="fa fa-plus" rendered="#{cicloBean.insert == true}" />
