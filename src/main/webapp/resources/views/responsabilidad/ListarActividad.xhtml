@@ -35,10 +35,10 @@
                         </p:commandLink>
                    </p:outputPanel>
                 </f:facet>
-                <p:column style="width: 8%" headerText="Tipo Actividad" filterBy="#{actividad.idtipoactividad.tipoactividad}" filterStyleClass="hide">
+                <p:column style="width: 10%" headerText="Tipo Actividad" filterBy="#{actividad.idtipoactividad.tipoactividad}" filterStyleClass="hide">
                      <h:outputText value="#{actividad.idtipoactividad.tipoactividad}"/>
                 </p:column>
-                <p:column style="width: 7%" headerText="Habilitado" filterBy="#{actividad.estadoactividad}" filterStyleClass="hide">
+                <p:column style="width: 9%" headerText="Habilitado" filterBy="#{actividad.estadoactividad}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.estadoactividad?'Habilitada':'Deshabilitada'}"/>
                 </p:column>
                 <p:column style="width: 7%" headerText="Aprobada" filterBy="#{actividad.aprobaractividad}" filterStyleClass="hide">
@@ -50,7 +50,7 @@
                 <p:column style="width: 30%" headerText="Descripcion" filterBy="#{actividad.descripcionactividad}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.descripcionactividad}"/>
                 </p:column>
-                <p:column style="width: 12%" headerText="Acciones" exportable="false">
+                <p:column style="width: 10%" headerText="Acciones" exportable="false">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('update_actividad').show()" icon="fa fa-edit" />
                     <p:commandButton id="delete_button" update=":dialogDeleteActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('delete_actividad').show()" icon="fa fa-times" />
