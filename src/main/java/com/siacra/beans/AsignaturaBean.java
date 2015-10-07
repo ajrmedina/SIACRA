@@ -47,7 +47,6 @@ public class AsignaturaBean implements Serializable{
     Integer idEscuela;
     String codigoAsignatura;
     boolean estadoAsignatura;
-    boolean aprobarAsignatura;
     Integer cicloImpartir;
     Integer unidadesValorativas;
     String tipoAsignatura;
@@ -123,14 +122,6 @@ public class AsignaturaBean implements Serializable{
         this.estadoAsignatura = estadoAsignatura;
     }
 
-    public boolean getAprobarAsignatura() {
-        return aprobarAsignatura;
-    }
-
-    public void setAprobarAsignatura(boolean aprobarAsignatura) {
-        this.aprobarAsignatura = aprobarAsignatura;
-    }
-
     public Integer getCicloImpartir() {
         return cicloImpartir;
     }
@@ -186,7 +177,6 @@ public class AsignaturaBean implements Serializable{
        this.setUnidadesValorativas(null);
        this.setTipoAsignatura("");
        this.setEstadoAsignatura(false);
-       this.setAprobarAsignatura(false);
        this.setIdAsignatura(null);
        
     }
@@ -276,7 +266,6 @@ public class AsignaturaBean implements Serializable{
         setIdEscuela(asignatura.getEscuela().getIdescuela());
         setCodigoAsignatura(asignatura.getCodigoAsignatura());
         setEstadoAsignatura(asignatura.getEstadoAsignatura());
-        setAprobarAsignatura(asignatura.getAprobarasignatura());
         setCicloImpartir(asignatura.getCicloImpartir());
         setUnidadesValorativas(asignatura.getUnidadesValorativas());
         setTipoAsignatura(asignatura.getTipoAsignatura());
@@ -313,6 +302,20 @@ public class AsignaturaBean implements Serializable{
             asignatura.setEstadoAsignatura(true);
             getAsignaturaService().updateAsignatura(asignatura);
             addMessage("La asignatura " + asignaturaBloqueada + " fue habilitada correctamente");
+            refreshAsignaturas();
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void approveAsignatura() {
+        
+        try {
+            Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
+            String asignaturaBloqueada = asignatura.getNombreAsignatura();
+            asignatura.setAprobarasignatura(true);
+            getAsignaturaService().updateAsignatura(asignatura);
+            addMessage("La asignatura " + asignaturaBloqueada + " fue aprobada correctamente");
             refreshAsignaturas();
         } catch (DataAccessException e) {
             e.printStackTrace();

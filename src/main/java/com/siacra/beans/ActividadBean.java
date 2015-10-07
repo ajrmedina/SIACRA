@@ -53,7 +53,6 @@ public class ActividadBean implements Serializable{
     
     private int idactividad;
     private boolean estadoactividad;
-    private boolean aprovaractividad;
     private String nombreactividad;
     private String descripcionactividad;
     private int idtipoactividad;
@@ -74,11 +73,7 @@ public class ActividadBean implements Serializable{
             actividad.setEscuela(escuela);
             actividad.setIdtipoactividad(tipoActividad);
             actividad.setEstadoactividad(false);
-            
-            if(isAprovaractividad())
-                actividad.setAprobaractividad(true);
-            else
-                actividad.setAprobaractividad(false);
+            actividad.setAprobaractividad(false);
             actividad.setNombreactividad(getNombreactividad());
             actividad.setDescripcionactividad(getDescripcionactividad());
             getActividadService().addActividad(actividad);
@@ -91,9 +86,6 @@ public class ActividadBean implements Serializable{
             e.printStackTrace();
            
         }
-        
-        
-        
     }
     
     /**
@@ -113,11 +105,6 @@ public class ActividadBean implements Serializable{
                     setEstadoactividad(true);
                 else
                     setEstadoactividad(false);
-
-                if(actividad.getAprobaractividad())
-                    setAprovaractividad(true);
-                else
-                    setAprovaractividad(false);
                 setNombreactividad(actividad.getNombreactividad());
                 setDescripcionactividad(actividad.getDescripcionactividad());
                 setIdescuela(escuela.getIdescuela());
@@ -134,11 +121,6 @@ public class ActividadBean implements Serializable{
                 Actividad actividad = getActividadService().getActividadById(getIdactividad());
                 TipoActividad tipoActividad = getTipoActividadService().getTipoActividadById(getIdtipoactividad());
                 Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
-                if(isAprovaractividad())
-                    actividad.setAprobaractividad(true);
-                else
-                    actividad.setAprobaractividad(false);
-                
                 if(isEstadoactividad())
                     actividad.setEstadoactividad(true);
                 else
@@ -171,12 +153,62 @@ public class ActividadBean implements Serializable{
                addMessage("La actividad no puede ser eliminada, debido a que otros registros ocupan esta actividad");
            }
        }
-        /**
-         * Reset Fields
-         */
+    
+       /**
+     * Locked Actividad
+     *
+     */
+    public void lockedActividad() {
+        
+        try {
+            Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            String actividadBloqueada = actividad.getNombreactividad();
+            actividad.setEstadoactividad(false);
+            getActividadService().updateActividad(actividad);
+            addMessage("La actividad " + actividadBloqueada + " fue inhabilitada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Unlocked Actividad
+     *
+     */
+    public void unlockedActividad() {
+        
+        try {
+            Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            String actividadBloqueada = actividad.getNombreactividad();
+            actividad.setEstadoactividad(true);
+            getActividadService().updateActividad(actividad);
+            addMessage("La actividad " + actividadBloqueada + " fue habilitada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void approveActividad() {
+        
+        try {
+            Actividad actividad = getActividadService().getActividadById(getIdactividad());
+            String actividadBloqueada = actividad.getNombreactividad();
+            actividad.setAprobaractividad(true);
+            getActividadService().updateActividad(actividad);
+            addMessage("La actividad " + actividadBloqueada + " fue aprobada correctamente");
+            
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Reset Fields
+     */
     public void reset(){
         this.setEstadoactividad(false);
-        this.setAprovaractividad(false);
         this.nombreactividad="";
         this.descripcionactividad="";
     }
@@ -305,20 +337,6 @@ public class ActividadBean implements Serializable{
     }
 
     /**
-     * @return the aprovaractividad
-     */
-    public boolean isAprovaractividad() {
-        return aprovaractividad;
-    }
-
-    /**
-     * @param aprovaractividad the aprovaractividad to set
-     */
-    public void setAprovaractividad(boolean aprovaractividad) {
-        this.aprovaractividad = aprovaractividad;
-    }
-
-    /**
      * @return the nombreactividad
      */
     public String getNombreactividad() {
@@ -374,53 +392,6 @@ public class ActividadBean implements Serializable{
         this.idescuela = idescuela;
     }
     
-      /**
-     * Add Messages
-     * Add messages for the UI
-     * 
-     * @param mensaje String
-     */
-    public void addMessage(String mensaje) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
- /**
-     * Locked Actividad
-     *
-     */
-    public void lockedActividad() {
-        
-        try {
-            Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            String actividadBloqueada = actividad.getNombreactividad();
-            actividad.setEstadoactividad(false);
-            getActividadService().updateActividad(actividad);
-            addMessage("La actividad " + actividadBloqueada + " fue inhabilitada correctamente");
-            
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Unlocked Actividad
-     *
-     */
-    public void unlockedActividad() {
-        
-        try {
-            Actividad actividad = getActividadService().getActividadById(getIdactividad());
-            String actividadBloqueada = actividad.getNombreactividad();
-            actividad.setEstadoactividad(true);
-            getActividadService().updateActividad(actividad);
-            addMessage("La actividad " + actividadBloqueada + " fue habilitada correctamente");
-            
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * @return the insert
      */
@@ -434,5 +405,15 @@ public class ActividadBean implements Serializable{
     public void setInsert(boolean insert) {
         this.insert = insert;
     }
-
+    
+    /**
+     * Add Messages
+     * Add messages for the UI
+     * 
+     * @param mensaje String
+     */
+    public void addMessage(String mensaje) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 }

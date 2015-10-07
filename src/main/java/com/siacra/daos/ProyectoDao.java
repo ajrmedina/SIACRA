@@ -77,7 +77,7 @@ public class ProyectoDao {
     }
     
     public List<Proyecto> getProyectosNoFinalizadosbyEscuela(Integer idescuela) {
-        List list = getSessionFactory().getCurrentSession().createQuery("from Proyecto where idescuela=? AND estadoproyecto!='Finalizado' AND idresponsabilidad IS NULL").setParameter(0, idescuela).list();
+        List list = getSessionFactory().getCurrentSession().createQuery("from Proyecto where idescuela=? AND estadoproyecto!='Finalizado' AND idresponsabilidad IS NULL AND aprobarproyecto=1").setParameter(0, idescuela).list();
         return list;
     }
     

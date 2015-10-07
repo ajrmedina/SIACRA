@@ -14,22 +14,38 @@
     <sec:http auto-config="true" use-expressions="true">
         
         <!-- Page level Spring Security : Intercept access to resources in /resources/views/admin/** hasRole('ROLE_ADMINISTRADOR') -->
-        <sec:intercept-url pattern="/resources/views/admin/**" access="permitAll" />
+        <sec:intercept-url pattern="/resources/views/admin/**" access="hasRole('ROLE_ADMINISTRADOR')" />
         
+        <!-- Page level Spring Security : Para Usuarios y Docentes -->
+        <sec:intercept-url pattern="/resources/views/usuarios/**" access="hasAnyRole('ROLE_ADMINISTRADOR, ROLE_DIRECTOR, ROLE_RESPONSABLE')" />
+        
+        <!-- Page level Spring Security : Para el Director -->
+        <sec:intercept-url pattern="/resources/views/director/**" access="hasRole('ROLE_DIRECTOR')" />
+        
+        <!-- Page level Spring Security : Para el Responsable -->
+        <sec:intercept-url pattern="/resources/views/responsable/**" access="hasRole('ROLE_RESPONSABLE')" />
+        
+        <!-- Page level Spring Security : Para el Director y Responsable -->
+        <sec:intercept-url pattern="/resources/views/responsabilidad/**" access="hasAnyRole('ROLE_DIRECTOR, ROLE_RESPONSABLE')" />
+        
+        <!-- Page level Spring Security : Para Junta Directiva -->
+        <sec:intercept-url pattern="/resources/views/jd/**" access="hasRole('ROLE_MIEMBRO_JD')" />
+        
+        <!-- Page level Spring Security : Para Docente -->
+        <sec:intercept-url pattern="/resources/views/docente/**" access="hasAnyRole('ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_DOCENTE')" />
+
         <!-- Page level Spring Security : Intercept access to resources in /resources/views/index/** -->
-        <sec:intercept-url pattern="/resources/views/index/**" access="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_DOCENTE') or hasRole('ROLE_DIRECTOR') or hasRole('ROLE_MIEMBRO_JD') or hasRole('ROLE_RESPONSABLE')" />
+        <sec:intercept-url pattern="/resources/views/index/**" access="hasAnyRole('ROLE_ADMINISTRADOR, ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_MIEMBRO_JD, ROLE_DOCENTE')" />
         
         <!-- Page level Spring Security : Permit access to resources in /resources/views/public/** -->
         <sec:intercept-url pattern="/resources/views/public/**" access="permitAll"/>
-
-        
 
         <!-- Page level Spring Security : Enable Primefaces -->
         <sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
   
         <!-- Define login page for Spring Security -->      
         <sec:form-login login-page="/resources/views/public/login.xhtml"/>
-
+        
         <!-- Define logout properties for Spring Security -->
         <sec:logout invalidate-session="true" delete-cookies="true" logout-success-url="/"></sec:logout>
     </sec:http>

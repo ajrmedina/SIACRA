@@ -54,10 +54,8 @@
                         <f:setPropertyActionListener target="#{ofertaBean.insert}" value="false" />
                     </p:commandButton>
                     <p:commandButton id="delete_button" update=":dialogDeleteOferta" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('delete_oferta').show()" icon="fa fa-times" />
-                    <p:commandButton id="locked" update=":dialogLockOferta" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('lock_oferta').show()" icon="fa fa-unlock-alt" rendered="#{oferta.aprobarOferta == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockOferta" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('unlock_oferta').show()" icon="fa fa-unlock" rendered="#{oferta.aprobarOferta == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Oferta" rendered="#{oferta.aprobarOferta == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Oferta" rendered="#{oferta.aprobarOferta == false}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockOferta" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('unlock_oferta').show()" icon="fa fa-check-square-o" rendered="#{oferta.aprobarOferta == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Aprobar Oferta" rendered="#{oferta.aprobarOferta == false}" />
                     
                 </p:column>
             </p:dataTable>
@@ -106,22 +104,10 @@
             </h:form>
         </p:dialog>
         
-        
-        <p:dialog header="Bloquear oferta" id="dialogLockOferta" widgetVar="lock_oferta" modal="true" resizable="false" closable="false">
-            <h:form id="lock">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear la oferta ?" />
-                <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_lock" value="Bloquear" actionListener="#{ofertaBean.lockedOferta()}" update=":list:oferta" oncomplete="PF('lock_oferta').hide()" icon="fa fa-times" />
-                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_oferta').hide()" icon="fa fa-ban" />
-                </h:panelGrid>
-            </h:form>
-        </p:dialog>
-        
-        <p:dialog header="Desbloquear oferta" id="dialogUnlockOferta" widgetVar="unlock_oferta" modal="true" resizable="false" closable="false">
+        <p:dialog header="Aprobar oferta" id="dialogUnlockOferta" widgetVar="unlock_oferta" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear la oferta ?" />
+                <h:outputText value="Desea aprobar esta oferta?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{ofertaBean.unlockedOferta()}" update=":list:oferta" oncomplete="PF('unlock_oferta').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_oferta').hide()" icon="fa fa-ban" />

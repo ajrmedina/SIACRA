@@ -245,29 +245,15 @@ public class OfertaBean implements Serializable{
     public void loadOferta(Oferta oferta) {
         
         try {
-            setIdOferta(oferta.getIdOferta());
+            this.setIdOferta(oferta.getIdOferta());
             setIdAcuerdo(oferta.getAcuerdo().getIdacuerdo());
             setIdCiclo(oferta.getCiclo().getIdCiclo());
 //            setIdGrupo(oferta.getGrupo().getIdGrupo());
-            setAprobarOferta(false);
                                   
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
 
-    }
-    
-    public void lockedOferta() {
-        
-        try {
-            Oferta oferta = getOfertaService().getOfertaById(getIdOferta());
-            oferta.setAprobarOferta(false);
-            getOfertaService().updateOferta(oferta);
-            addMessage("La oferta fue rechazada correctamente");
-            
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
     }
     
     public void unlockedOferta() {

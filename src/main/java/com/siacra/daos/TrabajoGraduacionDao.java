@@ -99,7 +99,7 @@ public class TrabajoGraduacionDao {
     
     
     public List<TrabajoGraduacion> getTrabajosGraduacionNoFinalizadosByEscuela(Integer idescuela) {
-        List list = getSessionFactory().getCurrentSession().createQuery("from TrabajoGraduacion where idescuela=? AND estadotg!='Finalizado' AND idresponsabilidad IS NULL").setParameter(0, idescuela).list();
+        List list = getSessionFactory().getCurrentSession().createQuery("from TrabajoGraduacion where idescuela=? AND estadotg!='Finalizado' AND idresponsabilidad IS NULL AND aprobartg=1").setParameter(0, idescuela).list();
         return list;
     }
     
