@@ -135,7 +135,7 @@
                     </p:selectOneMenu>
                 
                     <p:outputLabel for="valorativas" value="Unidades valorativas : " />
-                    <p:inputMask id="valorativas" value="#{asignaturaBean.unidadesValorativas}" required="true" requiredMessage="Por favor, ingrese las unidades valorativas."
+                    <p:inputMask mask="9?99" id="valorativas" value="#{asignaturaBean.unidadesValorativas}" required="true" requiredMessage="Por favor, ingrese las unidades valorativas."
                                  onkeyup="if(this.value.length>1){this.value=this.value.substring(0,1);}"
                                  validatorMessage="Solo se admiten números, con un valor maximo de 4 en el campo 'Unidades valorativas'">
                         <f:validateDoubleRange minimum="1" maximum="4" />
