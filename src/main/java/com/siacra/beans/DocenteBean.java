@@ -57,7 +57,6 @@ public class DocenteBean implements Serializable {
     private final String cod_escuela = (String) sessionMap.get("sessionCodEscuela");
     
     private int idDocente;
-    private boolean aprobarDocente;
     private int idUser;
     private int idEscuela;
     private int idCategoria;
@@ -80,7 +79,7 @@ public class DocenteBean implements Serializable {
                 if ( user.getEstadoUsuario()) {
                     if ( user.getEsDocente()){
 
-                        docente.setAprobarDocente(getAprobado());
+                        docente.setAprobarDocente(false);
                         docente.setUser(user);
                         docente.setEscuela(escuela);
                         docente.setCategoria(categoria);
@@ -118,7 +117,6 @@ public class DocenteBean implements Serializable {
         User user = getUserService().getUserById(docente.getUser().getIdUsuario());
         Escuela escuela = getEscuelaService().getEscuelaById(docente.getEscuela().getIdescuela());
         setIdDocente(docente.getIdDocente());
-        setAprobado(docente.getAprobarDocente());
         setNombres(user.getNombres());
         setApellidos(user.getApellidos());
         setIdUser(user.getIdUsuario());
@@ -136,7 +134,6 @@ public class DocenteBean implements Serializable {
             User user = getUserService().getUserById(getIdUser());
             Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
             Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
-            docente.setAprobarDocente(getAprobado());
             docente.setUser(user);
             docente.setEscuela(escuela);
             docente.setCategoria(categoria);
@@ -184,12 +181,25 @@ public class DocenteBean implements Serializable {
         }
     }
     
+    public void approveDocente() {
+        
+        try {
+            Docente docente = getDocenteService().getDocenteById(getIdDocente());
+            String docenteDesbloqueado = docente.getUser().getNombres() + " " + docente.getUser().getApellidos();
+            docente.setAprobarDocente(true);
+            addMessage("Docente: " + docenteDesbloqueado + " fue aprobado correctamente");
+            getDocenteService().updateDocente(docente);
+            refreshDocentes();
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * Reset Fields
      *
      */
     public void reset() {
-       this.setAprobado(false);
        this.setIdUser(0);
        this.setIdEscuela(0);
        this.setIdCategoria(0);
@@ -310,24 +320,6 @@ public class DocenteBean implements Serializable {
      */
     public void setIdDocente(int idDocente) {
         this.idDocente = idDocente;
-    }
-    
-    /**
-     * Get Es Docente
-     *
-     * @return boolean - Es Docente
-     */
-    public boolean getAprobado() {
-        return this.aprobarDocente;
-    }
-    
-    /**
-     * Set Es Docente
-     *
-     * @param aprobado boolean - Es Docente
-     */
-    public void setAprobado(boolean aprobado) {
-        this.aprobarDocente = aprobado;
     }
     
     /**

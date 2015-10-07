@@ -51,7 +51,6 @@ public class ProyectoBean implements Serializable{
     private int idproyecto; 
     private int idresponsabilidad;
     private int idescuela;
-    private boolean aprobarproyecto; 
     private Date fechainicio; 
     private Date fechafin; 
     private String estadoproyecto; 
@@ -71,8 +70,8 @@ public class ProyectoBean implements Serializable{
             proyecto.setNombreproyecto(nombreproyecto);
             proyecto.setObservacion(observacion);
             proyecto.setDescripcion(descripcion);
-            proyecto.setAprobarproyecto(aprobarproyecto);
-            proyecto.setEstadoproyecto(estadoproyecto); 
+            proyecto.setEstadoproyecto(estadoproyecto);
+            proyecto.setAprobarproyecto(false);
             getProyectoService().addProyecto(proyecto);
             this.setInsert(false);
             reset();
@@ -85,7 +84,6 @@ public class ProyectoBean implements Serializable{
     }
     
     public void reset(){
-        this.aprobarproyecto = false;
         this.fechainicio = null; 
         this.fechafin = null; 
         this.estadoproyecto = "";
@@ -108,7 +106,6 @@ public class ProyectoBean implements Serializable{
         setDescripcion(proyecto.getDescripcion());
         setFechainicio(proyecto.getFechainicio());
         setFechafin(proyecto.getFechafin());
-        setAprobarproyecto(proyecto.getAprobarproyecto());
         setEstadoproyecto(proyecto.getEstadoproyecto());
         
     }
@@ -123,7 +120,6 @@ public class ProyectoBean implements Serializable{
              catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            proyecto.setAprobarproyecto(isAprobarproyecto());
             proyecto.setFechainicio(getFechainicio());
             proyecto.setFechafin(getFechafin());
             proyecto.setEstadoproyecto(getEstadoproyecto());
@@ -144,6 +140,18 @@ public class ProyectoBean implements Serializable{
             proyecto.setEstadoproyecto("Finalizado");
             getProyectoService().updateProyecto(proyecto);
             addMessage("El estado del proyecto fue actualizado a finalizado correctamente");
+            refreshProyectos();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void approveProyecto(){
+        try{
+            Proyecto proyecto = getProyectoService().getProyectoById(this.getIdproyecto());
+            proyecto.setAprobarproyecto(true);
+            getProyectoService().updateProyecto(proyecto);
+            addMessage("El proyecto fue aprobado correctamente");
             refreshProyectos();
         } catch (Exception e) {
             e.printStackTrace();
@@ -222,14 +230,6 @@ public class ProyectoBean implements Serializable{
      */
     public void setIdEscuela(int idescuela) {
         this.idescuela = idescuela;
-    }
-    
-    public boolean isAprobarproyecto() {
-        return aprobarproyecto;
-    }
-
-    public void setAprobarproyecto(boolean aprobarproyecto) {
-        this.aprobarproyecto = aprobarproyecto;
     }
 
     public Date getFechainicio() {

@@ -65,18 +65,19 @@
                 <p:column style="width: 8%" headerText="Escalafon" filterBy="#{docente.categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
                     <h:outputText value="#{docente.categoria.escalafon.tipoescalafon}" />
                 </p:column>
-                <p:column style="width: 15%" headerText="Contrato" filterBy="#{docente.categoria.contrato.tipocontrato}" filterStyleClass="hide">
+                <p:column style="width: 13%" headerText="Contrato" filterBy="#{docente.categoria.contrato.tipocontrato}" filterStyleClass="hide">
                     <h:outputText value="#{docente.categoria.contrato.tipocontrato}" />
                 </p:column>
-                <p:column style="width: 8%" exportable="false" headerText="Accciones">
+                <p:column style="width: 10%" exportable="false" headerText="Accciones">
                     
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('update_docente').show()" icon="fa fa-edit" />
                     <p:commandButton id="locked" update=":dialogLockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('lock_docente').show()" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('unlock_docente').show()" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == false}" />
+                    <p:commandButton id="approve" update=":dialogApproveDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('approve_docente').show()" icon="fa fa-check-square-o" rendered="#{docente.aprobarDocente == false and identityBean.user.nivel.id == 3}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Docente" rendered="#{docente.user.estadoUsuario == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Docente" rendered="#{docente.user.estadoUsuario == false}" />
-                    
+                    <p:tooltip id="forApprove" for="approve" value="Aprobar Docente" rendered="#{docente.aprobarDocente == false and identityBean.user.nivel.id == 3}" />
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -90,9 +91,6 @@
 
                     <p:outputLabel for="apellidos" value="Apellidos del docente: " rendered="#{docenteBean.insert == false}" />
                     <p:inputText id="apellidos" value="#{docenteBean.apellidos}" readonly="true" rendered="#{docenteBean.insert == false}" />
-
-                    <p:outputLabel id="estado" value="Aprobado" />
-                    <p:selectBooleanCheckbox value="#{docenteBean.aprobado}" required="true" />
 
                     <p:outputLabel for="usuario" value="Usuario Asociado: " rendered="#{docenteBean.insert == true}"/>
                     <h:panelGroup layout="block" rendered="#{docenteBean.insert == true}">
@@ -138,6 +136,17 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{docenteBean.unlockedDocente()}" update=":list:docentes" oncomplete="PF('unlock_docente').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_docente').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Aprobar Docente" id="dialogApproveDocente" widgetVar="approve_docente" modal="true" resizable="false" closable="false">
+            <h:form id="approve">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Desea aprobar al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_approve" value="Aprobar" actionListener="#{docenteBean.approveDocente()}" update=":list:docentes" oncomplete="PF('approve_docente').hide()" icon="fa fa-check" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('approve_docente').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

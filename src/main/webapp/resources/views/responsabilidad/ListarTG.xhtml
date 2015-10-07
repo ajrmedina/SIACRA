@@ -39,13 +39,13 @@
                     <h:outputText value="#{tdg.tematg}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 10%" headerText="Inicio" filterBy="#{tdg.fechainiciotg}" filterStyleClass="hide"  >                    
+                <p:column style="width: 8%" headerText="Inicio" filterBy="#{tdg.fechainiciotg}" filterStyleClass="hide"  >                    
                     <h:outputText value="#{tdg.fechainiciotg}" class="center-element">
                          <f:convertDateTime pattern="dd-MM-yyyy"/>
                     </h:outputText>
                 </p:column>
                 
-                <p:column style="width: 10%" headerText="Fin" filterBy="#{tdg.fechafintg}" filterStyleClass="hide"  >                    
+                <p:column style="width: 8%" headerText="Fin" filterBy="#{tdg.fechafintg}" filterStyleClass="hide"  >                    
                     <h:outputText value="#{tdg.fechafintg}" class="center-element">
                          <f:convertDateTime pattern="dd-MM-yyyy"/>
                     </h:outputText>
@@ -71,7 +71,7 @@
                     <h:outputText value="#{tdg.prorrogatg?'Si':'No'}" />
                 </p:column>
                 
-                <p:column style="width: 8%" exportable="false">
+                <p:column style="width: 12%" exportable="false">
                     <f:facet name="header">
                         <h:outputText value="Acciones" />
                     </f:facet>   
@@ -79,9 +79,10 @@
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateTG" actionListener="#{trabajoGraduacionBean.loadTrabajoGraduacion(tdg)}" oncomplete="PF('update_tg').show()" icon="fa fa-edit" rendered="#{tdg.estadotg == 'En desarrollo'}"/>
                     <p:commandButton id="change_status" update=":dialogChangeTG" actionListener="#{trabajoGraduacionBean.loadTrabajoGraduacion(tdg)}" oncomplete="PF('change_tg').show()" icon="fa fa-refresh" rendered="#{tdg.estadotg == 'En desarrollo'}"/>
+                    <p:commandButton id="approve" update=":dialogApproveTG" actionListener="#{trabajoGraduacionBean.loadTrabajoGraduacion(tdg)}" oncomplete="PF('approve_tg').show()" icon="fa fa-check-square-o" rendered="#{tdg.aprobartg == false and identityBean.user.nivel.id == 3}" />
                     <p:tooltip id="forChangeStatus" for="change_status" value="Dar por finalizado este trabajo de graduacion"  />
+                    <p:tooltip id="forApprove" for="approve" value="Aprobar Trabajo de Graduacion" rendered="#{tdg.aprobartg == false and identityBean.user.nivel.id == 3}" />
                     <h:outputText value="No es modificable" style="color: crimson" rendered="#{tdg.estadotg == 'Finalizado'}" />
-               
                 </p:column>               
             </p:dataTable>
         </h:form>
@@ -141,9 +142,6 @@
                     <p:outputLabel id="prorroga" value="Tiene prorroga este Trabajo de Graduacion? " />
                     <p:selectBooleanCheckbox value="#{trabajoGraduacionBean.prorrogatg}" />
                     
-                    <p:outputLabel id="aprobado" value="Aprobar Trabajo de Graduacion? " />
-                    <p:selectBooleanCheckbox value="#{trabajoGraduacionBean.aprobargt}" />
-                    
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{trabajoGraduacionBean.updateTrabajoGraduacion()}" update=":list:message :list:tg" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tg').hide()" icon="fa fa-refresh" rendered="#{trabajoGraduacionBean.insert == false}"/>
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{trabajoGraduacionBean.addTrabajoGraduacion()}" update=":list:message :list:tg" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_tg').hide()" icon="fa fa-plus" rendered="#{trabajoGraduacionBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_tg').hide()" icon="fa fa-ban">
@@ -155,12 +153,23 @@
         </p:dialog>
         
         <p:dialog header="Cambiar estado del Trabajo de Graduacion" id="dialogChangeTG" widgetVar="change_tg" modal="true" resizable="false" closable="false">
-            <h:form id="lock">
+            <h:form id="status">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Dar por finalizado el trabajo de graduacion #{trabajoGraduacionBean.tematg}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_change" value="Aceptar" actionListener="#{trabajoGraduacionBean.finalizarTG()}" update=":list:tg" oncomplete="PF('change_tg').hide()" icon="fa fa-times" />
+                    <p:commandButton id="save_change" value="Aceptar" actionListener="#{trabajoGraduacionBean.finalizarTG()}" update=":list:message :list:tg" oncomplete="PF('change_tg').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('change_tg').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+         <p:dialog header="Aprobar Trabajo de Graduacion" id="dialogApproveTG" widgetVar="approve_tg" modal="true" resizable="false" closable="false">
+            <h:form id="approve">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Desea aprobar el trabajo de graduacion #{trabajoGraduacionBean.tematg}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_approve" value="Aprobar" actionListener="#{trabajoGraduacionBean.approveTG()}" update=":list:message :list:tg" oncomplete="PF('approve_tg').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('approve_tg').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

@@ -50,7 +50,6 @@ public class TrabajoGraduacionBean implements Serializable {
     private int idresponsabilidad;
     private int idescuela;
     private boolean prorrogatg;
-    private boolean aprobargt;
     private Date fechainiciotg;
     private Date fechafintg;
     private String estadotg;
@@ -75,7 +74,7 @@ public class TrabajoGraduacionBean implements Serializable {
             trabajograduacion.setFechainiciotg(fechainiciotg);
             trabajograduacion.setFechafintg(fechafintg);
             trabajograduacion.setProrrogatg(prorrogatg);
-            trabajograduacion.setAprobartg(aprobargt);
+            trabajograduacion.setAprobartg(false);
             getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
             reset();
             this.setInsert(false);
@@ -106,7 +105,6 @@ public class TrabajoGraduacionBean implements Serializable {
         setFechainiciotg(trabajograduacion.getFechainiciotg());
         setFechafintg(trabajograduacion.getFechafintg());
         setProrrogatg(trabajograduacion.getProrrogatg());
-        setAprobargt(trabajograduacion.getAprobartg());
     }
     
     /**
@@ -129,7 +127,6 @@ public class TrabajoGraduacionBean implements Serializable {
             trabajograduacion.setFechainiciotg(getFechainiciotg());
             trabajograduacion.setFechafintg(getFechafintg());
             trabajograduacion.setProrrogatg(isProrrogatg());
-            trabajograduacion.setAprobartg(isAprobargt());
             getTrabajoGraduacionService().updateTrabajoGraduacion(trabajograduacion);
             addMessage("El trabajo de graduacion fue actualizado correctamente");
             refreshTGs();
@@ -150,6 +147,18 @@ public class TrabajoGraduacionBean implements Serializable {
         }
     }
     
+    public void approveTG(){
+        try {
+            TrabajoGraduacion trabajograduacion = getTrabajoGraduacionService().getTrabajoGraduacionById(this.getIdtrabajograduacion());
+            trabajograduacion.setAprobartg(true);
+            getTrabajoGraduacionService().updateTrabajoGraduacion(trabajograduacion);
+            addMessage("El trabajo de graduacion fue aprobado correctamente");
+            refreshTGs();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void refreshTGs() {
         this.setTrabajoGraduacionList(getTrabajoGraduacionService().getTrabajosGraduacionByEscuela(id_escuela));
     }
@@ -162,7 +171,6 @@ public class TrabajoGraduacionBean implements Serializable {
         this.fechainiciotg=null;
         this.fechafintg=null;
         this.prorrogatg=false;
-        this.aprobargt=false;
     }
     
     /**
@@ -277,20 +285,6 @@ public class TrabajoGraduacionBean implements Serializable {
      */
     public void setProrrogatg(boolean prorrogatg) {
         this.prorrogatg = prorrogatg;
-    }
-
-    /**
-     * @return the aprobargt
-     */
-    public boolean isAprobargt() {
-        return aprobargt;
-    }
-
-    /**
-     * @param aprobargt the aprobargt to set
-     */
-    public void setAprobargt(boolean aprobargt) {
-        this.aprobargt = aprobargt;
     }
 
     /**

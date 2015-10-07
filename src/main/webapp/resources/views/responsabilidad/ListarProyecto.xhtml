@@ -76,7 +76,9 @@
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('update_proyecto').show()" icon="fa fa-edit" rendered="#{proyecto.estadoproyecto == 'En desarrollo'}" />
                     <p:commandButton id="change_status" update=":dialogChangeProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('change_proyecto').show()" icon="fa fa-refresh" rendered="#{proyecto.estadoproyecto == 'En desarrollo'}" />
+                    <p:commandButton id="approve" update=":dialogApproveProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('approve_proyecto').show()" icon="fa fa-check-square-o" rendered="#{proyecto.aprobarproyecto == false and identityBean.user.nivel.id == 3}" />
                     <p:tooltip id="forChangeStatus" for="change_status" value="Dar por finalizado este proyecto"  />
+                    <p:tooltip id="forApprove" for="approve" value="Aprobar Proyecto" rendered="#{proyecto.aprobarproyecto == false and identityBean.user.nivel.id == 3}" />
                     <h:outputText value="No es modificable" style="color: crimson" rendered="#{proyecto.estadoproyecto == 'Finalizado'}" />               
                 </p:column>               
             </p:dataTable>
@@ -132,10 +134,7 @@
                             <f:selectItem itemValue="Finalizado" itemLabel="Finalizado"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forEstado" for="estado" value="Seleccione el estado actual del Proyecto" />
-                    </h:panelGroup>                    
-                                       
-                    <p:outputLabel id="aprobado" value="Aprobar Proyecto? " />
-                    <p:selectBooleanCheckbox value="#{proyectoBean.aprobarproyecto}" />
+                    </h:panelGroup>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{proyectoBean.updateProyecto()}" update=":list:message :list:proyectos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-refresh" rendered="#{proyectoBean.insert == false}"/>
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{proyectoBean.addProyecto()}" update=":list:message :list:proyectos" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_proyecto').hide()" icon="fa fa-plus" rendered="#{proyectoBean.insert == true}" />
@@ -148,12 +147,23 @@
         </p:dialog>
         
         <p:dialog header="Cambiar estado del Proyecto" id="dialogChangeProyecto" widgetVar="change_proyecto" modal="true" resizable="false" closable="false">
-            <h:form id="lock">
+            <h:form id="status">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Dar por finalizado el proyecto #{proyectoBean.nombreproyecto}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_change" value="Aceptar" actionListener="#{proyectoBean.finalizarProyecto()}" update=":list:proyectos" oncomplete="PF('change_proyecto').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('change_proyecto').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Aprobar Proyecto" id="dialogApproveProyecto" widgetVar="approve_proyecto" modal="true" resizable="false" closable="false">
+            <h:form id="approve">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="Desea aprobar el proyecto #{proyectoBean.nombreproyecto}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_approve" value="Aprobar" actionListener="#{proyectoBean.approveProyecto()}" update=":list:proyectos" oncomplete="PF('approve_proyecto').hide()" icon="fa fa-times" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('approve_proyecto').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>
