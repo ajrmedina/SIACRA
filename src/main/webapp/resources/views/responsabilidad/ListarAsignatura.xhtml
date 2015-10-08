@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="message"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable rowKey="#{asignaturaBean.cicloImpartir}" id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 96%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="asignaturasTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable rowKey="#{asignaturaBean.cicloImpartir}" id="asignatura" var="asignatura" value="#{asignaturaBean.asignaturaList}" style="width: 96%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" widgetVar="asignaturasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.reset()}" oncomplete="PF('update_asignatura').show()"  value="Nueva Asignatura" icon="fa fa-plus">
@@ -85,7 +85,7 @@
                     <h:outputText value="#{asignatura.tipoAsignatura}"  />
                 </p:column>
                 
-                <p:column style="width: 8%" headerText="Acciones" exportable="false">
+                <p:column style="width: 12%" headerText="Acciones" exportable="false">
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('update_asignatura').show()" icon="fa fa-edit" >
                         <f:setPropertyActionListener target="#{asignaturaBean.insert}" value="false" />
