@@ -8,7 +8,6 @@ package com.siacra.beans;
 
 import com.siacra.models.AcademicaGrupo;
 import com.siacra.models.Actividad;
-import com.siacra.models.Asignatura;
 import com.siacra.models.Ciclo;
 import com.siacra.models.Docente;
 import com.siacra.models.Escuela;
@@ -392,7 +391,7 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public void refreshGrupos() {
-        setGruposList(getGrupoService().getGruposByAsignatura(getIdAsignatura()));
+        setGruposList(getGrupoService().getGruposNoAsignados(getIdAsignatura()));
     }
     
     public void aprobarResponsabilidad() {
