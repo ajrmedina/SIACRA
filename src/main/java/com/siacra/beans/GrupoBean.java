@@ -71,31 +71,12 @@ public class GrupoBean implements Serializable{
     
     private Grupo grupo1;
     private Grupo grupo2;
-    private boolean grupo1yes;
-    private boolean grupo2yes;
-    private boolean mergeOk;
+    private boolean grupo1yes = false;
+    private boolean grupo2yes = false;
+    private boolean mergeOk = false;
     
     
     /***********************************************/
-    private Integer idGrupoFusion;
-    private Integer idTipoGrupoFusion;
-    private Integer idHorarioFusion;
-    private Integer idAsignaturaFusion;
-    private Integer cupoFusion;
-    private Integer inscritosFusion;
-    private Integer numeroGrupoFusion;
-    private boolean aprobarGrupoFusion;
-    private boolean grEstadoFusion;
-    
-    private boolean merge1=false;
-    private boolean merge2=false;
-
-//    private Integer grupoIdfusion1;
-//    private Integer grupoInscritosFusion1;
-//    private Integer grupoCuposFusion1;
-//    private Integer grupoIdfusion2;
-//    private Integer grupoInscritosFusion2;
-//    private Integer grupoCuposFusion2;
     
      public void selectGrupo1(Grupo grupo)
     {
@@ -123,35 +104,79 @@ public class GrupoBean implements Serializable{
         
     }
     public void mergeGrupos(){
-        
-           
-//        addMessage("Grupo1 :" + getGrupo1().getIdGrupo() +" Grupo 2 : " + getGrupo2().getIdGrupo());
-//        setMerge1(false);
-//        setMerge2(false);
-//        
+  
         try{
-              if( (getGrupo2().getInscritos() + getGrupo1().getInscritos()) <= getGrupo2().getCupo())
-              {
-                    Grupo merge = new Grupo();
-                    merge.setIdGrupo(getGrupo2().getIdGrupo());
-                    merge.setHorario(getGrupo2().getHorario());
-                    merge.setAsignatura(getGrupo2().getAsignatura());
-                    merge.setTipoGrupo(getGrupo2().getTipoGrupo());
-                    merge.setOferta(getGrupo2().getOferta());
-                    merge.setCupo(getGrupo2().getCupo());
-                    merge.setNumeroGrupo(getGrupo2().getNumeroGrupo());
-                    merge.setInscritos(getGrupo1().getInscritos()+getGrupo2().getInscritos());
-                    merge.setAprobarGrupo(getGrupo2().getAprobarGrupo());
-                    merge.setGrEstado(getGrupo2().getGrEstado());
-                    //grupo.setAprobarGrupo(getAprobarGrupo());
-                    getGrupoService().updateGrupo(merge);
-                    getGrupoService().deleteGrupo(getGrupo1());
-                    addMessage("Los grupos fueron unidos exitosamente");
-              }
-              else
-              {
-                  addMessage("Error NO se unieron los grupos. La cantidad de inscritos en el grupo "+getGrupo1().getInscritos()+" supera los cupos disponibles en el grupo " + getGrupo2().getNumeroGrupo());
-              }
+            
+            if( isMergeOk() )
+            {
+//                addMessage("mergeOK iguales");
+                if(getGrupo1().getOferta().getIdOferta().equals(getGrupo2().getOferta().getIdOferta()))
+                {
+//                    addMessage("ofertas iguales");
+                    if( getGrupo1().getAsignatura().getIdAsignatura().equals(getGrupo2().getAsignatura().getIdAsignatura()) )
+                    {
+//                        addMessage("materias iguales");
+                        if(getGrupo1().getTipoGrupo().getIdTipoGrupo().equals(getGrupo2().getTipoGrupo().getIdTipoGrupo()))
+                        {
+//                            addMessage("ofertas iguales");
+                            if( (getGrupo2().getInscritos() + getGrupo1().getInscritos()) <= getGrupo2().getCupo())
+                            {
+//                                addMessage("inicia con todos iguales");
+                                Grupo merge = new Grupo();
+                                merge.setIdGrupo(getGrupo2().getIdGrupo());
+                                merge.setHorario(getGrupo2().getHorario());
+                                merge.setAsignatura(getGrupo2().getAsignatura());
+                                merge.setTipoGrupo(getGrupo2().getTipoGrupo());
+                                merge.setOferta(getGrupo2().getOferta());
+                                merge.setCupo(getGrupo2().getCupo());
+                                merge.setNumeroGrupo(getGrupo2().getNumeroGrupo());
+                                merge.setInscritos(getGrupo1().getInscritos()+getGrupo2().getInscritos());
+                                merge.setAprobarGrupo(getGrupo2().getAprobarGrupo());
+                                merge.setGrEstado(getGrupo2().getGrEstado());
+                                //grupo.setAprobarGrupo(getAprobarGrupo());
+                                getGrupoService().updateGrupo(merge);
+                                getGrupoService().deleteGrupo(getGrupo1());
+                                addMessage("Los grupos fueron unidos exitosamente");
+
+                                setMergeOk(false);
+                                setGrupo2yes(false);
+                                setGrupo1yes(false);
+                            }
+                            else
+                            {
+                                addMessage("Error NO se unieron los grupos. La cantidad de inscritos en el grupo "+getGrupo1().getInscritos()+" supera los cupos disponibles en el grupo " + getGrupo2().getNumeroGrupo());
+                            }
+                        }
+                        else
+                        {
+                            addMessage("Error los grupos no son del mismo tipo de grupo");
+                        }
+                    }
+                    else
+                    {
+                        addMessage("Error los grupos no pertenecen a la misma asignatura");
+                    }
+                }
+                else
+                {
+                    addMessage("Error los grupos no pertenecen a la misma oferta");
+                }
+                
+                
+                
+            }
+            else
+            {
+                if(!isGrupo1yes())
+                {
+                     addMessage("Por favor seleccione el grupo a unir");
+                }
+                if(!isGrupo2yes())
+                {
+                    addMessage("Por favor seleccione el grupo destino");
+                }
+            }
+            
               
         }catch (DataAccessException e){
             e.printStackTrace();
@@ -162,42 +187,7 @@ public class GrupoBean implements Serializable{
     {
         setGrupo1yes(false);
         setGrupo2yes(false);
-    }
-    
-    public void loadGrupoMerge(Grupo grupo) {
-        
-        if(merge1 == false)
-        {
-            setIdGrupo(grupo.getIdGrupo());
-            setIdTipoGrupo(grupo.getTipoGrupo().getIdTipoGrupo());
-            setIdAsignatura(grupo.getAsignatura().getIdAsignatura());
-            setIdHorario(grupo.getHorario().getIdhorario());
-            setCupo(grupo.getCupo());
-            setNumeroGrupo(grupo.getNumeroGrupo());
-            setAprobarGrupo(grupo.getAprobarGrupo());
-            setGrEstado(grupo.getGrEstado());
-            
-            addMessage("El Grupo "+ getNumeroGrupo() +" fue seleccionado para unirse con otro grupo. Por favor seleccione el grupo destino");
-            
-            setMerge1(true);  
-        }
-        else if ( merge1 == true && merge2 == false )
-        {
-            setIdGrupoFusion(grupo.getIdGrupo());
-            setIdTipoGrupoFusion(grupo.getTipoGrupo().getIdTipoGrupo());
-            setIdAsignaturaFusion(grupo.getAsignatura().getIdAsignatura());
-            setIdHorarioFusion(grupo.getHorario().getIdhorario());
-            setCupoFusion(grupo.getCupo());
-            setNumeroGrupoFusion(grupo.getNumeroGrupo());
-            setAprobarGrupoFusion(grupo.getAprobarGrupo());
-            setGrEstadoFusion(grupo.getGrEstado());
-            
-            setMerge2(true);
-            
-            addMessage("Grupos a unir: Grupo "+ getNumeroGrupo() +" --> con el grupo " + getNumeroGrupoFusion() );
-            
-        }
-        
+        setMergeOk(false);
     }
 
      public boolean isMergeOk() {
@@ -243,40 +233,6 @@ public class GrupoBean implements Serializable{
     public void setGrupo2yes(boolean grupo2yes) {
         this.grupo2yes = grupo2yes;
     }
-        
-    public Integer getInscritosFusion() {
-        return inscritosFusion;
-    }
-    
-    
-    
-    public void setInscritosFusion(Integer inscritosFusion) {
-        this.inscritosFusion = inscritosFusion;
-    }
-    
-    public boolean isMerge1() {
-        return merge1;
-    }
-
-    public void setMerge1(boolean merge1) {
-        this.merge1 = merge1;
-    }
-
-    public boolean isMerge2() {
-        return merge2;
-    }
-
-    public void setMerge2(boolean merge2) {
-        this.merge2 = merge2;
-    }
-
-    public Integer getIdGrupoFusion() {
-        return idGrupoFusion;
-    }
-
-    public void setIdGrupoFusion(Integer idGrupoFusion) {
-        this.idGrupoFusion = idGrupoFusion;
-    }
 
     public OfertaService getOfertaService() {
         return ofertaService;
@@ -301,62 +257,6 @@ public class GrupoBean implements Serializable{
 
     public void setIdoferta(Integer idoferta) {
         this.idoferta = idoferta;
-    }
-
-    public Integer getIdTipoGrupoFusion() {
-        return idTipoGrupoFusion;
-    }
-
-    public void setIdTipoGrupoFusion(Integer idTipoGrupoFusion) {
-        this.idTipoGrupoFusion = idTipoGrupoFusion;
-    }
-
-    public Integer getIdHorarioFusion() {
-        return idHorarioFusion;
-    }
-
-    public void setIdHorarioFusion(Integer idHorarioFusion) {
-        this.idHorarioFusion = idHorarioFusion;
-    }
-
-    public Integer getIdAsignaturaFusion() {
-        return idAsignaturaFusion;
-    }
-
-    public void setIdAsignaturaFusion(Integer idAsignaturaFusion) {
-        this.idAsignaturaFusion = idAsignaturaFusion;
-    }
-
-    public Integer getCupoFusion() {
-        return cupoFusion;
-    }
-
-    public void setCupoFusion(Integer cupoFusion) {
-        this.cupoFusion = cupoFusion;
-    }
-
-    public Integer getNumeroGrupoFusion() {
-        return numeroGrupoFusion;
-    }
-
-    public void setNumeroGrupoFusion(Integer numeroGrupoFusion) {
-        this.numeroGrupoFusion = numeroGrupoFusion;
-    }
-
-    public boolean isAprobarGrupoFusion() {
-        return aprobarGrupoFusion;
-    }
-
-    public void setAprobarGrupoFusion(boolean aprobarGrupoFusion) {
-        this.aprobarGrupoFusion = aprobarGrupoFusion;
-    }
-
-    public boolean isGrEstadoFusion() {
-        return grEstadoFusion;
-    }
-
-    public void setGrEstadoFusion(boolean grEstadoFusion) {
-        this.grEstadoFusion = grEstadoFusion;
     }
     
     /***********************************************/
