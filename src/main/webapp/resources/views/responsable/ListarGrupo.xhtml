@@ -35,7 +35,7 @@
                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateGrupo" actionListener="#{grupoBean.reset()}" oncomplete="PF('update_grupo').show()"  value="Nuevo Grupo" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{grupoBean.insert}" value="true" />
                     </p:commandButton>
-                    <p:commandButton style="float: right" id="merge_button" update=":dialogMergeGrupo" actionListener="#{grupoBean.loadGrupoMerge(grupo)}" oncomplete="PF('merge_grupo').show()" value="Unir grupos" icon="fa fa-plus" />
+                    <p:commandButton style="float: right" id="merge_button" update=":dialogMergeGrupo" oncomplete="PF('merge_grupo').show()" value="Unir grupos" icon="fa fa-plus" />
                     
                     <p:outputPanel style="float: left">
                         <h:outputText value="Busqueda de grupos:" />
@@ -197,7 +197,7 @@
                         <h:outputText value="#{grupo.oferta.ciclo.ciclo} - #{grupo.oferta.ciclo.anio} / #{grupo.oferta.acuerdo.nombreacuerdo}" style="font-size: 12px;"/>
 
                         <f:facet name="footer">
-                            <p:commandButton id="grupo1_button" update=":list:messages" actionListener="#{grupoBean.selectGrupo1(grupo)}"  icon="fa fa-times" /> 
+                            <p:commandButton id="grupo1_button" update=":list:messages :merge:operacioN" actionListener="#{grupoBean.selectGrupo1(grupo)}"  icon="fa fa-files-o" value="Grupo a unir" /> 
                             <!--
                             <p:commandButton icon="ui-icon-search">
                                 <f:setPropertyActionListener value="#{grupo}" target="#{grupoBean.grupo1}" />
@@ -210,7 +210,7 @@
                 </h:panelGrid>
                 
                 <h:panelGrid width="700" >
-                    <p:carousel value="#{grupoBean.gruposList}" headerText="Grupo a unir" var="grupo" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" circular="false">
+                    <p:carousel value="#{grupoBean.gruposList}" headerText="Grupo destino" var="grupo" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" circular="false">
                         <h:panelGrid columns="2" width="700" columnClasses="label,value">
 
                         <h:outputText value="Numero" style="font-size: 12px;"/>
@@ -235,7 +235,7 @@
                         <h:outputText value="#{grupo.oferta.ciclo.ciclo} - #{grupo.oferta.ciclo.anio} / #{grupo.oferta.acuerdo.nombreacuerdo}" style="font-size: 12px;"/>
 
                         <f:facet name="footer">
-                            <p:commandButton id="grupo2_button" actionListener="#{grupoBean.selectGrupo2(grupo)}" update=":list:messages"  icon="fa fa-times" /> 
+                            <p:commandButton id="grupo2_button" actionListener="#{grupoBean.selectGrupo2(grupo)}" update=":list:messages :merge:operacioN"  icon="fa fa-files-o" value="Grupo destino"/> 
                             <!--
                             <p:commandButton icon="ui-icon-search">
                                 <f:setPropertyActionListener value="#{grupo}" target="#{grupoBean.grupo2}" />
@@ -246,11 +246,11 @@
                 </p:carousel> 
                 </h:panelGrid>
 
-                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                <h:panelGrid id="operacioN" columns="2" cellpadding="5" class="center-element">
                     <!--
                     <p:commandButton id="continuar" value="Continuar" update=":list:grupo" oncomplete="PF('merge_grupo').hide()" icon="fa fa-trash-o" rendered="#{grupoBean.merge2 == false}"/>
                     -->
-                    <p:commandButton id="save_merge" value="Unir grupos" actionListener="#{grupoBean.mergeGrupos()}" update=":list:grupo" oncomplete="PF('merge_grupo').hide()" icon="fa fa-trash-o"/>
+                    <p:commandButton id="save_merge" value="Unir grupos" actionListener="#{grupoBean.mergeGrupos()}" update=":list:grupo"  oncomplete="PF('merge_grupo').hide()" icon="fa fa-retweet" rendered="#{grupoBean.isMergeOk() == true}"/>
                     <p:commandButton id="cancel" value="Cancelar" actionListener="#{grupoBean.cancelGrupoMerge()}" oncomplete="PF('merge_grupo').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
