@@ -69,4 +69,8 @@ public class GrupoService {
     public List<Grupo> getGruposByAsignatura(int id) {
         return getGrupoDao().getGruposByAsignatura(id);
     }
+    
+    public List<Grupo> getGruposNoAsignados(int id) {
+        return getGrupoDao().getGruposNoAsignados(id);
+    }
 }
