@@ -91,6 +91,9 @@ public class UserService {
         return getUserDao().getUsersByEscuela(codigo);
     }
     
+    public boolean isUserDocente(int id) {
+        return getUserDao().isUserDocente(id);
+    }
 
     /**
      * Get User DAO

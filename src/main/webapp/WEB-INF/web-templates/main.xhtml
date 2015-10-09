@@ -98,14 +98,11 @@
                             <sec:authorize ifAllGranted="ROLE_MIEMBRO_JD">
                                 <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
                                 <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />                                
-                            </sec:authorize> 
+                            </sec:authorize>
                              
-                            <!-- Docente -->
-                            <sec:authorize ifAllGranted="ROLE_DOCENTE">
-                                <p:menuitem value="Permanencia" url="/resources/views/docente/ListarPermanencia.xhtml" icon="fa fa-calendar" />
-                                <p:menuitem value="Reportes Docentes" url="/resources/views/docente/ReportesDocente.xhtml" icon="fa fa-file-o"/>                                
-                            </sec:authorize>                              
-                            
+                            <p:menuitem value="Permanencia" url="/resources/views/docente/ListarPermanencia.xhtml" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}" />
+                            <p:menuitem value="Reportes Docentes" url="/resources/views/docente/ReportesDocente.xhtml" icon="fa fa-file-o" rendered="#{identityBean.user.esDocente==true}" />                                
+                           
                         </p:submenu>
                         
                         

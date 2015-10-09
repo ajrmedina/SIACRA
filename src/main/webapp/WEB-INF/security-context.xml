@@ -31,9 +31,6 @@
         <!-- Page level Spring Security : Para Junta Directiva -->
         <sec:intercept-url pattern="/resources/views/jd/**" access="hasRole('ROLE_MIEMBRO_JD')" />
         
-        <!-- Page level Spring Security : Para Docente -->
-        <sec:intercept-url pattern="/resources/views/docente/**" access="hasAnyRole('ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_DOCENTE')" />
-
         <!-- Page level Spring Security : Intercept access to resources in /resources/views/index/** -->
         <sec:intercept-url pattern="/resources/views/index/**" access="hasAnyRole('ROLE_ADMINISTRADOR, ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_MIEMBRO_JD, ROLE_DOCENTE')" />
         
