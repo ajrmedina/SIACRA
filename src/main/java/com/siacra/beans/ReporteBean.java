@@ -87,6 +87,10 @@ public class ReporteBean implements Serializable{
             case "rptGruposNoAsignados":
                 parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
                 break;
+            case "Oferta":
+                parameter.put("escuela_IDESCUELA", Integer.parseInt(viewparams.get("id_escuela")));
+                break;
+                
                 
         }
         //Generar el reporte
@@ -133,6 +137,10 @@ public class ReporteBean implements Serializable{
                 break;
             case "GruposNoAsignados":
                 setNombreReporte("rptGruposNoAsignados");
+                exportarServicioP();
+                break;
+            case "OfertaAsignaturas":
+                setNombreReporte("Oferta");
                 exportarServicioP();
                 break;
         }
