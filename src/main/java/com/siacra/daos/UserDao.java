@@ -1,5 +1,6 @@
 package com.siacra.daos;
 
+import com.siacra.models.Grupo;
 import java.util.List;
 import com.siacra.models.User;
 
@@ -115,5 +116,10 @@ public class UserDao  {
         List list = getSessionFactory().getCurrentSession().createQuery("from  User where escuela=?").setParameter(0, codigo).list();
         return list;
     }
+    public boolean isUserDocente(int id) {
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM User u WHERE idUsuario=? AND EXISTS ( SELECT d FROM Docente d WHERE d.user.idUsuario = u.idUsuario )").setParameter(0, id).list();
+        return list.isEmpty();
+    }
+    
 }
 
