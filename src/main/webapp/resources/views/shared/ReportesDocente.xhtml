@@ -16,14 +16,14 @@
     
                     
     <ui:define name="content">
-        <h:form id="list" style="margin-left: 40%">
+        <h:form id="list" style="margin-left: 40%" target="_blank">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:commandButton id="reporte_button" icon="fa fa-file-o" value="Tiempo de Permanencia Docente"
-                             actionListener="#{reporte.identifyReport('Permanencia')}"
-                             style="font-size: large" ajax="false">
-                <f:param value="#{permanenciaBean.principal.idDocente}" name="id_docente" />
-            </p:commandButton>
-                
+            <p:menu style="width:250px">
+                <p:menuitem value="Tiempo de Permanencia Docente" actionListener="#{reporte.identifyReport('Permanencia')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
+                    <f:param value="#{permanenciaBean.principal.idDocente}" name="id_docente" />
+                </p:menuitem>                    
+            </p:menu>
+            
         </h:form>       
     </ui:define>
     
