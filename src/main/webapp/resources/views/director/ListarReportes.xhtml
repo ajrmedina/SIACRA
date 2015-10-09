@@ -24,6 +24,9 @@
                     <p:menuitem value="Inscritos en cada Asignatura" actionListener="#{reporte.identifyReport('InscritosPorMateria')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
                         <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
                     </p:menuitem>
+                    <p:menuitem value="Oferta de Asignaturas" actionListener="#{reporte.identifyReport('OfertaAsignaturas')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
+                        <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
+                    </p:menuitem>
                 </p:submenu>
                 <p:submenu label="Reportes sobre Grupos" icon="fa fa-group" class="font-m">
                     <p:menuitem value="Grupos no asignados" actionListener="#{reporte.identifyReport('GruposNoAsignados')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
