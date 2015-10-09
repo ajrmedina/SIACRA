@@ -31,30 +31,35 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    <br/> <br/>
-                    <center><h1 class="title"> Acceso al SIACRA <br /> </h1>
-                    <h1 class="title"> Ingrese sus credenciales <br /> </h1></center>
-                    <br/> <br/>
+                    <center><p:graphicImage library="img" name="tasks.png" />
+                    <br/>
+                    <h1 class="title"> Acceso al SIACRA <br /> </h1></center>
+                    <br/><br/>
                     <h:form>
                         <p:growl id="messages" showDetail="true" sticky="true" />
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                            <p:outputLabel for="username" value="Nombre de Usuario: " />
+                            <h:panelGroup layout="block1">
+                                <p:graphicImage library="img" name="login-user.png" />
+                                <p:outputLabel for="username" value="Nombre de Usuario: " />
+                            </h:panelGroup>
                             <p:inputText id="username" value="#{loginMBean.userName}" required="true" requiredMessage="Por favor digite su nombre de usuario" />
-
-                            <p:outputLabel for="password" value="Contraseña: " />
-                            <p:password id="password" value="#{loginMBean.password}" required="true" requiredMessage="Por favor digite su contraseña" />
                             
-                            <p:commandButton value="Ingresar" action="#{loginMBean.login}" update="messages" ajax="false"/>
+                            <h:panelGroup layout="block1">
+                                <p:graphicImage library="img" name="login-password.png" />
+                                <p:outputLabel for="password" value="Contraseña: " />
+                            </h:panelGroup>
+                            <p:password id="password" value="#{loginMBean.password}" required="true" requiredMessage="Por favor digite su contraseña" />
+                            <br/>
+                            <p:commandButton value="Ingresar" action="#{loginMBean.login}" update="messages" ajax="false" icon="fa fa-mail-forward"/>
                         </h:panelGrid>
                     </h:form>
                 </p:layoutUnit>
                 
                 <p:layoutUnit position="south" size="100">
                     <h6 class="title">
-                        © FIA-UES SIACRA Development Team:
-                        Fatima Perez, Isaias Palacios, Daniel Martinez y Alejandro Medina <br />
-                        Trabajo de Graduacion 2015
+                        © SIACRA <br />
+                        Facultad de Ingeniería y Arquitectura - Universidad de El Salvador
                     </h6>
                 </p:layoutUnit>
                 

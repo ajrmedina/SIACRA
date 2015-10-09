@@ -18,7 +18,7 @@
         <h:form id="list">            
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="ciclo" var="ciclo" value="#{cicloBean.cicloList}" style="width: 50%" class="center-element" paginator="true" rows="5" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="cicloTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+            <p:dataTable id="ciclo" var="ciclo" value="#{cicloBean.cicloList}" style="width: 50%" class="center-element" paginator="true" rows="5" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="cicloTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateCiclo" actionListener="#{cicloBean.reset()}" oncomplete="PF('update_ciclo').show()" value="Nuevo Ciclo" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{cicloBean.insert}" value="true" />

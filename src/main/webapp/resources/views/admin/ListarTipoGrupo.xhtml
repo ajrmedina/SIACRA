@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="tipogrupo" var="tipogrupo" value="#{tipogrupoBean.gruposList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipogruposTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="tipogrupo" var="tipogrupo" value="#{tipogrupoBean.gruposList}" style="width: 60%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="tipogruposTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateTipoGrupo" actionListener="#{tipogrupoBean.reset()}" oncomplete="PF('update_tipogrupo').show()"  value="Nuevo tipo de grupo" icon="fa fa-plus">

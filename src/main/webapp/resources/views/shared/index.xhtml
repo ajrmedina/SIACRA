@@ -12,10 +12,18 @@
     
     <ui:define name="title-view">
         Bienvenido al SIACRA
+        <br />
+        <br />
+        <h:outputText value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} &lt;br /&gt; Docente de la #{identityBean.principal.escuela.nombreescuela}" escape="false" rendered="#{userBean.user.sesion == true}" />
     </ui:define>
     
     <ui:define name="content"> 
-                
+        
+        <h:form id="index"> 
+            <p:growl id="messages" showDetail="true" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </h:form>
+        
         <h:form id="cambio" rendered="#{userBean.user.sesion == false}">
             <p:growl id="messages"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -38,12 +46,6 @@
                 <p:commandButton id="save_insert" value="Actualizar" action="#{userBean.actualizarPassword}" update="messages" icon="fa fa-plus" />
 
             </h:panelGrid>            
-        </h:form>                                       
-        
-        <h:form id="index"> 
-            <p:growl id="messages" showDetail="true" />
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <h:outputText value="Docente: #{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} pertenece a la Escuela: #{identityBean.principal.escuela.nombreescuela}" rendered="#{userBean.user.sesion == true}" />
         </h:form>
         
     </ui:define>

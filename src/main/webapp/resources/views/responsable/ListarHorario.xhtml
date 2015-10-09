@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="horario" var="horario" value="#{horarioBean.horarioList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="horariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="horario" var="horario" value="#{horarioBean.horarioList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="horariosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateHorario" actionListener="#{horarioBean.reset()}" oncomplete="PF('update_horario').show()"  value="Nuevo Horario" icon="fa fa-plus">

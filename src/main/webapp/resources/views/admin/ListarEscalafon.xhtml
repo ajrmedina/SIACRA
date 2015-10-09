@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="escalafonTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="escalafonTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                     <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateEscalafon" actionListener="#{escalafonBean.reset()}" oncomplete="PF('update_escalafon').show()"  value="Nuevo escalafon" icon="fa fa-plus">
