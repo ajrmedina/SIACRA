@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="tipoactividad" var="tipoactividad" value="#{tipoActividadBean.tipoActividadList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="tipoactividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="tipoactividad" var="tipoactividad" value="#{tipoActividadBean.tipoActividadList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="tipoactividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateTipoActividad" actionListener="#{tipoActividadBean.reset()}" oncomplete="PF('update_tipoactividad').show()"  value="Nuevo Tipo Actividad" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{tipoActividadBean.insert}" value="true" />

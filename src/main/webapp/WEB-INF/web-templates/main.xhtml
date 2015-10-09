@@ -57,7 +57,7 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <p:menubar styleClass="menu" rendered="#{userBean.user.sesion == true}">  
                         
-                        <p:menuitem value="Inicio" url="/resources/views/index/index.xhtml" icon="fa fa-home"/>                                                             
+                        <p:menuitem value="Inicio" url="/resources/views/shared/index.xhtml" icon="fa fa-home"/>                                                             
                        
                         <p:submenu label="Mantenimientos" icon="fa fa-gears">
                             
@@ -100,16 +100,16 @@
                                 <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />                                
                             </sec:authorize>
                              
-                            <p:menuitem value="Permanencia" url="/resources/views/docente/ListarPermanencia.xhtml" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}" />
-                            <p:menuitem value="Reportes Docentes" url="/resources/views/docente/ReportesDocente.xhtml" icon="fa fa-file-o" rendered="#{identityBean.user.esDocente==true}" />                                
+                            <p:menuitem value="Permanencia" url="/resources/views/shared/ListarPermanencia.xhtml" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}" />
+                            <p:menuitem value="Reportes Docentes" url="/resources/views/shared/ReportesDocente.xhtml" icon="fa fa-file-o" rendered="#{identityBean.user.esDocente==true}" />                                
                            
                         </p:submenu>
                         
                         
                         <ui:insert name="add-menu-items"> </ui:insert>
                         <sec:authorize ifAnyGranted="ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_MIEMBRO_JD"> 
-                            <p:menuitem value="#{auxiliarBean.getNumeroMensajes(identityBean.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/index/ListarMensajes.xhtml" icon="fa fa-inbox" rendered="#{identityBean.user.esDocente==true}"/>
-                            <p:menuitem value="#{auxiliarBean.getNumeroMensajes(identityBean.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/index/ListarMensajes2.xhtml" icon="fa fa-inbox" rendered="#{identityBean.user.esDocente==false}"/>
+                            <p:menuitem value="#{auxiliarBean.getNumeroMensajes(identityBean.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/shared/ListarMensajes.xhtml" icon="fa fa-inbox" rendered="#{identityBean.user.esDocente==true}"/>
+                            <p:menuitem value="#{auxiliarBean.getNumeroMensajes(identityBean.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/shared/ListarMensajes2.xhtml" icon="fa fa-inbox" rendered="#{identityBean.user.esDocente==false}"/>
                         </sec:authorize>
                         <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
  
@@ -129,10 +129,11 @@
             </section>       
             
             <footer class="pad-top-20">
-                <h6 class="title">
-                    © FIA-UES SIACRA Development Team:
-                    Alejandro Medina, Daniel Martínez, Fátima Pérez e Isaias Palacios  <br />
-                    Trabajo de Graduación 2015
+                <h6 class="title"> 
+                    
+                        © SIACRA <br />
+                        Facultad de Ingeniería y Arquitectura - Universidad de El Salvador
+                    
                 </h6>
             </footer>
             

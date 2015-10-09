@@ -855,6 +855,7 @@ public class ResponsabilidadBean implements Serializable {
             trabajograduacion.setProrrogatg(prorrogatg);
             trabajograduacion.setAprobartg(false);
             getTrabajoGraduacionService().addTrabajoGraduacion(trabajograduacion);
+            showHorasActuales();
             addMessage("El Trabajo de Graduacion fue añadido y vinculado a la responsabilidad correctamente");
             reset();
             
@@ -878,6 +879,7 @@ public class ResponsabilidadBean implements Serializable {
                 this.setOpcion("");
             }
             getTrabajoGraduacionService().updateTrabajoGraduacion(tg);
+            showHorasActuales();
             addMessage("El Trabajo de Graduacion fue vinculado correctamente a la responsabilidad");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1011,6 +1013,7 @@ public class ResponsabilidadBean implements Serializable {
             proyecto.setAprobarproyecto(false);
             proyecto.setEstadoproyecto(estadoproyecto); 
             getProyectoService().addProyecto(proyecto);
+            showHorasActuales();
             addMessage("El proyecto fue añadido y vinculado a la responsabilidad correctamente");
         }
         catch (DataAccessException e) {
@@ -1033,6 +1036,7 @@ public class ResponsabilidadBean implements Serializable {
                 this.setOpcion("");
             }
             getProyectoService().updateProyecto(pry);
+            showHorasActuales();
             addMessage("El Proyecto fue vinculado correctamente a la responsabilidad");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1106,6 +1110,7 @@ public class ResponsabilidadBean implements Serializable {
             ag.setGrupo(grupo);
             ag.setResponsabilidad(responsabilidad);
             getAcademicaGrupoService().addAcademicaGrupo(ag);
+            showHorasActuales();
             addMessage("El grupo fue vinculado correctamente a la responsabilidad");
         } catch (Exception e) {
             e.printStackTrace();

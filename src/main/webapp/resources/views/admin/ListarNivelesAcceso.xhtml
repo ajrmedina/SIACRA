@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 46%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="nivelesTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="nivel" var="nivel" value="#{nivelAccesoBean.nivelAccesoList}" style="width: 46%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="nivelesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" style="float: right" value="Nuevo Nivel de Acceso" update=":dialogUpdateNivel" actionListener="#{nivelAccesoBean.reset()}" oncomplete="PF('update_nivel').show()" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{nivelAccesoBean.insert}" value="true" />

@@ -137,7 +137,7 @@ public class GrupoBean implements Serializable{
                                 getGrupoService().updateGrupo(merge);
                                 getGrupoService().deleteGrupo(getGrupo1());
                                 addMessage("Los grupos fueron unidos exitosamente");
-
+                                refreshGrupos();
                                 setMergeOk(false);
                                 setGrupo2yes(false);
                                 setGrupo1yes(false);
@@ -190,22 +190,26 @@ public class GrupoBean implements Serializable{
         setMergeOk(false);
     }
 
-     public boolean isMergeOk() {
+    public boolean isMergeOk() {
         return mergeOk;
     }
-     public void setMergeOk(boolean mergeOk) {
+    
+    public void setMergeOk(boolean mergeOk) {
         this.mergeOk = mergeOk;
     }
+    
     public Integer getInscritos() {
         return inscritos;
     }
- public Grupo getGrupo1() {
+    
+    public Grupo getGrupo1() {
         return grupo1;
     }
  
     public void setInscritos(Integer inscritos) {
         this.inscritos = inscritos;
     }
+    
     public void setGrupo1(Grupo grupo1) {
         this.grupo1 = grupo1;
     }
@@ -299,23 +303,23 @@ public class GrupoBean implements Serializable{
         return idHorario;
     }
 
-        public List<Horario> getHorarioList() {
+    public List<Horario> getHorarioList() {
         horarioList = new ArrayList<>();
         horarioList.addAll(horarioService.getHorarios());
         return horarioList;
     }
 
-        public void setHorarioList(List<Horario> horarioList) {
+    public void setHorarioList(List<Horario> horarioList) {
         this.horarioList = horarioList;
     }
 
-        public List<Asignatura> getAsignaturaList() {
+    public List<Asignatura> getAsignaturaList() {
         asignaturaList = new ArrayList<>();
         asignaturaList.addAll(asignaturaService.getAsignaturas());
         return asignaturaList;
     }
         
-        public void setAsignaturaList(List<Asignatura> asignaturaList) {
+    public void setAsignaturaList(List<Asignatura> asignaturaList) {
         this.asignaturaList = asignaturaList;
     }
 
@@ -338,15 +342,14 @@ public class GrupoBean implements Serializable{
     public void setFAsignatura(Integer fAsignatura) {
         this.fAsignatura = fAsignatura;
     }
-     @PostConstruct
+    
+    /*@PostConstruct
     public void init() {
         gruposList = new ArrayList<>();
         gruposList.addAll(getGrupoService().getGrupos());
-    }
+    }*/
 
     public List<Grupo> getGruposList() {
-        gruposList = new ArrayList<>();
-        gruposList.addAll(getGrupoService().getGrupos());
         return gruposList;
     }
 

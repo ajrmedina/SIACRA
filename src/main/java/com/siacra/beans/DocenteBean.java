@@ -50,6 +50,7 @@ public class DocenteBean implements Serializable {
     private CategoriaService categoriaService;
      
     private List<Docente> docentesList;
+    private List<Docente> docentesListAll;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -230,6 +231,16 @@ public class DocenteBean implements Serializable {
     public void setDocentesList(List<Docente> docentesList) {
         this.docentesList = docentesList;
     }
+    public List<Docente> getDocentesListAll() {
+        docentesListAll = new ArrayList<>();
+        docentesListAll.addAll(getDocenteService().getDocentes());
+        return docentesListAll;
+    }
+    
+    public void setDocentesListAll(List<Docente> docentesListAll) {
+        this.docentesListAll = docentesListAll;
+    }
+    
     
     /**
      * Get User Service

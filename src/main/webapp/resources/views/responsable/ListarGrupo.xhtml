@@ -29,7 +29,7 @@
             </h:panelGrid>
             <br />
             <br />
-            <p:dataTable id="grupo" var="grupo" value="#{grupoBean.gruposList}" style="width: 95%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" widgetVar="gruposTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="grupo" var="grupo" value="#{grupoBean.gruposList}" style="width: 100%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="gruposTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                    <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateGrupo" actionListener="#{grupoBean.reset()}" oncomplete="PF('update_grupo').show()"  value="Nuevo Grupo" icon="fa fa-plus">
@@ -44,22 +44,22 @@
                     <div style="clear:both" />
                 </f:facet>
                 
-                <p:column style="width: 11%" headerText="Asignatura" filterBy="#{grupo.asignatura.nombreAsignatura}" filterStyleClass="hide">                         
+                <p:column style="width: 10%" headerText="Asignatura" filterBy="#{grupo.asignatura.nombreAsignatura}" filterStyleClass="hide">                         
                     <h:outputText value="#{grupo.asignatura.nombreAsignatura}" class="center-element"/>
                 </p:column>
-                <p:column style="width: 10%" headerText="Tipo de grupo" filterBy="#{grupo.tipoGrupo.nombreGrupo}" filterStyleClass="hide">                         
+                <p:column style="width: 8%" headerText="Tipo de grupo" filterBy="#{grupo.tipoGrupo.nombreGrupo}" filterStyleClass="hide">                         
                     <h:outputText value="#{grupo.tipoGrupo.nombreGrupo}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 5%" headerText="Numero" filterBy="#{grupo.numeroGrupo}" filterStyleClass="hide">                  
+                <p:column style="width: 6%" headerText="Numero" filterBy="#{grupo.numeroGrupo}" filterStyleClass="hide">                  
                     <h:outputText value="#{grupo.numeroGrupo}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 5%" headerText="Oferta" filterBy="#{grupo.oferta}" filterStyleClass="hide">                  
+                <p:column style="width: 10%" headerText="Oferta" filterBy="#{grupo.oferta}" filterStyleClass="hide">                  
                     <h:outputText value="#{grupo.oferta.ciclo.ciclo}-#{grupo.oferta.acuerdo.nombreacuerdo}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 28%" headerText="Horario" filterBy="#{grupo.horario.dia1}" filterStyleClass="hide">                         
+                <p:column style="width: 30%" headerText="Horario" filterBy="#{grupo.horario.dia1}" filterStyleClass="hide">                         
                     <h:outputText value="#{grupo.horario.dia1}-#{grupo.horario.hinicio1},#{grupo.horario.hfin1} / #{grupo.horario.dia2}-#{grupo.horario.hinicio2},#{grupo.horario.hfin2}" class="center-element"/>
                 </p:column>              
                 
@@ -67,11 +67,11 @@
                     <h:outputText value="#{grupo.cupo}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 5%" headerText="Inscritos" filterBy="#{grupo.inscritos}" filterStyleClass="hide">                  
+                <p:column style="width: 6%" headerText="Inscritos" filterBy="#{grupo.inscritos}" filterStyleClass="hide">                  
                     <h:outputText value="#{grupo.inscritos}" class="center-element"/>
                 </p:column>  
                 
-                <p:column style="width: 8%" headerText="Estado" filterBy="#{grupo.grEstado}" filterStyleClass="hide">
+                <p:column style="width: 12%" headerText="Estado" filterBy="#{grupo.grEstado}" filterStyleClass="hide">
                     <h:outputText value="#{grupo.grEstado?'Habilitado':'Deshabilitado'}"/>
                 </p:column>
                 
