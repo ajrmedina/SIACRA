@@ -16,7 +16,7 @@
     
     <ui:define name="content"> 
         
-        <h:form id="generarResponsabilidad" target="_blank"> 
+        <h:form id="generarResponsabilidad" > 
             <p:growl id="messages"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
@@ -26,9 +26,7 @@
                     
                 </f:facet>                                 
                 
-                <p:column style="width:20%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
-                    <h:outputText value="#{escuela.codigoescuela}" />
-                </p:column>
+                
                 
                 <p:column style="width:30%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
                     <h:outputText value="#{escuela.nombreescuela}" />
@@ -39,7 +37,7 @@
                         <h:outputText value="Acciones" />
                     </f:facet>   
                                      
-                    <p:commandButton  value="Ver reporte" actionListener="#{reporte.identifyReport2(escuela.idescuela)}" ajax="false" icon="fa fa-file-pdf-o" >
+                    <p:commandButton  value="Ver reporte" actionListener="#{reporte.identifyReport2(escuela.codigoescuela)}" ajax="false" icon="fa fa-file-pdf-o" >
                         <f:param value="#{escuela.idescuela}" name="id_escuela"/>
                     
                     </p:commandButton>
