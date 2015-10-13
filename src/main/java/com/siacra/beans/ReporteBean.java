@@ -90,7 +90,13 @@ public class ReporteBean implements Serializable{
             case "Oferta":
                 parameter.put("escuela_IDESCUELA", Integer.parseInt(viewparams.get("id_escuela")));
                 break;
-                
+            case "rptResponsabilidad":
+                parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
+                break;
+            case "rptResponsabilidad_UCB":
+                parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
+                break;
+            
                 
         }
         //Generar el reporte
@@ -143,9 +149,38 @@ public class ReporteBean implements Serializable{
                 setNombreReporte("Oferta");
                 exportarServicioP();
                 break;
+            case "ResponsabilidadEscuela":
+                setNombreReporte("rptResponsabilidad");
+                exportarServicioP();
+                break;
+            case "ResponsabilidadUCB":
+                setNombreReporte("rptResponsabilidad_UCB");
+                exportarServicioP();
+                break;
         }
     }
     
+    public void identifyReport2(int escuelaId) throws JRException, ClassNotFoundException, SQLException, IOException{
+    
+        switch(escuelaId){
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            
+                setNombreReporte("rptResponsabilidad");
+                exportarServicioP();
+                break;
+            case 9:
+                setNombreReporte("rptResponsabilidad_UCB");
+                exportarServicioP();
+                break;
+        }
+    }
     public void validateChooseYear(){
         if(this.filterAnio.length() == 1 || this.filterEstadoTGP.length() == 1)
             disabled = true;

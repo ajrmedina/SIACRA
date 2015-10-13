@@ -41,6 +41,16 @@
                     <p:menuitem value="Trabajos de Graduacion" actionListener="#{reporte.identifyReport('TGFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-pdf-o" class="font-s" />
                     <p:menuitem value="Proyectos" actionListener="#{reporte.identifyReport('ProyectosFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-pdf-o" class="font-s" />
                 </p:submenu>
+                <p:submenu label="Reporte sobre Responsabilidad " icon="fa fa-columns" class="font-m" rendered="#{identityBean.principal.escuela.nombreescuela!='UCB'}">
+                    <p:menuitem value="Responsabilidad Academica" actionListener="#{reporte.identifyReport('ResponsabilidadEscuela')}"  icon="fa fa-file-pdf-o" class="font-s" ajax="false">
+                    <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
+                    </p:menuitem>
+                </p:submenu>
+                <p:submenu label="Reporte sobre Responsabilidad " icon="fa fa-columns" class="font-m" rendered="#{identityBean.principal.escuela.nombreescuela=='UCB'}">
+                    <p:menuitem value="Responsabilidad Academica" actionListener="#{reporte.identifyReport('ResponsabilidadUCB')}"  icon="fa fa-file-pdf-o" class="font-s" ajax="false">
+                    <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
+                    </p:menuitem>
+                </p:submenu>
             </p:tieredMenu>
             
         </h:form>
@@ -50,14 +60,16 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="3" cellpadding="5" class="center-element" >
                     <h:outputText value="Seleccionar escuela:" />
-                    <p:selectOneMenu   id="escuelaFilter" value="#{reporte.codigoEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                    <p:selectOneMenu   id="escuelaFilter" value="#{reporte.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" >
                         <p:ajax event="change" process="@this" update="aceptar" listener="#{reporte.onSelected}" />
                         <f:selectItem itemValue="0" itemLabel="Seleccione una escuela"  />
                         <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela" 
-                                      itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombrecarrera}"/>
+                                       itemValue="#{escuela.codigoescuela}" itemLabel="#{escuela.nombreescuela}"/>
                     </p:selectOneMenu>
                     <br/>
-                    <p:commandButton  disabled="#{reporte.disabled}" id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporte').hide()"  icon="fa fa-check" /> 
+                    <p:commandButton  disabled="#{reporte.disabled}" id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporte').hide()"  icon="fa fa-check" >
+                    
+                    </p:commandButton>
                     <p:commandButton  immediate="true" update=":generarReporte" id="cancel" value="Cancelar"  icon="fa fa-ban" >
                         <f:setPropertyActionListener target="#{reporte.disabled}" value="true" />
                          <p:resetInput target=":generarReporte" />

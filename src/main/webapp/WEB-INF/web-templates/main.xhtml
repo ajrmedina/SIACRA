@@ -98,13 +98,16 @@
                             <sec:authorize ifAllGranted="ROLE_MIEMBRO_JD">
                                 <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
                                 <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />                                
+                                
                             </sec:authorize>
                              
                             <p:menuitem value="Permanencia" url="/resources/views/shared/ListarPermanencia.xhtml" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}" />
                             <p:menuitem value="Reportes Docentes" url="/resources/views/shared/ReportesDocente.xhtml" icon="fa fa-file-o" rendered="#{identityBean.user.esDocente==true}" />                                
                            
                         </p:submenu>
-                        
+                        <sec:authorize ifAllGranted="ROLE_MIEMBRO_JD">
+                            <p:menuitem value="Responsabilidad Academica" url="/resources/views/jd/GenerarResponsabilidad.xhtml" icon="fa fa-file-pdf-o" rendered="#{identityBean.user.nivel.id==4}"/>
+                        </sec:authorize>
                         
                         <ui:insert name="add-menu-items"> </ui:insert>
                         <sec:authorize ifAnyGranted="ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_MIEMBRO_JD"> 
@@ -115,6 +118,7 @@
  
                     </p:menubar>
                 </h:form>
+               
             </nav>
             
                         
