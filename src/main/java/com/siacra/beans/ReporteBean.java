@@ -160,25 +160,20 @@ public class ReporteBean implements Serializable{
         }
     }
     
-    public void identifyReport2(int escuelaId) throws JRException, ClassNotFoundException, SQLException, IOException{
+    public void identifyReport2(String escuelaId) throws JRException, ClassNotFoundException, SQLException, IOException{
     
         switch(escuelaId){
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
             
-                setNombreReporte("rptResponsabilidad");
-                exportarServicioP();
-                break;
-            case 9:
+            case "UCB":
                 setNombreReporte("rptResponsabilidad_UCB");
                 exportarServicioP();
                 break;
+                
+            default:
+                setNombreReporte("rptResponsabilidad");
+                exportarServicioP();
+                break;
+                
         }
     }
     public void validateChooseYear(){
