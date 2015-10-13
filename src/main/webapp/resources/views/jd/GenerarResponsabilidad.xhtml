@@ -1,0 +1,55 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">    
+    
+
+    <ui:define name="title">
+       Reporte Responsabilidad Academica
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Generar Reporte de Responsabilidad Academica de las Escuelas de la FIA
+    </ui:define>
+    
+    <ui:define name="content"> 
+        
+        <h:form id="generarResponsabilidad" target="_blank"> 
+            <p:growl id="messages"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+                
+                <f:facet name="header">    
+                    Escuelas y Unidad de la Facultad de Ingenieria y Arquitectura 
+                    
+                </f:facet>                                 
+                
+                <p:column style="width:20%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
+                    <h:outputText value="#{escuela.codigoescuela}" />
+                </p:column>
+                
+                <p:column style="width:30%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
+                    <h:outputText value="#{escuela.nombreescuela}" />
+                </p:column>
+                
+                <p:column style="width: 25%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                                     
+                    <p:commandButton  value="Ver reporte" actionListener="#{reporte.identifyReport2(escuela.idescuela)}" ajax="false" icon="fa fa-file-pdf-o" >
+                        <f:param value="#{escuela.idescuela}" name="id_escuela"/>
+                    
+                    </p:commandButton>
+                    
+                </p:column>               
+            </p:dataTable>
+            
+                   
+        </h:form>
+        
+    </ui:define>
+    
+</ui:composition>
