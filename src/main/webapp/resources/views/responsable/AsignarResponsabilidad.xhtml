@@ -148,7 +148,7 @@
                         </p:multiSelectListbox>
                     </h:panelGrid>
                     
-                    <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.validateAddResponsabilidad()}" update="responsabilidadForm :tge_form:tge :proyecto_form:proyecto" icon="fa fa-plus" rendered="#{responsabilidadBean.insert == true}" />
+                    <p:commandButton id="save_insert" value="Guardar" actionListener="#{responsabilidadBean.validateAddResponsabilidad()}" update="responsabilidadForm :tge_form:tge :proyecto_form:proyecto :grupo_form:grupo" icon="fa fa-plus" rendered="#{responsabilidadBean.insert == true}" />
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{responsabilidadBean.validateUpdateResponsabilidad()}" update=":listar:responsabilidadTable :listar:messages :tge_form:tge :proyecto_form:proyecto" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialog_responsabilidad').hide()" icon="fa fa-refresh" rendered="#{responsabilidadBean.insert == false}" />
                     <p:commandButton id="save_exit" value="Salir" update=":responsabilidadForm" process="@this" oncomplete="PF('dialog_responsabilidad').hide()" icon="fa fa-ban">
                       <p:resetInput target="responsabilidadForm" />
@@ -251,7 +251,9 @@
                     </p:column>
                 </p:dataTable>
                 <br />
-                <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('grupo_existe').hide()" icon="fa fa-ban" style="float: right; margin-right: 35px " />
+                <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('grupo_existe').hide()" update="grupo_form grupo" icon="fa fa-ban" style="float: right; margin-right: 35px " >
+                    <f:setPropertyActionListener target="#{responsabilidadBean.idAsignatura}" value="0" />
+                </p:commandButton>
             </h:form>
         </p:dialog>
         

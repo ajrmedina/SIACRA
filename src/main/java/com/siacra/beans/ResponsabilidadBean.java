@@ -185,6 +185,7 @@ public class ResponsabilidadBean implements Serializable {
             if(getIdactividad() != 0){
                 if(this.getMostrar()){
                     if(this.getOpcion() != null){
+                        setGruposList(null);
                         showDialog();
                     }
                     else
