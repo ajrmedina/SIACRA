@@ -121,5 +121,9 @@ public class UserDao  {
         return list.isEmpty();
     }
     
+     public boolean existsUser(String  nombreuser) {
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM User u WHERE nombreUsuario=? ").setParameter(0, nombreuser).list();
+        return list.isEmpty();
+    }
 }
 

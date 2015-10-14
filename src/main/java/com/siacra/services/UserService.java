@@ -94,6 +94,10 @@ public class UserService {
     public boolean isUserDocente(int id) {
         return getUserDao().isUserDocente(id);
     }
+    
+    public boolean existsUser(String nombreUser){
+    return getUserDao().existsUser(nombreUser);
+    }
 
     /**
      * Get User DAO
