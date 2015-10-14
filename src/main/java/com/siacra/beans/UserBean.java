@@ -18,10 +18,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.webflow.context.ExternalContextHolder;
 
 /**
  *
@@ -70,6 +72,7 @@ public class UserBean implements Serializable {
      */
     public void addUser() {
         try {
+            if(getUserService().existsUser(getNombreUsuario())){
             User user = new User();
             user.setNombreUsuario(getNombreUsuario());
             user.setContrasenia(nombreUsuario);
@@ -82,11 +85,19 @@ public class UserBean implements Serializable {
             user.setEstadoUsuario(getEstadoUsuario());
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
+           
             getUserService().addUser(user);
             addMessage("Se ingresó el usuario correctamente");
             addMessage("Nombre de Usuario: " + getNombreUsuario() + " Contraseña: " + getNombreUsuario()); 
             reset();
             setInsert(false);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute(" PF('update_user').hide();");
+            }
+            else{
+            addMessage("El nombre de usuario ya existe, por favor ingresar otro");
+            
+            }
             //return "ListarNivelesAcceso?faces-redirect=true";
             
         } catch (DataAccessException e) {
