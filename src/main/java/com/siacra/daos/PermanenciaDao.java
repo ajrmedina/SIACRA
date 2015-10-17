@@ -95,5 +95,10 @@ public class PermanenciaDao {
         List list = getSessionFactory().getCurrentSession().createQuery("from  Permanencia").list();
         return list;
     }
+    
+    public List<Permanencia> getPermanenciasByDocente(int docente){
+        List list = getSessionFactory().getCurrentSession().createQuery("from Permanencia WHERE iddocente=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente).list();
+        return list;
+    }
        
 }

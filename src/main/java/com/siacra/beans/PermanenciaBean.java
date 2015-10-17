@@ -286,7 +286,7 @@ public class PermanenciaBean implements Serializable {
      */
     public List<Permanencia> getPermanenciasList() {
         permanenciasList = new ArrayList<>();
-        permanenciasList.addAll(getPermanenciaService().getPermanencias());
+        permanenciasList.addAll(getPermanenciaService().getPermanenciasByDocente(principal.getIdDocente()));        
         return permanenciasList;
     }
     
