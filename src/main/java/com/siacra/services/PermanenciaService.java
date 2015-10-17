@@ -93,5 +93,9 @@ public class PermanenciaService {
     public void setPermanenciaDao(PermanenciaDao permanenciaDAO) {
         this.permanenciaDAO = permanenciaDAO;
     }
+    
+    public List<Permanencia> getPermanenciasByDocente(int id){
+        return getPermanenciaDao().getPermanenciasByDocente(id);
+    }
 }
 

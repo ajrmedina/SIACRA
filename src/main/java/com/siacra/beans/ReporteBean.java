@@ -74,7 +74,7 @@ public class ReporteBean implements Serializable{
                 parameter.put("anio", Integer.parseInt(getFilterAnio()));
                 parameter.put("estado", getFilterEstadoTGP());
                 break;
-            case "permanencia":
+            case "rptPermanencia":
                 parameter.put("docente_IDDOCENTE", Integer.parseInt(viewparams.get("id_docente")));
                 break;
             case "DocentesTiempo":
@@ -95,6 +95,9 @@ public class ReporteBean implements Serializable{
                 break;
             case "rptResponsabilidad_UCB":
                 parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
+                break;
+            case "memorandum":
+                parameter.put("docente_IDDOCENTE", Integer.parseInt(viewparams.get("id_docente")));
                 break;
             
                 
@@ -130,8 +133,8 @@ public class ReporteBean implements Serializable{
             case "ProyectosFinalizados":
                 setNombreReporte("rptProyectosFinalizados");
                 break;
-            case "Permanencia":
-                setNombreReporte("permanencia");
+            case "PermanenciaDoc":
+                setNombreReporte("rptPermanencia");
                 exportarServicioP();
                 break;
             case "DocentesTiempo":
@@ -157,6 +160,11 @@ public class ReporteBean implements Serializable{
                 setNombreReporte("rptResponsabilidad_UCB");
                 exportarServicioP();
                 break;
+            case "Memorandum":
+                setNombreReporte("memorandum");
+                exportarServicioP();
+                break;
+                
         }
     }
     
