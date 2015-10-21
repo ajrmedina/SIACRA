@@ -137,15 +137,16 @@
                     <p:outputLabel for="valorativas" value="Unidades valorativas : " />
                     <p:inputMask mask="9?99" id="valorativas" value="#{asignaturaBean.unidadesValorativas}" required="true" requiredMessage="Por favor, ingrese las unidades valorativas."
                                  onkeyup="if(this.value.length>1){this.value=this.value.substring(0,1);}"
-                                 validatorMessage="Solo se admiten números, con un valor maximo de 4 en el campo 'Unidades valorativas'">
-                        <f:validateDoubleRange minimum="1" maximum="4" />
+                                 validatorMessage="Solo se admiten números, con un valor maximo de 6 en el campo 'Unidades valorativas'">
+                        <f:validateDoubleRange minimum="1" maximum="6" />
                     </p:inputMask>
                    
                     <p:outputLabel for="tipoAsignatura" value="Tipo de la asignatura :" />
-                    <p:selectOneMenu id="tipoAsignatura" value="#{asignaturaBean.tipoAsignatura}" required="true" requiredMessage="Por favor, seleccione el tipo de asignatura">
+                    <p:selectOneMenu id="tipoAsignatura" value="#{asignaturaBean.tipoAsignatura}" required="true" requiredMessage="Por favor, seleccione el tipo de asignatura" validatorMessage="">
                         <f:selectItem itemLabel="" itemValue="Seleccione el tipo de asignatura" />
                         <f:selectItem itemLabel="Obligatoria" itemValue="Obligatoria" />
                         <f:selectItem itemLabel="Electiva" itemValue="Electiva" />                        
+                        <f:validateRequired for="tipoAsignatura"/>
                     </p:selectOneMenu>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:message :list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == false}" />

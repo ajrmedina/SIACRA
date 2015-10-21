@@ -237,7 +237,7 @@ public class OfertaBean implements Serializable{
             addMessage("La oferta fue eliminada correctamente");
         }catch (DataAccessException e){
             e.printStackTrace();
-            addMessage("La oferta no puede ser eliminado debido a que tiene registros relacionados");
+            addMessage("La oferta no puede ser eliminada debido a que tiene registros relacionados");
         }
     }
     

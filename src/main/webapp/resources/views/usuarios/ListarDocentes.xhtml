@@ -76,8 +76,8 @@
                     
                     <p:growl id="messages" />
                     <p:commandButton id="update_button" update=":dialogUpdateDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('update_docente').show()" icon="fa fa-edit" />
-                    <p:commandButton id="locked" update=":dialogLockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('lock_docente').show()" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('unlock_docente').show()" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == false}" />
+                    <p:commandButton id="locked" update=":dialogLockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('lock_docente').show()" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('unlock_docente').show()" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == false}" />
                     <p:commandButton id="approve" update=":dialogApproveDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('approve_docente').show()" icon="fa fa-check-square-o" rendered="#{docente.aprobarDocente == false and identityBean.user.nivel.id == 3}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Docente" rendered="#{docente.user.estadoUsuario == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Docente" rendered="#{docente.user.estadoUsuario == false}" />
@@ -97,11 +97,17 @@
                     <p:inputText id="apellidos" value="#{docenteBean.apellidos}" readonly="true" rendered="#{docenteBean.insert == false}" />
 
                     <p:outputLabel for="usuario" value="Usuario Asociado: " rendered="#{docenteBean.insert == true}"/>
-                    <h:panelGroup layout="block" rendered="#{docenteBean.insert == true}">
+                    <h:panelGroup layout="block" rendered="#{docenteBean.insert == true and identityBean.user.nivel.acceso!='Administrador'}">
                         <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
                             <f:selectItems value="#{userBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado al docente" />
+                    </h:panelGroup>
+                     <h:panelGroup layout="block" rendered="#{docenteBean.insert == true and identityBean.user.nivel.acceso=='Administrador'}">
+                        <p:selectOneMenu id="usuario2" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                            <f:selectItems value="#{userBean.userListAll}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forUsuario2" for="usuario2" value="Seleccione el usuario asociado al docente" />
                     </h:panelGroup>
                     
                     <p:outputLabel for="categoria" value="Categoria del Docente: " />

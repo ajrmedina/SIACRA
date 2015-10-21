@@ -87,13 +87,13 @@
                 
                     <p:outputLabel for="nombreactividad" value="Nombre de actividad: " />
                     <p:inputText id="nombreactividad" value="#{actividadBean.nombreactividad}" required="true" requiredMessage="Por favor, ingrese el nombre de la actividad."
-                                 validatorMessage="Solo se admiten letras y números en el campo 'Nombre de actividad'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                        
-                        <f:validateRegex pattern="[a-zA-Záéíóú0-9. ]+$" />
+                                 validatorMessage="Solo se admiten letras y espacios en el campo 'Nombre de actividad'." >                        
+                        <f:validateRegex pattern="[a-zA-Záéíóú ]+$" />
                     </p:inputText>
                
                     <p:outputLabel for="descripcionactividad" value="Descripción de actividad: " />
-                    <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}"  
-                                     validatorMessage="Solo se admiten letras y números en el campo 'Descripción de actividad'" onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                       
+                    <p:inputTextarea id="descripcionactividad" value="#{actividadBean.descripcionactividad}" required="true" requiredMessage="Por favor, ingrese una descripcion de la actividad"
+                                     validatorMessage="Solo se admiten letras y números en el campo 'Descripción de actividad'" >                       
                        <f:validateRegex pattern="[a-zA-Záéíóú0-9. ]+$" />
                     </p:inputTextarea>
                     
