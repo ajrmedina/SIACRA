@@ -99,19 +99,19 @@
                     <p:outputLabel for="nombre" value="Nombre de Proyecto: " />
                     <p:inputText id="nombre" value="#{proyectoBean.nombreproyecto}" required="true" requiredMessage="Por favor, ingrese el nombre del proyecto."
                                  validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Nombre de proyecto'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}">                        
-                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -_.]+$" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputText>
                     
                     <p:outputLabel for="descripcion" value="Descripción: " />
                     <p:inputTextarea id="descripcion" value="#{proyectoBean.descripcion}" required="true"
                                      validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Descripción'." onkeyup="if(this.value.length>150){this.value=this.value.substring(0,150);}">
-                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -_.]+$" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel for="observacion" value="Observaciones: " />
                     <p:inputTextarea id="observacion" value="#{proyectoBean.observacion}" required="true"
                                      validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Observación'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}">
-                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -_.]+$" />
+                        <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />

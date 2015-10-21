@@ -82,8 +82,8 @@
                     </p:commandButton>
                    
                     <p:commandButton id="delete_button" update=":dialogDeleteGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('delete_grupo').show()" icon="fa fa-times" /> 
-                    <p:commandButton id="locked" update=":dialogLockGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('lock_grupo').show()" icon="fa fa-unlock-alt" rendered="#{grupo.grEstado == true}" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('unlock_grupo').show()" icon="fa fa-unlock" rendered="#{grupo.grEstado == false}" />
+                    <p:commandButton id="locked" update=":dialogLockGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('lock_grupo').show()" icon="fa fa-unlock" rendered="#{grupo.grEstado == true}" />
+                    <p:commandButton id="unlocked" update=":dialogUnlockGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('unlock_grupo').show()" icon="fa fa-unlock-alt" rendered="#{grupo.grEstado == false}" />
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar Grupo" rendered="#{grupo.grEstado == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Grupo" rendered="#{grupo.grEstado == false}" /> 
                     

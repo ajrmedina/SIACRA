@@ -222,7 +222,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:outputText value="Seguro que desea eliminar la actividad del día #{permanenciaBean.dia}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{permanenciaBean.deletePermanencia()}" update=":list:permanencia" oncomplete="PF('delete_permanencia').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="save_delete" value="Eliminar" actionListener="#{permanenciaBean.deletePermanencia()}" update=":list:permanencia :list:messages" oncomplete="PF('delete_permanencia').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_permanencia').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
