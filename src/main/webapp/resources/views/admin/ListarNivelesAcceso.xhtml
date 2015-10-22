@@ -54,7 +54,7 @@
                     <p:outputLabel for="nombreAcceso" value="Nombre del Acceso: " />
                     <p:inputText id="nombreAcceso" value="#{nivelAccesoBean.acceso}" required="true" requiredMessage="Por favor, ingrese el nombre de acceso."
                                  validatorMessage="Solo letras, espacios y guiones son permitidos para el campo 'Nombre de Acceso'." onkeyup="if(this.value.length>25){this.value=this.value.substring(0,25);}">                        
-                        <f:validateRegex pattern="^[a-zA-Z -_]+$" />
+                        <f:validateRegex pattern="^[a-zA-Z -]+$" />
                     </p:inputText>
 
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{nivelAccesoBean.addAcceso()}" update=":list:messages :list:nivel" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_nivel').hide()" icon="fa fa-plus" rendered="#{nivelAccesoBean.insert == true}" />
