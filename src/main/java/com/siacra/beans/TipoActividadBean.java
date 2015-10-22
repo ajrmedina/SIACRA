@@ -109,6 +109,7 @@ public class TipoActividadBean implements Serializable {
             addMessage("El tipoactividad " + eliminado + " fue eliminado correctamente");
         } catch (DataAccessException e) {
             e.printStackTrace();
+            addMessage("El tipo actividad  no puede ser eliminado debido a que tiene registros  asociados");
         }
     }
 

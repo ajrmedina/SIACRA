@@ -65,7 +65,7 @@
                     <p:inputText id="codEscuela" value="#{escuelaBean.codigoescuela}" required="true"
                              requiredMessage="Por favor, ingrese el código de Escuela." onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}"
                              validatorMessage="Solo letras y guiones son permitidos en el campo 'Código de Escuela'.">
-                        <f:validateRegex pattern="^[a-zA-Z-_]+$" />                        
+                        <f:validateRegex pattern="^[a-zA-Z0-9]+$" />                        
                     </p:inputText>
                         
                     <p:outputLabel for="nombreEscuela" value="Nombre de Escuela: " />
