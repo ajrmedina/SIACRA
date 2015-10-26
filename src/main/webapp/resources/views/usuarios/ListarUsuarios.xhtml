@@ -141,13 +141,26 @@
                     <p:selectBooleanCheckbox value="#{userBean.esDocente}" />
 
                     <p:outputLabel for="acceso" value="Nivel de Acceso: " />
-                    <h:panelGroup layout="block">
+                    <h:panelGroup layout="block" rendered="#{identityBean.user.nivel.id==1}">
                         <p:selectOneMenu id="acceso" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el nivel de acceso del usuario.">
                             <f:selectItems value="#{nivelAccesoBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}" itemDisabled="#{nivel.estadoAcceso == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forNivel" for="acceso" value="Seleccione el nivel de acceso para el usuario" />
                     </h:panelGroup>
                     
+                    <h:panelGroup layout="block" rendered="#{identityBean.user.nivel.id==2}">
+                        <p:selectOneMenu panelStyleClass="hideDisabled" id="accesoResponsable2" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el nivel de acceso del usuario.">
+                            <f:selectItems value="#{nivelAccesoBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}" itemDisabled="#{nivel.estadoAcceso == false or nivel.acceso!='Docente'}"/>
+                        </p:selectOneMenu>
+                        
+                    </h:panelGroup>
+                    
+                     <h:panelGroup layout="block" rendered="#{identityBean.user.nivel.id==3}">
+                        <p:selectOneMenu panelStyleClass="hideDisabled" id="accesoResponsable3select" value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el nivel de acceso del usuario.">
+                            <f:selectItems   value="#{nivelAccesoBean.nivelAccesoList}" var="nivel" itemValue="#{nivel.id}" itemLabel="#{nivel.acceso}" itemDisabled="#{nivel.estadoAcceso == false or (nivel.acceso!='Responsable' and nivel.acceso!='Docente')}"/>
+                        </p:selectOneMenu>
+                        
+                    </h:panelGroup>
                     <p:commandButton id="save_insert" value="Agregar" actionListener="#{userBean.addUser()}" update=":list:messages :list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed)" icon="fa fa-plus" rendered="#{userBean.insert == true}"/>
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{userBean.updateUser()}" update=":list:messages :list:usuarios" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_user').hide()" icon="fa fa-refresh" rendered="#{userBean.insert == false}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_user').hide()" icon="fa fa-ban">
