@@ -73,7 +73,7 @@ public class GrupoDao {
     }
     
     public List<Grupo> getGruposNoAsignados(int id) {
-        List list = getSessionFactory().getCurrentSession().createQuery("FROM Grupo g WHERE idasignatura=? AND gr_estado = 1 AND aprobargrupo = 1 AND NOT EXISTS ( SELECT ag FROM AcademicaGrupo ag WHERE g.idGrupo = ag.grupo.idGrupo )").setParameter(0, id).list();
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM Grupo g WHERE idasignatura=? AND gr_estado = 1  AND NOT EXISTS ( SELECT ag FROM AcademicaGrupo ag WHERE g.idGrupo = ag.grupo.idGrupo )").setParameter(0, id).list();
         return list;
     }
 }
