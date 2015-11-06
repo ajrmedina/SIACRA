@@ -126,7 +126,7 @@ public class ResponsabilidadService {
         return getResponsabilidadDao().getHorasActualesByDocenteObligatorias(id);
     }  
     
-     public void cargarResponsabilidad(int anio, String ciclo,int idescuela,int idcicloactual) {
-        getResponsabilidadDao().cargarResponsabilidad(anio, ciclo,idescuela,idcicloactual);
+     public int cargarResponsabilidad(int anio, String ciclo,int idescuela,int idcicloactual) {
+        return getResponsabilidadDao().cargarResponsabilidad(anio, ciclo,idescuela,idcicloactual);
     }
 }
