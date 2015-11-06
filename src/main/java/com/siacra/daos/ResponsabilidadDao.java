@@ -158,7 +158,8 @@ public class ResponsabilidadDao {
     }
     
     //Cargar responsabilidad;
-    public void cargarResponsabilidad(int anio, String  ciclo,int idescuela,int idcicloactual) {
+    public int cargarResponsabilidad(int anio, String  ciclo,int idescuela,int idcicloactual) {
+        
         try {
             Query callSP = getSessionFactory().getCurrentSession().createSQLQuery("CALL sp_loadResponsabilidad(:anio, :ciclo, :idescuela, :idcicloactual)")
                     .setParameter("anio", anio)
@@ -166,10 +167,14 @@ public class ResponsabilidadDao {
                     .setParameter("idescuela", idescuela)
                     .setParameter("idcicloactual", idcicloactual);
             int result = callSP.executeUpdate();
+              return result;
         }
         catch (RuntimeException e) {
             throw e;
+            
         }     
+        
+      
     }
     
 }
