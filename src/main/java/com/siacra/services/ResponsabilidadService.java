@@ -98,6 +98,9 @@ public class ResponsabilidadService {
         return getResponsabilidadDao().getHorasActualesByDocente(idd, idc);
     }
     
+    public Long getHoraByIdResponsabilidad(int docente,int ciclo,int idrespon){
+    return getResponsabilidadDao().getHoraByIdResponsabilidad(docente, ciclo, idrespon);
+    }
     public List<Responsabilidad> getResponsabilidades() {
         return getResponsabilidadDao().getResponsabilidades();
     }
@@ -123,4 +126,7 @@ public class ResponsabilidadService {
         return getResponsabilidadDao().getHorasActualesByDocenteObligatorias(id);
     }  
     
+     public void cargarResponsabilidad(int anio, String ciclo,int idescuela,int idcicloactual) {
+        getResponsabilidadDao().cargarResponsabilidad(anio, ciclo,idescuela,idcicloactual);
+    }
 }

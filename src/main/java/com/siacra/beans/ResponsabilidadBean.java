@@ -107,6 +107,11 @@ public class ResponsabilidadBean implements Serializable {
     Long horasIn;
     Long horasOP;
     
+    private int anio;   //para cargar responsabilidad
+    private String cargarciclo; //para cargar responsabilidad
+    
+    
+    
     /************************************** Trabajo de Graduacion **************************************/
     
     /* Aprobar TG */
@@ -213,13 +218,13 @@ public class ResponsabilidadBean implements Serializable {
         if(actividad.getIdtipoactividad().getTipoactividad().toUpperCase().matches("(.*)ACADEMICA(.*)"))
             this.setMostrar(true);
         //Verificar si hay sobrecarga de horas obligatorias para que modifique el tipo de tiempo y las horas
-        if(responsabilidad.getTipodetiempo().equals("Obligatorio")){
+       /* if(responsabilidad.getTipodetiempo().equals("Obligatorio")){
             if(horasObligatoriasExcedidas()){
                addMessage("Las horas obligatorias ya estan cumplidas, no pueden modificarse");
                setSobrecarga(true);
                setHorasSobrecarga(true);
             }
-        }
+        }*/
     }
     
     /**
@@ -242,7 +247,7 @@ public class ResponsabilidadBean implements Serializable {
     }
     
     public void validateUpdateResponsabilidad(){
-        if(validateHorasObligatorias()){
+        if(validateHorasObligatoriasOnUpdate()){
             if(getMostrar()){
                 if(this.getOpcion() != null){
                     //En donde exista setear el idResponsabilidad en NULL
@@ -270,6 +275,10 @@ public class ResponsabilidadBean implements Serializable {
             }
             else
                updateResponsabilidad();
+        }
+        else
+        {
+            addMessage("No se puede ingresar mas horas obligatorias.");
         }
     }
     
@@ -391,6 +400,36 @@ public class ResponsabilidadBean implements Serializable {
         return continua;
     }
     
+    public boolean validateHorasObligatoriasOnUpdate(){
+        //Validar que el numero de horas ingresadas mas las existente no sobrepasen el limite permitido por la categoria
+        boolean continua = true; //Saber si sigue o se quiebra el flujo de ejecucion para actualizar
+        Long horas;
+        
+        Responsabilidad responsabilidad ;
+        
+        Docente docente;
+        if(this.getTipodetiempo().equals("Obligatorio")){
+            try {
+                if(isInsert()){
+                    horas = getResponsabilidadService().getHorasActualesByDocente(getIdDocente(), getCiclo().getIdCiclo());
+                    docente = getDocenteService().getDocenteById(getIdDocente());
+                }
+                else {
+                    responsabilidad = getResponsabilidadService().getResponsabilidadById(getIdresponsabilidad());
+                    horas = getResponsabilidadService().getHorasActualesByDocente(responsabilidad.getDocente().getIdDocente(), getCiclo().getIdCiclo());
+                    docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
+                }
+                Long sumatoriaHoras = horas + getTotalhoras();
+                if(sumatoriaHoras - getResponsabilidadService().getHoraByIdResponsabilidad(getIdDocente(), getCiclo().getIdCiclo(), getIdresponsabilidad()) > docente.getCategoria().getHorasObligatorias()){
+                   // addMessage("La Responsabilidad no se puede añadir debido a que el valor ingresado mas las horas ya asignadas exceden las horas obligatorias permitidas");
+                    continua = false;
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return continua;
+    }
     public void refreshGrupos() {
         setGruposList(getGrupoService().getGruposNoAsignados(getIdAsignatura()));
     }
@@ -403,6 +442,12 @@ public class ResponsabilidadBean implements Serializable {
         else {
             addMessage("No puede aprobar la responsabilidad de un ciclo inactivo");
         }
+    }
+    
+    public void cargarResponsabilidad(){
+    
+    getResponsabilidadService().cargarResponsabilidad(getAnio(), getCargarciclo(), id_escuela,getCiclo().getIdCiclo() );
+    addMessage("Carga completa");
     }
     
     public void reset() {
@@ -1118,5 +1163,35 @@ public class ResponsabilidadBean implements Serializable {
         }
         
     }
+
+    /**
+     * @return the anio
+     */
+    public int getAnio() {
+        return anio;
+    }
+
+    /**
+     * @param anio the anio to set
+     */
+    public void setAnio(int anio) {
+        this.anio = anio;
+    }
+
+    /**
+     * @return the cargarciclo
+     */
+    public String getCargarciclo() {
+        return cargarciclo;
+    }
+
+    /**
+     * @param cargarciclo the cargarciclo to set
+     */
+    public void setCargarciclo(String cargarciclo) {
+        this.cargarciclo = cargarciclo;
+    }
+
+    
     
 }
