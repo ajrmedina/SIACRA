@@ -100,6 +100,22 @@ public class ResponsabilidadDao {
     }
     
     /**
+     * Get hora de una responsabilidad by docente
+     * @param docente
+     * @param idrespon
+     * @param ciclo
+     * @return int hora de la responsabilidad
+     */
+    public Long getHoraByIdResponsabilidad(int docente,int ciclo,int idrespon){
+    Query hora = getSessionFactory().getCurrentSession().createQuery("SELECT totalhoras FROM Responsabilidad WHERE iddocente=? AND idciclo=? AND idresponsabilidad=? AND tipodetiempo='Obligatorio'")
+            .setParameter(0,docente)
+            .setParameter(1,ciclo)
+            .setParameter(2,idrespon);
+    
+    return Long.parseLong( hora.uniqueResult().toString());
+    }
+    
+    /**
      * Get Responsabilidad List
      *
      * @return List - Lista Responsabilidad
@@ -140,4 +156,20 @@ public class ResponsabilidadDao {
         List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad WHERE iddocente=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente).list();
         return list;
     }
+    
+    //Cargar responsabilidad;
+    public void cargarResponsabilidad(int anio, String  ciclo,int idescuela,int idcicloactual) {
+        try {
+            Query callSP = getSessionFactory().getCurrentSession().createSQLQuery("CALL sp_loadResponsabilidad(:anio, :ciclo, :idescuela, :idcicloactual)")
+                    .setParameter("anio", anio)
+                    .setParameter("ciclo", ciclo)
+                    .setParameter("idescuela", idescuela)
+                    .setParameter("idcicloactual", idcicloactual);
+            int result = callSP.executeUpdate();
+        }
+        catch (RuntimeException e) {
+            throw e;
+        }     
+    }
+    
 }

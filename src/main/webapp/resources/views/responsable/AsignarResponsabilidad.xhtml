@@ -46,6 +46,9 @@
                             <f:setPropertyActionListener target="#{responsabilidadBean.horasActuales}" value="0" />
                             <f:setPropertyActionListener target="#{responsabilidadBean.horasOP}" value="0" />
                         </p:commandButton>
+                        <p:commandButton id="load_button" update=":dialogLoadResponsabilidad" style="float: right" oncomplete="PF('load_responsabilidad').show()" value="Cargar responsabilidad" icon="fa fa-refresh">
+                            
+                        </p:commandButton>
                         <p:spacer width="10" />
                         <p:commandLink ajax="false" style="float: right">
                             <p:graphicImage library="img" name="pdf.png"/>
@@ -130,7 +133,7 @@
                     </h:panelGroup>
 
                     <p:outputLabel for="horast" value="Total de horas: " rendered="#{responsabilidadBean.horasSobrecarga == false}"/>
-                    <p:inputMask id="horast" value="#{responsabilidadBean.totalhoras}" mask="9?99" required="true" rendered="#{responsabilidadBean.horasSobrecarga == false}">
+                    <p:inputMask id="horast" value="#{responsabilidadBean.totalhoras}" mask="9?99" required="true" >
                         <f:validateDoubleRange minimum="1" maximum="99" />
                     </p:inputMask>
                     
@@ -390,6 +393,30 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
+        
+        <p:dialog header="Cargar responsabilidad " id="dialogLoadResponsabilidad" widgetVar="load_responsabilidad" modal="true" resizable="false" closable="false">
+            <h:form id="load">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                <h:outputText value="Año" />
+                <p:selectOneMenu id="anio" value="#{responsabilidadBean.anio}" effect="fade" required="true">
+                    <f:selectItems value="#{cicloBean.aniosList}" var="anio" itemValue="#{anio.anio}" itemLabel="#{anio.anio}"/>
+                </p:selectOneMenu>
+                <h:outputText value="Ciclo"/>
+                <p:selectOneMenu id="ciclo" value="#{responsabilidadBean.cargarciclo}" effect="fade" required="true">
+                    <f:selectItem itemValue="CI" itemLabel="CICLO I"/>
+                    <f:selectItem itemValue="CII" itemLabel="CICLO II"/>
+                </p:selectOneMenu>
+                
+                
+                    <p:commandButton id="save_delete" value="Cargar" actionListener="#{responsabilidadBean.cargarResponsabilidad}" update=":listar:responsabilidadTable :listar:messages" oncomplete="PF('load_responsabilidad').hide()" icon="fa fa-refresh" >
+                        <f:setPropertyActionListener target="#{responsabilidadBean.cargarEscuela}" value="#{identityBean.principal.escuela.idescuela}"/>
+                    </p:commandButton>
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('load_responsabilidad').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
         
     </ui:define>
     
