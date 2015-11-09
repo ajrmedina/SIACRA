@@ -74,7 +74,7 @@
                     <p:outputLabel for="codigoAcuerdo" value="Código de acuerdo:" />
                     <p:inputText id="codigoAcuerdo" value="#{acuerdoBean.codigoacuerdo}" required="true" requiredMessage="Por favor, ingrese el código de acuerdo."
                              validatorMessage="Solo se admiten letras, números y guiones en el campo 'Código de acuerdo'." onkeyup="if(this.value.length>20){this.value=this.value.substring(0,20);}" >
-                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_]+$" />                                       
+                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_ ]+$" />                                       
                     </p:inputText>
 
                     <p:outputLabel for="fechaAcuerdo" value="Fecha de Acuerdo:" />
@@ -85,7 +85,7 @@
                     <p:outputLabel for="nombreAcuerdo" value="Nombre del Acuerdo: " />
                     <p:inputText id="nombreAcuerdo" value="#{acuerdoBean.nombreacuerdo}" size="30" required="true" requiredMessage="Por favor, ingrese el nombre de acuerdo."
                              validatorMessage="Solo letras son admitidas en el campo 'Nombre de acuerdo'." onkeyup="if(this.value.length>200){this.value=this.value.substring(0,200);}" >
-                        <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />                                                                    
+                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_ ]+$" />                                                                    
                     </p:inputText>
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{acuerdoBean.updateAcuerdo()}" update=":list:message :list:acuerdo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-refresh" rendered="#{acuerdoBean.insert == false}"/>
