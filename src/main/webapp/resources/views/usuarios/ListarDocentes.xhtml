@@ -43,7 +43,7 @@
                 </p:column>
                 <p:column style="width: 12%" exportable="false" headerText="Habilitado" filterBy="#{docente.user.estadoUsuario}" filterStyleClass="hide">
                     <f:facet name="filter">
-                        <p:selectOneButton onchange="PF('usuariosTable').filter()">
+                        <p:selectOneButton onchange="PF('docentesTable').filter()">
                             <f:converter converterId="javax.faces.Boolean" />
                             <f:selectItem itemLabel="Todos" itemValue="" />
                             <f:selectItem itemLabel="H" itemValue="true"  />
