@@ -44,8 +44,8 @@ public class ReporteBean implements Serializable{
     private boolean estado;
     
     public Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/siacra", "root", "123");
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conexion = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/siacra", "root", "123");
         return conexion;
     }
     
