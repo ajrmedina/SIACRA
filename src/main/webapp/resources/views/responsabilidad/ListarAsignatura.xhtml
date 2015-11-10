@@ -116,8 +116,8 @@
                     
                     <p:outputLabel for="codigoAsignatura" value="Codigo de asignatura: " />
                     <p:inputText id="codigoAsignatura" value="#{asignaturaBean.codigoAsignatura}" required="true" requiredMessage="Por favor, ingrese el código de la asignatura."
-                                 validatorMessage="Solo letras y números son permitidos en el campo 'Código de asignatura'." onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}">                        
-                        <f:validateRegex pattern="[a-zA-Z0-9]+$" />
+                                 validatorMessage="Error: El 'Codigo de asignatra' debe contener tres letras Mayusculas y tres digitos " onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}">                        
+                        <f:validateRegex pattern="^[A-Z]{3}\d{3}$" />
                         
                     </p:inputText>
                 
@@ -142,11 +142,11 @@
                     </p:inputMask>
                    
                     <p:outputLabel for="tipoAsignatura" value="Tipo de la asignatura :" />
-                    <p:selectOneMenu id="tipoAsignatura" value="#{asignaturaBean.tipoAsignatura}" required="true" requiredMessage="Por favor, seleccione el tipo de asignatura" validatorMessage="">
-                        <f:selectItem itemLabel="" itemValue="Seleccione el tipo de asignatura" />
+                    <p:selectOneMenu id="tipoAsignatura" value="#{asignaturaBean.tipoAsignatura}" required="true" requiredMessage="Por favor, seleccione el tipo de asignatura" >
+                        <f:selectItem itemLabel="Seleccione un tipo de asignatura" itemValue="" />
                         <f:selectItem itemLabel="Obligatoria" itemValue="Obligatoria" />
                         <f:selectItem itemLabel="Electiva" itemValue="Electiva" />                        
-                        <f:validateRequired for="tipoAsignatura"/>
+                        
                     </p:selectOneMenu>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{asignaturaBean.updateAsignatura()}" update=":list:message :list:asignatura" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_asignatura').hide()" icon="fa fa-refresh" rendered="#{asignaturaBean.insert == false}" />
