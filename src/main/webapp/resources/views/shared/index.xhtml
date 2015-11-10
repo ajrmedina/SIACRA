@@ -14,7 +14,7 @@
         Bienvenido al SIACRA
         <br />
         <br />
-        <h:outputText value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} &lt;br /&gt; Docente de la #{identityBean.principal.escuela.nombreescuela}" escape="false" rendered="#{userBean.user.sesion == true and identityBean.user.nivel.id != 1}" />
+        <h:outputText value="#{identityBean.principal.user.nombres} #{identityBean.principal.user.apellidos} &lt;br /&gt; Docente de la #{identityBean.principal.escuela.nombreescuela}" escape="false" rendered="#{userBean.user.sesion == true and identityBean.user.esDocente == true and identityBean.user.escuela != null}" />
         <h:outputText value="Administrador del Sistema" escape="false" rendered="#{userBean.user.sesion == true and identityBean.user.nivel.id == 1}" />
     </ui:define>
     
