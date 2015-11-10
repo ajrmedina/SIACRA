@@ -95,10 +95,16 @@
                             </sec:authorize>
                             <p:menuitem value="Permanencia" url="/resources/views/shared/ListarPermanencia.xhtml" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}" />
                         </p:submenu>
-                        <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR">
+                        <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR, ROLE_MIEMBRO_JD">
                             <p:submenu label="Verificacion y Control" icon="fa fa-check-square">
+                              <sec:authorize ifAllGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR,">
                                 <p:menuitem value="Trabajos de Graduacion" url="/resources/views/responsabilidad/ListarTG.xhtml" icon="fa fa-clipboard" />
                                 <p:menuitem value="Proyecto" url="/resources/views/responsabilidad/ListarProyecto.xhtml" icon="fa fa-clipboard" />
+                              </sec:authorize>
+                              <sec:authorize ifAllGranted="ROLE_MIEMBRO_JD">
+                                <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
+                                <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
+                              </sec:authorize>
                              </p:submenu>
                         </sec:authorize>
                         <p:submenu label="Reportes" icon="fa fa-file-text-o" rendered="#{identityBean.user.esDocente==true or identityBean.user.nivel.id==4}">
