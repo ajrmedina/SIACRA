@@ -34,8 +34,10 @@
                     </p:menuitem>
                 </p:submenu>
                 <p:submenu label="Reportes sobre Docentes" icon="fa fa-user" class="font-m">
-                    <p:menuitem value="Servicios Profesionales" actionListener="#{reporte.identifyReport('ServiciosProfesionales')}" oncomplete="PF('generar_reporte').show()" icon="fa fa-file-pdf-o" class="font-s" />
-                    <p:menuitem value="Tiempo Adicional/Integral" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-pdf-o" class="font-s" />
+                    <p:menuitem value="Servicios Profesionales" actionListener="#{reporte.identifyReport('ServiciosProfesionales')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
+                        <f:param value="#{identityBean.principal.escuela.codigoescuela}" name="codigo_escuela" />
+                    </p:menuitem>                    
+                    <p:menuitem value="Tiempo Adicional/Integral" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-pdf-o" class="font-s"/>                    
                 </p:submenu>
                 <p:submenu label="Reportes sobre Trabajos de Graduacion y Proyectos" icon="fa fa-clipboard" class="font-m">
                     <p:menuitem value="Trabajos de Graduacion" actionListener="#{reporte.identifyReport('TGFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-pdf-o" class="font-s" />
@@ -54,7 +56,7 @@
             </p:tieredMenu>
             
         </h:form>
-        
+        <!--
         <p:dialog header="Seleccione la escuela" id="generarReporte" widgetVar="generar_reporte" modal="true" resizable="false" closable="false">
             <h:form id="codigoEscuela" target="_blank">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -76,8 +78,7 @@
                     </p:commandButton>
                 </h:panelGrid>
             </h:form>
-        </p:dialog>
-        
+        </p:dialog>        -->
         <p:dialog header="Parametros del reporte" id="chooseYear" widgetVar="choose_year" modal="true" resizable="false" closable="false">
             <h:form id="year" target="_blank">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -110,13 +111,13 @@
             <h:form id="codEscuela" target="_blank">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element" >
-                    <h:outputText value="Seleccionar escuela:" />
+                 <!--   <h:outputText value="Seleccionar escuela:" />
                     <p:selectOneMenu  panelStyleClass="hideDisabled"  id="codEscuelaFilter" value="#{reporte.idEscuela}" effect="fade" filter="true" filterMatchMode="startsWith" >
-                       <!-- <p:ajax event="change" process="@this" update="aceptar" />-->
+                        <p:ajax event="change" process="@this" update="aceptar" />
                         <f:selectItem itemValue="0" itemLabel="Seleccione una escuela"  />
                         <f:selectItems value="#{escuelaBean.escuelaList}" var="escuela" 
                                        itemValue="#{escuela.idescuela}" itemLabel="#{escuela.nombreescuela}" itemDisabled="#{escuela.idescuela!=identityBean.principal.escuela.idescuela}"/>
-                    </p:selectOneMenu>                   
+                    </p:selectOneMenu>                 -->  
                     <h:outputText value="Seleccionar el tiempo de docentes:" />
                     <p:selectOneMenu   id="tiempoFilter" value="#{reporte.tiempoDoc}" effect="fade" filter="true" filterMatchMode="startsWith" >
                         <p:ajax event="change" process="@this" update="aceptar" />
@@ -124,7 +125,9 @@
                         <f:selectItem itemValue="Adicional" itemLabel="Adicional"/>
                         <f:selectItem itemValue="Integral" itemLabel="Integral"/>
                     </p:selectOneMenu>
-                    <p:commandButton  id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporteDoc').hide()"  icon="fa fa-check" /> 
+                    <p:commandButton  id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporteDoc').hide()"  icon="fa fa-check"> 
+                        <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
+                    </p:commandButton>  
                     <p:commandButton  immediate="true" update=":generarReporteDocentes" id="exit" value="Salir" oncomplete="PF('generar_reporteDoc').hide()" icon="fa fa-ban" >
                         <f:setPropertyActionListener target="#{reporte.estado}" value="true" />
                         <p:resetInput target=":generarReporteDocentes" />
