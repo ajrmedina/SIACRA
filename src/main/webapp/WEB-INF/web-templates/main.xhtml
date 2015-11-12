@@ -77,6 +77,7 @@
                             </p:submenu>
                         </sec:authorize>
                         
+                        <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR">
                         <p:submenu label="Responsabilidad" icon="fa fa-list-alt">
                             <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR">
                                 <p:menuitem value="Asignatura" url="/resources/views/responsabilidad/ListarAsignatura.xhtml" icon="fa fa-book" />
@@ -87,14 +88,11 @@
                                 <p:menuitem value="Horario" url="/resources/views/responsable/ListarHorario.xhtml" icon="fa fa-list" /> 
                                 <p:menuitem value="Grupos" url="/resources/views/responsable/ListarGrupo.xhtml" icon="fa fa-group" />
                                 <p:menuitem value="Asignar Responsabilidad" url="/resources/views/responsable/AsignarResponsabilidad.xhtml" icon="fa fa-clipboard" />                             
-                            </sec:authorize>
-                             <!-- Miembro JD -->
-                            <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
-                                <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
-                                <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
-                            </sec:authorize>
+                            </sec:authorize>                            
                             <p:menuitem value="Permanencia" url="/resources/views/shared/ListarPermanencia.xhtml" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}" />
-                        </p:submenu>
+                        </p:submenu>                            
+                        </sec:authorize>
+                        
                         <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR, ROLE_MIEMBRO_JD">
                             <p:submenu label="Verificacion y Control" icon="fa fa-check-square">
                               <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR,">
