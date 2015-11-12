@@ -58,7 +58,7 @@
                     <p:menubar styleClass="menu" rendered="#{userBean.user.sesion == true}">  
                         
                         <p:menuitem value="Inicio" url="/resources/views/shared/index.xhtml" icon="fa fa-home"/>                                                             
-                        <sec:authorize ifAllGranted="ROLE_ADMINISTRADOR">
+                        <sec:authorize ifAnyGranted="ROLE_ADMINISTRADOR">
                             <p:submenu label="Configuraciones" icon="fa fa-gears">
                                     <p:menuitem value="Escalafon" url="/resources/views/admin/ListarEscalafon.xhtml" icon="fa fa-list" />
                                     <p:menuitem value="Contrato" url="/resources/views/admin/ListarContrato.xhtml" icon="fa fa-clipboard" />
@@ -83,13 +83,13 @@
                                 <p:menuitem value="Actividad" url="/resources/views/responsabilidad/ListarActividad.xhtml" icon="fa fa-list" />
                                 <p:menuitem value="Oferta" url="/resources/views/responsabilidad/ListarOferta.xhtml" icon="fa fa-list" />
                             </sec:authorize>
-                            <sec:authorize ifAllGranted="ROLE_RESPONSABLE">
+                            <sec:authorize ifAnyGranted="ROLE_RESPONSABLE">
                                 <p:menuitem value="Horario" url="/resources/views/responsable/ListarHorario.xhtml" icon="fa fa-list" /> 
                                 <p:menuitem value="Grupos" url="/resources/views/responsable/ListarGrupo.xhtml" icon="fa fa-group" />
                                 <p:menuitem value="Asignar Responsabilidad" url="/resources/views/responsable/AsignarResponsabilidad.xhtml" icon="fa fa-clipboard" />                             
                             </sec:authorize>
                              <!-- Miembro JD -->
-                            <sec:authorize ifAllGranted="ROLE_MIEMBRO_JD">
+                            <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
                                 <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
                                 <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
                             </sec:authorize>
@@ -101,18 +101,18 @@
                                 <p:menuitem value="Trabajos de Graduacion" url="/resources/views/responsabilidad/ListarTG.xhtml" icon="fa fa-clipboard" />
                                 <p:menuitem value="Proyecto" url="/resources/views/responsabilidad/ListarProyecto.xhtml" icon="fa fa-clipboard" />
                               </sec:authorize>
-                              <sec:authorize ifAllGranted="ROLE_MIEMBRO_JD">
+                              <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
                                 <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
                                 <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
                               </sec:authorize>
                              </p:submenu>
                         </sec:authorize>
                         <p:submenu label="Reportes" icon="fa fa-file-text-o" rendered="#{identityBean.user.esDocente==true or identityBean.user.nivel.id==4}">
-                            <sec:authorize ifAllGranted="ROLE_DIRECTOR">
+                            <sec:authorize ifAnyGranted="ROLE_DIRECTOR">
                                 <p:menuitem value="Generales" url="/resources/views/director/ListarReportes.xhtml" icon="fa fa-file-pdf-o" />                                
                             </sec:authorize>
                             <p:menuitem value="Docentes" url="/resources/views/shared/ReportesDocente.xhtml" icon="fa fa-file-o" rendered="#{identityBean.user.esDocente==true}" />                                
-                            <sec:authorize ifAllGranted="ROLE_MIEMBRO_JD">
+                            <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
                                 <p:menuitem value="Generar Responsabilidad Academica" url="/resources/views/jd/GenerarResponsabilidad.xhtml" icon="fa fa-file-pdf-o" rendered="#{identityBean.user.nivel.id==4}"/>
                             </sec:authorize>
                         </p:submenu>
