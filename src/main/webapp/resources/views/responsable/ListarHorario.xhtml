@@ -36,22 +36,30 @@
                 </p:column>
                 
                 <p:column style="width: 10%" headerText="Hora de inicio" filterBy="#{horario.hinicio1}" filterStyleClass="hide">                         
-                    <h:outputText value="#{horario.hinicio1}" class="center-element"/>
+                    <h:outputText value="#{horario.hinicio1}" class="center-element">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
                 </p:column>
                 
                 <p:column style="width: 10%" headerText="Hora de fin" filterBy="#{horario.hfin1}" filterStyleClass="hide">                         
-                    <h:outputText value="#{horario.hfin1}" class="center-element"/>
+                    <h:outputText value="#{horario.hfin1}" class="center-element">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
                 </p:column>
                 <p:column style="width: 15%" headerText="Dia" filterBy="#{horario.dia2}" filterStyleClass="hide">                  
                     <h:outputText value="#{horario.dia2}" class="center-element"/>
                 </p:column>
                 
                 <p:column style="width: 10%" headerText="Hora de inicio" filterBy="#{horario.hinicio2}" filterStyleClass="hide">                         
-                    <h:outputText value="#{horario.hinicio2}" class="center-element"/>
+                    <h:outputText value="#{horario.hinicio2}" class="center-element"> 
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
                 </p:column>
                 
                 <p:column style="width: 10%" headerText="Hora de fin" filterBy="#{horario.hfin2}" filterStyleClass="hide">                         
-                    <h:outputText value="#{horario.hfin2}" class="center-element"/>
+                    <h:outputText value="#{horario.hfin2}" class="center-element">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
                 </p:column>
                 <p:column style="width: 10%" headerText="Habilitado" filterBy="#{horario.hoEstado}" filterStyleClass="hide">
                     <h:outputText value="#{horario.hoEstado?'Habilitado':'Deshabilitado'}"/>

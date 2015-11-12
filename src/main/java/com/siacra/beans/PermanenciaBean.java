@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
@@ -73,8 +74,8 @@ public class PermanenciaBean implements Serializable {
     private int idPermanencia;
     private int idDocente;
     private String descripcion;
-    private String horaInicio;
-    private String horaFin;
+    private Date horaInicio;
+    private Date horaFin;
     private String dia;
     private boolean insert;
     private int idCiclo;
@@ -189,11 +190,15 @@ public class PermanenciaBean implements Serializable {
                 permanencia.setDia(getDia());
                 permanencia.setHoraInicio(getHoraInicio());
                 permanencia.setHoraFin(getHoraFin());
-                getPermanenciaService().addPermanencia(permanencia);
-                addMessage("La descripcion del tiempo de permanencia fue añadida correctamente");
-                reset();                
-                this.setInsert(false);               
-            
+                if(getPermanenciaService().getExistPermanencia(getHoraInicio(), getHoraFin(), getDia())!=0){
+                    addMessage("Ya existe una actividad, el mismo día y a la misma hora");
+                }
+                else {
+                    getPermanenciaService().addPermanencia(permanencia);
+                    addMessage("La descripcion del tiempo de permanencia fue añadida correctamente");
+                    reset();    
+                }                   
+           
             
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -273,8 +278,8 @@ public class PermanenciaBean implements Serializable {
      */
     public void reset() {
        this.setDescripcionPermanencia("");
-       this.setHoraInicio("");
-       this.setHoraFin("");
+       this.setHoraInicio(null);
+       this.setHoraFin(null);
        this.setDia("");      
        
     }
@@ -377,7 +382,7 @@ public class PermanenciaBean implements Serializable {
      *
      * @return String - Hora Inicio de la Actividad
      */
-    public String getHoraInicio() {
+    public Date getHoraInicio() {
         return horaInicio;
     }
 
@@ -386,7 +391,7 @@ public class PermanenciaBean implements Serializable {
      *
      * @param horai - Hora de Inicio
      */
-    public void setHoraInicio(String horai) {
+    public void setHoraInicio(Date horai) {
         this.horaInicio = horai;
     }
     
@@ -395,7 +400,7 @@ public class PermanenciaBean implements Serializable {
      *
      * @return String - Hora Fin de la Actividad
      */
-    public String getHoraFin() {
+    public Date getHoraFin() {
         return horaFin;
     }
 
@@ -404,7 +409,7 @@ public class PermanenciaBean implements Serializable {
      *
      * @param horaf - Hora de Fin
      */
-    public void setHoraFin(String horaf) {
+    public void setHoraFin(Date horaf) {
         this.horaFin = horaf;
     }
     
@@ -486,19 +491,19 @@ public class PermanenciaBean implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String gethInicio() {
+    public Date gethInicio() {
         return horaInicio;
     }
 
-    public void sethInicio(String hInicio) {
+    public void sethInicio(Date hInicio) {
         this.horaInicio = hInicio;
     }
 
-    public String gethFin() {
+    public Date gethFin() {
         return horaFin;
     }
 
-    public void sethFin(String hFin) {
+    public void sethFin(Date hFin) {
         this.horaFin = hFin;
     }
 

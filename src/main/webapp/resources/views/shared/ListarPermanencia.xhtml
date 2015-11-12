@@ -102,16 +102,17 @@
             <h3 style="margin-left: 10%">Actividades a realizar</h3>
             <br/>
             <p:dataTable id="permanencia" var="permanencia" value="#{permanenciaBean.permanenciasList}" style="width: 70%" class="center-element" paginator="true" rows="10" paginatorPosition="bottom" widgetVar="permanenciaTable" emptyMessage="No hay registros en base al criterio proporcionado" >                
-                <f:facet name="header">  
+                <f:facet name="header">                      
+                    <p:commandButton id="insert_button" style="float: right" update=":dialogUpdatePermanencia" actionListener="#{permanenciaBean.reset()}" oncomplete="PF('update_permanencia').show()" value="Nueva Actividad" icon="fa fa-plus" >
+                            <f:setPropertyActionListener target="#{permanenciaBean.insert}" value="true" />
+                    </p:commandButton>                     
                     <p:outputPanel>
                         <h:outputText value="Búsqueda de Actividades:" style="float: left"/>
                         <p:inputText id="globalFilter" onkeyup="PF('permanenciaTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px; float: left" />
                         <p:spacer width="600" height="10" rendered="#{permanencia.ciclo.ciEstado == true}" />
                         <p:spacer width="400" height="10" rendered="#{permanencia.ciclo.ciEstado == false}" />
                         <h:outputText value="Ciclo Cerrado no se admiten modificaciones a las actividades" style="color: red; float: right" rendered="#{permanencia.ciclo.ciEstado  == false}" />                       
-                        <p:commandButton id="insert_button" style="float: right" update=":dialogUpdatePermanencia" actionListener="#{permanenciaBean.reset()}" oncomplete="PF('update_permanencia').show()" value="Nueva Actividad" icon="fa fa-plus" >
-                            <f:setPropertyActionListener target="#{permanenciaBean.insert}" value="true" />
-                        </p:commandButton>                                                          
+                                                                                 
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>                                 
@@ -121,11 +122,15 @@
                 </p:column>
                 
                 <p:column style="width:25%" headerText="Hora inicio" filterBy="#{permanencia.horaInicio}" filterStyleClass="hide" >                  
-                    <h:outputText value="#{permanencia.horaInicio}" />
+                    <h:outputText value="#{permanencia.horaInicio}">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
                 </p:column>
                 
                 <p:column style="width: 25%" headerText="Hora fin" filterBy="#{permanencia.horaFin}" filterStyleClass="hide">                  
-                    <h:outputText value="#{permanencia.horaFin}" />
+                    <h:outputText value="#{permanencia.horaFin}">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
                 </p:column>
                 
                 <p:column style="width: 55%" headerText="Descripción" filterBy="#{permanencia.descripcionTiempo}" filterStyleClass="hide">                  
@@ -147,7 +152,9 @@
                     </f:facet>   
                     
                     <p:growl id="messages" />                    
-                    <p:commandButton id="update_button" update=":dialogUpdatePermanencia" actionListener="#{permanenciaBean.loadPermanencia(permanencia)}" oncomplete="PF('update_permanencia').show()" icon="fa fa-edit" rendered="#{permanencia.ciclo.ciEstado == true}"  />                                    
+                    <p:commandButton id="update_button" update=":dialogUpdatePermanencia" actionListener="#{permanenciaBean.loadPermanencia(permanencia)}" oncomplete="PF('update_permanencia').show()" icon="fa fa-edit" rendered="#{permanencia.ciclo.ciEstado == true}" >
+                        <f:setPropertyActionListener target="#{permanenciaBean.insert}" value="false" />
+                    </p:commandButton>                                    
                     <p:commandButton id="delete_button" update=":dialogDeletePermanencia" actionListener="#{permanenciaBean.loadPermanencia(permanencia)}" oncomplete="PF('delete_permanencia').show()" icon="fa fa-times" rendered="#{permanencia.ciclo.ciEstado == true}"/>
                     <h:outputText value="Ciclo Cerrado" style="color: red" rendered="#{permanencia.ciclo.ciEstado  == false}" />
                   
@@ -201,12 +208,20 @@
                         <f:validateRequired />
                     </p:inputText>-->
                     
-                    <p:outputLabel for="horainicio" value="Hora de Inicio:" />
-                    <p:inputMask id="horainicio" value="#{permanenciaBean.horaInicio}" mask="99:99" required="true" requiredMessage="Por favor, seleccione la hora de inicio."/>
+                   <!-- <p:outputLabel for="horainicio" value="Hora de Inicio:" />
+                    <p:inputMask id="horainicio" value="#{permanenciaBean.horaInicio}" mask="99:99" required="true" requiredMessage="Por favor, seleccione la hora de inicio."/>                                                              
                     
                     <p:outputLabel for="horafin" value="Hora de Finalización:" />
-                    <p:inputMask id="horafin" value="#{permanenciaBean.horaFin}" mask="99:99" required="true" requiredMessage="Por favor, seleccione la hora de finalización."/>
-                    
+                    <p:inputMask id="horafin" value="#{permanenciaBean.horaFin}" mask="99:99" required="true" requiredMessage="Por favor, seleccione la hora de finalización."/>   -->
+                   
+                    <p:outputLabel for="horainicio" value="Hora de inicio :" />
+                    <p:calendar id="horainicio" value="#{permanenciaBean.horaInicio}" pattern="HH:mm" timeOnly="true"  minHour="6" maxHour="20" required="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"
+                                locale="es" requiredMessage="Por favor, ingrese la hora de inicio de la actividad."/>
+
+                    <p:outputLabel for="horafin" value="Hora de fin :" />
+                    <p:calendar id="horafin" value="#{permanenciaBean.horaFin}" pattern="HH:mm" timeOnly="true" minHour="6" maxHour="20" required="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"
+                                locale="es" requiredMessage="Por favor, ingrese la hora de finalización de la actividad." />
+                                      
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{permanenciaBean.updatePermanencia()}" update=":list:permanencia :list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{permanenciaBean.addPermanencia()}" update=":list:permanencia :list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_permanencia').hide()" icon="fa fa-ban">

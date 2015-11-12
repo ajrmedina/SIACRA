@@ -35,7 +35,7 @@
                 </p:submenu>
                 <p:submenu label="Reportes sobre Docentes" icon="fa fa-user" class="font-m">
                     <p:menuitem value="Servicios Profesionales" actionListener="#{reporte.identifyReport('ServiciosProfesionales')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
-                        <f:param value="#{identityBean.principal.escuela.codigoescuela}" name="codigo_escuela" />
+                        <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
                     </p:menuitem>                    
                     <p:menuitem value="Tiempo Adicional/Integral" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-pdf-o" class="font-s"/>                    
                 </p:submenu>
