@@ -112,7 +112,7 @@
                     
                     <p:outputLabel for="categoria" value="Categoria del Docente: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="categoria" value="#{docenteBean.idCategoria}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
+                        <p:selectOneMenu id="categoria" value="#{docenteBean.idCategoria}" effect="fade" filter="true" filterMatchMode="contains" required="true">
                             <f:selectItems value="#{categoriaBean.categoriasList}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.escalafon.tipoescalafon} - #{categoria.contrato.tipocontrato}" itemDisabled="#{categoria.estadoCategoria == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoria del docente" />
