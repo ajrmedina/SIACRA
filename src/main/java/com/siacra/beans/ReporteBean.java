@@ -62,7 +62,7 @@ public class ReporteBean implements Serializable{
         //Saber de que reporte viene y que parametros le corresponden
         switch (getNombreReporte()){
             case "rServicioProfesional":
-                parameter.put("escuela", getCodigoEscuela());
+                parameter.put("codigo_escuela", viewparams.get("codigo_escuela"));
                 break;
             case "rptTGFinalizados":
                 parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
@@ -78,7 +78,7 @@ public class ReporteBean implements Serializable{
                 parameter.put("docente_IDDOCENTE", Integer.parseInt(viewparams.get("id_docente")));
                 break;
             case "DocentesTiempo":
-                parameter.put("escuela_IDESCUELA", getIdEscuela());
+                parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
                 parameter.put("responsabilidad_TIPODETIEMPO", getTiempoDoc());
                 break;
             case "rptInscritosPorMateria":
