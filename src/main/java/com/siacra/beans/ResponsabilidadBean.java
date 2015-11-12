@@ -449,10 +449,9 @@ public class ResponsabilidadBean implements Serializable {
     
     int result=getResponsabilidadService().cargarResponsabilidad(getAnio(), getCargarciclo(), id_escuela,getCiclo().getIdCiclo() );
     
-    if( result >0)
+    
     addMessage("Carga completa");
-    else
-        addMessage("No se encontraron registros a cargar");
+    
     }
     
     public void reset() {

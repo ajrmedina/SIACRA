@@ -410,7 +410,7 @@
                 
                 
                     <p:commandButton id="save_delete" value="Cargar" actionListener="#{responsabilidadBean.cargarResponsabilidad}" update=":listar:responsabilidadTable :listar:messages" oncomplete="PF('load_responsabilidad').hide()" icon="fa fa-refresh" >
-                        <f:setPropertyActionListener target="#{responsabilidadBean.cargarEscuela}" value="#{identityBean.principal.escuela.idescuela}"/>
+                        
                     </p:commandButton>
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('load_responsabilidad').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
