@@ -6,7 +6,9 @@
 package com.siacra.daos;
 
 import com.siacra.models.Permanencia;
+import java.util.Date;
 import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -99,6 +101,11 @@ public class PermanenciaDao {
     public List<Permanencia> getPermanenciasByDocente(int docente){
         List list = getSessionFactory().getCurrentSession().createQuery("from Permanencia WHERE iddocente=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente).list();
         return list;
+    }
+    
+    public Long getExistPermanencia(Date horaInicio, Date horaFin, String dia){
+        Query cuenta = getSessionFactory().getCurrentSession().createQuery("SELECT count(1) from Permanencia where hiniciop=? and hfinp=? and diap=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, horaInicio).setParameter(1, horaFin).setParameter(2, dia);
+        return (Long) cuenta.uniqueResult();
     }
        
 }

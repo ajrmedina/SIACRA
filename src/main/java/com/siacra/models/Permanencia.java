@@ -1,6 +1,7 @@
 package com.siacra.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,10 +33,10 @@ public class Permanencia implements Serializable{
     private String descTiempo;
     
     @Column(name="hiniciop", nullable = false)
-    private String hInicio;
+    private Date hInicio;
     
     @Column(name="hfinp", nullable = false)
-    private String hFin;
+    private Date hFin;
     
     @Column(name="diap", nullable = false)
     private String dia;
@@ -105,7 +106,7 @@ public class Permanencia implements Serializable{
      *
      * @return String - hInicio
      */
-    public String getHoraInicio() {
+    public Date getHoraInicio() {
         return hInicio;
     }
 
@@ -114,7 +115,7 @@ public class Permanencia implements Serializable{
      *
      * @param horai - HoraInicio
      */
-    public void setHoraInicio(String horai) {
+    public void setHoraInicio(Date horai) {
         this.hInicio = horai;
     }
     
@@ -123,7 +124,7 @@ public class Permanencia implements Serializable{
      *
      * @return String - hFin
      */
-    public String getHoraFin() {
+    public Date getHoraFin() {
         return hFin;
     }
 
@@ -132,7 +133,7 @@ public class Permanencia implements Serializable{
      *
      * @param horaf - HoraFin
      */
-    public void setHoraFin(String horaf) {
+    public void setHoraFin(Date horaf) {
         this.hFin = horaf;
     }
     
@@ -162,19 +163,19 @@ public class Permanencia implements Serializable{
         this.descTiempo = descTiempo;
     }
 
-    public String gethInicio() {
+    public Date gethInicio() {
         return hInicio;
     }
 
-    public void sethInicio(String hInicio) {
+    public void sethInicio(Date hInicio) {
         this.hInicio = hInicio;
     }
 
-    public String gethFin() {
+    public Date gethFin() {
         return hFin;
     }
 
-    public void sethFin(String hFin) {
+    public void sethFin(Date hFin) {
         this.hFin = hFin;
     }
 

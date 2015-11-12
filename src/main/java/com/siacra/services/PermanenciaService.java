@@ -2,6 +2,7 @@ package com.siacra.services;
 
 import com.siacra.daos.PermanenciaDao;
 import com.siacra.models.Permanencia;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,6 +97,10 @@ public class PermanenciaService {
     
     public List<Permanencia> getPermanenciasByDocente(int id){
         return getPermanenciaDao().getPermanenciasByDocente(id);
+    }
+    
+    public Long getExistPermanencia(Date horaInicio, Date horaFin, String dia){
+        return getPermanenciaDao().getExistPermanencia(horaInicio, horaFin, dia);
     }
 }
 

@@ -71,7 +71,7 @@
                         </sec:authorize>
                         <sec:authorize ifAnyGranted="ROLE_ADMINISTRADOR, ROLE_RESPONSABLE, ROLE_DIRECTOR">
                             <p:submenu label="Seguridad" icon="fa fa-lock">
-                                <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/ListarNivelesAcceso.xhtml" icon="fa fa-key" rendered="#{identityBean.user.nivel.id == 1} />
+                                <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/ListarNivelesAcceso.xhtml" icon="fa fa-key" rendered="#{identityBean.user.nivel.id == 1}" />
                                 <p:menuitem value="Usuarios" url="/resources/views/usuarios/ListarUsuarios.xhtml" icon="fa fa-users" />
                                 <p:menuitem value="Docentes" url="/resources/views/usuarios/ListarDocentes.xhtml" icon="fa fa-user" />
                             </p:submenu>

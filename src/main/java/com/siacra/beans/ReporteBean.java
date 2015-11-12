@@ -61,8 +61,8 @@ public class ReporteBean implements Serializable{
         parameter.put("LOGO", context.getRealPath("/WEB-INF/web-reports/logoues.gif"));
         //Saber de que reporte viene y que parametros le corresponden
         switch (getNombreReporte()){
-            case "rServicioProfesional":
-                parameter.put("codigo_escuela", viewparams.get("codigo_escuela"));
+            case "rptServicioProfesional":
+                parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
                 break;
             case "rptTGFinalizados":
                 parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
@@ -125,7 +125,8 @@ public class ReporteBean implements Serializable{
     public void identifyReport(String reporte) throws JRException, ClassNotFoundException, SQLException, IOException{
         switch (reporte){
             case "ServiciosProfesionales":
-                setNombreReporte("rServicioProfesional");
+                setNombreReporte("rptServicioProfesional");
+                exportarServicioP();
                 break;
             case "TGFinalizados":
                 setNombreReporte("rptTGFinalizados");
