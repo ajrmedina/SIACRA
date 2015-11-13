@@ -33,7 +33,7 @@
             </h:panelGrid>
             <br />
             <br />
-            <p:dataTable id="responsabilidadTable" var="resp" value="#{responsabilidadBean.responsabilidadList}" style="width: 90%" class="center-element" paginator="true" paginatorPosition="bottom" rows="15" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="resp_table">
+            <p:dataTable id="responsabilidadTable" var="resp" value="#{responsabilidadBean.responsabilidadList}" style="width: 90%" class="center-element" paginator="true" paginatorPosition="bottom" rows="15" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="resp_table" emptyMessage="No hay registros">
                 <f:facet name="header" >
                     <p:outputPanel>
                         <h:outputText value="Busqueda de responsabilidades:" />

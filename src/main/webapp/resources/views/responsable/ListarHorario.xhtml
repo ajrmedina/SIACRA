@@ -3,7 +3,8 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
 
     <ui:define name="title">
        Consultar - Horario
@@ -106,13 +107,17 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="hinicio1" value="Hora de inicio :" />
-                    <p:calendar id="hinicio1" value="#{horarioBean.hinicio1}" pattern="HH:mm" timeOnly="true"  minHour="6" maxHour="20" required="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"
-                                locale="es" requiredMessage="Por favor, ingrese la hora de inicio de la actividad."/>
-
+                    <pe:timePicker id="hinicio1" value="#{horarioBean.hinicio1}" mode="popup"   
+                                    minHour="6" maxHour="20" maxMinute="60" required="true" requiredMessage="Por favor ingrese la hora de inicio">
+                        <p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio1 hfin1" />
+                    </pe:timePicker>
+                    
                     <p:outputLabel for="hfin1" value="Hora de fin :" />
-                    <p:calendar id="hfin1" value="#{horarioBean.hfin1}" pattern="HH:mm" timeOnly="true" minHour="6" maxHour="20" required="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"
-                                locale="es" requiredMessage="Por favor, ingrese la hora de finalización de la actividad." />
-   
+                    <pe:timePicker id="hfin1" value="#{horarioBean.hfin1}" mode="popup"   
+                                    minHour="6" maxHour="20" required="true" requiredMessage="Por favor ingrese la hora de fin">
+                        <p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio1 hfin1" />
+                    </pe:timePicker>
+                    
                     <p:outputLabel for="dia2" value="Dia :" />
                     <p:selectOneMenu id="dia2" value="#{horarioBean.dia2}">
                         <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
@@ -124,14 +129,18 @@
                         <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
                         <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
                     </p:selectOneMenu>
-
-                    <p:outputLabel for="hinicio2" value="Hora de inicio :" />
-                    <p:calendar id="hinicio2" value="#{horarioBean.hinicio2}" pattern="HH:mm" locale="es" 
-                                timeOnly="true" minHour="6" maxHour="20" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"/>
+                    		
+		    <p:outputLabel for="hinicio2" value="Hora de inicio :" />
+                    <pe:timePicker id="hinicio2" value="#{horarioBean.hinicio2}" mode="popup"   
+                                    minHour="6" maxHour="20" required="true" requiredMessage="Por favor ingrese la hora de inicio">
+                        <p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio2 hfin2" />
+                    </pe:timePicker>
 
                     <p:outputLabel for="hfin2" value="Hora de fin :" />
-                    <p:calendar id="hfin2" value="#{horarioBean.hfin2}" pattern="HH:mm" timeOnly="true" 
-                                locale="es" minHour="6" maxHour="20" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}" />
+                    <pe:timePicker id="hfin2" value="#{horarioBean.hfin2}" mode="popup"   
+                                    minHour="6" maxHour="20" required="true" requiredMessage="Por favor ingrese la hora de fin">
+                        <p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio2 hfin2" />
+                    </pe:timePicker>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{horarioBean.updateHorario()}" update=":list:messages :list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-refresh" rendered="#{horarioBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{horarioBean.addHorario()}" update=":list:messages :list:horario" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_horario').hide()" icon="fa fa-plus" rendered="#{horarioBean.insert == true}" />
