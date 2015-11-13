@@ -58,6 +58,7 @@
                     <p:menubar styleClass="menu" rendered="#{userBean.user.sesion == true}">  
                         
                         <p:menuitem value="Inicio" url="/resources/views/shared/index.xhtml" icon="fa fa-home"/>                                                             
+                        
                         <sec:authorize ifAnyGranted="ROLE_ADMINISTRADOR">
                             <p:submenu label="Configuraciones" icon="fa fa-gears">
                                     <p:menuitem value="Escalafon" url="/resources/views/admin/ListarEscalafon.xhtml" icon="fa fa-list" />
@@ -69,6 +70,7 @@
                                     <p:menuitem value="Tipo Grupo" url="/resources/views/admin/ListarTipoGrupo.xhtml" icon="fa fa-list" />
                             </p:submenu>
                         </sec:authorize>
+                        
                         <sec:authorize ifAnyGranted="ROLE_ADMINISTRADOR, ROLE_RESPONSABLE, ROLE_DIRECTOR">
                             <p:submenu label="Seguridad" icon="fa fa-lock">
                                 <p:menuitem value="Niveles de Acceso" url="/resources/views/admin/ListarNivelesAcceso.xhtml" icon="fa fa-key" rendered="#{identityBean.user.nivel.id == 1}" />
@@ -78,47 +80,53 @@
                         </sec:authorize>
                         
                         <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR">
-                        <p:submenu label="Responsabilidad" icon="fa fa-list-alt">
-                            <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR">
-                                <p:menuitem value="Asignatura" url="/resources/views/responsabilidad/ListarAsignatura.xhtml" icon="fa fa-book" />
-                                <p:menuitem value="Actividad" url="/resources/views/responsabilidad/ListarActividad.xhtml" icon="fa fa-list" />
-                                <p:menuitem value="Oferta" url="/resources/views/responsabilidad/ListarOferta.xhtml" icon="fa fa-list" />
-                            </sec:authorize>
-                            <sec:authorize ifAnyGranted="ROLE_RESPONSABLE">
-                                <p:menuitem value="Horario" url="/resources/views/responsable/ListarHorario.xhtml" icon="fa fa-list" /> 
-                                <p:menuitem value="Grupos" url="/resources/views/responsable/ListarGrupo.xhtml" icon="fa fa-group" />
-                                <p:menuitem value="Asignar Responsabilidad" url="/resources/views/responsable/AsignarResponsabilidad.xhtml" icon="fa fa-clipboard" />                             
-                            </sec:authorize>                            
-                            <p:menuitem value="Permanencia" url="/resources/views/shared/ListarPermanencia.xhtml" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}" />
-                        </p:submenu>                            
+                            <p:submenu label="Responsabilidad" icon="fa fa-list-alt">
+                                <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR">
+                                    <p:menuitem value="Asignatura" url="/resources/views/responsabilidad/ListarAsignatura.xhtml" icon="fa fa-book" />
+                                    <p:menuitem value="Actividad" url="/resources/views/responsabilidad/ListarActividad.xhtml" icon="fa fa-list" />
+                                    <p:menuitem value="Oferta" url="/resources/views/responsabilidad/ListarOferta.xhtml" icon="fa fa-list" />
+                                </sec:authorize>
+                                <sec:authorize ifAnyGranted="ROLE_RESPONSABLE">
+                                    <p:menuitem value="Horario" url="/resources/views/responsable/ListarHorario.xhtml" icon="fa fa-list" /> 
+                                    <p:menuitem value="Grupos" url="/resources/views/responsable/ListarGrupo.xhtml" icon="fa fa-group" />
+                                    <p:menuitem value="Asignar Responsabilidad" url="/resources/views/responsable/AsignarResponsabilidad.xhtml" icon="fa fa-clipboard" />                             
+                                </sec:authorize>                            
+                            </p:submenu>                            
                         </sec:authorize>
                         
                         <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR, ROLE_MIEMBRO_JD">
                             <p:submenu label="Verificacion y Control" icon="fa fa-check-square">
-                              <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR,">
-                                <p:menuitem value="Trabajos de Graduacion" url="/resources/views/responsabilidad/ListarTG.xhtml" icon="fa fa-clipboard" />
-                                <p:menuitem value="Proyecto" url="/resources/views/responsabilidad/ListarProyecto.xhtml" icon="fa fa-clipboard" />
-                              </sec:authorize>
-                              <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
-                                <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
-                                <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
-                              </sec:authorize>
+                                <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR,">
+                                  <p:menuitem value="Trabajos de Graduacion" url="/resources/views/responsabilidad/ListarTG.xhtml" icon="fa fa-clipboard" />
+                                  <p:menuitem value="Proyecto" url="/resources/views/responsabilidad/ListarProyecto.xhtml" icon="fa fa-clipboard" />
+                                </sec:authorize>
+                                <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
+                                  <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
+                                  <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
+                                </sec:authorize>
                              </p:submenu>
                         </sec:authorize>
-                        <p:submenu label="Reportes" icon="fa fa-file-text-o" rendered="#{identityBean.user.esDocente==true or identityBean.user.nivel.id==4}">
-                            <sec:authorize ifAnyGranted="ROLE_DIRECTOR">
-                                <p:menuitem value="Generales" url="/resources/views/director/ListarReportes.xhtml" icon="fa fa-file-pdf-o" />                                
-                            </sec:authorize>
-                            <p:menuitem value="Docentes" url="/resources/views/shared/ReportesDocente.xhtml" icon="fa fa-file-o" rendered="#{identityBean.user.esDocente==true}" />                                
-                            <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
-                                <p:menuitem value="Generar Responsabilidad Academica" url="/resources/views/jd/GenerarResponsabilidad.xhtml" icon="fa fa-file-pdf-o" rendered="#{identityBean.user.nivel.id==4}"/>
-                            </sec:authorize>
+                        
+                        <sec:authorize ifAnyGranted="ROLE_DIRECTOR, ROLE_MIEMBRO_JD">
+                            <p:submenu label="Reportes" icon="fa fa-file-text-o">
+                                <sec:authorize ifAnyGranted="ROLE_DIRECTOR">
+                                    <p:menuitem value="Generales" url="/resources/views/director/ListarReportes.xhtml" icon="fa fa-file-pdf-o" />                                
+                                </sec:authorize>
+                                <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
+                                    <p:menuitem value="Generar Responsabilidad Academica" url="/resources/views/jd/GenerarResponsabilidad.xhtml" icon="fa fa-file-pdf-o" rendered="#{identityBean.user.nivel.id==4}"/>
+                                </sec:authorize>           
+                            </p:submenu>
+                        </sec:authorize>
+                        
+                        <p:submenu label="Permanencia" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}">
+                            <p:menuitem value="Horario" url="/resources/views/shared/ListarPermanencia.xhtml" icon="fa fa fa-clock-o"/>
+                            <p:menuitem value="Reporte" url="/resources/views/shared/ReportesDocente.xhtml" icon="fa fa-file-pdf-o" />
                         </p:submenu>
+                        
                         <sec:authorize ifAnyGranted="ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_MIEMBRO_JD"> 
                             <p:menuitem value="#{auxiliarBean.getNumeroMensajes(identityBean.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/shared/ListarMensajes.xhtml" icon="fa fa-inbox" rendered="#{identityBean.user.esDocente==true}"/>
                             <p:menuitem value="#{auxiliarBean.getNumeroMensajes(identityBean.user.idUsuario)} Mensajes" style="font-weight: bolder" url="/resources/views/shared/ListarMensajes2.xhtml" icon="fa fa-inbox" rendered="#{identityBean.user.esDocente==false}"/>
                         </sec:authorize>
-                        <p:menuitem value="Ayuda" icon="fa fa-question-circle"/>
                         
                     </p:menubar>
                 </h:form>
