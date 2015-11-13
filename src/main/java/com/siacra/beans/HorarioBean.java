@@ -314,13 +314,13 @@ public class HorarioBean implements Serializable{
                 long tiempoFinal=hfin1.getTime(); 
                 long resta=tiempoFinal - tiempoInicial;
 
-                if(tiempoInicial>tiempoFinal)
-                {
-                    addMessage("Error la hora inicial debe ser menor a la hora final");
-                    hinicio1=null;
-                    hfin1=null;
-                    return;
-                }
+//                if(tiempoInicial>tiempoFinal)
+//                {
+//                    addMessage("Error la hora inicial debe ser menor a la hora final");
+//                    hinicio1=null;
+//                    hfin1=null;
+//                    return;
+//                }
             }
             
             if(hinicio2!=null & hfin2!=null)
@@ -328,14 +328,14 @@ public class HorarioBean implements Serializable{
                 long tiempoInicial=hinicio2.getTime();
                 long tiempoFinal=hfin2.getTime(); 
                 long resta=tiempoFinal - tiempoInicial;
-
-                if(tiempoInicial>tiempoFinal)
-                {
-                    addMessage("Error la hora inicial debe ser menor a la hora final");
-                    hinicio1=null;
-                    hfin1=null;
-                    return;
-                }
+//
+//                if(tiempoInicial>tiempoFinal)
+//                {
+//                    addMessage("Error la hora inicial debe ser menor a la hora final");
+//                    hinicio1=null;
+//                    hfin1=null;
+//                    return;
+//                }
             }
         }
         else
@@ -348,13 +348,13 @@ public class HorarioBean implements Serializable{
                 //el metodo getTime te devuelve en mili segundos para saberlo en mins debes hacer
                 resta=resta /(1000*60);
 
-                if(tiempoInicial>tiempoFinal)
-                {
-                    addMessage("Error la hora inicial debe ser menor a la hora final");
-                    hinicio1=null;
-                    hfin1=null;
-                    return;
-                }
+//                if(tiempoInicial>tiempoFinal)
+//                {
+//                    addMessage("Error la hora inicial debe ser menor a la hora final");
+//                    hinicio1=null;
+//                    hfin1=null;
+//                    return;
+//                }
 
                 if(resta>100)
                 {
@@ -372,13 +372,13 @@ public class HorarioBean implements Serializable{
                 //el metodo getTime te devuelve en mili segundos para saberlo en mins debes hacer
                 resta=resta /(1000*60);
 
-                if(tiempoInicial>tiempoFinal)
-                {
-                    addMessage("Error la hora inicial debe ser menor a la hora final");
-                    hinicio1=null;
-                    hfin1=null;
-                    return;
-                }
+//                if(tiempoInicial>tiempoFinal)
+//                {
+//                    addMessage("Error la hora inicial debe ser menor a la hora final");
+//                    hinicio1=null;
+//                    hfin1=null;
+//                    return;
+//                }
 
                 if(resta>100)
                 {
