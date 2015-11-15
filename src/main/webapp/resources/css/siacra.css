@@ -55,6 +55,9 @@ ul.ui-menu-child {
     display: none;
 }
 
+.ui-dialog{
+top: 0px !important;
+}
 .font-s{
     font-size: small;
 }
