@@ -173,19 +173,17 @@ public class OfertaBean implements Serializable{
         
         try{
             Ciclo c = cicloService.getCicloById(idCiclo);
-            Acuerdo a = acuerdoService.getAcuerdoById(idAcuerdo);
             Oferta oferta = new Oferta();
             oferta.setEscuela(getEscuelaService().getEscuelaById(id_escuela));
             oferta.setCiclo(c);
-            oferta.setAcuerdo(a);
             oferta.setAprobarOferta(false);
-
-            if(getOfertaService().getExistOferta(getIdCiclo(), getIdAcuerdo()) ){
-                addMessage("La oferta para el ciclo :" + c.getCiclo() +" Acuerdo :" + a.getCodigoacuerdo() +" ya existe");
+            oferta.setAcuerdo(null);
+            if(getOfertaService().getExistOferta(getIdCiclo(), id_escuela) ){
+                addMessage("La oferta para el ciclo :" + c.getCiclo() + " ya existe");
             }
             else{
                 getOfertaService().addOferta(oferta);
-                addMessage("La oferta para el ciclo :" + c.getCiclo() + " Acuerdo :" + a.getCodigoacuerdo() +" fue creada exitosamente");
+                addMessage("La oferta para el ciclo :" + c.getCiclo() + " fue creada exitosamente");
 //                setInsert(insert);
             }
         }catch (DataAccessException e){
@@ -197,10 +195,7 @@ public class OfertaBean implements Serializable{
     public void updateOferta(){
         try{
             Oferta oferta = getOfertaService().getOfertaById(getIdOferta());
-            oferta.setAcuerdo(acuerdoService.getAcuerdoById(getIdAcuerdo()));
             oferta.setCiclo(cicloService.getCicloById(getIdCiclo()));
-//            oferta.setGrupo(grupoService.getGrupoById(getIdGrupo()));
-            
             getOfertaService().updateOferta(oferta);
             addMessage("La oferta fue actualizada exitosamente");
             
@@ -228,7 +223,6 @@ public class OfertaBean implements Serializable{
             this.setIdOferta(oferta.getIdOferta());
             setIdAcuerdo(oferta.getAcuerdo().getIdacuerdo());
             setIdCiclo(oferta.getCiclo().getIdCiclo());
-//            setIdGrupo(oferta.getGrupo().getIdGrupo());
                                   
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -240,6 +234,8 @@ public class OfertaBean implements Serializable{
         
         try {
             Oferta oferta = getOfertaService().getOfertaById(getIdOferta());
+            Acuerdo acuerdo = acuerdoService.getAcuerdoById(getIdAcuerdo());
+            oferta.setAcuerdo(acuerdo);
             oferta.setAprobarOferta(true);
             getOfertaService().updateOferta(oferta);
             addMessage("La oferta fue aprobada correctamente");
