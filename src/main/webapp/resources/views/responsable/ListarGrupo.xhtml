@@ -99,6 +99,7 @@
                     <p:outputLabel for="oferta" value="Oferta: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu panelStyleClass="hideDisabled" id="oferta" value="#{grupoBean.idoferta}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItem itemLabel="Seleccione una oferta" itemValue="" />
                             <f:selectItems value="#{ofertaBean.ofertaList}" var="oferta" itemValue="#{oferta.idOferta}" itemLabel="Ciclo: #{oferta.ciclo.ciclo} - Acuerdo: #{oferta.acuerdo.nombreacuerdo}" itemDisabled="#{oferta.aprobarOferta==false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forOferta" for="oferta" value="Seleccione la oferta a la que pertenece el grupo" />
@@ -107,6 +108,7 @@
                     <p:outputLabel for="asignatura" value="Asignatura: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="asignatura" value="#{grupoBean.idAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItem itemLabel="Seleccione una asignatura" itemValue="" />
                             <f:selectItems value="#{asignaturaBean.asignaturaList}" var="asignatura" itemValue="#{asignatura.idAsignatura}" itemLabel="#{asignatura.nombreAsignatura}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forAsignatura" for="asignatura" value="Seleccione la asignatura a la que pertenece el grupo" />
@@ -115,6 +117,7 @@
                     <p:outputLabel for="tipoGrupo" value="Tipo de grupo: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="tipoGrupo" value="#{grupoBean.idTipoGrupo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItem itemLabel="Seleccione un tipo de grupo" itemValue="" />
                             <f:selectItems value="#{tipogrupoBean.gruposList}" var="tipoGrupo" itemValue="#{tipoGrupo.idTipoGrupo}" itemLabel="#{tipoGrupo.nombreGrupo}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forTipoGrupo" for="tipoGrupo" value="Seleccione el tipo de grupo" />
@@ -128,6 +131,7 @@
                     <p:outputLabel for="horario" value="Horario: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu id="horario" value="#{grupoBean.idHorario}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItem itemLabel="Seleccione un horario" itemValue="" />
                             <f:selectItems value="#{horarioBean.horarioList}" var="horario" itemValue="#{horario.idhorario}" itemLabel="#{horario.dia1} : #{horario.hinicio1}-#{horario.hfin1} / #{horario.dia2} : #{horario.hinicio2}-#{horario.hfin2}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forHorario" for="horario" value="Seleccione el horario" />

@@ -33,6 +33,9 @@ public class Oferta implements Serializable{
     @JoinColumn(name="idacuerdo")
     private Acuerdo acuerdo;
     
+    @ManyToOne
+    @JoinColumn(name="idescuela")
+    private Escuela escuela;
     
     @OneToMany(mappedBy="oferta")
     private Set<Grupo> grupo;
@@ -89,7 +92,15 @@ public class Oferta implements Serializable{
     public void setCiclo(Ciclo ciclo) {
         this.ciclo = ciclo;
     }
+    
+    public Escuela getEscuela() {
+        return escuela;
+    }
 
+    public void setEscuela(Escuela escuela) {
+        this.escuela = escuela;
+    }
+    
     public boolean isAprobarOferta() {
         return aprobarOferta;
     }

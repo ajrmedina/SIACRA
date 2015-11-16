@@ -7,6 +7,7 @@ package com.siacra.beans;
 
 
 import com.siacra.models.Asignatura;
+import com.siacra.models.Ciclo;
 import com.siacra.models.Grupo;
 import com.siacra.models.Horario;
 import com.siacra.models.Oferta;
@@ -19,11 +20,12 @@ import com.siacra.services.TipoGrupoService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
 
@@ -53,7 +55,6 @@ public class GrupoBean implements Serializable{
     private List<Grupo> gruposList;
     private List<TipoGrupo> tipoGrupoList;
     private List<Horario> horarioList;
-    private List<Asignatura> asignaturaList;
     private List<Oferta> ofertaList;
     
     private Integer idGrupo;
@@ -75,6 +76,9 @@ public class GrupoBean implements Serializable{
     private boolean grupo2yes = false;
     private boolean mergeOk = false;
     
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
     
     /***********************************************/
     
@@ -248,7 +252,7 @@ public class GrupoBean implements Serializable{
     
     public List<Oferta> getOfertaList() {
         ofertaList = new ArrayList<>();
-        ofertaList.addAll(ofertaService.getOfertas());
+        ofertaList.addAll(ofertaService.getOfertas(id_escuela));
         return ofertaList;
     }
     
@@ -311,16 +315,6 @@ public class GrupoBean implements Serializable{
 
     public void setHorarioList(List<Horario> horarioList) {
         this.horarioList = horarioList;
-    }
-
-    public List<Asignatura> getAsignaturaList() {
-        asignaturaList = new ArrayList<>();
-        asignaturaList.addAll(asignaturaService.getAsignaturas());
-        return asignaturaList;
-    }
-        
-    public void setAsignaturaList(List<Asignatura> asignaturaList) {
-        this.asignaturaList = asignaturaList;
     }
 
     public void setIdHorario(Integer idHorario) {

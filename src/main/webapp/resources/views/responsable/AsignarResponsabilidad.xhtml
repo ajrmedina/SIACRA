@@ -24,7 +24,7 @@
             <p:growl id="messages" />  
             <h:panelGrid columns="2" cellpadding="5" class="center-element" style="margin-left: 60px ">
                 <p:outputLabel for="docenteFilter" value="Filtro por docente: " />
-                <p:selectOneMenu id="docenteFilter" value="#{responsabilidadBean.CDocente}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                <p:selectOneMenu panelStyleClass="hideDisabled" id="docenteFilter" value="#{responsabilidadBean.CDocente}" effect="fade" filter="true" filterMatchMode="startsWith" >
                     <f:selectItem itemValue="0" itemLabel="Seleccione un docente"  />
                     <f:selectItems value="#{docenteBean.docentesList}" var="docent" itemValue="#{docent.idDocente}" itemLabel="#{docent.user.nombres} #{docent.user.apellidos}" itemDisabled="#{docent.aprobarDocente == false || docent.user.estadoUsuario == false}"/>
                     <p:ajax event="change" update="responsabilidadTable" process="@this" listener="#{responsabilidadBean.refreshResponsabilidad()}" />
@@ -107,7 +107,7 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:outputLabel for="docente" value="Docente: " rendered="#{responsabilidadBean.insert == true}"/>
                     <h:panelGroup layout="block2" rendered="#{responsabilidadBean.insert == true}">
-                        <p:selectOneMenu id="docente" value="#{responsabilidadBean.idDocente}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                        <p:selectOneMenu panelStyleClass="hideDisabled" id="docente" value="#{responsabilidadBean.idDocente}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
                             <f:selectItem itemValue="" itemLabel="Seleccione un docente"  />
                             <f:selectItems value="#{docenteBean.docentesList}" var="docente" itemValue="#{docente.idDocente}" itemLabel="#{docente.user.nombres} #{docente.user.apellidos}" itemDisabled="#{docente.aprobarDocente == false || docente.user.estadoUsuario == false}"/>
                             <p:ajax event="change" update="horasAct horasOP" listener="#{responsabilidadBean.showHorasActuales()}" />
@@ -116,7 +116,7 @@
                     </h:panelGroup>
                     
                     <p:outputLabel for="actividad" value="Actividad: " rendered="#{responsabilidadBean.insert == true}"/>
-                    <p:selectOneMenu id="actividad" value="#{responsabilidadBean.idactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" rendered="#{responsabilidadBean.insert == true}">
+                    <p:selectOneMenu panelStyleClass="hideDisabled" id="actividad" value="#{responsabilidadBean.idactividad}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" rendered="#{responsabilidadBean.insert == true}">
                         <f:selectItem itemValue="0" itemLabel="Seleccione una actividad"  />
                         <f:selectItems value="#{actividadBean.actividadList}" var="actividad" itemValue="#{actividad.idactividad}" itemLabel="#{actividad.nombreactividad}" itemDisabled="#{actividad.aprobaractividad == false || actividad.estadoactividad == false}"/>
                         <p:ajax event="change" update="opciones" listener="#{responsabilidadBean.showOpciones()}" />
@@ -224,7 +224,7 @@
             <h:form id="grupo_form">
                 <h:panelGrid columns="2" cellpadding="5" class="center-element" style="margin-left: 60px ">
                     <p:outputLabel for="asignaturaFilter" value="Filtro por asignatura: " />
-                    <p:selectOneMenu id="asignaturaFilter" value="#{responsabilidadBean.idAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                    <p:selectOneMenu panelStyleClass="hideDisabled" id="asignaturaFilter" value="#{responsabilidadBean.idAsignatura}" effect="fade" filter="true" filterMatchMode="startsWith" >
                         <f:selectItem itemValue="0" itemLabel="Seleccione una asignatura"  />
                         <f:selectItems value="#{asignaturaBean.asignaturaList}" var="asign" itemValue="#{asign.idAsignatura}" itemLabel="#{asign.nombreAsignatura}" itemDisabled="#{asign.aprobarasignatura == false || asign.estadoAsignatura == false}"/>
                         <p:ajax event="change" update="grupo" process="@this" listener="#{responsabilidadBean.refreshGrupos()}" />

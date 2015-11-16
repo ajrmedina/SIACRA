@@ -63,7 +63,7 @@
                     
                     <p:outputLabel for="escalafon" value="Tipo de escalafón: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="escalafon" value="#{categoriaBean.idEscalafon}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el escalafón.">
+                        <p:selectOneMenu panelStyleClass="hideDisabled" id="escalafon" value="#{categoriaBean.idEscalafon}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el escalafón.">
                             <f:selectItems value="#{escalafonBean.escalafonList}" var="escalafon" itemValue="#{escalafon.idescalafon}" itemLabel="#{escalafon.tipoescalafon}" itemDisabled="#{escalafon.es_estado == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forEscalafon" for="escalafon" value="Seleccione el escalafón para la nueva categoría" />
@@ -71,7 +71,7 @@
 
                     <p:outputLabel for="contrato" value="Tipo de contrato: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="contrato" value="#{categoriaBean.idContrato}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el tipo de contrato.">
+                        <p:selectOneMenu panelStyleClass="hideDisabled" id="contrato" value="#{categoriaBean.idContrato}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el tipo de contrato.">
                             <f:selectItems value="#{contratoBean.contratoList}" var="contrato" itemValue="#{contrato.idcontrato}" itemLabel="#{contrato.tipocontrato}" itemDisabled="#{contrato.co_estado == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forContrato" for="contrato" value="Seleccione el contrato para la nueva categoría" />

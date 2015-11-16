@@ -106,13 +106,13 @@
                     </p:inputText>
                     
                     <p:outputLabel for="descripcion" value="Descripción: " />
-                    <p:inputTextarea id="descripcion" value="#{trabajoGraduacionBean.descripciontg}" required="true"
+                    <p:inputTextarea id="descripcion" value="#{trabajoGraduacionBean.descripciontg}"
                                      validatorMessage="Solo letras, números, espacios y guiones son permitidos para el campo 'Descripción'." onkeyup="if(this.value.length>150){this.value=this.value.substring(0,150);}">
                         <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel for="observacion" value="Observaciones: " />
-                    <p:inputTextarea id="observacion" value="#{trabajoGraduacionBean.observaciontg}" required="true" 
+                    <p:inputTextarea id="observacion" value="#{trabajoGraduacionBean.observaciontg}" 
                                      validatorMessage="Solo letras, números, espacios y guiones son permitidos para el campo 'Observaciones'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}">
                         <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputTextarea>

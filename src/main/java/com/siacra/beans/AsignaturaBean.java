@@ -7,9 +7,10 @@ package com.siacra.beans;
 
 import com.siacra.models.Acuerdo;
 import com.siacra.models.Asignatura;
-import com.siacra.models.Escuela;
+import com.siacra.models.Ciclo;
 import com.siacra.services.AcuerdoService;
 import com.siacra.services.AsignaturaService;
+import com.siacra.services.CicloService;
 import com.siacra.services.EscuelaService;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,9 +41,10 @@ public class AsignaturaBean implements Serializable{
     @ManagedProperty(value="#{AcuerdoService}")
     private AcuerdoService acuerdoService;
     
-    private List<Asignatura> asignaturaList;
-    private List<Escuela> escuelaList;
+    @ManagedProperty(value="#{CicloService}")
+    private CicloService cicloService;
     
+    private List<Asignatura> asignaturaList;
     
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -84,24 +86,26 @@ public class AsignaturaBean implements Serializable{
         this.acuerdoService = acuerdoService;
     }
     
+    public CicloService getCicloService() {
+        return cicloService;
+    }
+
+    public void setCicloService(CicloService cicloService) {
+        this.cicloService = cicloService;
+    }
+    
     public List<Asignatura> getAsignaturaList() {
         asignaturaList = new ArrayList<>();
-        asignaturaList.addAll(asignaturaService.getAsignaturasByEscuela(id_escuela));
+        Ciclo ciclo = getCicloService().getCiclosActivos().get(0);
+        if(ciclo.getCiclo().equals("CI"))
+            asignaturaList.addAll(asignaturaService.getAsignaturasCicloImpar(id_escuela));
+        else
+            asignaturaList.addAll(asignaturaService.getAsignaturasCicloPar(id_escuela));
         return asignaturaList;
     }
 
     public void setAsignaturaList(List<Asignatura> asignaturaList) {
         this.asignaturaList = asignaturaList;
-    }
-
-    public List<Escuela> getEscuelaList() {
-        escuelaList = new ArrayList<>();
-        escuelaList.addAll(escuelaService.getEscuelas());
-        return escuelaList;
-    }
-
-    public void setEscuelaList(List<Escuela> escuelaList) {
-        this.escuelaList = escuelaList;
     }
 
     public Integer getIdAsignatura() {
