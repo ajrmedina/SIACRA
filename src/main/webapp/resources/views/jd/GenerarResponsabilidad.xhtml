@@ -7,11 +7,11 @@
     
 
     <ui:define name="title">
-       Reporte Responsabilidad Academica
+       Reporte Responsabilidad Académica
     </ui:define>
     
     <ui:define name="title-view">
-        Generar Reporte de Responsabilidad Academica de las Escuelas de la FIA
+        Generar Reporte de Responsabilidad Académica de las Escuelas de la FIA
     </ui:define>
     
     <ui:define name="content"> 
@@ -22,7 +22,7 @@
             <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 
                 <f:facet name="header">    
-                    Escuelas y Unidad de la Facultad de Ingenieria y Arquitectura 
+                    Escuelas y Unidad de la Facultad de Ingeniería y Arquitectura 
                     
                 </f:facet>                                 
                 
@@ -37,9 +37,8 @@
                         <h:outputText value="Acciones" />
                     </f:facet>   
                                      
-                    <p:commandButton  value="Ver reporte" actionListener="#{reporte.identifyReport2(escuela.codigoescuela)}" ajax="false" icon="fa fa-file-pdf-o" >
-                        <f:param value="#{escuela.idescuela}" name="id_escuela"/>
-                    
+                    <p:commandButton value="Ver reporte" actionListener="#{reporte.identifyReport2(escuela.codigoescuela)}" ajax="false" icon="fa fa-file-pdf-o" >
+                        <f:param value="#{escuela.idescuela}" name="id_escuela"/>                    
                     </p:commandButton>
                     
                 </p:column>               

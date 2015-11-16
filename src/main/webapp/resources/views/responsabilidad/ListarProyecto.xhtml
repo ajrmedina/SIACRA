@@ -23,7 +23,7 @@
                 <f:facet name="header">
                     <p:outputPanel>
                         <h:outputText value="Búsqueda de Proyectos:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('proyectoTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <p:inputText id="globalFilter" onkeyup="PF('proyectoTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                         <p:spacer width="750" height="10" />
                         <p:commandButton id="insert_button" update=":dialogUpdateProyecto" style="float: right" actionListener="#{proyectoBean.reset()}" oncomplete="PF('update_proyecto').show()" value="Nuevo Proyecto" icon="fa fa-plus">
                             <f:setPropertyActionListener target="#{proyectoBean.insert}" value="true" />
@@ -56,7 +56,7 @@
                     <h:outputText value="#{proyecto.estadoproyecto}" />
                 </p:column>
                 
-                <p:column style="width: 15%" headerText="Aprobacion" filterBy="#{proyecto.aprobarproyecto}" filterStyleClass="hide">                    
+                <p:column style="width: 15%" headerText="Aprobación" filterBy="#{proyecto.aprobarproyecto}" filterStyleClass="hide">                    
                      <f:facet name="filter">
                         <p:selectOneButton onchange="PF('proyectoTable').filter()">
                             <f:converter converterId="javax.faces.Boolean" />
@@ -78,7 +78,9 @@
                     <p:commandButton id="change_status" update=":dialogChangeProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('change_proyecto').show()" icon="fa fa-refresh" rendered="#{proyecto.estadoproyecto == 'En desarrollo'}" />
                     <p:commandButton id="approve" update=":dialogApproveProyecto" actionListener="#{proyectoBean.loadProyecto(proyecto)}" oncomplete="PF('approve_proyecto').show()" icon="fa fa-check-square-o" rendered="#{proyecto.aprobarproyecto == false and identityBean.user.nivel.id == 3}" />
                     <p:tooltip id="forChangeStatus" for="change_status" value="Dar por finalizado este proyecto"  />
-                    <p:tooltip id="forApprove" for="approve" value="Aprobar Proyecto" rendered="#{proyecto.aprobarproyecto == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forApprove" for="approve" value="Aprobar el proyecto" rendered="#{proyecto.aprobarproyecto == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar el proyecto" />
+                    
                     <h:outputText value="No es modificable" style="color: crimson" rendered="#{proyecto.estadoproyecto == 'Finalizado'}" />               
                 </p:column>               
             </p:dataTable>
@@ -120,7 +122,7 @@
                         <p:ajax event="dateSelect" update="fechaFin" />
                     </p:calendar>
                                      
-                    <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
+                    <p:outputLabel for="fechaFin" value="Fecha de finalización:" />
                     <p:calendar id="fechaFin" value="#{proyectoBean.fechafin}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
                                 locale="es" requiredMessage="Por favor, ingrese la fecha de finalizacion.">
                         <f:attribute name="startDate" value="#{proyectoBean.fechainicio}" />
@@ -149,7 +151,7 @@
         <p:dialog header="Cambiar estado del Proyecto" id="dialogChangeProyecto" widgetVar="change_proyecto" modal="true" resizable="false" closable="false">
             <h:form id="status">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Dar por finalizado el proyecto #{proyectoBean.nombreproyecto}?" />
+                <h:outputText value="¿Dar por finalizado el proyecto #{proyectoBean.nombreproyecto}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_change" value="Aceptar" actionListener="#{proyectoBean.finalizarProyecto()}" update=":list:proyectos" oncomplete="PF('change_proyecto').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('change_proyecto').hide()" icon="fa fa-ban" />
@@ -160,7 +162,7 @@
         <p:dialog header="Aprobar Proyecto" id="dialogApproveProyecto" widgetVar="approve_proyecto" modal="true" resizable="false" closable="false">
             <h:form id="approve">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Desea aprobar el proyecto #{proyectoBean.nombreproyecto}?" />
+                <h:outputText value="¿Desea aprobar el proyecto #{proyectoBean.nombreproyecto}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_approve" value="Aprobar" actionListener="#{proyectoBean.approveProyecto()}" update=":list:proyectos" oncomplete="PF('approve_proyecto').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('approve_proyecto').hide()" icon="fa fa-ban" />

@@ -26,13 +26,13 @@
                         <f:setPropertyActionListener target="#{horarioBean.insert}" value="true" />
                     </p:commandButton>
                     <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de actividades:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('horariosTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de actividades:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('horariosTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
                 
-                <p:column style="width: 15%" headerText="Dia" filterBy="#{horario.dia1}" filterStyleClass="hide">                  
+                <p:column style="width: 15%" headerText="Día" filterBy="#{horario.dia1}" filterStyleClass="hide">                  
                     <h:outputText value="#{horario.dia1}" class="center-element"/>
                 </p:column>
                 
@@ -47,7 +47,7 @@
                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
                     </h:outputText>
                 </p:column>
-                <p:column style="width: 15%" headerText="Dia" filterBy="#{horario.dia2}" filterStyleClass="hide">                  
+                <p:column style="width: 15%" headerText="Día" filterBy="#{horario.dia2}" filterStyleClass="hide">                  
                     <h:outputText value="#{horario.dia2}" class="center-element"/>
                 </p:column>
                 
@@ -62,7 +62,7 @@
                      <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
                     </h:outputText>
                 </p:column>
-                <p:column style="width: 10%" headerText="Habilitado" filterBy="#{horario.hoEstado}" filterStyleClass="hide">
+                <p:column style="width: 10%" headerText="Estado" filterBy="#{horario.hoEstado}" filterStyleClass="hide">
                     <h:outputText value="#{horario.hoEstado?'Habilitado':'Deshabilitado'}"/>
                 </p:column>
                 
@@ -74,8 +74,11 @@
                     <p:commandButton id="delete_button" update=":dialogDeleteHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('delete_horario').show()" icon="fa fa-times" />
                     <p:commandButton id="locked" update=":dialogLockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('lock_horario').show()" icon="fa fa-unlock" rendered="#{horario.hoEstado == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockHorario" actionListener="#{horarioBean.loadHorario(horario)}" oncomplete="PF('unlock_horario').show()" icon="fa fa-unlock-alt" rendered="#{horario.hoEstado == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Horario" rendered="#{horario.hoEstado == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Horario" rendered="#{horario.hoEstado == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar el horario" rendered="#{horario.hoEstado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar el horario" rendered="#{horario.hoEstado == false}" />
+                     <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar el horario" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el horario" />
+                    
                     
                 </p:column>
             </p:dataTable>
@@ -94,7 +97,7 @@
                         
                     </h:panelGroup>
                     
-                    <p:outputLabel for="dia1" value="Dia :" />
+                    <p:outputLabel for="dia1" value="Día :" />
                     <p:selectOneMenu id="dia1" value="#{horarioBean.dia1}" required="true" requiredMessage="Por favor, seleccione el día de la actividad.">
                         <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
                         <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
@@ -103,7 +106,7 @@
                         <f:selectItem itemLabel="Jueves" itemValue="Jueves" />
                         <f:selectItem itemLabel="Viernes" itemValue="Viernes" />
                         <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
-                        <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
+                        
                     </p:selectOneMenu>
 
                     <p:outputLabel for="hinicio1" value="Hora de inicio :" />
@@ -118,7 +121,7 @@
                         <p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio1 hfin1" />
                     </pe:timePicker>
                     
-                    <p:outputLabel for="dia2" value="Dia :" />
+                    <p:outputLabel for="dia2" value="Día :" />
                     <p:selectOneMenu id="dia2" value="#{horarioBean.dia2}">
                         <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
                         <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
@@ -127,7 +130,7 @@
                         <f:selectItem itemLabel="Jueves" itemValue="Jueves" />
                         <f:selectItem itemLabel="Viernes" itemValue="Viernes" />
                         <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
-                        <f:selectItem itemLabel="Domingo" itemValue="Domingo" />
+                       
                     </p:selectOneMenu>
                     		
 		    <p:outputLabel for="hinicio2" value="Hora de inicio :" />
@@ -155,7 +158,7 @@
         <p:dialog header="Eliminar horario  " id="dialogDeleteHorario" widgetVar="delete_horario" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el horario de  #{horarioBean.dia1} - #{horarioBean.dia2}?" />
+                <h:outputText value="¿Está seguro que desea eliminar el horario de  #{horarioBean.dia1} - #{horarioBean.dia2}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{horarioBean.deleteHorario()}" update=":list:horario" oncomplete="PF('delete_horario').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_horario').hide()" icon="fa fa-ban" />
@@ -167,7 +170,7 @@
         <p:dialog header="Bloquear horario" id="dialogLockHorario" widgetVar="lock_horario" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear el horario de #{horarioBean.dia1} - #{horarioBean.dia2} ?" />
+                <h:outputText value="¿Está seguro que desea bloquear el horario de #{horarioBean.dia1} - #{horarioBean.dia2} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{horarioBean.lockedHorario()}" update=":list:horario" oncomplete="PF('lock_horario').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_horario').hide()" icon="fa fa-ban" />
@@ -178,7 +181,7 @@
         <p:dialog header="Desbloquear horario" id="dialogUnlockHorario" widgetVar="unlock_horario" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear el horario de #{horarioBean.dia1} - #{horarioBean.dia2} ?" />
+                <h:outputText value="¿Está seguro que desea desbloquear el horario de #{horarioBean.dia1} - #{horarioBean.dia2} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{horarioBean.unlockedHorario()}" update=":list:horario" oncomplete="PF('unlock_horario').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_horario').hide()" icon="fa fa-ban" />

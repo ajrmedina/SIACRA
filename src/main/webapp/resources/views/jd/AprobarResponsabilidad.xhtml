@@ -22,7 +22,7 @@
             <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros" >
                 
                 <f:facet name="header">    
-                    Escuelas de la Facultad de Ingenieria y Arquitectura 
+                    Escuelas de la Facultad de Ingeniería y Arquitectura 
                     <p:spacer width="750" height="20" />
                         <p:commandButton style="float: right" id="insert_button" update=":realizarObservaciones" oncomplete="PF('realizar_observaciones').show()"  value="Enviar observacion" icon="fa fa-inbox" actionListener="#{mensajeBean.setId_escuela(escuela.idescuela)}">
                              <f:setPropertyActionListener target="#{mensajeBean.remitente}" value="#{identityBean.user.nombres} #{identityBean.user.apellidos} - #{identityBean.user.nivel.acceso}"/>
@@ -43,14 +43,14 @@
                     </f:facet>   
                                      
                     <p:commandButton id="aprobar" value="Aprobar" actionListener="#{responsabilidadBean.setIdEscuela(escuela.idescuela)}" oncomplete="PF('aprobar_responsabilidad').show()" icon="fa fa-thumbs-o-up" />
-                    
+                    <p:tooltip id="forAprobar" for="aprobar" value="Aprobar la oferta de asignaturas" />
                 </p:column>               
             </p:dataTable>
             
             <p:dialog header="Aprobar Responsabilidad" id="dialogAprobarResponsabilidad" widgetVar="aprobar_responsabilidad" modal="true" resizable="false" closable="false">
                 <h:form id="confirmar">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <h:outputText value="Seguro que desea aprobar la responsabilidad para esta escuela?" />
+                    <h:outputText value="¿Está seguro que desea aprobar la responsabilidad para esta Escuela?" />
                     <br />
                     <h:panelGrid columns="2" cellpadding="5" class="center-element">
                         <p:commandButton id="aprobar" value="Aprobar" update=":aprobar :aprobar:messages" actionListener="#{responsabilidadBean.aprobarResponsabilidad()}" oncomplete="PF('aprobar_responsabilidad').hide()" icon="fa fa-check" />

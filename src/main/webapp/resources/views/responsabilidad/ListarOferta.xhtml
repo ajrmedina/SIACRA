@@ -10,7 +10,7 @@
     </ui:define>
     
     <ui:define name="title-view">
-        Ofertas
+        Ofertas académicas de la #{identityBean.principal.escuela.nombreescuela}
     </ui:define>
                     
     <ui:define name="content">
@@ -24,8 +24,8 @@
                         <f:setPropertyActionListener target="#{ofertaBean.insert}" value="true" />
                     </p:commandButton>
                     <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de ofertas:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('ofertasTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de ofertas:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('ofertasTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
@@ -49,6 +49,8 @@
                         <f:setPropertyActionListener target="#{ofertaBean.insert}" value="false" />
                     </p:commandButton>
                     <p:commandButton id="delete_button" update=":dialogDeleteOferta" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('delete_oferta').show()" icon="fa fa-times" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar la oferta" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar la oferta" />
                     
                 </p:column>
             </p:dataTable>
@@ -80,7 +82,7 @@
         <p:dialog header="Eliminar oferta  " id="dialogDeleteOferta" widgetVar="delete_oferta" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar la oferta?" />
+                <h:outputText value="¿Está seguro que desea eliminar la oferta?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{ofertaBean.deleteOferta()}" update=":list:oferta" oncomplete="PF('delete_oferta').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_oferta').hide()" icon="fa fa-ban" />

@@ -30,8 +30,8 @@
                             <p:dataExporter type="pdf" target="asignatura" fileName="asignaturasPDF" preProcessor="#{exporter.preProcessPDF}"  />
                         </p:commandLink>
                     <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de asignaturas:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('asignaturasTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de asignaturas:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('asignaturasTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
@@ -95,9 +95,11 @@
                     <p:commandButton id="locked" update=":dialogLockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('lock_asignatura').show()" icon="fa fa-unlock" rendered="#{asignatura.estadoAsignatura == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('unlock_asignatura').show()" icon="fa fa-unlock-alt" rendered="#{asignatura.estadoAsignatura == false}" />
                     <p:commandButton id="approve" update=":dialogApproveAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('approve_asignatura').show()" icon="fa fa-check-square-o" rendered="#{asignatura.aprobarasignatura == false and identityBean.user.nivel.id == 3}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Asignatura" rendered="#{asignatura.estadoAsignatura == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Asignatura" rendered="#{asignatura.estadoAsignatura == false}" />
-                    <p:tooltip id="forApprove" for="approve" value="Aprobar Asignatura" rendered="#{asignatura.aprobarasignatura == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar la asignatura" rendered="#{asignatura.estadoAsignatura == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar la asignatura" rendered="#{asignatura.estadoAsignatura == false}" />
+                    <p:tooltip id="forApprove" for="approve" value="Aprobar la asignatura" rendered="#{asignatura.aprobarasignatura == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar la asignatura" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar la asignatura" />
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -115,9 +117,9 @@
                        
                     </h:panelGroup>
                     
-                    <p:outputLabel for="codigoAsignatura" value="Codigo de asignatura: " />
+                    <p:outputLabel for="codigoAsignatura" value="Código de asignatura: " />
                     <p:inputText id="codigoAsignatura" value="#{asignaturaBean.codigoAsignatura}" required="true" requiredMessage="Por favor, ingrese el código de la asignatura."
-                                 validatorMessage="Error: El 'Codigo de asignatra' debe contener tres letras Mayusculas y tres digitos " onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}">                        
+                                 validatorMessage="Error: El 'Código de asignatra' debe contener tres letras Mayusculas y tres digitos " onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}">                        
                         <f:validateRegex pattern="^[A-Z]{3}\d{3}$" />
                         
                     </p:inputText>
@@ -171,7 +173,7 @@
         <p:dialog header="Eliminar asignatura  " id="dialogDeleteAsignatura" widgetVar="delete_asignatura" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar la asignatura  #{asignaturaBean.codigoAsignatura} - #{asignaturaBean.nombreAsignatura}?" />
+                <h:outputText value="¿Está seguro que desea eliminar la asignatura  #{asignaturaBean.codigoAsignatura} - #{asignaturaBean.nombreAsignatura}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{asignaturaBean.deleteAsignatura()}" update=":list:asignatura" oncomplete="PF('delete_asignatura').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_asignatura').hide()" icon="fa fa-ban" />
@@ -183,7 +185,7 @@
         <p:dialog header="Bloquear asignatura" id="dialogLockAsignatura" widgetVar="lock_asignatura" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear la asignatura  #{asignaturaBean.codigoAsignatura} - #{asignaturaBean.nombreAsignatura} ?" />
+                <h:outputText value="¿Está seguro que desea bloquear la asignatura  #{asignaturaBean.codigoAsignatura} - #{asignaturaBean.nombreAsignatura} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{asignaturaBean.lockedAsignatura()}" update=":list:asignatura" oncomplete="PF('lock_asignatura').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_asignatura').hide()" icon="fa fa-ban" />
@@ -194,7 +196,7 @@
         <p:dialog header="Desbloquear asignatura" id="dialogUnlockAsignatura" widgetVar="unlock_asignatura" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear la asignatura #{asignaturaBean.codigoAsignatura} - #{asignaturaBean.nombreAsignatura} ?" />
+                <h:outputText value="¿Está seguro que desea desbloquear la asignatura #{asignaturaBean.codigoAsignatura} - #{asignaturaBean.nombreAsignatura} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{asignaturaBean.unlockedAsignatura()}" update=":list:asignatura" oncomplete="PF('unlock_asignatura').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_asignatura').hide()" icon="fa fa-ban" />
@@ -205,7 +207,7 @@
         <p:dialog header="Aprobar asignatura" id="dialogApproveAsignatura" widgetVar="approve_asignatura" modal="true" resizable="false" closable="false">
             <h:form id="approve">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Desea aprobar la asignatura #{asignaturaBean.codigoAsignatura} - #{asignaturaBean.nombreAsignatura} ?" />
+                <h:outputText value="¿Desea aprobar la asignatura #{asignaturaBean.codigoAsignatura} - #{asignaturaBean.nombreAsignatura} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_approve" value="Aprobar" actionListener="#{asignaturaBean.approveAsignatura()}" update=":list:asignatura" oncomplete="PF('approve_asignatura').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('approve_asignatura').hide()" icon="fa fa-ban" />
