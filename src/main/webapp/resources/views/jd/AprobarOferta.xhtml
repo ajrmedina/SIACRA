@@ -1,0 +1,62 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">    
+    
+
+    <ui:define name="title">
+       Aprobar Oferta
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Aprobar Oferta de Asignaturas de las Escuelas de la FIA
+    </ui:define>
+    
+    <ui:define name="content"> 
+        
+        <h:form id="aprobar"> 
+            <p:growl id="messages"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:dataTable id="ofertas" var="oferta" value="#{ofertaBean.ofertaNoAprobadaList}" style="width: 75%" class="center-element" widgetVar="ofertasTable" emptyMessage="No hay registros" >
+                
+                <f:facet name="header">    
+                    Escuelas de la Facultad de Ingenieria y Arquitectura
+                </f:facet>                                 
+                
+                <p:column style="width:30%" headerText="Escuela o Unidad">                         
+                    <h:outputText value="#{oferta.escuela.nombreescuela}" />
+                </p:column>
+                
+                <p:column style="width:20%" headerText="Ciclo" >                  
+                    <h:outputText value="#{oferta.ciclo.ciclo}: #{oferta.ciclo.anio}" />
+                </p:column>
+                
+                <p:column style="width: 25%">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                                     
+                    <p:commandButton id="aprobar" value="Aprobar" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('aprobar_oferta').show()" icon="fa fa-thumbs-o-up" rendered="#{oferta.aprobarOferta == false}" />
+                    <p:tooltip id="forAprobar" for="aprobar" value="Aprobar Oferta" rendered="#{oferta.aprobarOferta == false}" />
+                    
+                </p:column>               
+            </p:dataTable>
+            
+            <p:dialog header="Aprobar Oferta de Asignaturas" id="dialogAprobarOferta" widgetVar="aprobar_oferta" modal="true" resizable="false" closable="false">
+                <h:form id="confirmar">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <h:outputText value="Seguro que desea aprobar la oferta de asignaturas de esta escuela?" />
+                    <br />
+                    <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                        <p:commandButton id="aprobar" value="Aprobar" update=":aprobar" actionListener="#{ofertaBean.unlockedOferta()}" oncomplete="PF('aprobar_oferta').hide()" icon="fa fa-check" />
+                        <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('aprobar_oferta').hide()" icon="fa fa-ban" />
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+                                  
+        </h:form>
+    </ui:define>
+    
+</ui:composition>

@@ -106,26 +106,26 @@
                     </p:inputText>
                     
                     <p:outputLabel for="descripcion" value="Descripción: " />
-                    <p:inputTextarea id="descripcion" value="#{trabajoGraduacionBean.descripciontg}" required="true"
+                    <p:inputTextarea id="descripcion" value="#{trabajoGraduacionBean.descripciontg}"
                                      validatorMessage="Solo letras, números, espacios y guiones son permitidos para el campo 'Descripción'." onkeyup="if(this.value.length>150){this.value=this.value.substring(0,150);}">
                         <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel for="observacion" value="Observaciones: " />
-                    <p:inputTextarea id="observacion" value="#{trabajoGraduacionBean.observaciontg}" required="true" 
+                    <p:inputTextarea id="observacion" value="#{trabajoGraduacionBean.observaciontg}" 
                                      validatorMessage="Solo letras, números, espacios y guiones son permitidos para el campo 'Observaciones'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}">
                         <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputTextarea>
                     
                     <p:outputLabel for="fechaInicio" value="Fecha de inicio:" />
                     <p:calendar id="fechaInicio" value="#{trabajoGraduacionBean.fechainiciotg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                locale="es" requiredMessage="Por favor, ingrese la fecha de inicio.">
+                                locale="es" requiredMessage="Por favor, ingrese la fecha de inicio." beforeShowDay="sundaysDisabled">
                         <p:ajax event="dateSelect" update="fechaFin" />
                     </p:calendar>
                                      
                     <p:outputLabel for="fechaFin" value="Fecha de finalizacion:" />
                     <p:calendar id="fechaFin" value="#{trabajoGraduacionBean.fechafintg}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"
-                                locale="es" requiredMessage="Por favor, ingrese la fecha de finalizacion.">
+                                locale="es" requiredMessage="Por favor, ingrese la fecha de finalizacion." beforeShowDay="sundaysDisabled">
                         <f:attribute name="startDate" value="#{trabajoGraduacionBean.fechainiciotg}" />
                         <f:validator validatorId="dateRangeValidator" />
                     </p:calendar>

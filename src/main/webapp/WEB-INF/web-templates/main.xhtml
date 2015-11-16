@@ -19,6 +19,7 @@
             <h:outputStylesheet name="grid/grid.css" library="primefaces" />
             <h:outputStylesheet name="webjars/font-awesome/4.2.0/css/font-awesome-jsf.css" />
             <h:outputScript name="js/calendar_es.js" />
+            <h:outputScript name="js/functions.js" />
             
             <header>
                 <div class="ui-grid ui-grid-responsive" style="text-align: center">
@@ -84,9 +85,9 @@
                                 <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR">
                                     <p:menuitem value="Asignatura" url="/resources/views/responsabilidad/ListarAsignatura.xhtml" icon="fa fa-book" />
                                     <p:menuitem value="Actividad" url="/resources/views/responsabilidad/ListarActividad.xhtml" icon="fa fa-list" />
-                                    <p:menuitem value="Oferta" url="/resources/views/responsabilidad/ListarOferta.xhtml" icon="fa fa-list" />
                                 </sec:authorize>
                                 <sec:authorize ifAnyGranted="ROLE_RESPONSABLE">
+                                    <p:menuitem value="Oferta" url="/resources/views/responsabilidad/ListarOferta.xhtml" icon="fa fa-list" />
                                     <p:menuitem value="Horario" url="/resources/views/responsable/ListarHorario.xhtml" icon="fa fa-list" /> 
                                     <p:menuitem value="Grupos" url="/resources/views/responsable/ListarGrupo.xhtml" icon="fa fa-group" />
                                     <p:menuitem value="Asignar Responsabilidad" url="/resources/views/responsable/AsignarResponsabilidad.xhtml" icon="fa fa-clipboard" />                             
@@ -102,6 +103,7 @@
                                 </sec:authorize>
                                 <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
                                   <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
+                                  <p:menuitem value="Aprobar Oferta" url="/resources/views/jd/AprobarOferta.xhtml" icon="fa fa-check-square-o" />
                                   <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
                                 </sec:authorize>
                              </p:submenu>

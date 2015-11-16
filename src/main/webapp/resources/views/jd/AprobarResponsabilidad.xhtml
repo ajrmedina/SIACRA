@@ -19,7 +19,7 @@
         <h:form id="aprobar"> 
             <p:growl id="messages"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros en base al criterio proporcionado" >
+            <p:dataTable id="escuela" var="escuela" value="#{escuelaBean.escuelaList}" style="width: 75%" class="center-element" widgetVar="escuelasTable" emptyMessage="No hay registros" >
                 
                 <f:facet name="header">    
                     Escuelas de la Facultad de Ingenieria y Arquitectura 
@@ -29,11 +29,11 @@
                         </p:commandButton>
                 </f:facet>                                 
                 
-                <p:column style="width:20%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
+                <p:column style="width:20%" headerText="Código de Escuela o Unidad">                         
                     <h:outputText value="#{escuela.codigoescuela}" />
                 </p:column>
                 
-                <p:column style="width:30%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
+                <p:column style="width:30%" headerText="Nombre de la Escuela o Unidad">                  
                     <h:outputText value="#{escuela.nombreescuela}" />
                 </p:column>
                 

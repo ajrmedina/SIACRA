@@ -10,14 +10,17 @@ import com.siacra.models.Ciclo;
 import com.siacra.models.Oferta;
 import com.siacra.services.AcuerdoService;
 import com.siacra.services.CicloService;
+import com.siacra.services.EscuelaService;
 import com.siacra.services.OfertaService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.springframework.dao.DataAccessException;
 
@@ -31,27 +34,26 @@ public class OfertaBean implements Serializable{
     
     @ManagedProperty(value="#{OfertaService}")
     private OfertaService ofertaService;
-    
     @ManagedProperty(value="#{CicloService}")
     private CicloService cicloService;
-    
-//    @ManagedProperty(value="#{GrupoService}")
-//    private GrupoService grupoService;
-    
     @ManagedProperty(value="#{AcuerdoService}")
     private AcuerdoService acuerdoService;
+    @ManagedProperty(value = "#{EscuelaService}")
+    private EscuelaService escuelaService;
     
     Integer idOferta;
     boolean aprobarOferta;
     Integer idCiclo;
-//    Integer idGrupo;
     Integer idAcuerdo;
     private List<Oferta> ofertaList;
+    private List<Oferta> ofertaNoAprobadaList;
     private List<Ciclo> cicloList;
-//    private List<Grupo> grupoList;
-    private List<Acuerdo> acuerdoList;
     boolean insert;
-
+    
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String, Object> sessionMap = externalContext.getSessionMap();
+    private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+    
     public OfertaService getOfertaService() {
         return ofertaService;
     }
@@ -68,14 +70,6 @@ public class OfertaBean implements Serializable{
         this.cicloService = cicloService;
     }
 
-//    public GrupoService getGrupoService() {
-//        return grupoService;
-//    }
-//
-//    public void setGrupoService(GrupoService grupoService) {
-//        this.grupoService = grupoService;
-//    }
-
     public AcuerdoService getAcuerdoService() {
         return acuerdoService;
     }
@@ -83,7 +77,15 @@ public class OfertaBean implements Serializable{
     public void setAcuerdoService(AcuerdoService acuerdoService) {
         this.acuerdoService = acuerdoService;
     }
+    
+    public EscuelaService getEscuelaService() {
+        return escuelaService;
+    }
 
+    public void setEscuelaService(EscuelaService escuelaService) {
+        this.escuelaService = escuelaService;
+    }
+    
     public Integer getIdOferta() {
         return idOferta;
     }
@@ -108,14 +110,6 @@ public class OfertaBean implements Serializable{
         this.idCiclo = idCiclo;
     }
 
-//    public Integer getIdGrupo() {
-//        return idGrupo;
-//    }
-//
-//    public void setIdGrupo(Integer idGrupo) {
-//        this.idGrupo = idGrupo;
-//    }
-
     public Integer getIdAcuerdo() {
         return idAcuerdo;
     }
@@ -134,42 +128,32 @@ public class OfertaBean implements Serializable{
     
     public List<Oferta> getOfertaList() {
         ofertaList = new ArrayList<>();
-        ofertaList.addAll(getOfertaService().getOfertas());
+        ofertaList.addAll(getOfertaService().getOfertas(id_escuela));
         return ofertaList;
     }
 
     public void setOfertaList(List<Oferta> ofertaList) {
         this.ofertaList = ofertaList;
     }
+    
+    public List<Oferta> getOfertaNoAprobadaList() {
+        ofertaNoAprobadaList = new ArrayList<>();
+        ofertaNoAprobadaList.addAll(getOfertaService().getOfertasNoAprobadas());
+        return ofertaNoAprobadaList;
+    }
 
+    public void setOfertaNoAprobadaList(List<Oferta> ofertaNoAprobadaList) {
+        this.ofertaNoAprobadaList = ofertaNoAprobadaList;
+    }
+    
     public List<Ciclo> getCicloList() {
         cicloList = new ArrayList<>();
-        cicloList.addAll(getCicloService().getCiclos());
+        cicloList.addAll(getCicloService().getCiclosActivos());
         return cicloList;
     }
 
     public void setCicloList(List<Ciclo> cicloList) {
         this.cicloList = cicloList;
-    }
-
-//    public List<Grupo> getGrupoList() {
-//        grupoList = new ArrayList<>();
-//        grupoList.addAll(getGrupoService().getGrupos());
-//        return grupoList;
-//    }
-//
-//    public void setGrupoList(List<Grupo> grupoList) {
-//        this.grupoList = grupoList;
-//    }
-
-    public List<Acuerdo> getAcuerdoList() {
-        acuerdoList = new ArrayList<>();
-        acuerdoList.addAll(getAcuerdoService().getAcuerdos());
-        return acuerdoList;
-    }
-
-    public void setAcuerdoList(List<Acuerdo> acuerdoList) {
-        this.acuerdoList = acuerdoList;
     }
     
     public void addMessage(String mensaje) {
@@ -189,12 +173,10 @@ public class OfertaBean implements Serializable{
         
         try{
             Ciclo c = cicloService.getCicloById(idCiclo);
-//            Grupo g = grupoService.getGrupoById(idGrupo);
             Acuerdo a = acuerdoService.getAcuerdoById(idAcuerdo);
-            
             Oferta oferta = new Oferta();
+            oferta.setEscuela(getEscuelaService().getEscuelaById(id_escuela));
             oferta.setCiclo(c);
-//            oferta.setGrupo(g);
             oferta.setAcuerdo(a);
             oferta.setAprobarOferta(false);
 

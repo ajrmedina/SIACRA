@@ -6,7 +6,6 @@
 package com.siacra.daos;
 
 import com.siacra.models.Responsabilidad;
-import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;

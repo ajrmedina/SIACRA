@@ -70,4 +70,12 @@ public class AsignaturaService {
         return getAsignaturaDao().getAsignaturasByEscuela(idEscuela);
     }
     
+    public List<Asignatura> getAsignaturasCicloImpar(Integer idEscuela) {
+        return getAsignaturaDao().getAsignaturasCicloImpar(idEscuela);
+    }
+    
+    public List<Asignatura> getAsignaturasCicloPar(Integer idEscuela) {
+        return getAsignaturaDao().getAsignaturasCicloPar(idEscuela);
+    }
+    
 }

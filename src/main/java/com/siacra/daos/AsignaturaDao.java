@@ -72,4 +72,14 @@ public class AsignaturaDao {
         return list;
     }
     
+    public List<Asignatura> getAsignaturasCicloImpar(Integer idEscuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM Asignatura WHERE cicloimpartir !=2 AND idescuela=?").setParameter(0, idEscuela).list();
+        return list;
+    }
+    
+    public List<Asignatura> getAsignaturasCicloPar(Integer idEscuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM Asignatura WHERE cicloimpartir !=1 AND idescuela=?").setParameter(0, idEscuela).list();
+        return list;
+    }
+    
 }

@@ -33,11 +33,6 @@
                 <p:column style="width: 5%" headerText="Ciclo" filterBy="#{oferta.ciclo.ciclo}" filterStyleClass="hide">                         
                     <h:outputText value="#{oferta.ciclo.ciclo}" class="center-element"/>
                 </p:column>
-                <!--
-                <p:column style="width: 14%" headerText="Grupo" filterBy="#{oferta.grupo.numeroGrupo}" filterStyleClass="hide">                         
-                    <h:outputText value="#{oferta.grupo.numeroGrupo}-#{oferta.grupo.asignatura.nombreAsignatura}" class="center-element"/>
-                </p:column>
-                -->
                 
                 <p:column style="width: 31%" headerText="Acuerdo" filterBy="#{oferta.acuerdo.nombreacuerdo}" filterStyleClass="hide">                  
                     <h:outputText value="#{oferta.acuerdo.nombreacuerdo}" class="center-element"/>
@@ -54,8 +49,6 @@
                         <f:setPropertyActionListener target="#{ofertaBean.insert}" value="false" />
                     </p:commandButton>
                     <p:commandButton id="delete_button" update=":dialogDeleteOferta" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('delete_oferta').show()" icon="fa fa-times" />
-                    <p:commandButton id="unlocked" update=":dialogUnlockOferta" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('unlock_oferta').show()" icon="fa fa-check-square-o" rendered="#{oferta.aprobarOferta == false and identityBean.user.nivel.id == 3}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Aprobar Oferta" rendered="#{oferta.aprobarOferta == false}" />
                     
                 </p:column>
             </p:dataTable>
@@ -74,15 +67,6 @@
                         <p:tooltip id="forCiclo" for="ciclo" value="Seleccione el ciclo al que pertenece el oferta" />
                     </h:panelGroup>
                     
-                    <p:outputLabel for="acuerdo" value="Acuerdo: " />
-                    <h:panelGroup layout="block1">
-                        <p:selectOneMenu id="acuerdo" value="#{ofertaBean.idAcuerdo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
-                            <f:selectItems value="#{ofertaBean.acuerdoList}" var="acuerdo" itemValue="#{acuerdo.idacuerdo}" itemLabel="#{acuerdo.codigoacuerdo}-#{acuerdo.nombreacuerdo}" itemDisabled="#{acuerdo.estadoacuerdo == false}"/>
-                        </p:selectOneMenu>
-                        <p:tooltip id="forAcuerdo" for="acuerdo" value="Seleccione el acuerdo al que pertenece la oferta" />
-                    </h:panelGroup>
-                
-                    
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{ofertaBean.updateOferta()}" update=":list:oferta" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_oferta').hide()" icon="fa fa-refresh" rendered="#{ofertaBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{ofertaBean.addOferta()}" update=":list:oferta" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_oferta').hide()" icon="fa fa-plus" rendered="#{ofertaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_oferta').hide()" icon="fa fa-ban">
@@ -100,17 +84,6 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{ofertaBean.deleteOferta()}" update=":list:oferta" oncomplete="PF('delete_oferta').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_oferta').hide()" icon="fa fa-ban" />
-                </h:panelGrid>
-            </h:form>
-        </p:dialog>
-        
-        <p:dialog header="Aprobar oferta" id="dialogUnlockOferta" widgetVar="unlock_oferta" modal="true" resizable="false" closable="false">
-            <h:form id="unlock">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Desea aprobar esta oferta?" />
-                <h:panelGrid columns="2" cellpadding="5" class="center-element">
-                    <p:commandButton id="save_unlock" value="Aprobar" actionListener="#{ofertaBean.unlockedOferta()}" update=":list:oferta" oncomplete="PF('unlock_oferta').hide()" icon="fa fa-check" />
-                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_oferta').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
             </h:form>
         </p:dialog>

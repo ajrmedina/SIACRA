@@ -65,22 +65,13 @@ public class OfertaDao {
         }
     }
     
-//    public boolean getExistOferta(Integer idCiclo,Integer idGrupo,Integer idAcuerdo) {
-//        List list = getSessionFactory().getCurrentSession()
-//                                            .createQuery("from Oferta where idCiclo=? and idGrupo=? and idAcuerdo=? ")
-//                                            .setParameter(0, idCiclo).setParameter(1, idGrupo).setParameter(2, idAcuerdo).list();
-//        
-//        if(list.isEmpty()){
-//            return false;
-//        }else{
-//            return true;
-//        }
-//    }
-    
-    public List<Oferta> getOfertas() {
-        List list = getSessionFactory().getCurrentSession().createQuery("from Oferta").list();
+    public List<Oferta> getOfertas(int escuela) {
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM Oferta WHERE idescuela=?").setParameter(0, escuela).list();
         return list;
     }
     
-
+    public List<Oferta> getOfertasNoAprobadas() {
+        List list = getSessionFactory().getCurrentSession().createQuery("FROM Oferta WHERE aprobaroferta = 0").list();
+        return list;
+    }
 }

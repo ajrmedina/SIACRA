@@ -65,12 +65,11 @@ public class OfertaService {
         return getOfertaDao().getExistOferta( idCiclo, idAcuerdo);
     }
     
-//    public boolean getExistOferta(Integer idCiclo,Integer idGrupo,Integer idAcuerdo){
-//        return getOfertaDao().getExistOferta( idCiclo, idGrupo, idAcuerdo);
-//    }
+    public List<Oferta> getOfertas(int id) {
+        return getOfertaDao().getOfertas(id);
+    }
     
-    //Seleccionamos todos los tipos de grupos existentes
-    public List<Oferta> getOfertas() {
-        return getOfertaDao().getOfertas();
+    public List<Oferta> getOfertasNoAprobadas() {
+        return getOfertaDao().getOfertasNoAprobadas();
     }
 }
