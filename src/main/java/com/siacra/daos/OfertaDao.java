@@ -53,10 +53,10 @@ public class OfertaDao {
         return list;
     }
     
-    public boolean getExistOferta(Integer idCiclo,Integer idAcuerdo) {
+    public boolean getExistOferta(Integer idCiclo, Integer idEscuela) {
         List list = getSessionFactory().getCurrentSession()
-                                            .createQuery("from Oferta where idCiclo=? and idAcuerdo=? ")
-                                            .setParameter(0, idCiclo).setParameter(1, idAcuerdo).list();
+                                            .createQuery("from Oferta where idCiclo=? and idescuela=?")
+                                            .setParameter(0, idCiclo).setParameter(1, idEscuela).list();
         
         if(list.isEmpty()){
             return false;

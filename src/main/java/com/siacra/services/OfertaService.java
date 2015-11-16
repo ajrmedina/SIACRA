@@ -61,8 +61,8 @@ public class OfertaService {
     }
     
     
-    public boolean getExistOferta(Integer idCiclo,Integer idAcuerdo){
-        return getOfertaDao().getExistOferta( idCiclo, idAcuerdo);
+    public boolean getExistOferta(Integer idCiclo, Integer idEscuela){
+        return getOfertaDao().getExistOferta( idCiclo, idEscuela );
     }
     
     public List<Oferta> getOfertas(int id) {
