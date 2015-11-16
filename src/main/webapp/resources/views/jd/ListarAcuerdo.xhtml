@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="message"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="acuerdo" var="acuerdo" value="#{acuerdoBean.acuerdoList}" style="width: 80%" class="center-element" paginator="true" rows="5" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="acuerdosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="acuerdo" var="acuerdo" value="#{acuerdoBean.acuerdoList}" style="width: 90%" class="center-element" paginator="true" rows="5" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="acuerdosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" update=":dialogUpdateAcuerdo" style="float: right" actionListener="#{acuerdoBean.reset()}" oncomplete="PF('update_acuerdo').show()" value="Nuevo Acuerdo" icon="fa fa-plus">
                         <f:setPropertyActionListener target="#{acuerdoBean.insert}" value="true" />
@@ -41,8 +41,12 @@
                     </h:outputText>
                 </p:column>
                 
-                <p:column style="width: 30%" headerText="Nombre de Acuerdo" filterBy="#{acuerdo.nombreacuerdo}" filterStyleClass="hide">                    
+                <p:column style="width: 20%" headerText="Nombre de Acuerdo" filterBy="#{acuerdo.nombreacuerdo}" filterStyleClass="hide">                    
                     <h:outputText value="#{acuerdo.nombreacuerdo}" />
+                </p:column>
+                
+                <p:column style="width: 20%" headerText="Descripción" filterBy="#{acuerdo.descripcionacuerdo}" filterStyleClass="hide">                    
+                    <h:outputText value="#{acuerdo.descripcionacuerdo}" />
                 </p:column>
                 
                 <p:column style="width: 10%" headerText="Estado" filterBy="#{acuerdo.estadoacuerdo}" filterStyleClass="hide">                    
@@ -85,6 +89,12 @@
                     <p:outputLabel for="nombreAcuerdo" value="Nombre del Acuerdo: " />
                     <p:inputText id="nombreAcuerdo" value="#{acuerdoBean.nombreacuerdo}" size="30" required="true" requiredMessage="Por favor, ingrese el nombre de acuerdo."
                              validatorMessage="Solo letras son admitidas en el campo 'Nombre de acuerdo'." onkeyup="if(this.value.length>200){this.value=this.value.substring(0,200);}" >
+                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_ ]+$" />                                                                    
+                    </p:inputText>
+                    
+                    <p:outputLabel for="descripcionAcuerdo" value="Descripción del Acuerdo: " />
+                    <p:inputText id="descripcionAcuerdo" value="#{acuerdoBean.descripcionacuerdo}" size="30" required="true" requiredMessage="Por favor, ingrese la descripción de acuerdo."
+                             validatorMessage="Solo letras son admitidas en el campo 'Descripción de acuerdo'." onkeyup="if(this.value.length>200){this.value=this.value.substring(0,200);}" >
                         <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_ ]+$" />                                                                    
                     </p:inputText>
 

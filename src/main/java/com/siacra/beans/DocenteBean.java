@@ -100,7 +100,7 @@ public class DocenteBean implements Serializable {
                 }
             }
             else {
-                addMessage("El usuario seleccionado ya tiene un docente asociado dentro del sistema");
+                addMessage("Este docente ya existe dentro del sistema");
             }
         } catch (DataAccessException e) {
             e.printStackTrace();

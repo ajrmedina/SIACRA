@@ -5,7 +5,9 @@
  */
 package com.siacra.beans;
 
+import com.siacra.models.Acuerdo;
 import com.siacra.models.Escalafon;
+import com.siacra.services.AcuerdoService;
 import com.siacra.services.EscalafonService;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,12 +36,17 @@ public class EscalafonBean implements Serializable{
     @ManagedProperty(value="#{EscalafonService}")
     private EscalafonService escalafonService;
     
+    @ManagedProperty(value="#{AcuerdoService}")
+    private AcuerdoService acuerdoService;
+    
     private List<Escalafon> escalafonList;
     
     private int idescalafon;
     private String tipoescalafon;
     private boolean es_escalafon;
     private boolean insert;
+    private Integer idAcuerdo;
+    
     /**
      * Add Escalafon
      *
@@ -47,6 +54,8 @@ public class EscalafonBean implements Serializable{
     public void addEscalafon() {
         try {
             Escalafon escalafon = new Escalafon();
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
+            escalafon.setAcuerdo(acuerdo);
             escalafon.setTipoescalafon(getTipoescalafon());
             escalafon.setEs_estado(false);
             getEscalafonService().addEscalafon(escalafon);
@@ -67,6 +76,7 @@ public class EscalafonBean implements Serializable{
      * @param escalafon
      */
     public void loadEscalafon(Escalafon escalafon) {
+        setIdAcuerdo(escalafon.getAcuerdo().getIdacuerdo());
         setIdescalafon(escalafon.getIdescalafon());
         setTipoescalafon(escalafon.getTipoescalafon());
         setEs_escalafon(escalafon.isEs_estado());
@@ -82,6 +92,8 @@ public class EscalafonBean implements Serializable{
         try {
             Escalafon escalafon = new Escalafon();
             escalafon = getEscalafonService().getEscalafonById(getIdescalafon());
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
+            escalafon.setAcuerdo(acuerdo);
             escalafon.setTipoescalafon(getTipoescalafon());
             escalafon.setEs_estado(isEs_escalafon());
             getEscalafonService().updateEscalafon(escalafon);
@@ -128,7 +140,15 @@ public class EscalafonBean implements Serializable{
     public void setEscalafonService(EscalafonService escalafonService) {
         this.escalafonService = escalafonService;
     }
+    
+    public AcuerdoService getAcuerdoService() {
+        return acuerdoService;
+    }
 
+    public void setAcuerdoService(AcuerdoService acuerdoService) {
+        this.acuerdoService = acuerdoService;
+    }
+    
     /**
      * @return the escalafonList
      */
@@ -179,6 +199,7 @@ public class EscalafonBean implements Serializable{
     }
 
     public void reset() {
+        this.setIdAcuerdo(null);
         this.setTipoescalafon(""); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -194,6 +215,14 @@ public class EscalafonBean implements Serializable{
      */
     public void setEs_escalafon(boolean es_escalafon) {
         this.es_escalafon = es_escalafon;
+    }
+    
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
+
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
     }
     
     /**

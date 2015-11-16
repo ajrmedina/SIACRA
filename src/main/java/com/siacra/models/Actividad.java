@@ -54,7 +54,10 @@ public class Actividad implements Serializable {
     @JoinColumn(name = "IDTIPOACTIVIDAD", referencedColumnName = "IDTIPOACTIVIDAD", nullable = false)
     @ManyToOne(optional = false)
     private TipoActividad idtipoactividad;
-
+    @ManyToOne
+    @JoinColumn(name="idacuerdo")
+    private Acuerdo acuerdo;
+    
     public Actividad() {
     }
 
@@ -149,7 +152,15 @@ public class Actividad implements Serializable {
         }
         return true;
     }
+    
+    public Acuerdo getAcuerdo() {
+        return acuerdo;
+    }
 
+    public void setAcuerdo(Acuerdo acuerdo) {
+        this.acuerdo = acuerdo;
+    }
+    
     @Override
     public String toString() {
         return "com.siacra.models.Actividad[ idactividad=" + idactividad + " ]";

@@ -12,6 +12,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -39,6 +41,10 @@ public class Escalafon implements Serializable {
     
     @OneToMany(mappedBy="escalafon")
     private Set<Categoria> categoria;
+    
+    @ManyToOne
+    @JoinColumn(name="idacuerdo")
+    private Acuerdo acuerdo;
     
     public Escalafon() {
     }
@@ -85,7 +91,15 @@ public class Escalafon implements Serializable {
     public void setCategoria(Set<Categoria> categoria) {
         this.categoria = categoria;
     }
+    
+    public Acuerdo getAcuerdo() {
+        return acuerdo;
+    }
 
+    public void setAcuerdo(Acuerdo acuerdo) {
+        this.acuerdo = acuerdo;
+    }
+    
     @Override
     public String toString() {
         return "com.siacra.models.Escalafon[ idescalafon=" + idescalafon + " ]";

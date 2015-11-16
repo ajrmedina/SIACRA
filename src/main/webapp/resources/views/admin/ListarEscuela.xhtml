@@ -36,12 +36,16 @@
                     <h:outputText value="#{escuela.codigoescuela}" />
                 </p:column>
                 
-                <p:column style="width: 30%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
+                <p:column style="width: 25%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
                     <h:outputText value="#{escuela.nombreescuela}" />
                 </p:column>
                 
-                <p:column style="width: 30%" headerText="Nombre de la Carrera" filterBy="#{escuela.nombrecarrera}" filterStyleClass="hide">                  
+                <p:column style="width: 25%" headerText="Nombre de la Carrera" filterBy="#{escuela.nombrecarrera}" filterStyleClass="hide">                  
                     <h:outputText value="#{escuela.nombrecarrera}" />
+                </p:column>
+                
+                <p:column style="width: 20%" headerText="Acuerdo" filterBy="#{escuela.acuerdo.codigoacuerdo}" filterStyleClass="hide">
+                    <h:outputText value="#{escuela.acuerdo.codigoacuerdo} - #{escuela.acuerdo.nombreacuerdo}" />
                 </p:column>
                 
                 <p:column style="width: 10%">
@@ -81,7 +85,15 @@
                              validatorMessage="Solo letras son permitidos en el campo 'Nombre de la carrera'." size="45">
                         <f:validateRegex pattern="^[a-zA-Záéíóú. ]+$" />                        
                     </p:inputText>
-
+                    
+                    <p:outputLabel for="acuerdo" value="Acuerdo: " />
+                    <h:panelGroup layout="block1">
+                        <p:selectOneMenu id="acuerdo" value="#{escuelaBean.idAcuerdo}" effect="fade" filter="true" filterMatchMode="contains" required="true" >
+                            <f:selectItems value="#{acuerdoBean.acuerdoList}" var="acuerdo" itemValue="#{acuerdo.idacuerdo}" itemLabel="#{acuerdo.codigoacuerdo}-#{acuerdo.nombreacuerdo}" itemDisabled="#{acuerdo.estadoacuerdo == false}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forAcuerdo" for="acuerdo" value="Seleccione el acuerdo que valida a la escuela" />
+                    </h:panelGroup>
+                    
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{escuelaBean.updateEscuela()}" update=":list:messages :list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-refresh" rendered="#{escuelaBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{escuelaBean.addEscuela()}" update=":list:messages :list:escuela" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escuela').hide()" icon="fa fa-plus" rendered="#{escuelaBean.insert == true}" />
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_escuela').hide()" icon="fa fa-ban">

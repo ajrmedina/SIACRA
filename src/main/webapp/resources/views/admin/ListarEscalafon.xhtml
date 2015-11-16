@@ -18,7 +18,7 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="escalafonTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="escalafon" var="escalafon" value="#{escalafonBean.escalafonList}" style="width: 70%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="escalafonTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                    
                     <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateEscalafon" actionListener="#{escalafonBean.reset()}" oncomplete="PF('update_escalafon').show()"  value="Nuevo escalafon" icon="fa fa-plus">
@@ -36,6 +36,9 @@
                 </p:column>
                 <p:column style="width: 12%" headerText="Habilitado" filterBy="#{escalafon.es_estado}" filterStyleClass="hide">
                     <h:outputText value="#{escalafon.es_estado?'Habilitado':'Deshabilitado'}"/>
+                </p:column>
+                <p:column style="width: 20%" headerText="Acuerdo" filterBy="#{escalafon.acuerdo.codigoacuerdo}" filterStyleClass="hide">
+                    <h:outputText value="#{escalafon.acuerdo.codigoacuerdo} - #{escalafon.acuerdo.nombreacuerdo}" />
                 </p:column>
                 <p:column style="width: 10%" headerText="Acciones">
                     <p:growl id="messages" />
@@ -60,6 +63,14 @@
                                  validatorMessage="Solo letras son permitidos en el campo 'Tipo escalafón'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
                         <f:validateRegex pattern="[a-zA-Záéíóú ]+$" />
                     </p:inputText>
+                    
+                    <p:outputLabel for="acuerdo" value="Acuerdo: " />
+                    <h:panelGroup layout="block1">
+                        <p:selectOneMenu id="acuerdo" value="#{escalafonBean.idAcuerdo}" effect="fade" filter="true" filterMatchMode="contains" required="true" >
+                            <f:selectItems value="#{acuerdoBean.acuerdoList}" var="acuerdo" itemValue="#{acuerdo.idacuerdo}" itemLabel="#{acuerdo.codigoacuerdo}-#{acuerdo.nombreacuerdo}" itemDisabled="#{acuerdo.estadoacuerdo == false}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forAcuerdo" for="acuerdo" value="Seleccione el acuerdo que valida al escalafón" />
+                    </h:panelGroup>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{escalafonBean.updateEscalafon()}" update=":list:messages :list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-refresh" rendered="#{escalafonBean.insert == false}"/>
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{escalafonBean.addEscalafon()}" update=":list:messages :list:escalafon" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_escalafon').hide()" icon="fa fa-plus" rendered="#{escalafonBean.insert == true}" />

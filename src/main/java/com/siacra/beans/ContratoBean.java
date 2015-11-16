@@ -5,7 +5,9 @@
  */
 package com.siacra.beans;
 
+import com.siacra.models.Acuerdo;
 import com.siacra.models.Contrato;
+import com.siacra.services.AcuerdoService;
 import com.siacra.services.ContratoService;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,12 +33,16 @@ public class ContratoBean implements Serializable {
     @ManagedProperty(value="#{ContratoService}")
     private ContratoService contratoService;
     
+    @ManagedProperty(value="#{AcuerdoService}")
+    private AcuerdoService acuerdoService;
+    
     private List<Contrato> contratoList;
     
     private int idcontrato;
     private String tipocontrato;
     private boolean co_estado;
     private boolean insert;
+    private Integer idAcuerdo;
     
     /**
      * Add Contrato
@@ -45,10 +51,11 @@ public class ContratoBean implements Serializable {
     public void addContrato() {
         try {
             Contrato contrato = new Contrato();
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
+            contrato.setAcuerdo(acuerdo);
             contrato.setTipocontrato(getTipocontrato());
             contrato.setCo_estado(false);
             getContratoService().addContrato(contrato);
-            
             addMessage("El contrato " + getTipocontrato()+ " fue añadido correctamente");
             //return "ListarNivelesAcceso?faces-redirect=true";
             reset();
@@ -66,6 +73,7 @@ public class ContratoBean implements Serializable {
      * @param contrato contrato
      */
     public void loadContrato(Contrato contrato) {
+        setIdAcuerdo(contrato.getAcuerdo().getIdacuerdo());
         setIdcontrato(contrato.getIdcontrato());
         setTipocontrato(contrato.getTipocontrato());
         setCo_estado(contrato.isCo_estado());
@@ -81,6 +89,8 @@ public class ContratoBean implements Serializable {
         try {
             Contrato contrato = new Contrato();
             contrato = getContratoService().getContratoById(getIdcontrato());
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
+            contrato.setAcuerdo(acuerdo);
             contrato.setTipocontrato(getTipocontrato());
             contrato.setCo_estado(isCo_estado());
             getContratoService().updateContrato(contrato);
@@ -125,7 +135,15 @@ public class ContratoBean implements Serializable {
     public void setContratoService(ContratoService contratoService) {
         this.contratoService = contratoService;
     }
+    
+    public AcuerdoService getAcuerdoService() {
+        return acuerdoService;
+    }
 
+    public void setAcuerdoService(AcuerdoService acuerdoService) {
+        this.acuerdoService = acuerdoService;
+    }
+    
     /**
      * @return the contratoList
      */
@@ -176,6 +194,7 @@ public class ContratoBean implements Serializable {
     }
 
     public void reset() {
+        this.setIdAcuerdo(null);
         this.setTipocontrato(""); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -191,6 +210,14 @@ public class ContratoBean implements Serializable {
      */
     public void setCo_estado(boolean co_estado) {
         this.co_estado = co_estado;
+    }
+    
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
+
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
     }
     
     /**

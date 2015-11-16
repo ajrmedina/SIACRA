@@ -5,8 +5,10 @@
  */
 package com.siacra.beans;
 
+import com.siacra.models.Acuerdo;
 import com.siacra.models.Asignatura;
 import com.siacra.models.Escuela;
+import com.siacra.services.AcuerdoService;
 import com.siacra.services.AsignaturaService;
 import com.siacra.services.EscuelaService;
 import java.io.Serializable;
@@ -35,6 +37,9 @@ public class AsignaturaBean implements Serializable{
     @ManagedProperty(value="#{EscuelaService}")
     private EscuelaService escuelaService;
     
+    @ManagedProperty(value="#{AcuerdoService}")
+    private AcuerdoService acuerdoService;
+    
     private List<Asignatura> asignaturaList;
     private List<Escuela> escuelaList;
     
@@ -45,6 +50,7 @@ public class AsignaturaBean implements Serializable{
     
     Integer idAsignatura;
     Integer idEscuela;
+    Integer idAcuerdo;
     String codigoAsignatura;
     boolean estadoAsignatura;
     Integer cicloImpartir;
@@ -69,7 +75,15 @@ public class AsignaturaBean implements Serializable{
     public void setEscuelaService(EscuelaService escuelaService) {
         this.escuelaService = escuelaService;
     }
+    
+    public AcuerdoService getAcuerdoService() {
+        return acuerdoService;
+    }
 
+    public void setAcuerdoService(AcuerdoService acuerdoService) {
+        this.acuerdoService = acuerdoService;
+    }
+    
     public List<Asignatura> getAsignaturaList() {
         asignaturaList = new ArrayList<>();
         asignaturaList.addAll(asignaturaService.getAsignaturasByEscuela(id_escuela));
@@ -153,7 +167,15 @@ public class AsignaturaBean implements Serializable{
     public void setNombreAsignatura(String nombreAsignatura) {
         this.nombreAsignatura = nombreAsignatura;
     }
+    
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
 
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
+    }
+    
     public boolean getInsert() {
         return insert;
     }
@@ -171,6 +193,7 @@ public class AsignaturaBean implements Serializable{
     //reset a las variables
     public void reset() {           
        this.setIdEscuela(null);
+       this.setIdAcuerdo(null);
        this.setCodigoAsignatura("");
        this.setNombreAsignatura("");
        this.setCicloImpartir(null);
@@ -197,7 +220,9 @@ public class AsignaturaBean implements Serializable{
         
         try{
             Asignatura asignatura = new Asignatura();
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
             asignatura.setEscuela(escuelaService.getEscuelaById(idEscuela));
+            asignatura.setAcuerdo(acuerdo);
             asignatura.setCodigoAsignatura(codigoAsignatura);
             asignatura.setEstadoAsignatura(false);
             asignatura.setAprobarasignatura(false);
@@ -229,7 +254,9 @@ public class AsignaturaBean implements Serializable{
         try{
             
             Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
             asignatura.setEscuela(escuelaService.getEscuelaById(getIdEscuela()));
+            asignatura.setAcuerdo(acuerdo);
             asignatura.setCodigoAsignatura(getCodigoAsignatura());
             //asignatura.setEstadoAsignatura(false);
             //asignatura.setAprobarasignatura(false);
@@ -264,6 +291,7 @@ public class AsignaturaBean implements Serializable{
     public void loadAsignatura(Asignatura asignatura) {
         setIdAsignatura(asignatura.getIdAsignatura());
         setIdEscuela(asignatura.getEscuela().getIdescuela());
+        setIdAcuerdo(asignatura.getAcuerdo().getIdacuerdo());
         setCodigoAsignatura(asignatura.getCodigoAsignatura());
         setEstadoAsignatura(asignatura.getEstadoAsignatura());
         setCicloImpartir(asignatura.getCicloImpartir());
