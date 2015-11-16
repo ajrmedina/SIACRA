@@ -24,15 +24,15 @@
                         <f:setPropertyActionListener target="#{nivelAccesoBean.insert}" value="true" />
                     </p:commandButton>
                     <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de niveles de acceso:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('nivelesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de niveles de acceso:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('nivelesTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 25%" headerText="Nombre del Aceso" filterBy="#{nivel.acceso}" filterStyleClass="hide">
+                <p:column style="width: 25%" headerText="Nombre del Acceso" filterBy="#{nivel.acceso}" filterStyleClass="hide">
                     <h:outputText value="#{nivel.acceso}" />
                 </p:column>
-                <p:column style="width: 13%" headerText="Habilitado" filterBy="#{nivel.estadoAcceso}" filterStyleClass="hide">
+                <p:column style="width: 13%" headerText="Estado" filterBy="#{nivel.estadoAcceso}" filterStyleClass="hide">
                     <h:outputText value="#{nivel.estadoAcceso?'Habilitado':'Deshabilitado'}" />
                 </p:column>
                 <p:column style="width: 8%" headerText="Acciones">
@@ -40,8 +40,9 @@
                     <p:commandButton id="update_button" update=":dialogUpdateNivel" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('update_nivel').show()" icon="fa fa-edit" />
                     <p:commandButton id="locked" update=":dialogLockAcceso" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('lock_acceso').show()" icon="fa fa-unlock" rendered="#{nivel.estadoAcceso == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockAcceso" actionListener="#{nivelAccesoBean.loadNivelAcceso(nivel)}" oncomplete="PF('unlock_acceso').show()" icon="fa fa-unlock-alt" rendered="#{nivel.estadoAcceso == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Nivel de Acceso" rendered="#{nivel.estadoAcceso == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Nivel de Acceso" rendered="#{nivel.estadoAcceso == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar el nivel de acceso" rendered="#{nivel.estadoAcceso == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar el nivel de acceso" rendered="#{nivel.estadoAcceso == false}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar el nivel de acceso" />
                     
                 </p:column>
             </p:dataTable>
@@ -70,7 +71,7 @@
         <p:dialog header="Bloquear Nivel de Acceso" id="dialogLockAcceso" widgetVar="lock_acceso" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear el nivel de acceso #{nivelAccesoBean.acceso} ?" />
+                <h:outputText value="¿Está seguro que desea bloquear el nivel de acceso #{nivelAccesoBean.acceso} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{nivelAccesoBean.lockedNivelAcceso()}" update=":list:nivel" oncomplete="PF('lock_acceso').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_acceso').hide()" icon="fa fa-ban" />
@@ -81,7 +82,7 @@
         <p:dialog header="Desbloquear Nivel de Acceso" id="dialogUnlockAcceso" widgetVar="unlock_acceso" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear al nivel de acceso #{nivelAccesoBean.acceso} ?" />
+                <h:outputText value="¿Está seguro que desea desbloquear el nivel de acceso #{nivelAccesoBean.acceso} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{nivelAccesoBean.unlockedNivelAcceso()}" update=":list:nivel" oncomplete="PF('unlock_acceso').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_acceso').hide()" icon="fa fa-ban" />

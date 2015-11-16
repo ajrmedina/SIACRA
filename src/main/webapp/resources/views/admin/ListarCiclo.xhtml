@@ -21,12 +21,12 @@
             <p:dataTable id="ciclo" var="ciclo" value="#{cicloBean.cicloList}" style="width: 50%" class="center-element" paginator="true" rows="5" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="cicloTable" emptyMessage="No hay registros en base al criterio proporcionado" >
                 <f:facet name="header">                  
                     <p:commandButton id="insert_button" style="float: right" update=":dialogUpdateCiclo" actionListener="#{cicloBean.reset()}" oncomplete="PF('update_ciclo').show()" value="Nuevo Ciclo" icon="fa fa-plus">
-                        <f:setPropertyActionListener target="#{cicloBean.insert}" value="true" />
+                        <f:setPropertyActionListener target="#{cicloBean.insert}" value="true" />                        
                     </p:commandButton>                       
                     
                     <p:outputPanel style="float: left">
                         <h:outputText value="Búsqueda de ciclo:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('cicloTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
+                        <p:inputText id="globalFilter" onkeyup="PF('cicloTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />                       
                     </p:outputPanel>
                     
                     <div style="clear:both" />
@@ -52,8 +52,10 @@
                     <p:commandButton id="update_button" update=":dialogUpdateCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('update_ciclo').show()" icon="fa fa-edit" />                                    
                     <p:commandButton id="locked" update=":dialogLockCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('lock_ciclo').show()" icon="fa fa-unlock" rendered="#{ciclo.ciEstado == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockCiclo" actionListener="#{cicloBean.loadCiclo(ciclo)}" oncomplete="PF('unlock_ciclo').show()" icon="fa fa-unlock-alt" rendered="#{ciclo.ciEstado == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Ciclo" rendered="#{ciclo.ciEstado == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Ciclo" rendered="#{ciclo.ciEstado == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar el ciclo" rendered="#{ciclo.ciEstado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar el ciclo" rendered="#{ciclo.ciEstado == false}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar el ciclo" />
+                    
                 </p:column>               
             </p:dataTable>
         </h:form>
@@ -89,7 +91,7 @@
          <p:dialog header="Eliminar ciclo" id="dialogDeleteCiclo" widgetVar="delete_ciclo" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el ciclo : #{cicloBean.ciclo}? " />
+                <h:outputText value="¿Está seguro que desea eliminar el ciclo : #{cicloBean.ciclo}? " />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{cicloBean.deleteCiclo()}" update=":list:ciclo" oncomplete="PF('delete_ciclo').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_ciclo').hide()" icon="fa fa-ban" />
@@ -100,7 +102,7 @@
          <p:dialog header="Bloquear Ciclo" id="dialogLockCiclo" widgetVar="lock_ciclo" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear el ciclo #{cicloBean.ciclo} del año #{cicloBean.anio} ?" />
+                <h:outputText value="¿Está seguro que desea bloquear el ciclo #{cicloBean.ciclo} del año #{cicloBean.anio} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{cicloBean.lockedCiclo()}" update=":list:ciclo" oncomplete="PF('lock_ciclo').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_ciclo').hide()" icon="fa fa-ban" />
@@ -111,7 +113,7 @@
         <p:dialog header="Desbloquear Ciclo" id="dialogUnlockCiclo" widgetVar="unlock_ciclo" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear el ciclo #{cicloBean.ciclo} del año #{cicloBean.anio} ?" />
+                <h:outputText value="¿Está seguro que desea desbloquear el ciclo #{cicloBean.ciclo} del año #{cicloBean.anio} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{cicloBean.unlockedCiclo()}" update=":list:ciclo" oncomplete="PF('unlock_ciclo').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_ciclo').hide()" icon="fa fa-ban" />

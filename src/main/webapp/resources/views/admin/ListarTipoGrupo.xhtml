@@ -10,7 +10,7 @@
     </ui:define>
     
     <ui:define name="title-view">
-        Tipos de grupos
+        Tipos de grupos de la Facultad de Ingeniería y Arquitectura
     </ui:define>
                     
     <ui:define name="content">
@@ -51,8 +51,10 @@
                     <p:commandButton id="delete_button" update=":dialogDeleteTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('delete_tipogrupo').show()" icon="fa fa-times" />
                     <p:commandButton id="locked" update=":dialogLockTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('lock_tipogrupo').show()" icon="fa fa-unlock" rendered="#{tipogrupo.tgEstado == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockTipoGrupo" actionListener="#{tipogrupoBean.loadTipoGrupo(tipogrupo)}" oncomplete="PF('unlock_tipogrupo').show()" icon="fa fa-unlock-alt" rendered="#{tipogrupo.tgEstado == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Tipo de grupo" rendered="#{tipogrupo.tgEstado == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Tipo de grupo" rendered="#{tipogrupo.tgEstado == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar el tipo de grupo" rendered="#{tipogrupo.tgEstado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar el tipo de grupo" rendered="#{tipogrupo.tgEstado == false}" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el tipo de grupo" />
+                    
                     
                 </p:column>
             </p:dataTable>
