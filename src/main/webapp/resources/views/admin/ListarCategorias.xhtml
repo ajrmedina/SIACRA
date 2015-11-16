@@ -6,12 +6,12 @@
     xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="title">
-       Consultar - Categorias
+       Consultar - Categorías
     </ui:define>
     
        
     <ui:define name="title-view">
-       Categorias para los docentes de la Universidad de El Salvador
+       Categorías para los docentes de la Universidad de El Salvador
     </ui:define>
                     
     <ui:define name="content">
@@ -20,18 +20,18 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:dataTable id="categoria" var="categoria" value="#{categoriaBean.categoriasList}" style="width: 85%" class="center-element" paginator="true" paginatorPosition="bottom" rows="10" widgetVar="categoriasTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
-                    <p:commandButton id="insert_button" style="float: right" value="Nueva Categoria" update=":dialogUpdateCategoria" actionListener="#{categoriaBean.reset()}" oncomplete="PF('update_categoria').show()" icon="fa fa-plus">
-                        <f:setPropertyActionListener target="#{categoriaBean.insert}" value="true" />
+                    <p:commandButton id="insert_button" style="float: right" value="Nueva Categoría" update=":dialogUpdateCategoria" actionListener="#{categoriaBean.reset()}" oncomplete="PF('update_categoria').show()" icon="fa fa-plus">
+                        <f:setPropertyActionListener target="#{categoriaBean.insert}" value="true" />                        
                     </p:commandButton>
                     
                     <p:outputPanel style="float: left">
-                        <h:outputText value="Búsqueda de Categorias:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('categoriasTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de categorías:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('categoriasTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />                        
                     </p:outputPanel>
                     
                     <div style="clear:both" />
                 </f:facet>
-                <p:column style="width: 20%" headerText="Escalafon" filterBy="#{categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
+                <p:column style="width: 20%" headerText="Escalafón" filterBy="#{categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
                     <h:outputText value="#{categoria.escalafon.tipoescalafon}" />
                 </p:column>
                 <p:column style="width: 20%" headerText="Contrato" filterBy="#{categoria.contrato.tipocontrato}" filterStyleClass="hide">
@@ -40,23 +40,26 @@
                 <p:column style="width: 20%" headerText="Horas Obligatorias" filterBy="#{categoria.horasObligatorias}" filterStyleClass="hide">
                     <h:outputText value="#{categoria.horasObligatorias}" />
                 </p:column>
-                <p:column style="width: 10%" headerText="Habilitada" filterBy="#{categoria.estadoCategoria}" filterStyleClass="hide">
+                <p:column style="width: 10%" headerText="Estado" filterBy="#{categoria.estadoCategoria}" filterStyleClass="hide">
                     <h:outputText value="#{categoria.estadoCategoria?'Habilitada':'Deshabilitada'}" />
                 </p:column>
-                <p:column style="width: 10%" headerText="Accciones">                    
+                <p:column style="width: 10%" headerText="Acciones">                    
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('update_categoria').show()" icon="fa fa-edit" />                                    
                     <p:commandButton id="delete_button" update=":dialogDeleteCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('delete_categoria').show()" icon="fa fa-times"/>
                     <p:commandButton id="locked" update=":dialogLockCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('lock_categoria').show()" icon="fa fa-unlock" rendered="#{categoria.estadoCategoria == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockCategoria" actionListener="#{categoriaBean.loadCategoria(categoria)}" oncomplete="PF('unlock_categoria').show()" icon="fa fa-unlock-alt" rendered="#{categoria.estadoCategoria == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Categoria" rendered="#{categoria.estadoCategoria == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Categoria" rendered="#{categoria.estadoCategoria == false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar la categoría" rendered="#{categoria.estadoCategoria == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar la categoría" rendered="#{categoria.estadoCategoria == false}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar la categoría" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar la categoría" />
+                    
                     
                 </p:column>               
             </p:dataTable>
         </h:form>
         
-        <p:dialog header="#{categoriaBean.insert?'Nueva Categoria':'Actualizar Categoria'}" id="dialogUpdateCategoria" widgetVar="update_categoria" modal="true" resizable="false" closable="false">
+        <p:dialog header="#{categoriaBean.insert?'Nueva Categoría':'Actualizar Categoría'}" id="dialogUpdateCategoria" widgetVar="update_categoria" modal="true" resizable="false" closable="false">
             <h:form id="update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                  
@@ -77,9 +80,9 @@
                         <p:tooltip id="forContrato" for="contrato" value="Seleccione el contrato para la nueva categoría" />
                     </h:panelGroup>
 
-                    <p:outputLabel for="horas" value="Horas obligatorias para la categoría: " />
+                    <p:outputLabel for="horas" value="Horas obligatorias: " />
                     <p:inputMask id="horas" value="#{categoriaBean.horasObligatorias}" mask="9?99" required="true" requiredMessage="Por favor, ingrese las horas obligatorias para la categoría.">
-                        <f:validateDoubleRange minimum="1" maximum="99" />
+                        <f:validateDoubleRange minimum="1" maximum="99" />                        
                     </p:inputMask>
                         
                     <p:commandButton id="save_insert" value="Agregar" actionListener="#{categoriaBean.addCategoria()}" update=":list:message :list:categoria" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_categoria').hide()" icon="fa fa-plus" rendered="#{categoriaBean.insert == true}"/>
@@ -87,7 +90,7 @@
                     <p:commandButton id="cancel" value="Cancelar" update="update" process="@this" oncomplete="PF('update_categoria').hide()" icon="fa fa-ban">
                         <p:resetInput target="update" />
                         <f:setPropertyActionListener target="#{categoriaBean.insert}" value="false" />
-                    </p:commandButton> 
+                    </p:commandButton>                     
                 </h:panelGrid>
             </h:form>
         </p:dialog>
@@ -95,7 +98,7 @@
         <p:dialog header="Eliminar Categoria" id="dialogDeleteCategoria" widgetVar="delete_categoria" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />
+                <h:outputText value="¿Está seguro que desea eliminar la categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{categoriaBean.deleteCategoria()}" update=":list:categoria" oncomplete="PF('delete_categoria').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_categoria').hide()" icon="fa fa-ban" />
@@ -106,7 +109,7 @@
         <p:dialog header="Bloquear Categoria" id="dialogLockCategoria" widgetVar="lock_categoria" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />
+                <h:outputText value="¿Está seguro que desea bloquear la categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{categoriaBean.lockedCategoria()}" update=":list:categoria" oncomplete="PF('lock_categoria').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_categoria').hide()" icon="fa fa-ban" />
@@ -117,7 +120,7 @@
         <p:dialog header="Desbloquear Categoria" id="dialogUnlockCategoria" widgetVar="unlock_categoria" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear la Categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato} ?" />
+                <h:outputText value="¿Está seguro que desea desbloquear la categoria #{categoriaBean.tipoEscalafon} #{categoriaBean.tipoContrato}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{categoriaBean.unlockedCategoria()}" update=":list:categoria" oncomplete="PF('unlock_categoria').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_categoria').hide()" icon="fa fa-ban" />

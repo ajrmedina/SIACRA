@@ -25,18 +25,18 @@
                     </p:commandButton>                                         
                     
                     <p:outputPanel style="float: left">
-                        <h:outputText value="Búsqueda de Escuelas:" />
+                        <h:outputText value="Búsqueda de escuelas:" />
                         <p:inputText id="globalFilter" onkeyup="PF('escuelasTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                     </p:outputPanel>
                     
                     <div style="clear:both" />
                 </f:facet>                                 
                 
-                <p:column style="width:20%" headerText="Código de Escuela o Unidad" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
+                <p:column style="width:20%" headerText="Código de Escuela" filterBy="#{escuela.codigoescuela}" filterStyleClass="hide">                         
                     <h:outputText value="#{escuela.codigoescuela}" />
                 </p:column>
                 
-                <p:column style="width: 25%" headerText="Nombre de la Escuela o Unidad" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
+                <p:column style="width: 25%" headerText="Nombre de la Escuela" filterBy="#{escuela.nombreescuela}" filterStyleClass="hide">                  
                     <h:outputText value="#{escuela.nombreescuela}" />
                 </p:column>
                 
@@ -56,6 +56,8 @@
                     <p:growl id="messages" />                    
                     <p:commandButton id="update_button" update=":dialogUpdateEscuela" actionListener="#{escuelaBean.loadEscuela(escuela)}" oncomplete="PF('update_escuela').show()" icon="fa fa-edit" />                                    
                     <p:commandButton id="delete_button" update=":dialogDeleteEscuela" actionListener="#{escuelaBean.loadEscuela(escuela)}" oncomplete="PF('delete_escuela').show()" icon="fa fa-times"/>
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar la escuela o unidad" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar la escuela o unidad" />
                 </p:column>               
             </p:dataTable>
         </h:form>
@@ -107,7 +109,7 @@
          <p:dialog header="Eliminar Escuela o Unidad" id="dialogDeleteEscuela" widgetVar="delete_escuela" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar la Escuela o Unidad #{escuelaBean.codigoescuela}?" />
+                <h:outputText value="¿Está seguro que desea eliminar la Escuela o Unidad #{escuelaBean.codigoescuela}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{escuelaBean.deleteEscuela()}" update=":list:escuela" oncomplete="PF('delete_escuela').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_escuela').hide()" icon="fa fa-ban" />

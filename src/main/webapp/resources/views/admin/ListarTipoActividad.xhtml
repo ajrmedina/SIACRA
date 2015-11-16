@@ -24,8 +24,8 @@
                         <f:setPropertyActionListener target="#{tipoActividadBean.insert}" value="true" />
                     </p:commandButton>
                     <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de Tipo actividades:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('tipoactividadesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de tipo de actividad:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('tipoactividadesTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
@@ -33,7 +33,7 @@
                 <p:column style="width: 20%" headerText="Tipo de Actividad" filterBy="#{tipoactividad.tipoactividad}" filterStyleClass="hide">
                     <h:outputText value="#{tipoactividad.tipoactividad}" />
                 </p:column>
-                <p:column style="width: 12%" headerText="Habilitado" filterBy="#{tipoactividad.ta_estado}" filterStyleClass="hide">
+                <p:column style="width: 12%" headerText="Estado" filterBy="#{tipoactividad.ta_estado}" filterStyleClass="hide">
                     <h:outputText value="#{tipoactividad.ta_estado ? 'Habilitado':'Deshabilitado'}"/>
                 </p:column>
                 <p:column style="width: 10%" headerText="Acciones">
@@ -42,8 +42,11 @@
                   <p:commandButton id="delete_button" update=":dialogDeleteTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('delete_tipoactividad').show()" icon="fa fa-times" />
                     <p:commandButton id="locked" update=":dialogLockTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('lock_tipoactividad').show()" icon="fa fa-unlock" rendered="#{tipoactividad.ta_estado == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockTipoActividad" actionListener="#{tipoActividadBean.loadTipoActividad(tipoactividad)}" oncomplete="PF('unlock_tipoactividad').show()" icon="fa fa-unlock-alt" rendered="#{tipoactividad.ta_estado == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar TipoActividad" rendered="#{tipoActividadBean.ta_estado == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar TipoActividad" rendered="#{tipoActividadBean.ta_estado== false}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar el tipo de actividad" rendered="#{tipoActividadBean.ta_estado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar el tipo de actividad" rendered="#{tipoActividadBean.ta_estado== false}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar el tipo de actividad" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el tipo de actividad" />
+                    
                     
                 </p:column>
             </p:dataTable>
