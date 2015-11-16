@@ -22,7 +22,7 @@
             <p:dataTable id="ofertas" var="oferta" value="#{ofertaBean.ofertaNoAprobadaList}" style="width: 75%" class="center-element" widgetVar="ofertasTable" emptyMessage="No hay registros" >
                 
                 <f:facet name="header">    
-                    Escuelas de la Facultad de Ingenieria y Arquitectura
+                    Escuelas de la Facultad de Ingeniería y Arquitectura
                 </f:facet>                                 
                 
                 <p:column style="width:30%" headerText="Escuela o Unidad">                         
@@ -39,7 +39,7 @@
                     </f:facet>   
                                      
                     <p:commandButton id="aprobar" value="Aprobar" actionListener="#{ofertaBean.loadOferta(oferta)}" oncomplete="PF('aprobar_oferta').show()" icon="fa fa-thumbs-o-up" rendered="#{oferta.aprobarOferta == false}" />
-                    <p:tooltip id="forAprobar" for="aprobar" value="Aprobar Oferta" rendered="#{oferta.aprobarOferta == false}" />
+                    <p:tooltip id="forAprobar" for="aprobar" value="Aprobar oferta de asignaturas" rendered="#{oferta.aprobarOferta == false}" />
                     
                 </p:column>               
             </p:dataTable>

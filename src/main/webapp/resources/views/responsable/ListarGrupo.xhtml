@@ -10,7 +10,7 @@
     </ui:define>
     
     <ui:define name="title-view">
-        Grupos
+        Grupos de la #{identityBean.principal.escuela.nombreescuela}
     </ui:define>
                     
     <ui:define name="content">
@@ -38,8 +38,8 @@
                     <p:commandButton style="float: right" id="merge_button" update=":dialogMergeGrupo" oncomplete="PF('merge_grupo').show()" value="Unir grupos" icon="fa fa-plus" />
                     
                     <p:outputPanel style="float: left">
-                        <h:outputText value="Busqueda de grupos:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('gruposTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de grupos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('gruposTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                     </p:outputPanel>
                     <div style="clear:both" />
                 </f:facet>
@@ -51,7 +51,7 @@
                     <h:outputText value="#{grupo.tipoGrupo.nombreGrupo}" class="center-element"/>
                 </p:column>
                 
-                <p:column style="width: 6%" headerText="Numero" filterBy="#{grupo.numeroGrupo}" filterStyleClass="hide">                  
+                <p:column style="width: 6%" headerText="Número" filterBy="#{grupo.numeroGrupo}" filterStyleClass="hide">                  
                     <h:outputText value="#{grupo.numeroGrupo}" class="center-element"/>
                 </p:column>
                 
@@ -84,8 +84,11 @@
                     <p:commandButton id="delete_button" update=":dialogDeleteGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('delete_grupo').show()" icon="fa fa-times" /> 
                     <p:commandButton id="locked" update=":dialogLockGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('lock_grupo').show()" icon="fa fa-unlock" rendered="#{grupo.grEstado == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockGrupo" actionListener="#{grupoBean.loadGrupo(grupo)}" oncomplete="PF('unlock_grupo').show()" icon="fa fa-unlock-alt" rendered="#{grupo.grEstado == false}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Grupo" rendered="#{grupo.grEstado == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Grupo" rendered="#{grupo.grEstado == false}" /> 
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar el grupo" rendered="#{grupo.grEstado == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar el grupo" rendered="#{grupo.grEstado == false}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar el grupo" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el grupo" />
+                    
                     
                 </p:column>
             </p:dataTable>
@@ -123,7 +126,7 @@
                         <p:tooltip id="forTipoGrupo" for="tipoGrupo" value="Seleccione el tipo de grupo" />
                     </h:panelGroup>
                     
-                    <p:outputLabel for="numero" value="Numero de Grupo: " />
+                    <p:outputLabel for="numero" value="Número de Grupo: " />
                     <p:inputText id="numero" value="#{grupoBean.numeroGrupo}" required="true">
                         <!-- <f:validateLength minimum="5" maximum="6" /> -->
                     </p:inputText>
@@ -161,7 +164,7 @@
         <p:dialog header="Eliminar grupo  " id="dialogDeleteGrupo" widgetVar="delete_grupo" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el grupo  #{grupoBean.numeroGrupo}?" />
+                <h:outputText value="¿Está seguro que desea eliminar el grupo  #{grupoBean.numeroGrupo}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{grupoBean.deleteGrupo()}" update=":list:grupo" oncomplete="PF('delete_grupo').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_grupo').hide()" icon="fa fa-ban" />
@@ -179,7 +182,7 @@
                     <p:carousel value="#{grupoBean.gruposList}" headerText="Grupo a unir" var="grupo" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" circular="false">
                         <h:panelGrid columns="2" width="700" columnClasses="label,value">
 
-                        <h:outputText value="Numero"  style="font-size: 12px;"/>
+                        <h:outputText value="Número"  style="font-size: 12px;"/>
                         <h:outputText value="#{grupo.numeroGrupo}" style="font-size: 12px;"/>
 
                         <h:outputText value="Asignatura" style="font-size: 12px;"/>
@@ -217,7 +220,7 @@
                     <p:carousel value="#{grupoBean.gruposList}" headerText="Grupo destino" var="grupo" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" circular="false">
                         <h:panelGrid columns="2" width="700" columnClasses="label,value">
 
-                        <h:outputText value="Numero" style="font-size: 12px;"/>
+                        <h:outputText value="Número" style="font-size: 12px;"/>
                         <h:outputText value="#{grupo.numeroGrupo}" style="font-size: 12px;"/>
 
                         <h:outputText value="Asignatura" style="font-size: 12px;"/>
@@ -264,7 +267,7 @@
         <p:dialog header="Bloquear grupo" id="dialogLockGrupo" widgetVar="lock_grupo" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear el grupo  #{grupoBean.numeroGrupo} ?" />
+                <h:outputText value="¿Está seguro que desea bloquear el grupo  #{grupoBean.numeroGrupo} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{grupoBean.lockedGrupo()}" update=":list:grupo" oncomplete="PF('lock_grupo').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_grupo').hide()" icon="fa fa-ban" />
@@ -275,7 +278,7 @@
         <p:dialog header="Desbloquear grupo" id="dialogUnlockGrupo" widgetVar="unlock_grupo" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear la grupo #{grupoBean.numeroGrupo} ?" />
+                <h:outputText value="¿Está seguro que desea desbloquear la grupo #{grupoBean.numeroGrupo} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{grupoBean.unlockedGrupo()}" update=":list:grupo" oncomplete="PF('unlock_grupo').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_grupo').hide()" icon="fa fa-ban" />

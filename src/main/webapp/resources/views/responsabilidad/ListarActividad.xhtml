@@ -21,8 +21,8 @@
             <p:dataTable id="actividad" var="actividad" value="#{actividadBean.actividadList}" style="width: 95%" class="center-element" paginator="true" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="10" widgetVar="actividadesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header" >
                    <p:outputPanel>
-                        <h:outputText value="Busqueda de actividades:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('actividadesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de actividades:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('actividadesTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                         <p:spacer width="750" height="10" />
                         <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateActividad" actionListener="#{actividadBean.reset()}" oncomplete="PF('update_actividad').show()"  value="Nueva Actividad" icon="fa fa-plus">
                             <f:setPropertyActionListener target="#{actividadBean.insert}" value="true" />
@@ -38,7 +38,7 @@
                 <p:column style="width: 10%" headerText="Tipo Actividad" filterBy="#{actividad.idtipoactividad.tipoactividad}" filterStyleClass="hide">
                      <h:outputText value="#{actividad.idtipoactividad.tipoactividad}"/>
                 </p:column>
-                <p:column style="width: 9%" headerText="Habilitado" filterBy="#{actividad.estadoactividad}" filterStyleClass="hide">
+                <p:column style="width: 9%" headerText="Estado" filterBy="#{actividad.estadoactividad}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.estadoactividad?'Habilitada':'Deshabilitada'}"/>
                 </p:column>
                 <p:column style="width: 7%" headerText="Aprobada" filterBy="#{actividad.aprobaractividad}" filterStyleClass="hide">
@@ -47,7 +47,7 @@
                 <p:column style="width: 25%" headerText="Nombre" filterBy="#{actividad.nombreactividad}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.nombreactividad}"/>
                 </p:column>
-                <p:column style="width: 30%" headerText="Descripcion" filterBy="#{actividad.descripcionactividad}" filterStyleClass="hide">
+                <p:column style="width: 30%" headerText="Descripción" filterBy="#{actividad.descripcionactividad}" filterStyleClass="hide">
                     <h:outputText value="#{actividad.descripcionactividad}"/>
                 </p:column>
                 <p:column style="width: 13%" headerText="Acciones" exportable="false">
@@ -57,9 +57,11 @@
                     <p:commandButton id="locked" update=":dialogLockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('lock_actividad').show()" icon="fa fa-unlock" rendered="#{actividad.estadoactividad == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('unlock_actividad').show()" icon="fa fa-unlock-alt" rendered="#{actividad.estadoactividad == false}" />
                     <p:commandButton id="approve" update=":dialogApproveActividad" actionListener="#{actividadBean.loadActividad(actividad)}" oncomplete="PF('approve_actividad').show()" icon="fa fa-check-square-o" rendered="#{actividad.aprobaractividad == false and identityBean.user.nivel.id == 3}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Actividad" rendered="#{actividad.estadoactividad == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Actividad" rendered="#{actividad.estadoactividad == false}" />
-                    <p:tooltip id="forApprove" for="approve" value="Aprobar Actividad" rendered="#{actividad.aprobaractividad == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar la actividad" rendered="#{actividad.estadoactividad == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar la actividad" rendered="#{actividad.estadoactividad == false}" />
+                    <p:tooltip id="forApprove" for="approve" value="Aprobar la actividad" rendered="#{actividad.aprobaractividad == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar la actividad" />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar la actividad" />
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -118,7 +120,7 @@
         <p:dialog header="Eliminar Actividad  " id="dialogDeleteActividad" widgetVar="delete_actividad" modal="true" resizable="false" closable="false">
             <h:form id="delete">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea eliminar el Actividad de  #{actividadBean.nombreactividad}?" />
+                <h:outputText value="¿Está seguro que desea eliminar el Actividad de  #{actividadBean.nombreactividad}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_delete" value="Eliminar" actionListener="#{actividadBean.deleteActividad()}" update=":list:actividad" oncomplete="PF('delete_actividad').hide()" icon="fa fa-trash-o" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('delete_actividad').hide()" icon="fa fa-ban" />
@@ -130,7 +132,7 @@
         <p:dialog header="Bloquear actividad" id="dialogLockActividad" widgetVar="lock_actividad" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear la actividad #{actividad.nombreactividad} ?" />
+                <h:outputText value="¿Está seguro que desea bloquear la actividad #{actividad.nombreactividad} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{actividadBean.lockedActividad()}" update=":list:actividad" oncomplete="PF('lock_actividad').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_actividad').hide()" icon="fa fa-ban" />
@@ -141,7 +143,7 @@
         <p:dialog header="Desbloquear Actividad" id="dialogUnlockActividad" widgetVar="unlock_actividad" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear la actividad #{actividadBean.nombreactividad} ?" />
+                <h:outputText value="¿Está seguro que desea desbloquear la actividad #{actividadBean.nombreactividad} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{actividadBean.unlockedActividad()}" update=":list:actividad" oncomplete="PF('unlock_actividad').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_actividad').hide()" icon="fa fa-ban" />
@@ -152,7 +154,7 @@
         <p:dialog header="Aprobar Actividad" id="dialogApproveActividad" widgetVar="approve_actividad" modal="true" resizable="false" closable="false">
             <h:form id="approve">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Desea aprobar la actividad #{actividadBean.nombreactividad} ?" />
+                <h:outputText value="¿Desea aprobar la actividad #{actividadBean.nombreactividad} ?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_approve" value="Aprobar" actionListener="#{actividadBean.approveActividad()}" update=":list:actividad" oncomplete="PF('approve_actividad').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('approve_actividad').hide()" icon="fa fa-ban" />
