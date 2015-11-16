@@ -5,12 +5,14 @@
  */
 package com.siacra.beans;
 
+import com.siacra.models.Acuerdo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import com.siacra.models.Escuela;
+import com.siacra.services.AcuerdoService;
 import com.siacra.services.EscuelaService;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -31,6 +33,9 @@ public class EscuelaBean implements Serializable{
     @ManagedProperty(value="#{EscuelaService}")
     private EscuelaService escuelaService;
     
+    @ManagedProperty(value="#{AcuerdoService}")
+    private AcuerdoService acuerdoService;
+    
     private List<Escuela> escuelaList;
     
     private int idescuela; 
@@ -38,6 +43,7 @@ public class EscuelaBean implements Serializable{
     private String nombreescuela;
     private String nombrecarrera;
     private boolean insert;
+    private Integer idAcuerdo;
     
     /**
      * Add Escuela
@@ -46,7 +52,8 @@ public class EscuelaBean implements Serializable{
     public void addEscuela() {
         try {
             Escuela escuela = new Escuela(); 
-            
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
+            escuela.setAcuerdo(acuerdo);
             escuela.setCodigoescuela(getCodigoescuela());
             escuela.setNombreescuela(getNombreescuela());
             escuela.setNombrecarrera(getNombrecarrera());
@@ -66,6 +73,7 @@ public class EscuelaBean implements Serializable{
      */
     public void loadEscuela(Escuela escuela) {
         setIdescuela(escuela.getIdescuela());
+        setIdAcuerdo(escuela.getAcuerdo().getIdacuerdo());
         setCodigoescuela(escuela.getCodigoescuela());
         setNombreescuela(escuela.getNombreescuela());
         setNombrecarrera(escuela.getNombrecarrera());
@@ -78,7 +86,9 @@ public class EscuelaBean implements Serializable{
     public void updateEscuela() {
         
         try {
-            Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());    
+            Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
+            escuela.setAcuerdo(acuerdo);
             escuela.setCodigoescuela(getCodigoescuela());
             escuela.setNombreescuela(getNombreescuela());   
             escuela.setNombrecarrera(getNombrecarrera());
@@ -117,6 +127,7 @@ public class EscuelaBean implements Serializable{
        this.setCodigoescuela("");
        this.setNombreescuela("");
        this.setNombrecarrera("");
+       this.setIdAcuerdo(null);
     }
 
     /**
@@ -139,11 +150,21 @@ public class EscuelaBean implements Serializable{
         this.escuelaList = escuelaList;       
     }
     
+    public EscuelaService getEscuelaService() {
+        return escuelaService;
+    } 
            
     public void setEscuelaService(EscuelaService escuelaService) {
         this.escuelaService = escuelaService;
     }
     
+    public AcuerdoService getAcuerdoService() {
+        return acuerdoService;
+    }
+
+    public void setAcuerdoService(AcuerdoService acuerdoService) {
+        this.acuerdoService = acuerdoService;
+    }
     
     public int getIdescuela() {
        return idescuela;
@@ -169,10 +190,6 @@ public class EscuelaBean implements Serializable{
         this.nombreescuela = nombre;
     }
     
-    public EscuelaService getEscuelaService() {
-        return escuelaService;
-    }    
-    
     public String getNombrecarrera() {
         return nombrecarrera;
     }
@@ -180,7 +197,15 @@ public class EscuelaBean implements Serializable{
      public void setNombrecarrera(String nombrecarrera) { 
         this.nombrecarrera = nombrecarrera;
     }
+    
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
 
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
+    }
+    
     public boolean getInsert() {
         return insert;
     }

@@ -17,7 +17,7 @@
         <h:form id="list">
             <p:growl id="messages" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <p:dataTable id="contrato" var="contrato" value="#{contratoBean.contratoList}" style="width: 50%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="contratosTable" emptyMessage="No hay registros en base al criterio proporcionado">
+            <p:dataTable id="contrato" var="contrato" value="#{contratoBean.contratoList}" style="width: 70%" class="center-element" paginator="true" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" rows="5" paginatorPosition="bottom" widgetVar="contratosTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header">                  
                     
                     <p:commandButton style="float: right" id="insert_button" update=":dialogUpdateContrato" actionListener="#{contratoBean.reset()}" oncomplete="PF('update_contrato').show()"  value="Nuevo contrato" icon="fa fa-plus">
@@ -35,6 +35,9 @@
                 </p:column>
                 <p:column style="width: 12%" headerText="Estado" filterBy="#{contrato.co_estado}" filterStyleClass="hide">
                     <h:outputText value="#{contrato.co_estado ? 'Habilitado':'Deshabilitado'}"/>
+                </p:column>
+                <p:column style="width: 20%" headerText="Acuerdo" filterBy="#{contrato.acuerdo.codigoacuerdo}" filterStyleClass="hide">
+                    <h:outputText value="#{contrato.acuerdo.codigoacuerdo} - #{contrato.acuerdo.nombreacuerdo}" />
                 </p:column>
                 <p:column style="width: 10%" headerText="Acciones">
                     <p:growl id="messages" />
@@ -59,8 +62,14 @@
                                  validatorMessage="Solo letras son permitidas en el campo 'Tipo de contrato'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
                         <f:validateRegex pattern="[a-zA-Záéíóú ]+$" /> 
                     </p:inputText>
-                   <!-- <p:outputLabel id="estado" value="Habilitar estado?" rendered="#{contratoBean.insert == true}"/>
-                    <p:selectBooleanCheckbox value="#{contratoBean.co_estado}" rendered="#{contratoBean.insert == true}"/>-->
+                    
+                    <p:outputLabel for="acuerdo" value="Acuerdo: " />
+                    <h:panelGroup layout="block1">
+                        <p:selectOneMenu id="acuerdo" value="#{contratoBean.idAcuerdo}" effect="fade" filter="true" filterMatchMode="contains" required="true" >
+                            <f:selectItems value="#{acuerdoBean.acuerdoList}" var="acuerdo" itemValue="#{acuerdo.idacuerdo}" itemLabel="#{acuerdo.codigoacuerdo}-#{acuerdo.nombreacuerdo}" itemDisabled="#{acuerdo.estadoacuerdo == false}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forAcuerdo" for="acuerdo" value="Seleccione el acuerdo que valida al contrato" />
+                    </h:panelGroup>
                     
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{contratoBean.updateContrato()}" update=":list:messages :list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-refresh" rendered="#{contratoBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{contratoBean.addContrato()}" update=":list:messages :list:contrato" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_contrato').hide()" icon="fa fa-plus" rendered="#{contratoBean.insert == true}" />

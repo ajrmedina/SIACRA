@@ -17,6 +17,7 @@ import com.siacra.models.Responsabilidad;
 import com.siacra.models.TrabajoGraduacion;
 import com.siacra.services.AcademicaGrupoService;
 import com.siacra.services.ActividadService;
+import com.siacra.services.AcuerdoService;
 import com.siacra.services.AsignaturaService;
 import com.siacra.services.CicloService;
 import com.siacra.services.DocenteService;
@@ -72,6 +73,8 @@ public class ResponsabilidadBean implements Serializable {
     private AsignaturaService asignaturaService;
     @ManagedProperty(value = "#{EscuelaService}")
     private EscuelaService escuelaService;
+    @ManagedProperty(value="#{AcuerdoService}")
+    private AcuerdoService acuerdoService;
     
     private List<Responsabilidad> responsabilidadList;
     private List<TrabajoGraduacion> trabajoGraduacionList;
@@ -91,6 +94,7 @@ public class ResponsabilidadBean implements Serializable {
     private int idactividad;
     private int idasignatura;
     private int idescuela;                  //Para aprobar
+    private Integer idAcuerdo;
     private int totalhoras;
     private Long horasActuales;             //Horas obligatorias asignadas
     private String tipodetiempo;
@@ -170,6 +174,7 @@ public class ResponsabilidadBean implements Serializable {
             Actividad actividad = getActividadService().getActividadById(getIdactividad());
             Docente docente = getDocenteService().getDocenteById(getIdDocente());
             responsabilidad.setAprobada(false);
+            responsabilidad.setAcuerdo(null);
             responsabilidad.setIdactividad(actividad);
             responsabilidad.setDocente(docente);
             responsabilidad.setCiclo(getCiclo());
@@ -462,6 +467,7 @@ public class ResponsabilidadBean implements Serializable {
         this.mostrar=false;
         this.sobrecarga=false;
         this.horasActuales=null;
+        this.idAcuerdo=null;
     }
     
     /**
@@ -566,6 +572,14 @@ public class ResponsabilidadBean implements Serializable {
 
     public void setEscuelaService(EscuelaService escuelaService) {
         this.escuelaService = escuelaService;
+    }
+    
+    public AcuerdoService getAcuerdoService() {
+        return acuerdoService;
+    }
+
+    public void setAcuerdoService(AcuerdoService acuerdoService) {
+        this.acuerdoService = acuerdoService;
     }
     
     /**
@@ -684,6 +698,14 @@ public class ResponsabilidadBean implements Serializable {
      */
     public void setIdEscuela(int idescuela) {
         this.idescuela = idescuela;
+    }
+    
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
+
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
     }
     
     /**

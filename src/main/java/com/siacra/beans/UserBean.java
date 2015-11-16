@@ -1,5 +1,6 @@
 package com.siacra.beans;
 
+import com.siacra.models.Acuerdo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import com.siacra.models.User;
 import com.siacra.services.UserService;
 import com.siacra.models.NivelAcceso;
+import com.siacra.services.AcuerdoService;
 import com.siacra.services.NivelAccesoService;
 import java.util.Map;
 import java.util.Random;
@@ -44,6 +46,8 @@ public class UserBean implements Serializable {
     //Spring NivelAcceso Service is injected...
     @ManagedProperty(value="#{NivelAccesoService}")
     private NivelAccesoService nivelAccesoService;
+    @ManagedProperty(value="#{AcuerdoService}")
+    private AcuerdoService acuerdoService;
     
     private List<User> usersList;
     private List<User> userListAll;
@@ -62,6 +66,7 @@ public class UserBean implements Serializable {
     private boolean estadoUsuario;
     private boolean esDocente;
     private int nivel;
+    private Integer idAcuerdo;
     private boolean insert;
     private boolean sesion;
     private String codigoEscuela;
@@ -74,6 +79,7 @@ public class UserBean implements Serializable {
         try {
             if(getUserService().existsUser(getNombreUsuario())){
             User user = new User();
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
             user.setNombreUsuario(getNombreUsuario());
             user.setContrasenia(nombreUsuario);
             user.setNombres(getNombres());
@@ -85,7 +91,7 @@ public class UserBean implements Serializable {
             user.setEstadoUsuario(getEstadoUsuario());
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
-           
+            user.setAcuerdo(acuerdo);
             getUserService().addUser(user);
             addMessage("Se ingresó el usuario correctamente");
             addMessage("Nombre de Usuario: " + getNombreUsuario() + " Contraseña: " + getNombreUsuario()); 
@@ -121,6 +127,7 @@ public class UserBean implements Serializable {
         setEstadoUsuario(user.getEstadoUsuario());
         setEsDocente(user.getEsDocente());
         setNivel(user.getNivel().getId());
+        setIdAcuerdo(user.getAcuerdo().getIdacuerdo());
     }
     
     /**
@@ -131,6 +138,7 @@ public class UserBean implements Serializable {
         
         try {
             User user = getUserService().getUserById(getIdUsuario());
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
             user.setNombreUsuario(getNombreUsuario());
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
@@ -138,6 +146,7 @@ public class UserBean implements Serializable {
             user.setEstadoUsuario(getEstadoUsuario());            
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
+            user.setAcuerdo(acuerdo);
             getUserService().updateUser(user);
             addMessage("El usuario " + getNombreUsuario() + " fue actualizado correctamente");
             
@@ -207,7 +216,8 @@ public class UserBean implements Serializable {
        this.setApellidos("");
        this.setNivel(0);
        this.setEstadoUsuario(false);
-       this.setEsDocente(false);       
+       this.setEsDocente(false);
+       this.setIdAcuerdo(null);
     }
 
     /**
@@ -284,6 +294,14 @@ public class UserBean implements Serializable {
      */
     public void setNivelAccesoService(NivelAccesoService nivelAccesoService) {
         this.nivelAccesoService = nivelAccesoService;
+    }
+    
+    public AcuerdoService getAcuerdoService() {
+        return acuerdoService;
+    }
+
+    public void setAcuerdoService(AcuerdoService acuerdoService) {
+        this.acuerdoService = acuerdoService;
     }
     
     /**
@@ -437,6 +455,14 @@ public class UserBean implements Serializable {
      */
     public void setNivel(int nivel) {
         this.nivel = nivel;
+    }
+    
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
+
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
     }
     
     public boolean getInsert() {

@@ -98,21 +98,21 @@
 
                     <p:outputLabel for="usuario" value="Usuario Asociado: " rendered="#{docenteBean.insert == true}"/>
                     <h:panelGroup layout="block" rendered="#{docenteBean.insert == true and identityBean.user.nivel.acceso!='Administrador'}">
-                        <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
-                            <f:selectItems value="#{userBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false}"/>
+                        <p:selectOneMenu id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione un usuario">
+                            <f:selectItems value="#{userBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false || user.esDocente == false || user.escuela == null}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado al docente" />
                     </h:panelGroup>
                      <h:panelGroup layout="block" rendered="#{docenteBean.insert == true and identityBean.user.nivel.acceso=='Administrador'}">
-                        <p:selectOneMenu id="usuario2" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true">
-                            <f:selectItems value="#{userBean.userListAll}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false}"/>
+                        <p:selectOneMenu id="usuario2" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione un usuario">
+                            <f:selectItems value="#{userBean.userListAll}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false || user.esDocente == false || user.escuela == null}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forUsuario2" for="usuario2" value="Seleccione el usuario asociado al docente" />
                     </h:panelGroup>
                     
                     <p:outputLabel for="categoria" value="Categoria del Docente: " />
                     <h:panelGroup layout="block">
-                        <p:selectOneMenu id="categoria" value="#{docenteBean.idCategoria}" effect="fade" filter="true" filterMatchMode="contains" required="true">
+                        <p:selectOneMenu id="categoria" value="#{docenteBean.idCategoria}" effect="fade" filter="true" filterMatchMode="contains" required="true" requiredMessage="Por favor, seleccione una categoria para el docente">
                             <f:selectItems value="#{categoriaBean.categoriasList}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.escalafon.tipoescalafon} - #{categoria.contrato.tipocontrato}" itemDisabled="#{categoria.estadoCategoria == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoria del docente" />

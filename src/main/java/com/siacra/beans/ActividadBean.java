@@ -6,9 +6,11 @@
 package com.siacra.beans;
 
 import com.siacra.models.Actividad;
+import com.siacra.models.Acuerdo;
 import com.siacra.models.Escuela;
 import com.siacra.models.TipoActividad;
 import com.siacra.services.ActividadService;
+import com.siacra.services.AcuerdoService;
 import com.siacra.services.EscuelaService;
 import com.siacra.services.TipoActividadService;
 import java.io.Serializable;
@@ -42,6 +44,8 @@ public class ActividadBean implements Serializable{
     //Escuela Service is injected...
     @ManagedProperty(value = "#{EscuelaService}")
     private EscuelaService escuelaService;
+    @ManagedProperty(value="#{AcuerdoService}")
+    private AcuerdoService acuerdoService;
     
     private List<Actividad> actividadList;
     private List<TipoActividad> tipoActividadList;
@@ -57,6 +61,7 @@ public class ActividadBean implements Serializable{
     private String descripcionactividad;
     private int idtipoactividad;
     private int idescuela;
+    private Integer idAcuerdo;
     private boolean insert;  
    
     
@@ -70,8 +75,10 @@ public class ActividadBean implements Serializable{
             Actividad actividad = new Actividad();
             TipoActividad tipoActividad = getTipoActividadService().getTipoActividadById(getIdtipoactividad());
             Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
             actividad.setEscuela(escuela);
             actividad.setIdtipoactividad(tipoActividad);
+            actividad.setAcuerdo(acuerdo);
             actividad.setEstadoactividad(false);
             actividad.setAprobaractividad(false);
             actividad.setNombreactividad(getNombreactividad());
@@ -100,7 +107,7 @@ public class ActividadBean implements Serializable{
                 TipoActividad tipoActividad= getTipoActividadService().getTipoActividadById(actividad.getIdtipoactividad().getIdtipoactividad());
                 Escuela escuela = getEscuelaService().getEscuelaById(actividad.getEscuela().getIdescuela());
                 setIdactividad(actividad.getIdactividad());
-
+                setIdAcuerdo(actividad.getAcuerdo().getIdacuerdo());
                 if(isEstadoactividad())   
                     setEstadoactividad(true);
                 else
@@ -121,6 +128,7 @@ public class ActividadBean implements Serializable{
                 Actividad actividad = getActividadService().getActividadById(getIdactividad());
                 TipoActividad tipoActividad = getTipoActividadService().getTipoActividadById(getIdtipoactividad());
                 Escuela escuela = getEscuelaService().getEscuelaById(getIdescuela());
+                Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
                 if(isEstadoactividad())
                     actividad.setEstadoactividad(true);
                 else
@@ -128,6 +136,7 @@ public class ActividadBean implements Serializable{
                 
                 actividad.setEscuela(escuela);
                 actividad.setIdtipoactividad(tipoActividad);
+                actividad.setAcuerdo(acuerdo);
                 actividad.setNombreactividad(getNombreactividad());
                 actividad.setDescripcionactividad(getDescripcionactividad());
                 getActividadService().updateActividad(actividad);
@@ -258,7 +267,15 @@ public class ActividadBean implements Serializable{
     public void setEscuelaService(EscuelaService escuelaService) {
         this.escuelaService = escuelaService;
     }
+    
+    public AcuerdoService getAcuerdoService() {
+        return acuerdoService;
+    }
 
+    public void setAcuerdoService(AcuerdoService acuerdoService) {
+        this.acuerdoService = acuerdoService;
+    }
+    
     /**
      * @return the actividadList
      */
@@ -390,6 +407,14 @@ public class ActividadBean implements Serializable{
      */
     public void setIdescuela(int idescuela) {
         this.idescuela = idescuela;
+    }
+    
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
+
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
     }
     
     /**

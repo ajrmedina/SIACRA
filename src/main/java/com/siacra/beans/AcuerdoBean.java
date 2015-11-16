@@ -40,7 +40,8 @@ public class AcuerdoBean implements Serializable{
     private int idacuerdo; 
     private String codigoacuerdo;
     private Date fechaacuerdo;
-    private String nombreacuerdo;    
+    private String nombreacuerdo;
+    private String descripcionacuerdo;    
     private boolean estadoacuerdo;
     private boolean insert;
     
@@ -202,7 +203,15 @@ public class AcuerdoBean implements Serializable{
     public void setNombreacuerdo(String nombreacuerdo) {
         this.nombreacuerdo = nombreacuerdo;
     }
+    
+    public String getDescripcionacuerdo() {
+        return descripcionacuerdo;
+    }
 
+    public void setDescripcionacuerdo(String descripcionacuerdo) {
+        this.descripcionacuerdo = descripcionacuerdo;
+    }
+    
     public boolean getEstadoacuerdo() {
         return estadoacuerdo;
     }

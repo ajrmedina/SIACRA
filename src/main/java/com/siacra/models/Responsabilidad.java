@@ -39,6 +39,10 @@ public class Responsabilidad implements Serializable {
     @JoinColumn(name="iddocente")
     private Docente docente;
     
+    @ManyToOne
+    @JoinColumn(name="idacuerdo")
+    private Acuerdo acuerdo;
+    
     @JoinColumn(name = "IDCICLO")
     @ManyToOne
     private Ciclo ciclo;
@@ -138,6 +142,14 @@ public class Responsabilidad implements Serializable {
     
     public void setAcademicaGrupo(Set<AcademicaGrupo> academicaGrupo) {
         this.academicaGrupo = academicaGrupo;
+    }
+    
+    public Acuerdo getAcuerdo() {
+        return acuerdo;
+    }
+
+    public void setAcuerdo(Acuerdo acuerdo) {
+        this.acuerdo = acuerdo;
     }
     
     @Override

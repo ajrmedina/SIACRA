@@ -7,11 +7,9 @@ package com.siacra.beans;
 
 import com.siacra.models.Acuerdo;
 import com.siacra.models.Ciclo;
-import com.siacra.models.Grupo;
 import com.siacra.models.Oferta;
 import com.siacra.services.AcuerdoService;
 import com.siacra.services.CicloService;
-import com.siacra.services.GrupoService;
 import com.siacra.services.OfertaService;
 import java.io.Serializable;
 import java.util.ArrayList;

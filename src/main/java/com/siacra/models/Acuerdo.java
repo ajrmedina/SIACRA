@@ -42,12 +42,35 @@ public class Acuerdo implements Serializable{
     @Column(name = "nombreacuerdo", nullable = false)
     private String nombreacuerdo; 
     
+    @Column(name = "descripcionacuerdo", nullable = false)
+    private String descripcionacuerdo;
+    
     @Column(name = "ac_estado", nullable = false)
     private boolean estadoacuerdo;
     
     @OneToMany(mappedBy="acuerdo")
     private Set<Oferta> oferta;
 
+    @OneToMany(mappedBy="acuerdo")
+    private Set<User> usuario;
+    
+    @OneToMany(mappedBy="acuerdo")
+    private Set<Contrato> contrato;
+    
+    @OneToMany(mappedBy="acuerdo")
+    private Set<Escalafon> escalafon;
+    
+    @OneToMany(mappedBy="acuerdo")
+    private Set<Escuela> escuela;
+    
+    @OneToMany(mappedBy="acuerdo")
+    private Set<Asignatura> asignatura;
+    
+    @OneToMany(mappedBy="acuerdo")
+    private Set<Responsabilidad> responsabilidad;
+    
+    @OneToMany(mappedBy="acuerdo")
+    private Set<Actividad> actividad;
     
     public int getIdacuerdo() {
         return idacuerdo;
@@ -80,7 +103,15 @@ public class Acuerdo implements Serializable{
     public void setNombreacuerdo(String nombreacuerdo) {
         this.nombreacuerdo = nombreacuerdo;
     }
+    
+    public String getDescripcionacuerdo() {
+        return descripcionacuerdo;
+    }
 
+    public void setDescripcionacuerdo(String descripcionacuerdo) {
+        this.descripcionacuerdo = descripcionacuerdo;
+    }
+    
     public boolean getEstadoacuerdo() {
         return estadoacuerdo;
     }
@@ -96,5 +127,81 @@ public class Acuerdo implements Serializable{
     public void setOferta(Set<Oferta> oferta) {
         this.oferta = oferta;
     }      
+    
+    /**
+     * Get User
+     *
+     * @return usuario Set<User>
+     */
+    public Set<User> getUser() {
+        return usuario;
+    }
+    
+    /**
+     * Set User
+     *
+     * @param usuario Set<User>
+     */
+    public void setUser(Set<User> usuario) {
+        this.usuario = usuario;
+    }
+    
+    public Set<Contrato> getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(Set<Contrato> contrato) {
+        this.contrato = contrato;
+    }
+    
+    public Set<Escalafon> getEscalafon() {
+        return escalafon;
+    }
+
+    public void setEscalafon(Set<Escalafon> escalafon) {
+        this.escalafon = escalafon;
+    }
+    
+    public Set<Escuela> getEscuela() {
+        return escuela;
+    }
+
+    public void setEscuela(Set<Escuela> escuela) {
+        this.escuela = escuela;
+    }
+    
+    public Set<Asignatura> getAsignatura() {
+        return asignatura;
+    }
+    
+    public void setAsignatura(Set<Asignatura> asignatura) {
+        this.asignatura = asignatura;
+    }
+    
+    /**
+     * Get Responsabilidad
+     *
+     * @return responsabilidad Set<Responsabilidad>
+     */
+    public Set<Responsabilidad> getResponsabilidad() {
+        return responsabilidad;
+    }
+    
+    /**
+     * Set Responsabilidad
+     *
+     * @param responsabilidad Set<Responsabilidad>
+     */
+    public void setResponsabilidad(Set<Responsabilidad> responsabilidad) {
+        this.responsabilidad = responsabilidad;
+    }
+    
+    public Set<Actividad> getActividad() {
+        return actividad;
+    }
+
+    public void setActividad(Set<Actividad> actividad) {
+        this.actividad = actividad;
+    }
     
 }

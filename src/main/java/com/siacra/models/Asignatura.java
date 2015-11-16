@@ -54,9 +54,13 @@ public class Asignatura implements Serializable{
     @JoinColumn(name="idescuela")
     private Escuela escuela;
     
+    @ManyToOne
+    @JoinColumn(name="idacuerdo")
+    private Acuerdo acuerdo;
+    
     @OneToMany(mappedBy="asignatura")
     private Set<Grupo> grupo;
-
+    
     public Integer getIdAsignatura() {
         return idAsignatura;
     }
@@ -137,6 +141,12 @@ public class Asignatura implements Serializable{
         this.grupo = grupo;
     }
     
-    
+    public Acuerdo getAcuerdo() {
+        return acuerdo;
+    }
+
+    public void setAcuerdo(Acuerdo acuerdo) {
+        this.acuerdo = acuerdo;
+    }
     
 }

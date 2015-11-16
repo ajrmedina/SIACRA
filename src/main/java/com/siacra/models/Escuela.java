@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -55,7 +57,9 @@ public class Escuela implements Serializable{
     @OneToMany(mappedBy="escuela")
     private Set<Proyecto> proyecto;
     
-    
+    @ManyToOne
+    @JoinColumn(name="idacuerdo")
+    private Acuerdo acuerdo;
     
     public int getIdescuela() {
         return idescuela;
@@ -112,7 +116,6 @@ public class Escuela implements Serializable{
         return asignatura;
     }
     
-
     public void setAsignatura(Set<Asignatura> asignatura) {
         this.asignatura = asignatura;
     }
@@ -141,6 +144,13 @@ public class Escuela implements Serializable{
         this.proyecto = proyecto;
     }
     
+    public Acuerdo getAcuerdo() {
+        return acuerdo;
+    }
+
+    public void setAcuerdo(Acuerdo acuerdo) {
+        this.acuerdo = acuerdo;
+    }
         
     @Override
     public String toString() {
