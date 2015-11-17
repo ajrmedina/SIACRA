@@ -46,8 +46,7 @@ public class UserBean implements Serializable {
     //Spring NivelAcceso Service is injected...
     @ManagedProperty(value="#{NivelAccesoService}")
     private NivelAccesoService nivelAccesoService;
-    @ManagedProperty(value="#{AcuerdoService}")
-    private AcuerdoService acuerdoService;
+   
     
     private List<User> usersList;
     private List<User> userListAll;
@@ -66,7 +65,8 @@ public class UserBean implements Serializable {
     private boolean estadoUsuario;
     private boolean esDocente;
     private int nivel;
-    private Integer idAcuerdo;
+    private String titulo;
+    
     private boolean insert;
     private boolean sesion;
     private String codigoEscuela;
@@ -79,10 +79,10 @@ public class UserBean implements Serializable {
         try {
             if(getUserService().existsUser(getNombreUsuario())){
             User user = new User();
-            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
+            
             user.setNombreUsuario(getNombreUsuario());
             user.setContrasenia(nombreUsuario);
-            user.setNombres(getNombres());
+            user.setNombres(getTitulo()+" "+getNombres());
             user.setApellidos(getApellidos());
             if(getEscuela().equals(String.valueOf(0)))
                 user.setEscuela(null);
@@ -91,7 +91,7 @@ public class UserBean implements Serializable {
             user.setEstadoUsuario(getEstadoUsuario());
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
-            user.setAcuerdo(acuerdo);
+          
             getUserService().addUser(user);
             addMessage("Se ingresó el usuario correctamente");
             addMessage("Nombre de Usuario: " + getNombreUsuario() + " Contraseña: " + getNombreUsuario()); 
@@ -127,7 +127,7 @@ public class UserBean implements Serializable {
         setEstadoUsuario(user.getEstadoUsuario());
         setEsDocente(user.getEsDocente());
         setNivel(user.getNivel().getId());
-        setIdAcuerdo(user.getAcuerdo().getIdacuerdo());
+        
     }
     
     /**
@@ -138,7 +138,7 @@ public class UserBean implements Serializable {
         
         try {
             User user = getUserService().getUserById(getIdUsuario());
-            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
+            
             user.setNombreUsuario(getNombreUsuario());
             user.setNombres(getNombres());
             user.setApellidos(getApellidos());
@@ -146,7 +146,7 @@ public class UserBean implements Serializable {
             user.setEstadoUsuario(getEstadoUsuario());            
             user.setEsDocente(getEsDocente());
             user.setNivel(getNivelAccesoService().getNivelAccesoById(getNivel()));
-            user.setAcuerdo(acuerdo);
+            
             getUserService().updateUser(user);
             addMessage("El usuario " + getNombreUsuario() + " fue actualizado correctamente");
             
@@ -217,7 +217,7 @@ public class UserBean implements Serializable {
        this.setNivel(0);
        this.setEstadoUsuario(false);
        this.setEsDocente(false);
-       this.setIdAcuerdo(null);
+      
     }
 
     /**
@@ -296,13 +296,6 @@ public class UserBean implements Serializable {
         this.nivelAccesoService = nivelAccesoService;
     }
     
-    public AcuerdoService getAcuerdoService() {
-        return acuerdoService;
-    }
-
-    public void setAcuerdoService(AcuerdoService acuerdoService) {
-        this.acuerdoService = acuerdoService;
-    }
     
     /**
      * Get User ID
@@ -457,14 +450,6 @@ public class UserBean implements Serializable {
         this.nivel = nivel;
     }
     
-    public Integer getIdAcuerdo() {
-        return idAcuerdo;
-    }
-
-    public void setIdAcuerdo(Integer idAcuerdo) {
-        this.idAcuerdo = idAcuerdo;
-    }
-    
     public boolean getInsert() {
         return insert;
     }
@@ -559,6 +544,20 @@ public class UserBean implements Serializable {
      public void refreshUser(){
          setUserList(getUserService().getUsersByEscuela(getCodigoEscuela()));
      }
+
+    /**
+     * @return the titulo
+     */
+    public String getTitulo() {
+        return titulo;
+    }
+
+    /**
+     * @param titulo the titulo to set
+     */
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
      
     
 }

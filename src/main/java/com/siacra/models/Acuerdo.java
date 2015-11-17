@@ -52,7 +52,7 @@ public class Acuerdo implements Serializable{
     private Set<Oferta> oferta;
 
     @OneToMany(mappedBy="acuerdo")
-    private Set<User> usuario;
+    private Set<Docente> docente;
     
     @OneToMany(mappedBy="acuerdo")
     private Set<Contrato> contrato;
@@ -129,21 +129,21 @@ public class Acuerdo implements Serializable{
     }      
     
     /**
-     * Get User
+     * Get Docente
      *
-     * @return usuario Set<User>
+     * @return docente Set<Docente>
      */
-    public Set<User> getUser() {
-        return usuario;
+    public Set<Docente> getDocente() {
+        return docente;
     }
     
     /**
-     * Set User
+     * Set Dcoente
      *
-     * @param usuario Set<User>
+     * @param docente Set<Docente>
      */
-    public void setUser(Set<User> usuario) {
-        this.usuario = usuario;
+    public void setDocente(Set<Docente> docente) {
+        this.docente = docente;
     }
     
     public Set<Contrato> getContrato() {
