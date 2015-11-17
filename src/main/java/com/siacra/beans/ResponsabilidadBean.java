@@ -393,6 +393,8 @@ public class ResponsabilidadBean implements Serializable {
                     horas = getResponsabilidadService().getHorasActualesByDocente(responsabilidad.getDocente().getIdDocente(), getCiclo().getIdCiclo());
                     docente = getDocenteService().getDocenteById(responsabilidad.getDocente().getIdDocente());
                 }
+                if(horas == null)
+                    horas = 0L;
                 Long sumatoriaHoras = horas + getTotalhoras();
                 if(sumatoriaHoras > docente.getCategoria().getHorasObligatorias()){
                     addMessage("La Responsabilidad no se puede añadir debido a que el valor ingresado mas las horas ya asignadas exceden las horas obligatorias permitidas");
