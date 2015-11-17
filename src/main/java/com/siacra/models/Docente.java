@@ -41,6 +41,10 @@ public class Docente implements Serializable {
     private Escuela escuela;
     
     @ManyToOne
+    @JoinColumn(name="idacuerdo")
+    private Acuerdo acuerdo;
+    
+    @ManyToOne
     @JoinColumn(name="idcategoria")
     private Categoria categoria;
     
@@ -140,6 +144,16 @@ public class Docente implements Serializable {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
+    
+    
+    public Acuerdo getAcuerdo() {
+        return acuerdo;
+    }
+
+    public void setAcuerdo(Acuerdo acuerdo) {
+        this.acuerdo = acuerdo;
+    }
+
     
     /**
      * Get Responsabilidad

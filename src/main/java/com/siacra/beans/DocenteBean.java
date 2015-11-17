@@ -1,5 +1,6 @@
 package com.siacra.beans;
 
+import com.siacra.models.Acuerdo;
 import com.siacra.models.Categoria;
 import com.siacra.models.Docente;
 import com.siacra.models.Escuela;
@@ -11,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
 import com.siacra.models.User;
+import com.siacra.services.AcuerdoService;
 import com.siacra.services.CategoriaService;
 import com.siacra.services.UserService;
 import com.siacra.services.DocenteService;
@@ -49,6 +51,8 @@ public class DocenteBean implements Serializable {
     @ManagedProperty(value="#{CategoriaService}")
     private CategoriaService categoriaService;
      
+    @ManagedProperty(value="#{AcuerdoService}")
+    private AcuerdoService acuerdoService;
     private List<Docente> docentesList;
     private List<Docente> docentesListAll;
     
@@ -64,6 +68,7 @@ public class DocenteBean implements Serializable {
     private String nombres;
     private String apellidos;
     private boolean insert;
+    private Integer idAcuerdo;
     
     /**
      * Add Docente
@@ -75,6 +80,7 @@ public class DocenteBean implements Serializable {
             User user = getUserService().getUserById(getIdUser());
             if(getDocenteService().existDocente(user.getIdUsuario())) {
                 Docente docente = new Docente();
+                Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
                 Escuela escuela = getEscuelaService().getEscuelaByCodigo(user.getEscuela());
                 Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
                 if ( user.getEstadoUsuario()) {
@@ -84,7 +90,9 @@ public class DocenteBean implements Serializable {
                         docente.setUser(user);
                         docente.setEscuela(escuela);
                         docente.setCategoria(categoria);
+                        docente.setAcuerdo(acuerdo);
                         getDocenteService().addDocente(docente);
+                          docente.setAcuerdo(acuerdo);
                         reset();
                         setInsert(false);
                         addMessage("Docente: " + user.getNombres() + " " + user.getApellidos() + " fue añadido correctamente");
@@ -122,6 +130,7 @@ public class DocenteBean implements Serializable {
         setApellidos(user.getApellidos());
         setIdUser(user.getIdUsuario());
         setIdEscuela(escuela.getIdescuela());
+        setIdAcuerdo(docente.getAcuerdo().getIdacuerdo());
     }
     
     /**
@@ -133,11 +142,13 @@ public class DocenteBean implements Serializable {
         try {
             Docente docente = getDocenteService().getDocenteById(getIdDocente());
             User user = getUserService().getUserById(getIdUser());
+            Acuerdo acuerdo = getAcuerdoService().getAcuerdoById(getIdAcuerdo());
             Escuela escuela = getEscuelaService().getEscuelaById(getIdEscuela());
             Categoria categoria = getCategoriaService().getCategoriaById(getIdCategoria());
             docente.setUser(user);
             docente.setEscuela(escuela);
             docente.setCategoria(categoria);
+            docente.setAcuerdo(acuerdo);
             getDocenteService().updateDocente(docente);
             addMessage("Docente: " + user.getNombres() + " " + user.getApellidos() + " fue actualizado correctamente");
             refreshDocentes();
@@ -206,6 +217,7 @@ public class DocenteBean implements Serializable {
        this.setIdCategoria(0);
        this.setNombres("");
        this.setApellidos("");
+        this.setIdAcuerdo(null);
     }
     
     public void refreshDocentes() {
@@ -431,6 +443,22 @@ public class DocenteBean implements Serializable {
         this.insert = insert;
     }
     
+    public AcuerdoService getAcuerdoService() {
+        return acuerdoService;
+    }
+
+    public void setAcuerdoService(AcuerdoService acuerdoService) {
+        this.acuerdoService = acuerdoService;
+    }
+    
+    
+    public Integer getIdAcuerdo() {
+        return idAcuerdo;
+    }
+
+    public void setIdAcuerdo(Integer idAcuerdo) {
+        this.idAcuerdo = idAcuerdo;
+    }
     /**
      * Add Messages
      * Add messages for the UI

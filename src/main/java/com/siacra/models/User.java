@@ -58,9 +58,7 @@ public class User implements Serializable{
     @JoinColumn(name="idnivelacceso")
     private NivelAcceso nivel;
 
-    @ManyToOne
-    @JoinColumn(name="idacuerdo")
-    private Acuerdo acuerdo;
+   
 
     @OneToOne(mappedBy = "user")
     private Docente docente;
@@ -143,14 +141,6 @@ public class User implements Serializable{
 
     public void setDocente(Docente docente) {
         this.docente = docente;
-    }
-
-    public Acuerdo getAcuerdo() {
-        return acuerdo;
-    }
-
-    public void setAcuerdo(Acuerdo acuerdo) {
-        this.acuerdo = acuerdo;
     }
 
     public boolean isSesion() {
