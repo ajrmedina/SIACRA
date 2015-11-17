@@ -95,17 +95,18 @@
                             </p:submenu>                            
                         </sec:authorize>
                         
-                        <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR, ROLE_MIEMBRO_JD">
-                            <p:submenu label="Trabajos y Proyectos" icon="fa fa-check-square">
-                                <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR,">
-                                  <p:menuitem value="Trabajos de Graduacion" url="/resources/views/responsabilidad/ListarTG.xhtml" icon="fa fa-clipboard" />
-                                  <p:menuitem value="Proyecto" url="/resources/views/responsabilidad/ListarProyecto.xhtml" icon="fa fa-clipboard" />
-                                </sec:authorize>
-                                <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
-                                  <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
-                                  <p:menuitem value="Aprobar Oferta" url="/resources/views/jd/AprobarOferta.xhtml" icon="fa fa-check-square-o" />
-                                  <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
-                                </sec:authorize>
+                        <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR">
+                            <p:submenu label="Control de TDG y Proyectos" icon="fa fa-check-square">
+                                <p:menuitem value="Trabajos de Graduacion" url="/resources/views/responsabilidad/ListarTG.xhtml" icon="fa fa-clipboard" />
+                                <p:menuitem value="Proyecto" url="/resources/views/responsabilidad/ListarProyecto.xhtml" icon="fa fa-clipboard" />
+                             </p:submenu>
+                        </sec:authorize>
+                        
+                        <sec:authorize ifAnyGranted="ROLE_MIEMBRO_JD">
+                            <p:submenu label="Control de Oferta y Responsabilidad" icon="fa fa-check-square">
+                                <p:menuitem value="Acuerdos" url="/resources/views/jd/ListarAcuerdo.xhtml" icon="fa fa-file-text-o" />
+                                <p:menuitem value="Aprobar Oferta" url="/resources/views/jd/AprobarOferta.xhtml" icon="fa fa-check-square-o" />
+                                <p:menuitem value="Aprobar Responsabilidad" url="/resources/views/jd/AprobarResponsabilidad.xhtml" icon="fa fa-check-square-o" />
                              </p:submenu>
                         </sec:authorize>
                         
