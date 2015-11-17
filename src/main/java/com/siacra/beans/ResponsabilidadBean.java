@@ -139,9 +139,11 @@ public class ResponsabilidadBean implements Serializable {
     @PostConstruct
     public void init() {
         opciones = new ArrayList<>();
-        Escuela escuela = getEscuelaService().getEscuelaById(id_escuela);
-        ucb = escuela.getCodigoescuela().toUpperCase().matches("(.*)UCB(.*)");
-        
+        Escuela escuela;
+        if(id_escuela != 0) {
+            escuela = getEscuelaService().getEscuelaById(id_escuela);
+            ucb = escuela.getCodigoescuela().toUpperCase().matches("(.*)UCB(.*)");
+        }
         SelectItemGroup grupos = new SelectItemGroup("Grupos");
         SelectItem gexistente = new SelectItem("GE","Grupo Existente","");
         grupos.setSelectItems(new SelectItem[]{gexistente}); 
@@ -443,7 +445,7 @@ public class ResponsabilidadBean implements Serializable {
     
     public void aprobarResponsabilidad() {
         if(getCiclo().getCiEstado()) {
-            getResponsabilidadService().aprobarResponsabilidad(getIdEscuela(), getCiclo().getIdCiclo());
+            getResponsabilidadService().aprobarResponsabilidad(getIdEscuela(), getCiclo().getIdCiclo(), getIdAcuerdo());
             addMessage("Responsabilidad aprobada");
         }
         else {
