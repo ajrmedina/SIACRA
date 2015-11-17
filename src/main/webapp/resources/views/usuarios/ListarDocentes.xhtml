@@ -21,8 +21,8 @@
             <p:dataTable id="docentes" var="docente" value="#{identityBean.user.nivel.acceso == 'Administrador' ? docenteBean.docentesListAll: docenteBean.docentesList}" style="width: 100%" class="center-element" paginator="true" rows="10" paginatorPosition="bottom" widgetVar="docentesTable" emptyMessage="No hay registros en base al criterio proporcionado">
                 <f:facet name="header" >
                    <p:outputPanel>
-                        <h:outputText value="Busqueda de docentes:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('docentesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de docentes:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('docentesTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                         <p:spacer width="750" height="10" />
                         <p:commandButton id="insert_button" style="float: right" value="Nuevo Docente" update=":dialogUpdateDocente" actionListener="#{docenteBean.reset()}" oncomplete="PF('update_docente').show()" icon="fa fa-plus">                       
                             <f:setPropertyActionListener target="#{docenteBean.insert}" value="true" />
@@ -63,7 +63,7 @@
                     </f:facet>
                     <h:outputText value="#{docente.aprobarDocente?'Aprobado':'No Aprobado'}" />
                 </p:column>
-                <p:column style="width: 6%" headerText="Escalafon" filterBy="#{docente.categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
+                <p:column style="width: 6%" headerText="Escalafón" filterBy="#{docente.categoria.escalafon.tipoescalafon}" filterStyleClass="hide">
                     <h:outputText value="#{docente.categoria.escalafon.tipoescalafon}" />
                 </p:column>
                 <p:column style="width: 10%" headerText="Contrato" filterBy="#{docente.categoria.contrato.tipocontrato}" filterStyleClass="hide">
@@ -79,9 +79,11 @@
                     <p:commandButton id="locked" update=":dialogLockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('lock_docente').show()" icon="fa fa-unlock" rendered="#{docente.user.estadoUsuario == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('unlock_docente').show()" icon="fa fa-unlock-alt" rendered="#{docente.user.estadoUsuario == false}" />
                     <p:commandButton id="approve" update=":dialogApproveDocente" actionListener="#{docenteBean.loadDocente(docente)}" oncomplete="PF('approve_docente').show()" icon="fa fa-check-square-o" rendered="#{docente.aprobarDocente == false and identityBean.user.nivel.id == 3}" />
-                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar Docente" rendered="#{docente.user.estadoUsuario == true}" />
-                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar Docente" rendered="#{docente.user.estadoUsuario == false}" />
-                    <p:tooltip id="forApprove" for="approve" value="Aprobar Docente" rendered="#{docente.aprobarDocente == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forLocked" for="locked" value="Deshabilitar docente" rendered="#{docente.user.estadoUsuario == true}" />
+                    <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar docente" rendered="#{docente.user.estadoUsuario == false}" />
+                    <p:tooltip id="forApprove" for="approve" value="Aprobar docente" rendered="#{docente.aprobarDocente == false and identityBean.user.nivel.id == 3}" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar docente" />
+                   
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -101,21 +103,21 @@
                         <p:selectOneMenu panelStyleClass="hideDisabled" id="usuario" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione un usuario">
                             <f:selectItems value="#{userBean.userList}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false || user.esDocente == false || user.escuela == null}"/>
                         </p:selectOneMenu>
-                        <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado al docente" />
+                        <p:tooltip id="forUsuario" for="usuario" value="Seleccione el usuario asociado" />
                     </h:panelGroup>
                      <h:panelGroup layout="block" rendered="#{docenteBean.insert == true and identityBean.user.nivel.acceso=='Administrador'}">
                         <p:selectOneMenu panelStyleClass="hideDisabled" id="usuario2" value="#{docenteBean.idUser}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione un usuario">
                             <f:selectItems value="#{userBean.userListAll}" var="user" itemValue="#{user.idUsuario}" itemLabel="#{user.nombres} #{user.apellidos}" itemDisabled="#{user.estadoUsuario == false || user.esDocente == false || user.escuela == null}"/>
                         </p:selectOneMenu>
-                        <p:tooltip id="forUsuario2" for="usuario2" value="Seleccione el usuario asociado al docente" />
+                        <p:tooltip id="forUsuario2" for="usuario2" value="Seleccione el usuario asociado" />
                     </h:panelGroup>
                     
-                    <p:outputLabel for="categoria" value="Categoria del Docente: " />
+                    <p:outputLabel for="categoria" value="Categoría del Docente: " />
                     <h:panelGroup layout="block">
                         <p:selectOneMenu panelStyleClass="hideDisabled" id="categoria" value="#{docenteBean.idCategoria}" effect="fade" filter="true" filterMatchMode="contains" required="true" requiredMessage="Por favor, seleccione una categoria para el docente">
                             <f:selectItems value="#{categoriaBean.categoriasList}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.escalafon.tipoescalafon} - #{categoria.contrato.tipocontrato}" itemDisabled="#{categoria.estadoCategoria == false}"/>
                         </p:selectOneMenu>
-                        <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoria del docente" />
+                        <p:tooltip id="forCategoria" for="categoria" value="Seleccione la categoría del docente" />
                     </h:panelGroup>
                     
                       <p:outputLabel for="acuerdo" value="Acuerdo: " />
@@ -139,7 +141,7 @@
         <p:dialog header="Bloquear Docente" id="dialogLockDocente" widgetVar="lock_docente" modal="true" resizable="false" closable="false">
             <h:form id="lock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea bloquear al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
+                <h:outputText value="¿Está seguro que desea bloquear al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_lock" value="Bloquear" actionListener="#{docenteBean.lockedDocente()}" update=":list:docentes" oncomplete="PF('lock_docente').hide()" icon="fa fa-times" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('lock_docente').hide()" icon="fa fa-ban" />
@@ -150,7 +152,7 @@
         <p:dialog header="Desbloquear Docente" id="dialogUnlockDocente" widgetVar="unlock_docente" modal="true" resizable="false" closable="false">
             <h:form id="unlock">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Seguro que desea desbloquear al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
+                <h:outputText value="¿Está seguro que desea desbloquear al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_unlock" value="Desbloquear" actionListener="#{docenteBean.unlockedDocente()}" update=":list:docentes" oncomplete="PF('unlock_docente').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('unlock_docente').hide()" icon="fa fa-ban" />
@@ -161,7 +163,7 @@
         <p:dialog header="Aprobar Docente" id="dialogApproveDocente" widgetVar="approve_docente" modal="true" resizable="false" closable="false">
             <h:form id="approve">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <h:outputText value="Desea aprobar al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
+                <h:outputText value="¿Desea aprobar al docente #{docenteBean.nombres} #{docenteBean.apellidos}?" />
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                     <p:commandButton id="save_approve" value="Aprobar" actionListener="#{docenteBean.approveDocente()}" update=":list:docentes" oncomplete="PF('approve_docente').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('approve_docente').hide()" icon="fa fa-ban" />

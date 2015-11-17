@@ -44,7 +44,7 @@
                     <p:growl id="messages" />
                     <p:commandButton id="delete_button" icon="fa fa-times" oncomplete="PF('delete_mensaje').show()" >
                         <f:setPropertyActionListener target="#{auxiliarBean.idmensaje}" value="#{mensaje.idmensaje}"/>
-                        <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el mensaje" />
+                        <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el mensaje " />
                        
                     </p:commandButton>
                     
@@ -56,7 +56,7 @@
            
                 <h:form id="deleteMensaje">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <h:outputText value="¿Está seguro que desea eliminar el mensaje" />
+                    <h:outputText value="¿Está seguro que desea eliminar el mensaje?" />
                     <br />
                     <h:panelGrid columns="2" cellpadding="5" class="center-element">
                         <p:commandButton id="aceptar" value="Eliminar" update=":list:mensaje" actionListener="#{auxiliarBean.deleteMensaje()}" oncomplete="PF('delete_mensaje').hide()" icon="fa fa-trash" />

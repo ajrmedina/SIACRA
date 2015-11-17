@@ -55,7 +55,7 @@
                     <p:growl id="messages" />
                     <p:commandButton id="delete_button" icon="fa fa-times" oncomplete="PF('delete_mensaje').show()" >
                         <f:setPropertyActionListener target="#{mensajeBean.idmensaje}" value="#{mensaje.idmensaje}"/>
-                        <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el mensaje" />
+                        <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el mensaje " />
                        
                     </p:commandButton>
                     
@@ -67,7 +67,7 @@
            
                 <h:form id="deleteMensaje">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <h:outputText value="¿Está seguro que desea eliminar el mensaje" />
+                    <h:outputText value="¿Está seguro que desea eliminar el mensaje?" />
                     <br />
                     <h:panelGrid columns="2" cellpadding="5" class="center-element">
                         <p:commandButton id="aceptar" value="Eliminar" update=":list:mensaje" actionListener="#{mensajeBean.deleteMensaje()}" oncomplete="PF('delete_mensaje').hide()" icon="fa fa-trash" />
@@ -84,7 +84,7 @@
                          <h:outputText value="Enviar a:"/>
                          
                          <p:selectOneMenu  panelStyleClass="hideDisabled"  requiredMessage="Se requiere un usuario" id="Usuario" value="#{mensajeBean.idusuario}" required="true">
-                             <f:selectItem itemLabel="Seleccione un director de escuela " />
+                             <f:selectItem itemLabel="Seleccione un director de escuela" />
                              <f:selectItems   value="#{mensajeBean.usuariosByEscuela}" 
                                               var="usuarios" itemValue="#{usuarios.user.idUsuario}"
                                               itemLabel="#{usuarios.user.nombres} #{usuarios.user.apellidos}- #{usuarios.user.nivel.acceso} -#{usuarios.escuela.nombreescuela}"

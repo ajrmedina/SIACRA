@@ -111,7 +111,7 @@
                         <p:inputText id="globalFilter" onkeyup="PF('permanenciaTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px; float: left" />
                         <p:spacer width="600" height="10" rendered="#{permanencia.ciclo.ciEstado == true}" />
                         <p:spacer width="400" height="10" rendered="#{permanencia.ciclo.ciEstado == false}" />
-                        <h:outputText value="Ciclo Cerrado no se admiten modificaciones a las actividades" style="color: red; float: right" rendered="#{permanencia.ciclo.ciEstado  == false}" />                       
+                        <h:outputText value="Ciclo Cerrado, no se admiten modificaciones a las actividades" style="color: red; float: right" rendered="#{permanencia.ciclo.ciEstado  == false}" />                       
                                                                                  
                     </p:outputPanel>
                     <div style="clear:both" />
@@ -157,8 +157,8 @@
                     </p:commandButton>                                    
                     <p:commandButton id="delete_button" update=":dialogDeletePermanencia" actionListener="#{permanenciaBean.loadPermanencia(permanencia)}" oncomplete="PF('delete_permanencia').show()" icon="fa fa-times" rendered="#{permanencia.ciclo.ciEstado == true}"/>
                     <h:outputText value="Ciclo Cerrado" style="color: red" rendered="#{permanencia.ciclo.ciEstado  == false}" />
-                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar la actividad" />
-                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar la actividad" />
+                    <p:tooltip id="forUpdate_button" for="update_button" value="Actualizar la actividad " />
+                    <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar la actividad " />
                   
                 </p:column>               
             </p:dataTable>
@@ -198,8 +198,7 @@
                             <f:selectItem itemLabel="Miercoles" itemValue="Miercoles" />
                             <f:selectItem itemLabel="Jueves" itemValue="Jueves" />
                             <f:selectItem itemLabel="Viernes" itemValue="Viernes" />
-                            <f:selectItem itemLabel="Sábado" itemValue="Sábado" />
-                            
+                            <f:selectItem itemLabel="Sábado" itemValue="Sábado" />                            
                         </p:selectOneMenu>
                         <p:tooltip id="forDia" for="dia" value="Seleccione el día de la actividad" />
                     </h:panelGroup>
