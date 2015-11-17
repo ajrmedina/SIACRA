@@ -22,8 +22,8 @@
                 <f:facet name="header"  >
                     
                    <p:outputPanel>
-                        <h:outputText value="Busqueda de mensajes:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('mensajesTable').filter()" placeholder="Criterio de busqueda" style="width:150px; margin-left: 10px;" />
+                        <h:outputText value="Búsqueda de mensajes:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('mensajesTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
                         
                          <p:spacer width="750" height="20" />
                          <p:commandButton rendered="#{identityBean.user.nivel.id == 4}" style="float: right" id="insert_button" update=":dialogMensajeJD" oncomplete="PF('enviar_directores').show()"  value="Enviar mensaje" icon="fa fa-inbox" >
@@ -44,6 +44,7 @@
                     <p:growl id="messages" />
                     <p:commandButton id="delete_button" icon="fa fa-times" oncomplete="PF('delete_mensaje').show()" >
                         <f:setPropertyActionListener target="#{auxiliarBean.idmensaje}" value="#{mensaje.idmensaje}"/>
+                        <p:tooltip id="forDelete_button" for="delete_button" value="Eliminar el mensaje " />
                        
                     </p:commandButton>
                     
@@ -55,7 +56,7 @@
            
                 <h:form id="deleteMensaje">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <h:outputText value="Seguro que desea eliminar el mensaje" />
+                    <h:outputText value="¿Está seguro que desea eliminar el mensaje?" />
                     <br />
                     <h:panelGrid columns="2" cellpadding="5" class="center-element">
                         <p:commandButton id="aceptar" value="Eliminar" update=":list:mensaje" actionListener="#{auxiliarBean.deleteMensaje()}" oncomplete="PF('delete_mensaje').hide()" icon="fa fa-trash" />

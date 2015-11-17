@@ -96,7 +96,7 @@
                         </sec:authorize>
                         
                         <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR, ROLE_MIEMBRO_JD">
-                            <p:submenu label="Verificacion y Control" icon="fa fa-check-square">
+                            <p:submenu label="Trabajos y Proyectos" icon="fa fa-check-square">
                                 <sec:authorize ifAnyGranted="ROLE_RESPONSABLE, ROLE_DIRECTOR,">
                                   <p:menuitem value="Trabajos de Graduacion" url="/resources/views/responsabilidad/ListarTG.xhtml" icon="fa fa-clipboard" />
                                   <p:menuitem value="Proyecto" url="/resources/views/responsabilidad/ListarProyecto.xhtml" icon="fa fa-clipboard" />
