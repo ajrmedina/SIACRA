@@ -146,6 +146,7 @@ public class AcuerdoBean implements Serializable{
         this.setCodigoacuerdo("");
         this.setNombreacuerdo("");  
         this.setFechaacuerdo(fechaDate);
+        this.setDescripcionacuerdo("");
 
     }
 
