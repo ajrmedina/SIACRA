@@ -124,9 +124,9 @@ public class ResponsabilidadDao {
         return list;
     }
     
-    public void aprobarResponsabilidad(int id_escuela, int id_ciclo) {
+    public void aprobarResponsabilidad(int id_escuela, int id_ciclo, int id_acuerdo) {
         try {
-            Query callSP = getSessionFactory().getCurrentSession().createSQLQuery("CALL sp_aprobarResponsabilidad(:idEscuela, :idCiclo)").setParameter("idEscuela", id_escuela).setParameter("idCiclo", id_ciclo);
+            Query callSP = getSessionFactory().getCurrentSession().createSQLQuery("CALL sp_aprobarResponsabilidad(:idEscuela, :idCiclo, :idAcuerdo)").setParameter("idEscuela", id_escuela).setParameter("idCiclo", id_ciclo).setParameter("idAcuerdo", id_acuerdo);
             int result = callSP.executeUpdate();
         }
         catch (RuntimeException e) {

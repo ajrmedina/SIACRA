@@ -43,6 +43,8 @@ public class IdentityBean {
             sessionMap.put("sessionCodEscuela", user.getEscuela());
             sessionMap.put("sessionIdEscuela", escuela.getIdescuela());
         }
+        else
+            sessionMap.put("sessionIdEscuela", 0);
         return user;
     }
     

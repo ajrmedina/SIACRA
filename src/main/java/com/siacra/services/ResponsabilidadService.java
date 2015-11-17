@@ -105,8 +105,8 @@ public class ResponsabilidadService {
         return getResponsabilidadDao().getResponsabilidades();
     }
     
-    public void aprobarResponsabilidad(int ide, int idc) {
-        getResponsabilidadDao().aprobarResponsabilidad(ide, idc);
+    public void aprobarResponsabilidad(int ide, int idc, int ida) {
+        getResponsabilidadDao().aprobarResponsabilidad(ide, idc, ida);
     }
     
     //**************

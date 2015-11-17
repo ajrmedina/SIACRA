@@ -48,7 +48,7 @@
                 <h:form id="confirmar">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <h:outputText value="Seleccione el acuerdo que valida a la oferta de asignaturas" />
-                    <br />
+                    <br /><br />
                     <p:outputLabel for="acuerdo" value="Acuerdo: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu panelStyleClass="hideDisabled" id="acuerdo" value="#{ofertaBean.idAcuerdo}" effect="fade" filter="true" filterMatchMode="contains" required="true" >
