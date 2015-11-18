@@ -46,7 +46,7 @@
                             <f:setPropertyActionListener target="#{responsabilidadBean.horasActuales}" value="0" />
                             <f:setPropertyActionListener target="#{responsabilidadBean.horasOP}" value="0" />
                         </p:commandButton>
-                        <p:commandButton id="load_button" update=":dialogLoadResponsabilidad" style="float: right" oncomplete="PF('load_responsabilidad').show()" value="Cargar responsabilidad" icon="fa fa-refresh">
+                        <p:commandButton id="load_button" update=":dialogLoadResponsabilidad" style="float: right" oncomplete="PF('load_responsabilidad').show()" value="Cargar responsabilidad" icon="fa fa-refresh" disabled="#{responsabilidadBean.existResponsabilidadByCiclo>0?true:false}">
                             
                         </p:commandButton>
                         <p:spacer width="10" />
@@ -407,12 +407,12 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">
                 <h:outputText value="Año" />
                 <p:selectOneMenu id="anio" value="#{responsabilidadBean.anio}" effect="fade" required="true">
-                    <f:selectItems value="#{cicloBean.aniosList}" var="anio" itemValue="#{anio.anio}" itemLabel="#{anio.anio}"/>
+                    <f:selectItems value="#{cicloBean.aniosList}" var="anio" itemValue="#{anio.anio}" itemLabel="#{anio.anio}" itemDisabled="#{anio.anio==responsabilidadBean.ciclo.anio}"/>
                 </p:selectOneMenu>
                 <h:outputText value="Ciclo"/>
                 <p:selectOneMenu id="ciclo" value="#{responsabilidadBean.cargarciclo}" effect="fade" required="true">
-                    <f:selectItem itemValue="CI" itemLabel="CICLO I"/>
-                    <f:selectItem itemValue="CII" itemLabel="CICLO II"/>
+                    <f:selectItem itemValue="CI" itemLabel="CICLO I" itemDisabled="#{responsabilidadBean.ciclo.ciclo=='CII'}"/>
+                    <f:selectItem itemValue="CII" itemLabel="CICLO II" itemDisabled="#{responsabilidadBean.ciclo.ciclo=='CI'}"/>
                 </p:selectOneMenu>
                 
                 
