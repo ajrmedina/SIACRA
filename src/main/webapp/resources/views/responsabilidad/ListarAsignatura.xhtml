@@ -119,14 +119,14 @@
                     
                     <p:outputLabel for="codigoAsignatura" value="Código de asignatura: " />
                     <p:inputText id="codigoAsignatura" value="#{asignaturaBean.codigoAsignatura}" required="true" requiredMessage="Por favor, ingrese el código de la asignatura."
-                                 validatorMessage="Error: El 'Código de asignatra' debe contener tres letras Mayusculas y tres digitos " onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}">                        
+                                 validatorMessage="Error: El 'Código de asignatra' debe contener tres letras Mayusculas y tres digitos " onkeyup="if(this.value.length>6){this.value=this.value.substring(0,6);}" onblur="this.value=this.value.toUpperCase();">                        
                         <f:validateRegex pattern="^[A-Z]{3}\d{3}$" />
                         
                     </p:inputText>
                 
                     <p:outputLabel for="nombreAsignatura" value="Nombre de la asignatura: " />
                     <p:inputText id="nombreAsignatura" value="#{asignaturaBean.nombreAsignatura}" required="true" requiredMessage="Por favor, ingrese el nombre de la asignatura."
-                                 validatorMessage="Solo se admiten letras en el campo 'Nombre de asignatura'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}">                        
+                                 validatorMessage="Solo se admiten letras en el campo 'Nombre de asignatura'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}" onblur="this.value=this.value.toUpperCase();">                        
                         <f:validateRegex pattern="[a-zA-Záéíóú. ]+$" />
                     </p:inputText>
                 

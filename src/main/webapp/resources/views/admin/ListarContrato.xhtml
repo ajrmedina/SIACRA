@@ -61,7 +61,7 @@
                    
                     <p:outputLabel for="nombre" value="Tipo de contratación : " />
                     <p:inputText id="nombre" value="#{contratoBean.tipocontrato}" required="true" requiredMessage="Por favor, ingrese el tipo de contratación."
-                                 validatorMessage="Solo letras son permitidas en el campo 'Tipo de contrato'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
+                                 validatorMessage="Solo letras son permitidas en el campo 'Tipo de contrato'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}" onblur="this.value=this.value.toUpperCase();">                        
                         <f:validateRegex pattern="[a-zA-Záéíóú ]+$" /> 
                     </p:inputText>
                     

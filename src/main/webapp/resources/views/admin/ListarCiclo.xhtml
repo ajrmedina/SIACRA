@@ -68,7 +68,7 @@
                                  
                     <p:outputLabel for="ciclo" value="Ciclo académico:" />
                     <p:inputText id="ciclo" value="#{cicloBean.ciclo}" required="true" requiredMessage="Por favor, ingrese el ciclo." size="5"
-                             validatorMessage="Solo se admiten letras en el campo 'Ciclo académico'." onkeyup="if(this.value.length>2){this.value=this.value.substring(0,2);}">
+                             validatorMessage="Solo se admiten letras en el campo 'Ciclo académico'." onkeyup="if(this.value.length>2){this.value=this.value.substring(0,2);}" onblur="this.value=this.value.toUpperCase();">
                         <f:validateRegex pattern="^[a-zA-Z]+$" />                                               
                     </p:inputText>
                         

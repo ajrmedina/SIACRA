@@ -103,7 +103,7 @@
                     
                     <p:outputLabel for="tema" value="Tema: " />
                     <p:inputText id="tema" value="#{trabajoGraduacionBean.tematg}" required="true" requiredMessage="Por favor, ingrese el tema del trabajo de graduación."
-                                 validatorMessage="Solo letras, números, espacios y guiones son permitidos para el campo 'Tema'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}">                        
+                                 validatorMessage="Solo letras, números, espacios y guiones son permitidos para el campo 'Tema'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}" onblur="this.value=this.value.toUpperCase();">                        
                         <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputText>
                     

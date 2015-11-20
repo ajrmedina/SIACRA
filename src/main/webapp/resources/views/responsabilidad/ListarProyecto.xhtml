@@ -100,7 +100,7 @@
                     
                     <p:outputLabel for="nombre" value="Nombre de Proyecto: " />
                     <p:inputText id="nombre" value="#{proyectoBean.nombreproyecto}" required="true" requiredMessage="Por favor, ingrese el nombre del proyecto."
-                                 validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Nombre de proyecto'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}">                        
+                                 validatorMessage="Solo letras, numeros, espacios y guiones son permitidos para el campo 'Nombre de proyecto'." onkeyup="if(this.value.length>100){this.value=this.value.substring(0,100);}" onblur="this.value=this.value.toUpperCase();">                        
                         <f:validateRegex pattern="^[a-zA-Z0-9áéíóú -]+$" />
                     </p:inputText>
                     

@@ -183,7 +183,7 @@ public class ResponsabilidadBean implements Serializable {
             responsabilidad.setTotalhoras(getTotalhoras());
             responsabilidad.setTipodetiempo(getTipodetiempo());
             getResponsabilidadService().addResponsabilidad(responsabilidad);
-            addMessage("La responsabilidad administrativa del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
+            addMessage("La responsabilidad  del docente " + docente.getUser().getNombres() + " " + docente.getUser().getApellidos() + " fue añadida correctamente");
             reset();
             
         } catch (Exception e) {
