@@ -124,6 +124,7 @@
                         <p:submenu label="Permanencia" icon="fa fa-calendar" rendered="#{identityBean.user.esDocente==true}">
                             <p:menuitem value="Horario" url="/resources/views/shared/ListarPermanencia.xhtml" icon="fa fa fa-clock-o"/>
                             <p:menuitem value="Reporte" url="/resources/views/shared/ReportesDocente.xhtml" icon="fa fa-file-pdf-o" />
+                            <p:menuitem value="Permanencia Docentes" url="/resources/views/shared/PermanenciaDocente.xhtml" icon="fa fa-clock-o" rendered="#{identityBean.user.nivel.acceso=='Director' or identityBean.user.nivel.acceso=='Responsable'}"/>
                         </p:submenu>
                         
                         <sec:authorize ifAnyGranted="ROLE_DIRECTOR, ROLE_RESPONSABLE, ROLE_MIEMBRO_JD"> 
