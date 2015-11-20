@@ -62,7 +62,7 @@
                     
                     <p:outputLabel for="tipoEscalafon" value="Tipo escalafón: " />
                     <p:inputText id="tipoEscalafon" value="#{escalafonBean.tipoescalafon}" required="true" requiredMessage="Por favor, ingrese un tipo de escalafón."
-                                 validatorMessage="Solo letras son permitidos en el campo 'Tipo escalafón'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}">                        
+                                 validatorMessage="Solo letras son permitidos en el campo 'Tipo escalafón'." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}" onblur="this.value=this.value.toUpperCase();">                        
                         <f:validateRegex pattern="[a-zA-Záéíóú ]+$" />
                     </p:inputText>
                     
