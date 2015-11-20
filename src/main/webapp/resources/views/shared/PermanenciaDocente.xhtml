@@ -1,0 +1,79 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Consultar - Horario de permanencias
+    </ui:define>
+    
+    <ui:define name="title-view">
+        Horario de permanencia docentes #{identityBean.principal.escuela.nombreescuela}
+    </ui:define>
+                    
+    <ui:define name="content">
+       
+      
+        <h:form id="listar">
+            <!--
+                <f:event type="preRenderView" listener='' />
+            -->
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <p:growl id="messages" />  
+            <h:panelGrid columns="2" cellpadding="5" class="center-element" style="margin-left: 60px ">
+                <p:outputLabel for="docenteFilter" value="Filtro por docente: " />
+                <p:selectOneMenu panelStyleClass="hideDisabled" id="docenteFilter" value="#{permanenciaDocBean.cdocente}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                    <f:selectItem itemValue="0" itemLabel="Seleccione un docente"  />
+                    <f:selectItems value="#{docenteBean.docentesList}" var="docent" itemValue="#{docent.idDocente}" itemLabel="#{docent.user.nombres} #{docent.user.apellidos}" itemDisabled="#{docent.aprobarDocente == false || docent.user.estadoUsuario == false}"/>
+                    <p:ajax event="change" update="permanenciaDocTable" process="@this" listener="#{permanenciaDocBean.refreshPermanenciaDoc()}" />
+                </p:selectOneMenu>
+                <p:tooltip id="forDocenteFilter" for="docenteFilter" value="Seleccione el docente del cual quiere verificar la responsabilidad" />
+            </h:panelGrid>
+            <br />
+            <br />
+            <p:dataTable id="permanenciaDocTable" var="perm" value="#{permanenciaDocBean.permanenciaDocOList}" style="width: 90%" class="center-element" paginator="true" paginatorPosition="bottom" rows="15" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  widgetVar="perm_table" emptyMessage="No hay registros">
+                <f:facet name="header" >
+                    <p:outputPanel>
+                        <h:outputText value="Búsqueda de horario de permanencia:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('perm_table').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />
+                        
+                        <p:commandLink ajax="false" style="float: right">
+                            <p:graphicImage library="img" name="pdf.png"/>
+                            <f:setPropertyActionListener value="PermanenciaDoc" target="#{exporter.title}" />
+                            <p:dataExporter type="pdf" target="permanenciaDocTable" fileName="PermanenciaPdf" preProcessor="#{exporter.preProcessPDF}" />
+                        </p:commandLink>
+                    </p:outputPanel>
+                </f:facet>
+                <p:column style="width: 30%" headerText="Dia" filterBy="#{perm.diap}" filterStyleClass="hide">                    
+                    <h:outputText value="#{perm.diap}" class="center-element"/>
+                </p:column>
+                <p:column style="width: 20%" headerText="Tiempo matutino" filterBy="#{perm.hInicio} - #{perm.hfin}" filterStyleClass="hide">                    
+                    <h:outputText value="#{perm.hInicio}" class="center-element">
+                     <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText> -
+                    <h:outputText value="#{perm.hfin}" class="center-element">
+                     <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="width: 10%" headerText="Tiempo vespertino" filterBy="#{perm.hiniciot} - #{perm.hfint}" filterStyleClass="hide">                    
+                    <h:outputText value="#{perm.hiniciot}" class="center-element">
+                     <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText> -
+                    <h:outputText value="#{perm.hfint}" class="center-element">
+                     <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="width: 20%" headerText="Ciclo" filterBy="#{perm.ciclo.ciclo}" filterStyleClass="hide">                    
+                    <h:outputText value="#{perm.ciclo.ciclo} #{perm.ciclo.anio}" class="center-element"/>
+                </p:column>
+                
+                
+            </p:dataTable>
+        </h:form>
+        
+        
+    </ui:define>
+    
+</ui:composition>

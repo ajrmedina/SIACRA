@@ -57,7 +57,7 @@ public class PermanenciaDocBean implements Serializable {
     private List<PermanenciaDoc> permanenciaDocList;
     
     private List<Ciclo> cicloList;
-    
+    private List<PermanenciaDoc> permanenciaDocOList;
     private int idpermanencidoc;
     private int iddocente;
     private String diap;
@@ -68,6 +68,7 @@ public class PermanenciaDocBean implements Serializable {
     private int idciclo;
     private boolean insert;
     private Docente principal = null;
+    private int cdocente;                   //Filtro Docente
     
     public void addPermanenciaDoc(){
             try {
@@ -387,5 +388,40 @@ public class PermanenciaDocBean implements Serializable {
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    /**
+     * @return the cdocente
+     */
+    public int getCdocente() {
+        return cdocente;
+    }
+
+    /**
+     * @param cdocente the cdocente to set
+     */
+    public void setCdocente(int cdocente) {
+        this.cdocente = cdocente;
+    }
+    
+    public void refreshPermanenciaDoc() {
+        //Docente docente = getDocenteService().getDocenteById(getCdocente());
+        setPermanenciaDocOList(getPermanenciaDocService().getPermanenciasByDocente(getCdocente()));
+        
+        
+    }
+
+    /**
+     * @return the permanenciaDocOList
+     */
+    public List<PermanenciaDoc> getPermanenciaDocOList() {
+        return permanenciaDocOList;
+    }
+
+    /**
+     * @param permanenciaDocOList the permanenciaDocOList to set
+     */
+    public void setPermanenciaDocOList(List<PermanenciaDoc> permanenciaDocOList) {
+        this.permanenciaDocOList = permanenciaDocOList;
     }
 }
