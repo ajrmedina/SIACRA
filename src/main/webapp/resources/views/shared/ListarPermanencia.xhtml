@@ -3,7 +3,8 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
 
     <ui:define name="title">
        Consultar - Permanencia
@@ -162,10 +163,84 @@
                   
                 </p:column>               
             </p:dataTable>
-        </h:form>
+            
+            <br/>
+        <br/>
+        
+        <h3 style="margin-left: 10%">Horario de permanencia</h3>
+            <br/>
+            
+            <p:dataTable id="permanenciaDoc" var="permanencia" value="#{permanenciaDocBean.permanenciaDocList}" style="width: 70%" class="center-element" paginator="true" rows="10" paginatorPosition="bottom" widgetVar="permanenciaDocTable" emptyMessage="No hay registros en base al criterio proporcionado" >                
+                <f:facet name="header">                      
+                    <p:commandButton id="insert_button" style="float: right" update=":dialogUpdatePermanenciaDoc" actionListener="#{permanenciaDocBean.reset()}" oncomplete="PF('update_permanenciaDoc').show()" value="Nuevo Horario de Permanencia" icon="fa fa-plus" >
+                            <f:setPropertyActionListener target="#{permanenciaDocBean.insert}" value="true" />
+                    </p:commandButton>                     
+                    <p:outputPanel>
+                        <h:outputText value="Búsqueda de permanencias:" style="float: left"/>
+                        <p:inputText id="globalFilter" onkeyup="PF('permanenciaDocTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px; float: left" />
+                        
+                    </p:outputPanel>
+                    <div style="clear:both" />
+                </f:facet>                                 
+                
+                <p:column style="width:35%" headerText="Día" filterBy="#{permanenciaDocBean.diap}" filterStyleClass="hide">                         
+                    <h:outputText value="#{permanencia.diap}" />
+                </p:column>
+                
+                <p:column style="width:25%" headerText="Hora inicio matutino" filterBy="#{permanencia.hInicio}" filterStyleClass="hide" >                  
+                    <h:outputText value="#{permanencia.hInicio}">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width: 25%" headerText="Hora fin matutino" filterBy="#{permanencia.hfin}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.hfin}">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width:25%" headerText="Hora inicio vespertino" filterBy="#{permanencia.hiniciot}" filterStyleClass="hide" >                  
+                    <h:outputText value="#{permanencia.hiniciot}">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width: 25%" headerText="Hora fin vespertino" filterBy="#{permanencia.hfint}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.hfint}">
+                        <f:convertDateTime pattern="HH:mm" timeZone="GMT-6"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width: 20%" headerText="Ciclo" filterBy="#{permanencia.ciclo.ciclo}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.ciclo.ciclo} - #{permanencia.ciclo.anio}" />
+                </p:column>
+                <!--
+                <p:column style="width: 15%" headerText="Año" filterBy="#{permanencia.ciclo.anio}" filterStyleClass="hide">                  
+                    <h:outputText value="#{permanencia.ciclo.anio}" />
+                </p:column>
+                -->
+                
+                <p:column style="width: 30%" exportable="false">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones" />
+                    </f:facet>   
+                    
+                    <p:growl id="messages" />                    
+                      <p:commandButton id="update_button2" update=":dialogUpdatePermanenciaDoc" actionListener="#{permanenciaDocBean.loadPermanenciaDoc(permanencia)}" oncomplete="PF('update_permanenciaDoc').show()" icon="fa fa-edit"  >
+                        <f:setPropertyActionListener target="#{permanenciaDocBean.insert}" value="false" />
+                    </p:commandButton>                                 
+                    <p:commandButton id="delete_button2" update=":dialogDeletePermanenciaDoc" actionListener="#{permanenciaDocBean.loadPermanenciaDoc(permanencia)}" oncomplete="PF('delete_permanenciaDoc').show()" icon="fa fa-times" />
+                    
+                </p:column>               
+            </p:dataTable>
+        
         
         <br/>
-        <br/>      
+        <br/>
+        </h:form>
+        
+        
+    
         <!--
         <h:form id="list" style="margin-left: 40%">
             <p:commandButton id="permanencia_button" value="Reporte de Tiempo de Permanencia" actionListener="#{reporte.identifyReport('TGFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-o" style="font-size: large" />
@@ -216,12 +291,17 @@
                     <p:inputMask id="horafin" value="#{permanenciaBean.horaFin}" mask="99:99" required="true" requiredMessage="Por favor, seleccione la hora de finalización."/>   -->
                    
                     <p:outputLabel for="horainicio" value="Hora de inicio :" />
-                    <p:calendar id="horainicio" value="#{permanenciaBean.horaInicio}" pattern="HH:mm" timeOnly="true"  minHour="6" maxHour="20" required="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"
-                                locale="es" requiredMessage="Por favor, ingrese la hora de inicio de la actividad."/>
-
+                    <pe:timePicker id="horainicio" value="#{permanenciaBean.horaInicio}" mode="popup"   
+                                    minHour="6" maxHour="20" required="true" requiredMessage="Por favor ingrese la hora de inicio de la actividad">
+                        <!--<p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio2 hfin2" />-->
+                    </pe:timePicker>
+                    
                     <p:outputLabel for="horafin" value="Hora de fin :" />
-                    <p:calendar id="horafin" value="#{permanenciaBean.horaFin}" pattern="HH:mm" timeOnly="true" minHour="6" maxHour="20" required="true" onkeyup="if(this.value.length>5){this.value=this.value.substring(0,5);}"
-                                locale="es" requiredMessage="Por favor, ingrese la hora de finalización de la actividad." />
+                    <pe:timePicker id="horafin" value="#{permanenciaBean.horaFin}" mode="popup"   
+                                    minHour="6" maxHour="20" required="true" requiredMessage="Por favor, ingrese la hora de finalización de la actividad.">
+                        <!--<p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio2 hfin2" />-->
+                    </pe:timePicker>
+                    
                                       
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{permanenciaBean.updatePermanencia()}" update=":list:permanencia :list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == false}" />
                     <p:commandButton id="save_new" value="Agregar" actionListener="#{permanenciaBean.addPermanencia()}" update=":list:permanencia :list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanencia').hide()" icon="fa fa-refresh" rendered="#{permanenciaBean.insert == true}" />
@@ -243,6 +323,79 @@
                 </h:panelGrid>
             </h:form>
         </p:dialog>
-    </ui:define>
+   
+        <p:dialog header="Eliminar Permamencia" id="dialogDeletePermanenciaDoc" widgetVar="delete_permanenciaDoc" modal="true" resizable="false">
+            <h:form id="delete2">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:outputText value="¿Está seguro que desea eliminar la permanencia del dia #{permanenciaDocBean.diap}?" />
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                    <p:commandButton id="save_delete2" value="Eliminar" actionListener="#{permanenciaDocBean.deletePermanenciaDoc()}" update=":list:permanenciaDoc :list:messages" oncomplete="PF('delete_permanenciaDoc').hide()" icon="fa fa-trash-o" />
+                    <p:commandButton id="cancel2" value="Cancelar" oncomplete="PF('delete_permanenciaDoc').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
     
+    <p:dialog header="#{permanenciaDocBean.insert?'Nuevo horario de permanencia':'Actualizar horario de permanencia'}  " id="dialogUpdatePermanenciaDoc" widgetVar="update_permanenciaDoc" modal="true" resizable="false" closable="false">
+            <h:form id="update2">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                                      
+                    <p:outputLabel for="ciclo2" value="Ciclo en curso: " />
+                    <h:panelGroup layout="block">
+                        <p:selectOneMenu id="ciclo2" value="#{permanenciaDocBean.idciclo}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el ciclo.">
+                            <f:selectItems value="#{permanenciaDocBean.cicloList}" var="ciclo" itemValue="#{ciclo.idCiclo}" itemLabel="#{ciclo.ciclo} #{ciclo.anio}"/>
+                        </p:selectOneMenu>
+                        <p:tooltip id="forCiclo" for="ciclo2" value="Seleccione el ciclo actual" />
+                    </h:panelGroup>
+                        
+                    
+                    
+                    <p:outputLabel for="dia" value="Día :" />
+                    <p:selectOneMenu id="dia" value="#{permanenciaDocBean.diap}" required="true" requiredMessage="Por favor, seleccione el día de la actividad.">
+                        <f:selectItem itemLabel="Seleccionar dia" itemValue="" />
+                        <f:selectItem itemLabel="Lunes" itemValue="Lunes" />
+                        <f:selectItem itemLabel="Martes" itemValue="Martes" />
+                        <f:selectItem itemLabel="Miercoles" itemValue="Miercoles" />
+                        <f:selectItem itemLabel="Jueves" itemValue="Jueves" />
+                        <f:selectItem itemLabel="Viernes" itemValue="Viernes" />
+                        <f:selectItem itemLabel="Sabado" itemValue="Sabado" />
+                        
+                    </p:selectOneMenu>
+
+                      <p:outputLabel for="hinicio" value="Hora de inicio matutino:" />
+                    <pe:timePicker id="hinicio" value="#{permanenciaDocBean.hiniciom}" mode="popup"   
+                                    minHour="6" maxHour="20" maxMinute="60" required="true" requiredMessage="Por favor ingrese la hora de inicio matutino">
+                        <!--<p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio1 hfin1" />-->
+                    </pe:timePicker>
+                    
+                    <p:outputLabel for="hfin2" value="Hora de fin matutino:" />
+                    <pe:timePicker id="hfin2" value="#{permanenciaDocBean.hfinm}" mode="popup"   
+                                    minHour="6" maxHour="20" required="true" requiredMessage="Por favor ingrese la hora de fin matutino">
+                       <!-- <p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio1 hfin1" />-->
+                    </pe:timePicker>
+                    
+                       
+                    		
+		    <p:outputLabel for="hinicio3" value="Hora de inicio vespertino :" />
+                    <pe:timePicker id="hinicio3" value="#{permanenciaDocBean.hiniciot}" mode="popup"   
+                                    minHour="6" maxHour="20" required="true" requiredMessage="Por favor ingrese la hora de inicio vespertino">
+                        <!--<p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio2 hfin2" />-->
+                    </pe:timePicker>
+
+                    <p:outputLabel for="hfin4" value="Hora de fin vespertino:" />
+                    <pe:timePicker id="hfin4" value="#{permanenciaDocBean.hfint}" mode="popup"   
+                                    minHour="6" maxHour="20" required="true" requiredMessage="Por favor ingrese la hora de fin vespertino">
+                      <!--  <p:ajax event="timeSelect" listener="#{horarioBean.timeSelectListener}" update=":list:messages hinicio2 hfin2" />-->
+                    </pe:timePicker>
+                    
+                    <p:commandButton id="save_update2" value="Actualizar" actionListener="#{permanenciaDocBean.updatePermanenciaDoc()}" update=":list:permanenciaDoc :list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanenciaDoc').hide()" icon="fa fa-refresh" rendered="#{permanenciaDocBean.insert == false}" />
+                    <p:commandButton id="save_new2" value="Agregar" actionListener="#{permanenciaDocBean.addPermanenciaDoc()}" update=":list:permanenciaDoc :list:messages" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_permanenciaDoc').hide()" icon="fa fa-plus" rendered="#{permanenciaDocBean.insert == true}" />
+                    <p:commandButton id="cancel2" update="update2" value="Cancelar"  process="@this" oncomplete="PF('update_permanenciaDoc').hide()" icon="fa fa-ban">
+                      <p:resetInput target="update2" />
+                      <f:setPropertyActionListener target="#{permanenciaDocBean.insert}" value="false" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+     </ui:define>
 </ui:composition>
