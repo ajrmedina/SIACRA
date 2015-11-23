@@ -98,6 +98,21 @@
                         </p:selectOneMenu>
                     </h:panelGroup>
                     <p:outputLabel value="Título:"/>
+                    <p:selectOneMenu value="#{userBean.nivel}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" requiredMessage="Por favor, seleccione el nivel de acceso del usuario.">
+                        <f:selectItem value="Ing." itemLabel="Ing."/>
+                        <f:selectItem value="Ingra." itemLabel="Ingra."/>
+                        <f:selectItem value="Ing. Ms." itemLabel="Ing. Ms."/>
+                        <f:selectItem value="Ingra. Ms." itemLabel="Ingra. Ms."/>
+                        <f:selectItem value="Ing. Mae." itemLabel="Ing. Mae."/>
+                        <f:selectItem value="Ing. Msc." itemLabel="Ing. Msc."/>
+                        <f:selectItem value="Ingra. Msc." itemLabel="Ingra. Msc."/>
+                        <f:selectItem value="Msd." itemLabel="Msd."/>
+                        <f:selectItem value="Lic." itemLabel="Lic."/>
+                        <f:selectItem value="Licda." itemLabel="Licda."/>
+                        <f:selectItem value="Dr." itemLabel="Dr."/>
+                        <f:selectItem value="Br." itemLabel="Br."/>
+                        
+                    </p:selectOneMenu>
                     <p:inputText value="#{userBean.titulo}" placeholder="e.j: Ing. Lic."/>
                     
                     <p:outputLabel for="nombres" value="Nombres del usuario: " />
