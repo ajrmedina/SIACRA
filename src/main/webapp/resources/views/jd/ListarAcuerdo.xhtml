@@ -77,10 +77,16 @@
                 <h:panelGrid columns="2" cellpadding="5" class="center-element">                   
                                
                     <p:outputLabel for="codigoAcuerdo" value="Código de acuerdo:" />
+                    <p:inputMask mask="aa-999/9999" id="codigoAcuerdo" value="#{acuerdoBean.codigoacuerdo}" required="true" requiredMessage="Por favor, ingrese el código de acuerdo. Por ejemplo JV-000/2015"
+                                 validatorMessage="Formato de acuerdo invalido. Por ejemplo JV-000/2015'." onkeyup="if(this.value.length>11){this.value=this.value.substring(0,11);}" onblur="this.value=this.value.toUpperCase();">
+                        <p:ajax event="blur" listener="#{acuerdoBean.validateAcuerdoYear()}" update="codigoAcuerdo :list:message"/>
+                    </p:inputMask>
+                    <!--
                     <p:inputText id="codigoAcuerdo" value="#{acuerdoBean.codigoacuerdo}" required="true" requiredMessage="Por favor, ingrese el código de acuerdo. Por ejemplo JV-000/2015"
                                  validatorMessage="Formato de acuerdo invalido. Por ejemplo JV-000/2015'." onkeyup="if(this.value.length>11){this.value=this.value.substring(0,11);}" onblur="this.value=this.value.toUpperCase();">
                         <f:validateRegex pattern="[A-Z]{2}-\d{3}[/]{1}\d{4}" />                                       
                     </p:inputText>
+                    -->
 
                     <p:outputLabel for="fechaAcuerdo" value="Fecha de Acuerdo:" />
                     <p:calendar id="fechaAcuerdo" value="#{acuerdoBean.fechaacuerdo}" showOn="button" navigator="true" required="true" showOtherMonths="true" pattern="dd-MM-yyyy"

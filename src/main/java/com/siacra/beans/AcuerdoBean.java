@@ -14,6 +14,7 @@ import com.siacra.models.Acuerdo;
 import com.siacra.services.AcuerdoService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -88,6 +89,23 @@ public class AcuerdoBean implements Serializable{
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void validateAcuerdoYear()
+    {
+        String yearVista = codigoacuerdo.substring(7, 11);
+        
+//        addMessage("vista : " + yearVista);
+        int yearActual = Calendar.getInstance().get(Calendar.YEAR);
+        
+//        addMessage("actual :" +String.valueOf(yearActual));
+        
+        if(!yearVista.equals(String.valueOf(yearActual)))
+        {
+            addMessage("Por favor ingrese un año valido para el codigo del acuerdo (Año actual)");
+            codigoacuerdo=null;
+        }
+        
     }
     
  
