@@ -55,7 +55,7 @@ public class AcuerdoBean implements Serializable{
             acuerdo.setFechaacuerdo(getFechaacuerdo());
             acuerdo.setNombreacuerdo(getNombreacuerdo());
             acuerdo.setEstadoacuerdo(false);
-          
+            acuerdo.setDescripcionacuerdo(getDescripcionacuerdo());
             getAcuerdoService().addAcuerdo(acuerdo);
             //getEscuelaService().addEscuela(escuela);
             addMessage("El acuerdo " + getCodigoacuerdo() + " fue añadido correctamente");           
@@ -72,6 +72,7 @@ public class AcuerdoBean implements Serializable{
         setCodigoacuerdo(acuerdo.getCodigoacuerdo());           
         setFechaacuerdo(acuerdo.getFechaacuerdo());           
         setNombreacuerdo(acuerdo.getNombreacuerdo());
+        setDescripcionacuerdo(acuerdo.getDescripcionacuerdo());
     }
     
    
@@ -82,8 +83,8 @@ public class AcuerdoBean implements Serializable{
             acuerdo.setCodigoacuerdo(getCodigoacuerdo());
             acuerdo.setFechaacuerdo(getFechaacuerdo());                   
             acuerdo.setNombreacuerdo(getNombreacuerdo());
+            acuerdo.setDescripcionacuerdo(getDescripcionacuerdo());
             getAcuerdoService().updateAcuerdo(acuerdo);
-          
             addMessage("El acuerdo " + getCodigoacuerdo() + " fue actualizado correctamente ");
            // reset();
         } catch (DataAccessException e) {
@@ -91,7 +92,7 @@ public class AcuerdoBean implements Serializable{
         }
     }
     
-    public void validateAcuerdoYear()
+    /*public void validateAcuerdoYear()
     {
         String yearVista = codigoacuerdo.substring(7, 11);
         
@@ -106,7 +107,7 @@ public class AcuerdoBean implements Serializable{
             codigoacuerdo=null;
         }
         
-    }
+    }*/
     
  
     public void deleteAcuerdo() {
