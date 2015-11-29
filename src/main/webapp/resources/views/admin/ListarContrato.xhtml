@@ -68,6 +68,7 @@
                     <p:outputLabel for="acuerdo" value="Acuerdo: " />
                     <h:panelGroup layout="block1">
                         <p:selectOneMenu panelStyleClass="hideDisabled" id="acuerdo" value="#{contratoBean.idAcuerdo}" effect="fade" filter="true" filterMatchMode="contains" required="true" >
+                            <f:selectItem itemLabel="Seleccionar el acuerdo para este contrato"/>
                             <f:selectItems value="#{acuerdoBean.acuerdoList}" var="acuerdo" itemValue="#{acuerdo.idacuerdo}" itemLabel="#{acuerdo.codigoacuerdo}-#{acuerdo.nombreacuerdo}" itemDisabled="#{acuerdo.estadoacuerdo == false}"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forAcuerdo" for="acuerdo" value="Seleccione el acuerdo que valida al contrato" />

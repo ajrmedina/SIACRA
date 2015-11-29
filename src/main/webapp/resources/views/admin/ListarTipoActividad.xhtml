@@ -59,7 +59,7 @@
                    
                     <p:outputLabel for="nombre" value="Tipo de actividad : " />
                     <p:inputText id="nombre" value="#{tipoActividadBean.tipoactividad}" required="true" requiredMessage="Por favor, ingrese el tipo de actividad." onkeyup="if(this.value.length>30){this.value=this.value.substring(0,30);}"
-                                 validatorMessage="Solo letras son permitidas en el campo 'Tipo de actividad'.">                       
+                                 validatorMessage="Solo letras son permitidas en el campo 'Tipo de actividad'." onblur="this.value=this.value.toUpperCase();">                       
                         <f:validateRegex pattern="[a-zA-Záéíóú ]+$" />
                     </p:inputText>
                   

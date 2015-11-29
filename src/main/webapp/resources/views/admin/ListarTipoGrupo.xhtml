@@ -73,7 +73,7 @@
                 
                 <p:outputLabel for="nombregrupo" value="Tipo de grupo: " />
                 <p:inputText id="nombregrupo" value="#{tipogrupoBean.nombreGrupo}" required="true" requiredMessage="Por favor, ingrese el nombre del tipo de grupo." 
-                             onkeyup="if(this.value.length>25){this.value=this.value.substring(0,25);}" validatorMessage="Solo letras son permitidos en el campo 'Tipo de grupo'.">
+                             onkeyup="if(this.value.length>25){this.value=this.value.substring(0,25);}" validatorMessage="Solo letras son permitidos en el campo 'Tipo de grupo'." onblur="this.value=this.value.toUpperCase();">
                     <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />
                 </p:inputText>
                     
