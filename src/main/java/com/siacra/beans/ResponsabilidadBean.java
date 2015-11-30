@@ -109,6 +109,7 @@ public class ResponsabilidadBean implements Serializable {
     Long horasOb;
     Long horasAd;
     Long horasIn;
+    Long horasAh;
     Long horasOP;
     
     private int anio;   //para cargar responsabilidad
@@ -337,6 +338,7 @@ public class ResponsabilidadBean implements Serializable {
         setHorasOb(getResponsabilidadService().getHorasActualesByDocenteObligatorias(getCDocente()));
         setHorasAd(getResponsabilidadService().getHorasActualesByDocenteAdicional(getCDocente()));
         setHorasIn(getResponsabilidadService().getHorasActualesByDocenteIntegral(getCDocente()));
+        setHorasAh(getResponsabilidadService().getHorasActualesByDocenteAdHonorem(getCDocente()));
         if(getHorasOb() != null)
             setHorasOP(docente.getCategoria().getHorasObligatorias() - getHorasOb());
         else
@@ -455,12 +457,8 @@ public class ResponsabilidadBean implements Serializable {
     
     //Cargar responsabilidad de n ciclo anterior
     public void cargarResponsabilidad(){
-    
-    int result=getResponsabilidadService().cargarResponsabilidad(getAnio(), getCargarciclo(), id_escuela,getCiclo().getIdCiclo() );
-    
-    
-    addMessage("Carga completa");
-    
+        int result = getResponsabilidadService().cargarResponsabilidad(getAnio(), getCargarciclo(), id_escuela,getCiclo().getIdCiclo() );
+        addMessage("Carga completa");
     }
     
     public void reset() {
@@ -889,6 +887,14 @@ public class ResponsabilidadBean implements Serializable {
         this.horasIn = horasIn;
     }
     
+    public Long getHorasAh() {
+        return horasAh;
+    }
+
+    public void setHorasAh(Long horasAh) {
+        this.horasAh = horasAh;
+    }
+    
     public Long getHorasOP() {
         return horasOP;
     }
@@ -1224,6 +1230,6 @@ public class ResponsabilidadBean implements Serializable {
 
     
     public int getExistResponsabilidadByCiclo(){
-    return getResponsabilidadService().existResponsabilidadByCiclo(getCiclo().getIdCiclo());
+        return getResponsabilidadService().existResponsabilidadByCiclo(getCiclo().getIdCiclo());
     }
 }
