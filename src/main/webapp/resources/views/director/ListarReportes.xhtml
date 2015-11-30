@@ -34,7 +34,7 @@
                     <p:menuitem value="Servicios Profesionales" actionListener="#{reporte.identifyReport('ServiciosProfesionales')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
                         <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
                     </p:menuitem>                    
-                    <p:menuitem value="Tiempo Adicional/Integral" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-pdf-o" class="font-s"/>                    
+                    <p:menuitem value="Tiempo Adicional/Integral/Ad honorem" actionListener="#{reporte.identifyReport('DocentesTiempo')}" oncomplete="PF('generar_reporteDoc').show()" icon="fa fa-file-pdf-o" class="font-s"/>                    
                 </p:submenu>
                 <p:submenu label="Reportes sobre Trabajos de Graduacion y Proyectos" icon="fa fa-clipboard" class="font-m">
                     <p:menuitem value="Trabajos de Graduacion" actionListener="#{reporte.identifyReport('TGFinalizados')}" oncomplete="PF('choose_year').show()" icon="fa fa-file-pdf-o" class="font-s" />
@@ -121,6 +121,7 @@
                         <f:selectItem itemValue="0" itemLabel="Seleccione un tiempo"  />
                         <f:selectItem itemValue="Adicional" itemLabel="Adicional"/>
                         <f:selectItem itemValue="Integral" itemLabel="Integral"/>
+                        <f:selectItem itemValue="Ad honorem" itemLabel="Ad honorem"/>
                     </p:selectOneMenu>
                     <p:commandButton  id="aceptar"  value="Aceptar" actionListener="#{reporte.exportarServicioP()}" ajax="false" oncomplete="PF('generar_reporteDoc').hide()"  icon="fa fa-check"> 
                         <f:param value="#{identityBean.principal.escuela.idescuela}" name="id_escuela" />
