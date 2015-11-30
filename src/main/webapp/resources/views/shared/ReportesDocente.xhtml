@@ -19,10 +19,12 @@
         <h:form id="list" style="margin-left: 40%" target="_blank">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p:menu style="width:250px">
-                <p:menuitem value="Tiempo de Permanencia Docente" actionListener="#{reporte.identifyReport('PermanenciaDoc')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
+                <p:menuitem value="Horario de Actvidades del Docente" actionListener="#{reporte.identifyReport('PermanenciaDoc')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
                     <f:param value="#{permanenciaBean.principal.idDocente}" name="id_docente" />
                 </p:menuitem>         
-                
+                <p:menuitem value="Tiempo de Permanencia Docente" actionListener="#{reporte.identifyReport('PermanenciaDoc2')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
+                    <f:param value="#{permanenciaBean.principal.idDocente}" name="id_docente" />
+                </p:menuitem> 
                 <p:menuitem value="Memorándum de Responsabilidad" actionListener="#{reporte.identifyReport('Memorandum')}" icon="fa fa-file-pdf-o" ajax="false" class="font-s">
                     <f:param value="#{permanenciaBean.principal.idDocente}" name="id_docente" />
                 </p:menuitem> 

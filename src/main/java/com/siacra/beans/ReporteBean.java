@@ -77,6 +77,9 @@ public class ReporteBean implements Serializable{
             case "rptPermanencia":
                 parameter.put("docente_IDDOCENTE", Integer.parseInt(viewparams.get("id_docente")));
                 break;
+            case "rptPermanenciadoc":
+                parameter.put("docente_IDDOCENTE", Integer.parseInt(viewparams.get("id_docente")));
+                break;
             case "DocentesTiempo":
                 parameter.put("id_escuela", Integer.parseInt(viewparams.get("id_escuela")));
                 parameter.put("responsabilidad_TIPODETIEMPO", getTiempoDoc());
@@ -136,6 +139,10 @@ public class ReporteBean implements Serializable{
                 break;
             case "PermanenciaDoc":
                 setNombreReporte("rptPermanencia");
+                exportarServicioP();
+                break;
+            case "PermanenciaDoc2":
+                setNombreReporte("rptPermanenciadoc");
                 exportarServicioP();
                 break;
             case "DocentesTiempo":
