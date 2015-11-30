@@ -151,16 +151,19 @@ public class ResponsabilidadDao {
         return (Long) horas.uniqueResult();
     }
     
+    public Long getHorasActualesByDocenteAdHonorem(int docente){
+        Query horas = getSessionFactory().getCurrentSession().createQuery("SELECT SUM(totalhoras) AS resultado FROM Responsabilidad WHERE iddocente=? AND tipodetiempo='Ad honorem' and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente);
+        return (Long) horas.uniqueResult();
+    }
+    
     public List<Responsabilidad> getResponsabilidadesByDocenteCiclo(int docente){
         List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad WHERE iddocente=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente).list();
         return list;
     }
+    
     public int existResponsabilidadByCiclo(int idciclo){
-    
-    
-        
-   Query    result= getSessionFactory().getCurrentSession().createQuery("SELECT COUNT(*) AS resultado FROM Responsabilidad WHERE idciclo=?").setParameter(0, idciclo);
-    return Integer.parseInt(result.uniqueResult().toString());
+        Query result= getSessionFactory().getCurrentSession().createQuery("SELECT COUNT(*) AS resultado FROM Responsabilidad WHERE idciclo=?").setParameter(0, idciclo);
+        return Integer.parseInt(result.uniqueResult().toString());
     }
     
     //Cargar responsabilidad;
@@ -173,14 +176,11 @@ public class ResponsabilidadDao {
                     .setParameter("idescuela", idescuela)
                     .setParameter("idcicloactual", idcicloactual);
             int result = callSP.executeUpdate();
-              return result;
+            return result;
         }
         catch (RuntimeException e) {
             throw e;
-            
-        }     
-        
-      
+        }
     }
     
 }

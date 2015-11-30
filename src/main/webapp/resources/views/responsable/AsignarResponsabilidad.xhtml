@@ -98,6 +98,10 @@
                         <p:column colspan="4" footerText="Total de horas tiempo integral: " style="text-align:right" />
                         <p:column footerText="#{responsabilidadBean.horasIn}" />                        
                     </p:row>
+                    <p:row rendered="#{responsabilidadBean.horasAh!=null}">
+                        <p:column colspan="4" footerText="Total de horas tiempo ad honorem: " style="text-align:right" />
+                        <p:column footerText="#{responsabilidadBean.horasAh}" />                        
+                    </p:row>
                 </p:columnGroup> 
             </p:dataTable>
         </h:form>
@@ -131,6 +135,7 @@
                             <f:selectItem itemValue="Obligatorio" itemLabel="Tiempo Obligatorio" itemDisabled="#{responsabilidadBean.sobrecarga == true}"/>
                             <f:selectItem itemValue="Integral" itemLabel="Tiempo Integral"/>
                             <f:selectItem itemValue="Adicional" itemLabel="Tiempo Adicional"/>
+                            <f:selectItem itemValue="Ad honorem" itemLabel="Ad honorem"/>
                         </p:selectOneMenu>
                         <p:tooltip id="forTiempo" for="tiempo" value="Seleccione el tipo de tiempo en que se realiza la actividad" />
                     </h:panelGroup>
