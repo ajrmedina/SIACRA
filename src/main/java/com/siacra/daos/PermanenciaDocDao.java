@@ -94,8 +94,8 @@ public class PermanenciaDocDao {
         return list;
     }
     
-    public Long getExistPermanenciaDoc(String dia){
-        Query cuenta = getSessionFactory().getCurrentSession().createQuery("SELECT count(1) from PermanenciaDoc where diap=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, dia);
+    public Long getExistPermanenciaDoc(String dia,int iddocente){
+        Query cuenta = getSessionFactory().getCurrentSession().createQuery("SELECT count(1) from PermanenciaDoc where diap=? and iddocente=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, dia).setParameter(1, iddocente);
         return (Long) cuenta.uniqueResult();
     }
     

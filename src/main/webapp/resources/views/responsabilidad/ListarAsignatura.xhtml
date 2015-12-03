@@ -77,7 +77,7 @@
                             <f:selectItem itemLabel="1 y 2" itemValue="0" />
                         </p:selectOneButton>
                     </f:facet>
-                    <h:outputText value="#{asignatura.cicloImpartir}"/>
+                    <h:outputText value="#{asignatura.cicloImpartir==0?'1y2':asignatura.cicloImpartir}"/>
                 </p:column>
                 <p:column style="width: 3%" headerText="UV" filterBy="#{asignatura.unidadesValorativas}" filterStyleClass="hide" >
                     <h:outputText value="#{asignatura.unidadesValorativas}"/>
