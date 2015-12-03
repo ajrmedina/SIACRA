@@ -83,7 +83,7 @@ public class PermanenciaDocBean implements Serializable {
             permanenciadoc.setHfin(getHfinm());
             permanenciadoc.setHiniciot(getHiniciot());
             permanenciadoc.setHfint(getHfint());
-            if(getPermanenciaDocService().getExistPermanencia( getDiap())!=0){
+            if(getPermanenciaDocService().getExistPermanencia( getDiap(),getPrincipal().getIdDocente())!=0){
                 addMessage("Ya existe el mismo horario para el dia "+getDiap());
             }else{
                 getPermanenciaDocService().addPermanencia(permanenciadoc);

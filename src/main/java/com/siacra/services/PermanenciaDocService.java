@@ -97,7 +97,7 @@ public class PermanenciaDocService {
         return getPermanenciaDocDao().getPermanenciaDocsByDocente(id);
     }
     
-    public Long getExistPermanencia(String dia){
-        return getPermanenciaDocDao().getExistPermanenciaDoc(dia);
+    public Long getExistPermanencia(String dia,int iddocente){
+        return getPermanenciaDocDao().getExistPermanenciaDoc(dia,iddocente);
     }
 }
