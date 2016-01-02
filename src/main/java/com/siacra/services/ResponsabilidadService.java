@@ -129,4 +129,8 @@ public class ResponsabilidadService {
      public int cargarResponsabilidad(int anio, String ciclo,int idescuela,int idcicloactual) {
         return getResponsabilidadDao().cargarResponsabilidad(anio, ciclo,idescuela,idcicloactual);
     }
+     
+    public int existResponsabilidadByCiclo(int idciclo){
+    return getResponsabilidadDao().existResponsabilidadByCiclo(idciclo);
+    }
 }

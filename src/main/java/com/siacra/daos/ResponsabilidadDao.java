@@ -155,6 +155,13 @@ public class ResponsabilidadDao {
         List list = getSessionFactory().getCurrentSession().createQuery("from Responsabilidad WHERE iddocente=? and idciclo = (SELECT idCiclo from Ciclo WHERE ciEstado = 1)").setParameter(0, docente).list();
         return list;
     }
+    public int existResponsabilidadByCiclo(int idciclo){
+    
+    
+        
+   Query    result= getSessionFactory().getCurrentSession().createQuery("SELECT COUNT(*) AS resultado FROM Responsabilidad WHERE idciclo=?").setParameter(0, idciclo);
+    return Integer.parseInt(result.uniqueResult().toString());
+    }
     
     //Cargar responsabilidad;
     public int cargarResponsabilidad(int anio, String  ciclo,int idescuela,int idcicloactual) {

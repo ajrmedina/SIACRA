@@ -1223,5 +1223,7 @@ public class ResponsabilidadBean implements Serializable {
     }
 
     
-    
+    public int getExistResponsabilidadByCiclo(){
+    return getResponsabilidadService().existResponsabilidadByCiclo(getCiclo().getIdCiclo());
+    }
 }
