@@ -108,7 +108,7 @@
                     <p:outputLabel for="descripcionAcuerdo" value="Descripción del Acuerdo: " />
                     <p:inputText id="descripcionAcuerdo" value="#{acuerdoBean.descripcionacuerdo}" size="30" required="true" requiredMessage="Por favor, ingrese la descripción de acuerdo."
                              validatorMessage="Solo letras son admitidas en el campo 'Descripción de acuerdo'." onkeyup="if(this.value.length>200){this.value=this.value.substring(0,200);}" >
-                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9-_ ]+$" />                                                                    
+                        <f:validateRegex pattern="^[a-zA-Záéíóúñ0-9-_.() ]+$" />                                                                    
                     </p:inputText>
 
                     <p:commandButton id="save_update" value="Actualizar" actionListener="#{acuerdoBean.updateAcuerdo()}" update=":list:message :list:acuerdo" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('update_acuerdo').hide()" icon="fa fa-refresh" rendered="#{acuerdoBean.insert == false}"/>

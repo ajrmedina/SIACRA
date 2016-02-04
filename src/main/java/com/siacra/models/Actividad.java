@@ -42,8 +42,8 @@ public class Actividad implements Serializable {
     private boolean aprobaractividad;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "NOMBREACTIVIDAD", nullable = false, length = 50)
+    @Size(min = 1, max = 150)
+    @Column(name = "NOMBREACTIVIDAD", nullable = false, length = 150)
     private String nombreactividad;
     @Size(max = 50)
     @Column(name = "DESCRIPCIONACTIVIDAD", length = 50)
