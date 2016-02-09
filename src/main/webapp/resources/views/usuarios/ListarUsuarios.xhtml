@@ -124,14 +124,14 @@
                     <p:outputLabel for="nombres" value="Nombres del usuario: " />
                     <p:inputText id="nombres" value="#{userBean.nombres}" required="true" requiredMessage="Por favor, ingrese los nombres del usuario."
                                  validatorMessage="Solo letras y espacios son permitidos para el campo 'Nombres de usuario'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}" onblur="this.value=this.value.toUpperCase();" >                           
-                        <f:validateRegex pattern="^[a-zA-Záéíóú0-9 ]+$" />                        
+                        <f:validateRegex pattern="^[a-zA-ZáéíóúñÑ0-9. ]+$" />                        
                         <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>                    
                     
                     <p:outputLabel for="apellidos" value="Apellidos del usuario: " />
                     <p:inputText id="apellidos" value="#{userBean.apellidos}" required="true" requiredMessage="Por favor, ingrese los apellidos del usuario."
                                  validatorMessage="Solo letras y espacios son permitidos para el campo 'Apellidos de usuario'." onkeyup="if(this.value.length>50){this.value=this.value.substring(0,50);}" onblur="this.value=this.value.toUpperCase();">                       
-                        <f:validateRegex pattern="^[a-zA-Záéíóú ]+$" />
+                        <f:validateRegex pattern="^[a-zA-ZáéíóúñÑ ]+$" />
                         <p:ajax event="keyup" update="username" listener="#{userBean.handleKeyEvent}" />
                     </p:inputText>
                     
