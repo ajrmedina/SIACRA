@@ -1,0 +1,145 @@
+<ui:composition template="/WEB-INF/web-templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">
+       Datos Históricos de la Responsabilidad Académica
+    </ui:define>
+    
+       
+    <ui:define name="title-view">
+        Datos Históricos de la Responsabilidad Académica
+    </ui:define>
+                    
+    <ui:define name="content">
+        <h:form id="list">            
+            <p:growl id="messages" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            
+            <p:contextMenu for="historicos">
+                <p:menuitem value="Detalles" update="detailDialog" oncomplete="PF('detail_dialog').show()" icon="ui-icon-search" />
+            </p:contextMenu>
+            
+            <h:panelGrid columns="3" id="menuFilter">
+                <p:outputLabel for="cicloFilter" value="Seleccione un ciclo: " />
+                <p:selectOneMenu panelStyleClass="hideDisabled" id="cicloFilter" value="#{historicoBean.cicloSelected}" effect="fade" filter="true" filterMatchMode="startsWith" >
+                    <f:selectItem itemValue="" itemLabel="Seleccione un ciclo"  />
+                    <f:selectItems value="#{cicloBean.cicloList}" var="ciclo" itemValue="#{ciclo.ciclo} - #{ciclo.anio}" itemLabel="#{ciclo.ciclo} - #{ciclo.anio}"/>
+                    <p:ajax event="change" update="historicos" process="@this" listener="#{historicoBean.refreshHistoricos()}" />
+                </p:selectOneMenu>
+                <p:commandButton style="float: right" id="backup" value="Respaldar Historicos" actionListener="#{historicoBean.backupHistoricos()}" update="menuFilter messages" icon="fa fa-plus" rendered="#{historicoBean.cargaON}">
+                    <p:confirm header="Confirmacion" message="Desea guardar los datos historicos?" icon="ui-icon-alert" />
+                </p:commandButton>
+                
+            </h:panelGrid>
+            
+            
+            <br /><br />
+            
+            <p:dataTable id="historicos" var="hist" value="#{historicoBean.historicosList}" style="width: 100%" class="center-element" 
+                         paginator="true" rows="25" paginatorPosition="bottom" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  
+                         widgetVar="historicosTable" emptyMessage="No hay registros en base al criterio proporcionado" 
+                         rowKey="#{hist.idhistorico}"
+                         selection="#{historicoBean.historicoSelected}"
+                         selectionMode="single" >
+                <f:facet name="header">                  
+                    <p:outputPanel style="float: left">
+                        <h:outputText value="Búsqueda:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('historicosTable').filter()" placeholder="Criterio de búsqueda" style="width:150px; margin-left: 10px;" />                       
+                    </p:outputPanel>
+                    <div style="clear:both" />
+                </f:facet>
+                
+                <p:column style="width: 20%" headerText="Docente" filterBy="#{hist.nombres}" filterStyleClass="hide">                         
+                    <h:outputText value="#{hist.nombres}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 5%" headerText="Escalafon" filterBy="#{hist.tipoescalafon}" filterStyleClass="hide">                  
+                    <h:outputText value="#{hist.tipoescalafon}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 5%" headerText="Contrato" filterBy="#{hist.tipocontrato}" filterStyleClass="hide">                  
+                    <h:outputText value="#{hist.tipocontrato}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 20%" headerText="Actividad" filterBy="#{hist.nombreactividad}" filterStyleClass="hide">                  
+                    <h:outputText value="#{hist.nombreactividad}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 15%" headerText="Tipo Actividad" filterBy="#{hist.tipoactividad}" filterStyleClass="hide">                  
+                    <h:outputText value="#{hist.tipoactividad}" class="center-element"/>
+                </p:column>
+                
+                <p:column style="width: 15%" headerText="Horas Actividad" filterBy="#{hist.horasactividad}" filterStyleClass="hide">                  
+                    <h:outputText value="#{hist.horasactividad}" class="center-element"/>
+                </p:column>
+                
+            </p:dataTable>
+            
+            <p:dialog header="Información Detallada de los Datos Históricos" id="detailDialog" widgetVar="detail_dialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="historicoDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty historicoBean.historicoSelected}" columnClasses="label,value">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>Datos Históricos</p:column>
+                            </p:row>
+                        </f:facet>
+                        
+                        <h:outputText value="Nombre" />
+                        <h:outputText value="#{historicoBean.historicoSelected.nombres}" />
+
+                        <h:outputText value="Escalafon" />
+                        <h:outputText value="#{historicoBean.historicoSelected.tipoescalafon}"/>
+
+                        <h:outputText value="Contrato" />
+                        <h:outputText value="#{historicoBean.historicoSelected.tipocontrato}" />
+                        
+                        <h:outputText value="Actividad" />
+                        <h:outputText value="#{historicoBean.historicoSelected.nombreactividad}" />
+                        
+                        <h:outputText value="Tipo de Actividad" />
+                        <h:outputText value="#{historicoBean.historicoSelected.tipoactividad}" />
+                        
+                        <h:outputText value="Horas de la Actividad" />
+                        <h:outputText value="#{historicoBean.historicoSelected.horasactividad}" />
+                        
+                        <h:outputText value="Total de Grupos Teoricos" />
+                        <h:outputText value="#{historicoBean.historicoSelected.totalgt}" />
+                        
+                        <h:outputText value="Total de Grupos de Discusión" />
+                        <h:outputText value="#{historicoBean.historicoSelected.totalgd}" />
+                        
+                        <h:outputText value="Total de Grupos de Laboratorio" />
+                        <h:outputText value="#{historicoBean.historicoSelected.totalgl}" />
+                        
+                        <h:outputText value="Total de Proyectos" />
+                        <h:outputText value="#{historicoBean.historicoSelected.totalproyectos}" />
+                        
+                        <h:outputText value="Total de Trabajos de Graduación" />
+                        <h:outputText value="#{historicoBean.historicoSelected.totaltdg}" />
+                        
+                        <h:outputText value="Total de Horas Actividades Acádemicas" />
+                        <h:outputText value="#{historicoBean.historicoSelected.horasacademicas}" />
+                        
+                        <h:outputText value="Total de Horas Actividades Administrativas" />
+                        <h:outputText value="#{historicoBean.historicoSelected.horasadministrativas}" />
+                        
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Si" update="menuFilter" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+                    <f:setPropertyActionListener target="#{historicoBean.cargaON}" value="false" />
+                </p:commandButton>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            
+        </h:form>
+        
+    </ui:define>
+    
+</ui:composition>
