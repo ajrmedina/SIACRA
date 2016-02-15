@@ -30,9 +30,7 @@
                     <f:selectItems value="#{cicloBean.cicloList}" var="ciclo" itemValue="#{ciclo.ciclo} - #{ciclo.anio}" itemLabel="#{ciclo.ciclo} - #{ciclo.anio}"/>
                     <p:ajax event="change" update="historicos" process="@this" listener="#{historicoBean.refreshHistoricos()}" />
                 </p:selectOneMenu>
-                <p:commandButton style="float: right" id="backup" value="Respaldar Historicos" actionListener="#{historicoBean.backupHistoricos()}" update="menuFilter messages" icon="fa fa-plus" rendered="#{historicoBean.cargaON}">
-                    <p:confirm header="Confirmacion" message="Desea guardar los datos historicos?" icon="ui-icon-alert" />
-                </p:commandButton>
+                <p:commandButton style="float: right" id="backup" value="Respaldar Historicos" icon="fa fa-plus" oncomplete="PF('confirmation').show()" rendered="#{historicoBean.cargaON}" />
                 
             </h:panelGrid>
             
@@ -131,12 +129,17 @@
                 </p:outputPanel>
             </p:dialog>
             
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Si" update="menuFilter" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
-                    <f:setPropertyActionListener target="#{historicoBean.cargaON}" value="false" />
-                </p:commandButton>
-                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-            </p:confirmDialog>
+            <p:dialog id="dialogConfirmation" width="350px" height="70px" widgetVar="confirmation" modal="true" draggable="false" resizable="false" header="Confirmación" >
+                <h:form id="confirm">
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="¿Desea respaldar los datos históricos?" style="width: 100%;text-align: center;"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" style="margin-top: 10px;">
+                        <p:commandButton process="@form" value="Yes" actionListener="#{historicoBean.backupHistoricos()}" styleClass="ui-confirmdialog-yes" oncomplete="PF('confirmation').hide()" icon="ui-icon-check" update=":list:menuFilter :list:messages" />
+                        <p:commandButton value="No" styleClass="ui-confirmdialog-no" oncomplete="PF('confirmation').hide()" onsuccess="PF('confirmation').hide()" icon="ui-icon-close" />
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
             
         </h:form>
         
