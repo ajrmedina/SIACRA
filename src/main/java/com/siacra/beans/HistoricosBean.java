@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -56,8 +57,10 @@ public class HistoricosBean {
         int result = getHistoricosService().backupHistoricos(id_escuela);
         if(result > 0) {
             //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "Informacion", "El respaldo se ha completado correctamente"));
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+            addMessage("El respaldo se ha completado correctamente", FacesMessage.SEVERITY_INFO);
+            cargaON = getHistoricosService().existHistoricos(cicloActual.getCiclo() + " - " + cicloActual.getAnio(), id_escuela);
+            //ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            //ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         }
     }
     
@@ -117,5 +120,9 @@ public class HistoricosBean {
         this.cargaON = cargaON;
     }
     
+    public void addMessage(String mensaje, Severity severity) {
+        FacesMessage message = new FacesMessage(severity, mensaje,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
     
 }
