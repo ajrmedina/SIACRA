@@ -20,8 +20,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import org.primefaces.context.RequestContext;
 
 @ManagedBean(name="historicoBean")
 @ViewScoped
@@ -56,9 +54,11 @@ public class HistoricosBean {
     public void backupHistoricos() throws IOException {
         int result = getHistoricosService().backupHistoricos(id_escuela);
         if(result > 0) {
+            //Mensaje en dialogo
             //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "Informacion", "El respaldo se ha completado correctamente"));
             addMessage("El respaldo se ha completado correctamente", FacesMessage.SEVERITY_INFO);
             cargaON = getHistoricosService().existHistoricos(cicloActual.getCiclo() + " - " + cicloActual.getAnio(), id_escuela);
+            //Redireccion
             //ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             //ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         }

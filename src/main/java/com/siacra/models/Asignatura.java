@@ -50,6 +50,9 @@ public class Asignatura implements Serializable{
     @Column(name="nombreasignatura", nullable=false)
     String nombreAsignatura;
     
+    @Column(name="programaPDF")
+    String programaPDF;
+    
     @ManyToOne
     @JoinColumn(name="idescuela")
     private Escuela escuela;
@@ -148,5 +151,14 @@ public class Asignatura implements Serializable{
     public void setAcuerdo(Acuerdo acuerdo) {
         this.acuerdo = acuerdo;
     }
+
+    public String getProgramaPDF() {
+        return programaPDF;
+    }
+
+    public void setProgramaPDF(String programaPDF) {
+        this.programaPDF = programaPDF;
+    }
+    
     
 }
