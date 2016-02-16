@@ -12,7 +12,14 @@ import com.siacra.services.AcuerdoService;
 import com.siacra.services.AsignaturaService;
 import com.siacra.services.CicloService;
 import com.siacra.services.EscuelaService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +29,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -186,8 +199,7 @@ public class AsignaturaBean implements Serializable{
 
     public void setInsert(boolean insert) {
         this.insert = insert;
-    }    
-    
+    }
     
     public void addMessage(String mensaje) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, mensaje,  null);
@@ -357,7 +369,43 @@ public class AsignaturaBean implements Serializable{
     public void refreshAsignaturas() {
         this.setAsignaturaList(getAsignaturaService().getAsignaturasByEscuela(id_escuela));
     }
-               
+    
+    public void handleFileUpload(FileUploadEvent event){
+        try {
+            Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
+            /* Obtenemos el path */
+            ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String path = context.getRealPath("/WEB-INF/files/");
+            /* Inicializamos el destino y el origen */
+            File targetFolder = new File(path);
+            InputStream inputStream = event.getFile().getInputstream();
+            /* Escribimos en el destino, leyendo la data del origen */
+            OutputStream out = new FileOutputStream(new File(targetFolder, event.getFile().getFileName()));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            /* Cerramos los archivos */
+            inputStream.close();
+            out.flush();
+            out.close();
+            asignatura.setProgramaPDF(path + "\\" + event.getFile().getFileName());
+            getAsignaturaService().updateAsignatura(asignatura);
+            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "Informacion", "El archivo fue cargado correctamente"));
+        } catch (IOException e) {
+            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Informacion", "El archivo no pudo ser cargado correctamente"));
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public StreamedContent handleFileDownload(){
         
+        StreamedContent target = null;
+        Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
+        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(asignatura.getProgramaPDF());
+        target = new DefaultStreamedContent(stream, "pdf", "programa.pdf");
+        return target;
+    }
     
 }

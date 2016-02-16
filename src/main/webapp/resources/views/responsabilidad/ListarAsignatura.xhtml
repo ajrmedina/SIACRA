@@ -95,6 +95,8 @@
                     <p:commandButton id="locked" update=":dialogLockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('lock_asignatura').show()" icon="fa fa-unlock" rendered="#{asignatura.estadoAsignatura == true}" />
                     <p:commandButton id="unlocked" update=":dialogUnlockAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('unlock_asignatura').show()" icon="fa fa-unlock-alt" rendered="#{asignatura.estadoAsignatura == false}" />
                     <p:commandButton id="approve" update=":dialogApproveAsignatura" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('approve_asignatura').show()" icon="fa fa-check-square-o" rendered="#{asignatura.aprobarasignatura == false and identityBean.user.nivel.id == 3}" />
+                    <p:commandButton id="upload" update=":dialogUpload" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('upload').show()" icon="fa fa-upload"/>
+                    <p:commandButton id="download" update=":dialogDownload" actionListener="#{asignaturaBean.loadAsignatura(asignatura)}" oncomplete="PF('download').show()" icon="fa fa-download" rendered="#{asignatura.programaPDF != null and asignatura.programaPDF != '' }"/>
                     <p:tooltip id="forLocked" for="locked" value="Deshabilitar la asignatura" rendered="#{asignatura.estadoAsignatura == true}" />
                     <p:tooltip id="forUnlocked" for="unlocked" value="Habilitar la asignatura" rendered="#{asignatura.estadoAsignatura == false}" />
                     <p:tooltip id="forApprove" for="approve" value="Aprobar la asignatura" rendered="#{asignatura.aprobarasignatura == false and identityBean.user.nivel.id == 3}" />
@@ -213,6 +215,23 @@
                     <p:commandButton id="save_approve" value="Aprobar" actionListener="#{asignaturaBean.approveAsignatura()}" update=":list:asignatura" oncomplete="PF('approve_asignatura').hide()" icon="fa fa-check" />
                     <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('approve_asignatura').hide()" icon="fa fa-ban" />
                 </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Subir programa de asignatura" id="dialogUpload" widgetVar="upload" modal="true" resizable="false" closable="true">
+            <h:form id="upload" enctype="multipart/form-data">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p:fileUpload fileUploadListener="#{asignaturaBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                update=":list:message" sizeLimit="1000000" fileLimit="1" allowTypes="/(\.|\/)(pdf)$/" />
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Descargar programa de asignatura" id="dialogDownload" widgetVar="download" modal="true" resizable="false" closable="true">
+            <h:form id="download">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <p:commandButton value="Download" actionListener="#{asignaturaBean.handleFileDownload()}" ajax="false"  icon="ui-icon-arrowthick-1-s">
+                    
+                </p:commandButton>
             </h:form>
         </p:dialog>
         
