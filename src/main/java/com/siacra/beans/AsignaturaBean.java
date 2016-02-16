@@ -14,6 +14,7 @@ import com.siacra.services.CicloService;
 import com.siacra.services.EscuelaService;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,7 +75,8 @@ public class AsignaturaBean implements Serializable{
     String nombreAsignatura;
     private boolean insert;
     int cuenta;
-
+    private DefaultStreamedContent download;
+    
     public AsignaturaService getAsignaturaService() {
         return asignaturaService;
     }
@@ -398,14 +400,25 @@ public class AsignaturaBean implements Serializable{
             System.out.println(e.getMessage());
         }
     }
-    
-    public StreamedContent handleFileDownload(){
-        
-        StreamedContent target = null;
+
+    public void setDownload(DefaultStreamedContent download) {
+        this.download = download;
+    }
+
+    public DefaultStreamedContent getDownload() throws Exception {
+        System.out.println("GET = " + download.getName());
+        return download;
+    }
+
+    public void handleFileDownload() throws FileNotFoundException{
         Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
-        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(asignatura.getProgramaPDF());
-        target = new DefaultStreamedContent(stream, "pdf", "programa.pdf");
-        return target;
+        
+        File target = new File(asignatura.getProgramaPDF());
+        InputStream input = new FileInputStream(target);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(target.getName()), target.getName()));
+        System.out.println("PREP = " + download.getName());
+        
     }
     
 }

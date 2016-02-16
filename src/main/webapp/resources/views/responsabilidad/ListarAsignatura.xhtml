@@ -218,20 +218,28 @@
             </h:form>
         </p:dialog>
         
-        <p:dialog header="Subir programa de asignatura" id="dialogUpload" widgetVar="upload" modal="true" resizable="false" closable="true">
+        <p:dialog header="Cargar programa de asignatura" id="dialogUpload" widgetVar="upload" modal="true" resizable="false" closable="true">
             <h:form id="upload" enctype="multipart/form-data">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <p:fileUpload fileUploadListener="#{asignaturaBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
-                update=":list:message" sizeLimit="1000000" fileLimit="1" allowTypes="/(\.|\/)(pdf)$/" />
+                <h:panelGrid columns="1" cellpadding="15" class="center-element">
+                    <h:outputText value="Cargar programa de la asignatura #{asignaturaBean.nombreAsignatura} (#{asignaturaBean.codigoAsignatura})" />
+                    <p:fileUpload fileUploadListener="#{asignaturaBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                    update=":list:message" sizeLimit="1000000" fileLimit="1" allowTypes="/(\.|\/)(pdf)$/" />
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('upload').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
             </h:form>
         </p:dialog>
         
         <p:dialog header="Descargar programa de asignatura" id="dialogDownload" widgetVar="download" modal="true" resizable="false" closable="true">
             <h:form id="download">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <p:commandButton value="Download" actionListener="#{asignaturaBean.handleFileDownload()}" ajax="false"  icon="ui-icon-arrowthick-1-s">
-                    
-                </p:commandButton>
+                <h:outputText value="Descargar programa de la asignatura #{asignaturaBean.nombreAsignatura} (#{asignaturaBean.codigoAsignatura})" />   
+                <h:panelGrid columns="2" cellpadding="10" class="center-element">
+                    <p:commandButton value="Descargar" actionListener="#{asignaturaBean.handleFileDownload()}" ajax="false"  icon="ui-icon-arrowthick-1-s"> 
+                        <p:fileDownload value="#{asignaturaBean.download}" />
+                    </p:commandButton>
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('download').hide()" icon="fa fa-ban" />
+                </h:panelGrid>
             </h:form>
         </p:dialog>
         
