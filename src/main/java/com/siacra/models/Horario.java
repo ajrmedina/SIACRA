@@ -157,6 +157,11 @@ public class Horario implements Serializable{
     public void setEscuela(Escuela escuela) {
         this.escuela = escuela;
     }
+
+    @Override
+    public String toString() {
+        return "Horario{" + "idhorario=" + idhorario + ", hinicio1=" + hinicio1 + ", hfin1=" + hfin1 + ", dia1=" + dia1 + ", hinicio2=" + hinicio2 + ", hfin2=" + hfin2 + ", dia2=" + dia2 + ", hoEstado=" + hoEstado + ", grupo=" + grupo + ", escuela=" + escuela + '}';
+    }
     
     
 

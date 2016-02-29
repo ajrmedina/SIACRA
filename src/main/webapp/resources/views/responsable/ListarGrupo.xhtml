@@ -16,7 +16,7 @@
     <ui:define name="content">
         
         <h:form id="list">
-            <p:growl id="messages" />
+            <p:growl id="messages" autoUpdate="true" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <h:panelGrid columns="2" cellpadding="5" class="center-element" style="margin-left: 40px ">
                 <p:outputLabel for="asignaturaFilter" value="Filtro por asignatura: " />
@@ -36,6 +36,9 @@
                         <f:setPropertyActionListener target="#{grupoBean.insert}" value="true" />
                     </p:commandButton>
                     <p:commandButton style="float: right" id="merge_button" update=":dialogMergeGrupo" oncomplete="PF('merge_grupo').show()" value="Unir grupos" icon="fa fa-plus" />
+                    
+                    <p:commandButton style="float: right" id="uppload_button" update=":dialogUpploadGrupo" oncomplete="PF('uppload_grupo').show()" value="Cargar grupos" icon="fa fa-plus" />
+                    
                     
                     <p:outputPanel style="float: left">
                         <h:outputText value="Búsqueda de grupos:" />
@@ -93,6 +96,35 @@
                 </p:column>
             </p:dataTable>
         </h:form>
+        
+        
+        <p:dialog header="Cargar grupos desde archivo" id="dialogUpploadGrupo" widgetVar="uppload_grupo" modal="true" resizable="false" closable="true">
+            <h:form id="upload" enctype="multipart/form-data">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                
+                <h:panelGrid columns="2" cellpadding="5" class="center-element">
+                           
+                    <p:outputLabel for="oferta" value="Oferta: " />
+                    <h:panelGroup layout="block1">
+                        <p:selectOneMenu panelStyleClass="hideDisabled" id="oferta" value="#{grupoBean.idoferta}" effect="fade" filter="true" filterMatchMode="startsWith" required="true" >
+                            <f:selectItem itemLabel="Seleccione una oferta" itemValue="" />
+                            <f:selectItems value="#{ofertaBean.ofertaList}" var="oferta" itemValue="#{oferta.idOferta}" itemLabel="Ciclo: #{oferta.ciclo.ciclo} - Acuerdo: #{oferta.acuerdo.nombreacuerdo}" itemDisabled="#{oferta.aprobarOferta==false}"/>
+                            <f:ajax event="change" listener="#{grupoBean.ofertaCargaArchivo()}" />
+                        </p:selectOneMenu>
+                        <p:tooltip id="forOferta" for="oferta" value="Seleccione la oferta a la que pertenece el grupo" />
+                    </h:panelGroup>
+                </h:panelGrid>
+                
+                <h:panelGrid columns="1" cellpadding="15" class="center-element">
+                    <h:form id="cargar_archivo">
+                        <p:fileUpload fileUploadListener="#{grupoBean.handleFileUpload}" process="@form" mode="advanced" dragDropSupport="false"
+                                fileLimit="1" allowTypes="/(\.|\/)(xls|xlsx)$/" invalidFileMessage="El archivo no es EXCEL" fileLimitMessage="Solamente puede cargar un archivo"/>
+                    <p:commandButton id="cancel" value="Cancelar" oncomplete="PF('uppload_grupo').hide()" icon="fa fa-ban" />
+                    </h:form>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
         
         <p:dialog header="#{grupoBean.insert?'Nuevo Grupo':'Actualizar Grupo'}  " id="dialogUpdateGrupo" widgetVar="update_grupo" modal="true" resizable="false" closable="false">
             <h:form id="update">
