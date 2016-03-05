@@ -7,16 +7,19 @@ package com.siacra.beans;
 
 
 import com.siacra.models.Asignatura;
-import com.siacra.models.Ciclo;
 import com.siacra.models.Grupo;
 import com.siacra.models.Horario;
 import com.siacra.models.Oferta;
 import com.siacra.models.TipoGrupo;
+import com.siacra.models.UpploadGrupos;
 import com.siacra.services.AsignaturaService;
 import com.siacra.services.GrupoService;
 import com.siacra.services.HorarioService;
 import com.siacra.services.OfertaService;
 import com.siacra.services.TipoGrupoService;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +30,23 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
 import org.springframework.dao.DataAccessException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 /**
  *
@@ -63,6 +82,7 @@ public class GrupoBean implements Serializable{
     private Integer idAsignatura;
     private Integer fAsignatura;
     private Integer idoferta;
+    private Integer idoferta2;
     private Integer cupo;
     private Integer inscritos;
     private Integer numeroGrupo;
@@ -79,6 +99,8 @@ public class GrupoBean implements Serializable{
     private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     private final Map<String, Object> sessionMap = externalContext.getSessionMap();
     private final Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+    
+    List<UpploadGrupos> excelResponse;
     
     /***********************************************/
     
@@ -186,6 +208,252 @@ public class GrupoBean implements Serializable{
             e.printStackTrace();
         }
     }
+    
+    public void ofertaCargaArchivo()
+    {
+        idoferta2 = idoferta;
+    }
+    
+    public void handleFileUpload2(FileUploadEvent event){
+        try {
+            /* Obtenemos el path */
+            ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String path = context.getRealPath("/WEB-INF/files/");
+            /* Inicializamos el destino y el origen */
+            
+            InputStream inputStream = event.getFile().getInputstream();
+            /*  Escribimos en el destino, leyendo la data del origen */
+            /* Cerramos los archivos */
+            inputStream.close();
+            
+            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "Informacion", "El archivo fue cargado correctamente"));
+            archivoXlsx(path,event);
+        
+        } 
+        catch (IOException e) 
+        {
+            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Informacion", "El archivo no pudo ser cargado correctamente"));
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    
+    public void handleFileUpload(FileUploadEvent event){
+        try 
+        {
+//            Asignatura asignatura = getAsignaturaService().getAsignaturaById(getIdAsignatura());
+            /* Obtenemos el path */
+            ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String path = context.getRealPath("/WEB-INF/files/");
+            /* Inicializamos el destino y el origen */
+            File targetFolder = new File(path);
+            InputStream inputStream = event.getFile().getInputstream();
+            /* Escribimos en el destino, leyendo la data del origen */
+            
+            OutputStream out = new FileOutputStream(new File(targetFolder, event.getFile().getFileName()));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            /* Cerramos los archivos */
+            inputStream.close();
+            out.flush();
+            out.close();
+            
+            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "Informacion", "El archivo fue cargado correctamente"));
+            
+            archivoXlsx(path, event);
+
+        } 
+        catch (IOException e) 
+        {
+            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_FATAL, "Informacion", "El archivo no pudo ser cargado correctamente"));
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    
+    public void archivoXlsx(String path,FileUploadEvent archivo)
+    {
+        excelResponse = new ArrayList<>();
+        List<Horario> horas = new ArrayList<>();
+        
+        try
+        {
+            FileInputStream file = new FileInputStream(new File(path +"\\"+ archivo.getFile().getFileName()));
+	       
+            // Crear el objeto que tendra el libro de Excel
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+
+            /*
+             * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
+             * Una vez obtenida la hoja excel con las filas que se quieren leer obtenemos el iterator
+             * que nos permite recorrer cada una de las filas que contiene.
+            */
+
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            Row row;
+
+            // Recorremos todas las filas para mostrar el contenido de cada celda
+
+            int cantidad = 0;
+            int cantidad2=0;
+            
+            while (rowIterator.hasNext())
+            {
+                row = rowIterator.next();
+                
+                if(cantidad2!=0)
+                {
+                    Horario h = new Horario();
+                    UpploadGrupos grupo = new UpploadGrupos();
+                    // Obtenemos el iterator que permite recorres todas las celdas de una fila
+                    Iterator<Cell> cellIterator = row.cellIterator();
+                    Cell celda;
+
+                    cantidad=1;
+                    
+                    while (cellIterator.hasNext())
+                    {
+                        celda = cellIterator.next();
+                        
+//                        if((cantidad%10)==0)
+//                        {
+//                            System.out.print(grupo.toString());
+//                            excelResponse.add(grupo);
+//                            grupo = new UpploadGrupos();
+//                            cantidad=1;
+//                        }
+                        
+                        // Dependiendo del formato de la celda el valor se debe mostrar como String, Fecha, boolean, entero...
+                        switch(celda.getCellType()) 
+                        {
+                            case Cell.CELL_TYPE_NUMERIC:
+                                if( DateUtil.isCellDateFormatted(celda) )
+                                {
+                                    
+                                    SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss");
+                                    String fecha = f.format(celda.getDateCellValue());
+                                    System.out.print(":::::::: " +fecha);
+                                    Date dos = f.parse(fecha);
+                                    
+                                    if(cantidad==4)
+                                    {     
+                                        h.setHinicio1(dos);
+                                        grupo.setInicio1(dos);
+                                        cantidad++;
+                                    }
+                                    else if(cantidad==5)
+                                    {
+                                        h.setHfin1(dos);
+                                        grupo.setFin1(dos);
+                                        cantidad++;
+                                    }
+                                    else if(cantidad==7)
+                                    {
+                                        h.setHinicio2(dos);
+                                        grupo.setInicio2(dos);
+                                        cantidad++;
+                                    }
+                                    else if(cantidad==8)
+                                    {
+                                        h.setHfin2(dos);
+                                        grupo.setFin2(dos);
+                                        cantidad++;
+                                    }
+                                  
+                                   System.out.println(dos);
+                                }
+//                                else
+//                                {
+//                                   double numero = celda.getNumericCellValue();
+//                                   System.out.println(celda.getNumericCellValue());
+//                                }
+                                break;
+
+                            case Cell.CELL_TYPE_STRING:
+                                if(cantidad==1)
+                                {
+                                    grupo.setAsignatura(celda.getStringCellValue());
+                                    cantidad++;
+                                }
+                                else if(cantidad==2)
+                                {
+                                    grupo.setTipoGrupo(celda.getStringCellValue());
+                                    cantidad++;
+                                }
+                                else if(cantidad==3)
+                                {
+                                    h.setDia1(celda.getStringCellValue());
+                                    grupo.setDia1(celda.getStringCellValue());
+                                    cantidad++;
+                                }
+                                else if(cantidad==6)
+                                {
+                                    h.setDia2(celda.getStringCellValue());
+                                    grupo.setDia2(celda.getStringCellValue());
+                                    cantidad++;
+                                }
+                                else if(cantidad==9)
+                                {
+                                    grupo.setNumeroGrupo(celda.getStringCellValue());
+                                    cantidad++;
+                                }
+                                else if(cantidad==10)
+                                {
+                                    grupo.setCupos(celda.getStringCellValue());
+                                    cantidad++;
+                                }
+                                String texto = celda.getStringCellValue();
+                                System.out.println(celda.getStringCellValue());
+                                break;
+
+    //                        case Cell.CELL_TYPE_BOOLEAN:
+    //                            System.out.println(celda.getBooleanCellValue());
+    //                            break;
+
+                        }//fin if que obtiene valor de celda
+                    }//fin while que recorre celdas
+                    System.out.print("objeto:::"+grupo.toString());
+                    System.out.print("objeto:::"+h.toString());
+                    horas.add(h);
+                    excelResponse.add(grupo);
+                } // fin if primera iteracion
+                
+                cantidad2++;
+            } // fin while que recorre filas
+            // cerramos el libro excel
+            workbook.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        procesarListaCargada();
+        
+    }
+    
+    
+    
+    public void procesarListaCargada()
+    {
+        
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Integer id_escuela = (Integer) sessionMap.get("sessionIdEscuela");
+        
+        addMessage("idOferta::"+idoferta2);
+        List<Horario> horarios = horarioService.getHorariosbyEscuela(id_escuela);
+        List<Asignatura> asignaturas = asignaturaService.getAsignaturas();
+        
+        System.out.print("hora::::::"+horarios.get(0).getHinicio1());
+        System.out.print("HORARIO "+horarios.get(0).toString());
+        
+    }
+    
     
     public void cancelGrupoMerge()
     {
